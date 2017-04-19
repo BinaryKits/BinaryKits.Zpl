@@ -22,6 +22,11 @@ namespace BinaryKits.Utility.ZPLUtility
         }
 
         public abstract IEnumerable<string> Render(ZPLContext context);
+
+        public string ToZPLString(ZPLContext context)
+        {
+            return string.Join("\n", Render(context));
+        }
     }
 
     public abstract class ZPLPositionedElementBase : ZPLElementBase
