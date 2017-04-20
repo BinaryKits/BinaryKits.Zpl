@@ -5,12 +5,11 @@ A .net library helping to generate ZPL string
 ### Single element
 ```C#
 var result = new ZPLGraphicBox(100, 100, 100, 100).ToZPLString();
-Console.WriteLine(result);
+Console.WriteLine(result); 
+//Output
+//^FO100,100
+//^GB100,100,1,B,0^FS
 ```
-Output
-^FO100,100
-^GB100,100,1,B,0^FS
-
 ### Whole label
 ```C#
 var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
