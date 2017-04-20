@@ -22,7 +22,7 @@ labelElements.Add(new ZPLGraphicBox(450, 750, 100, 100, 50, ZPLConstants.LineCol
 labelElements.Add(new ZPLGraphicCircle(400, 700, 100, 5));
 labelElements.Add(new ZPLGraphicDiagonalLine(400, 700, 100, 50, 5));
 labelElements.Add(new ZPLGraphicDiagonalLine(400, 700, 50, 100, 5));
-labelElements.Add(new ZPLGraphicSymbol(ZPLGraphicSymbol.GraphicSymbolCharacter.RegisteredTradeMark, 600, 600, 50, 50));
+labelElements.Add(new ZPLGraphicSymbol(ZPLGraphicSymbol.GraphicSymbolCharacter.Copyright, 600, 600, 50, 50));
 
 //Add raw ZPL code
 labelElements.Add(new ZPLRaw("^FO200, 200^GB300, 200, 10 ^FS"));
