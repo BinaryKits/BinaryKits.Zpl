@@ -4,9 +4,13 @@ A .net library helping to generate ZPL string
 ## Usage:
 ### Single element
 ```C#
- var context = new ZPLContext();
- var output = new ZPLGraphicBox(100, 100, 10, 10).Render(context);
+var result = new ZPLGraphicBox(100, 100, 100, 100).ToZPLString();
+Console.WriteLine(result);
 ```
+Output
+^FO100,100
+^GB100,100,1,B,0^FS
+
 ### Whole label
 ```C#
 var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
@@ -21,5 +25,7 @@ labelElements.Add(new ZPLGraphicDiagonalLine(400, 700, 50, 100, 5));
 labelElements.Add(new ZPLGraphicSymbol(ZPLGraphicSymbol.GraphicSymbolCharacter.RegisteredTradeMark, 600, 600, 50, 50));
 
 var renderEngine = new ZPLEngine(labelElements);
-var output = renderEngine.Render(new ZPLContext() { DisplayComments = true, AddEmptyLineBeforeElementStart = true });
+var output = renderEngine.ToZPLString(new ZPLRenderOptions() { DisplayComments = true, AddEmptyLineBeforeElementStart = true });
+
+Console.WriteLine(output);
 ```
