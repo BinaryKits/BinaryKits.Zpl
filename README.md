@@ -1,5 +1,6 @@
 # ZPLUtility
-A .net library helping to generate ZPL string
+A .net library helping to generate ZPL string.
+Please refer to the Programming Guide for raw ZPL code definitaion, https://www.zebra.com/content/dam/zebra/manuals/en-us/software/zpl-zbi2-pm-en.pdf
 
 ## Usage:
 ### Single element
