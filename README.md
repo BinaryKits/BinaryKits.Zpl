@@ -1,11 +1,15 @@
 # ZPLUtility
-A .net library helping to generate ZPL string
+A .net library helping to generate ZPL string.
+Please refer to the Programming Guide for raw ZPL code definitaion, https://www.zebra.com/content/dam/zebra/manuals/en-us/software/zpl-zbi2-pm-en.pdf
 
 ## Usage:
 ### Single element
 ```C#
- var context = new ZPLContext();
- var output = new ZPLGraphicBox(100, 100, 10, 10).Render(context);
+var result = new ZPLGraphicBox(100, 100, 100, 100).ToZPLString();
+Console.WriteLine(result); 
+//Output
+//^FO100,100
+//^GB100,100,1,B,0^FS
 ```
 ### Whole label
 ```C#
@@ -18,8 +22,23 @@ labelElements.Add(new ZPLGraphicBox(450, 750, 100, 100, 50, ZPLConstants.LineCol
 labelElements.Add(new ZPLGraphicCircle(400, 700, 100, 5));
 labelElements.Add(new ZPLGraphicDiagonalLine(400, 700, 100, 50, 5));
 labelElements.Add(new ZPLGraphicDiagonalLine(400, 700, 50, 100, 5));
-labelElements.Add(new ZPLGraphicSymbol(ZPLGraphicSymbol.GraphicSymbolCharacter.RegisteredTradeMark, 600, 600, 50, 50));
+labelElements.Add(new ZPLGraphicSymbol(ZPLGraphicSymbol.GraphicSymbolCharacter.Copyright, 600, 600, 50, 50));
+
+//Add raw ZPL code
+labelElements.Add(new ZPLRaw("^FO200, 200^GB300, 200, 10 ^FS"));
 
 var renderEngine = new ZPLEngine(labelElements);
-var output = renderEngine.Render(new ZPLContext() { DisplayComments = true, AddEmptyLineBeforeElementStart = true });
+var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true });
+
+Console.WriteLine(output);
+```
+### Auto scale based on DPI
+```C#
+var labelElements = new List<ZPLElementBase>();
+labelElements.Add(new ZPLGraphicBox(400, 700, 100, 100, 5));
+
+var options = new ZPLRenderOptions() { SourcePrintDPI = 203, TargetPrintDPI = 300 };
+var output = new ZPLEngine(labelElements).ToZPLString(options);
+
+Console.WriteLine(output);
 ```
