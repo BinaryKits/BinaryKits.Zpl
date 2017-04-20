@@ -21,9 +21,19 @@ namespace BinaryKits.Utility.ZPLUtility
             IsEnabled = true;
         }
 
-        public abstract IEnumerable<string> Render(ZPLContext context);
+        public IEnumerable<string> Render()
+        {
+            return Render(ZPLRenderOptions.DefaultOptions);
+        }
 
-        public string ToZPLString(ZPLContext context)
+        public abstract IEnumerable<string> Render(ZPLRenderOptions context);
+
+        public string ToZPLString()
+        {
+            return ToZPLString(ZPLRenderOptions.DefaultOptions);
+        }
+
+        public string ToZPLString(ZPLRenderOptions context)
         {
             return string.Join("\n", Render(context));
         }
@@ -57,7 +67,7 @@ namespace BinaryKits.Utility.ZPLUtility
     {
         public string RawContent { get; set; }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             return new[] { RawContent };
         }
@@ -84,7 +94,7 @@ namespace BinaryKits.Utility.ZPLUtility
             FontHeight = fontHeight;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             return new[] { "^A" + FontName + Orientation + "," + context.Scale(FontHeight) + "," + context.Scale(FontWidth) };
         }
@@ -105,7 +115,7 @@ namespace BinaryKits.Utility.ZPLUtility
             Height = height;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             return new[] { "^BY" + context.Scale(ModuleWidth) + "," + Math.Round(BarWidthRatio, 1) + "," + context.Scale(Height) };
         }
@@ -123,7 +133,7 @@ namespace BinaryKits.Utility.ZPLUtility
             PositionY = positionY;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             //^ FO50,50
             return new string[] { "^FO" + context.Scale(PositionX) + "," + context.Scale(PositionY) };
@@ -162,7 +172,7 @@ namespace BinaryKits.Utility.ZPLUtility
             NewLineConversion = newLineConversion;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             List<string> result = new List<string>();
             result.AddRange(Font.Render(context));
@@ -261,7 +271,7 @@ namespace BinaryKits.Utility.ZPLUtility
             HangingIndent = hangingIndent;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             //^ XA
             //^ CF0,30,30 ^ FO25,50
@@ -303,7 +313,7 @@ namespace BinaryKits.Utility.ZPLUtility
             Height = height;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             List<string> result = new List<string>();
             result.AddRange(Font.Render(context));
@@ -343,7 +353,7 @@ namespace BinaryKits.Utility.ZPLUtility
             PrintInterpretationLineAboveCode = printInterpretationLineAboveCode;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             //^FO100,100 ^ BY3
             //^BCN,100,Y,N,N
@@ -376,7 +386,7 @@ namespace BinaryKits.Utility.ZPLUtility
             CornerRounding = cornerRounding;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             //^ FO50,50
             //^ GB300,200,10 ^ FS
@@ -397,7 +407,7 @@ namespace BinaryKits.Utility.ZPLUtility
             RightLeaningiagonal = rightLeaningiagonal;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             //^GDw,h,t,c,o
             List<string> result = new List<string>();
@@ -414,7 +424,7 @@ namespace BinaryKits.Utility.ZPLUtility
         {
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             //^ GE300,100,10,B ^ FS
             List<string> result = new List<string>();
@@ -434,7 +444,7 @@ namespace BinaryKits.Utility.ZPLUtility
             Diameter = diameter;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             //^GCd,t,c
             List<string> result = new List<string>();
@@ -483,7 +493,7 @@ namespace BinaryKits.Utility.ZPLUtility
             Height = height;
         }
 
-        public override IEnumerable<string> Render(ZPLContext context)
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
             //^GSo,h,w
             List<string> result = new List<string>();

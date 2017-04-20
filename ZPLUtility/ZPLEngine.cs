@@ -23,7 +23,7 @@ namespace BinaryKits.Utility.ZPLUtility
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public string Render(ZPLContext context)
+        public string Render(ZPLRenderOptions context)
         {
             List<string> result = new List<string>();
             result.Add("^XA");

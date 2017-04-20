@@ -41,7 +41,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZPLConstants.cs" />
-    <Compile Include="ZPLContext.cs" />
+    <Compile Include="ZPLRenderOptions.cs" />
     <Compile Include="ZPLElements.cs" />
     <Compile Include="ZPLEngine.cs" />
   </ItemGroup>

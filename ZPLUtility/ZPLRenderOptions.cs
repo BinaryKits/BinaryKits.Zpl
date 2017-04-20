@@ -8,8 +8,26 @@ namespace BinaryKits.Utility.ZPLUtility
     /// <summary>
     /// Holding redering settings
     /// </summary>
-    public class ZPLContext
+    public class ZPLRenderOptions
     {
+        static ZPLRenderOptions _DefaultOptions;
+
+        public static ZPLRenderOptions DefaultOptions
+        {
+            get
+            {
+                if (_DefaultOptions == null)
+                {
+                    _DefaultOptions = new ZPLRenderOptions();
+                }
+                return _DefaultOptions;
+            }
+            set
+            {
+                _DefaultOptions = value;
+            }
+        }
+
         //^CI
         public string ChangeInternationalFontEncoding { get; set; }
 
@@ -33,7 +51,7 @@ namespace BinaryKits.Utility.ZPLUtility
             return input * ScaleFactor;
         }
 
-        public ZPLContext()
+        public ZPLRenderOptions()
         {
             ChangeInternationalFontEncoding = ZPLConstants.InternationalFontEncoding.CI28;
             SourcePrintDPI = TargetPrintDPI = 203;
