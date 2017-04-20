@@ -23,7 +23,7 @@ namespace BinaryKits.Utility.ZPLUtility
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public string Render(ZPLRenderOptions context)
+        public List<string> Render(ZPLRenderOptions context)
         {
             List<string> result = new List<string>();
             result.Add("^XA");
@@ -51,7 +51,12 @@ namespace BinaryKits.Utility.ZPLUtility
             }
             result.Add("^XZ");
 
-            return string.Join("\n", result);
+            return result;
+        }
+
+        public string ToZPLString(ZPLRenderOptions context)
+        {
+            return string.Join("\n", Render(context));
         }
 
         /// <summary>
