@@ -28,7 +28,7 @@ labelElements.Add(new ZPLGraphicSymbol(ZPLGraphicSymbol.GraphicSymbolCharacter.R
 labelElements.Add(new ZPLRaw("^FO200, 200^GB300, 200, 10 ^FS"));
 
 var renderEngine = new ZPLEngine(labelElements);
-var output = renderEngine.ToZPLString(new ZPLRenderOptions() { DisplayComments = true, AddEmptyLineBeforeElementStart = true });
+var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true });
 
 Console.WriteLine(output);
 ```
