@@ -76,7 +76,7 @@ labelElements.Add(new ZPLFieldBlock(sampleText, 10, 300, 400, font, 2));
 labelElements.Add(new ZPLTextBlock(sampleText, 10, 600, 400, 100, font));
 
 var renderEngine = new ZPLEngine(labelElements);
-var output = renderEngine.ToZPLString(new ZPLRenderOptions() { DisplayComments = true });
+var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true });
 
 Console.WriteLine(output);
 ```
