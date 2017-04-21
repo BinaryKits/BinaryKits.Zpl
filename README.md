@@ -2,6 +2,8 @@
 A .net library helping to generate ZPL string.
 Please refer to the Programming Guide for raw ZPL code definitaion, https://www.zebra.com/content/dam/zebra/manuals/en-us/software/zpl-zbi2-pm-en.pdf
 
+Some basic ZPL elements are included, if you have any suggestions please feel free to let me know.
+
 ## Usage:
 ### Single element
 ```C#
@@ -39,6 +41,42 @@ labelElements.Add(new ZPLGraphicBox(400, 700, 100, 100, 5));
 
 var options = new ZPLRenderOptions() { SourcePrintDPI = 203, TargetPrintDPI = 300 };
 var output = new ZPLEngine(labelElements).ToZPLString(options);
+
+Console.WriteLine(output);
+```
+### Render with comment for easy debugging
+```C#
+var labelElements = new List<ZPLElementBase>();
+
+var textField = new ZPLTextField("AAA", 50, 100, ZPLConstants.Font.Default);
+textField.Comments.Add("An important field");
+labelElements.Add(textField);
+
+var renderEngine = new ZPLEngine(labelElements);
+var output = renderEngine.ToZPLString(new ZPLRenderOptions() { DisplayComments = true });
+
+Console.WriteLine(output);
+```
+
+### Differnt text field type
+```C#
+var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
+ZPLFont font = new ZPLFont(fontWidth: 50, fontHeight: 50);
+
+var labelElements = new List<ZPLElementBase>();
+//Specail character is repalced with space
+labelElements.Add(new ZPLTextField(sampleText, 10, 10, font, useHexadecimalIndicator: false));
+//Specail character is repalced Hex value using ^FH
+labelElements.Add(new ZPLTextField(sampleText, 10, 50, font, useHexadecimalIndicator: true));
+//Only the first line is displayed
+labelElements.Add(new ZPLSingleLineFieldBlock(sampleText, 10, 150, 500, font));
+//Max 2 lines, text exceeding the maximum number of lines overwrites the last line.
+labelElements.Add(new ZPLFieldBlock(sampleText, 10, 300, 400, font, 2));
+// Multi - line text within a box region
+labelElements.Add(new ZPLTextBlock(sampleText, 10, 600, 400, 100, font));
+
+var renderEngine = new ZPLEngine(labelElements);
+var output = renderEngine.ToZPLString(new ZPLRenderOptions() { DisplayComments = true });
 
 Console.WriteLine(output);
 ```
