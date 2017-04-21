@@ -49,5 +49,44 @@ namespace ZPLUtilityUnitTest
 
             Console.WriteLine(output);
         }
+
+        [TestMethod]
+        public void RenderComments()
+        {
+            var labelElements = new List<ZPLElementBase>();
+
+            var textField = new ZPLTextField("AAA", 50, 100, ZPLConstants.Font.Default);
+            textField.Comments.Add("A important field");
+            labelElements.Add(textField);
+
+            var renderEngine = new ZPLEngine(labelElements);
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { DisplayComments = true });
+
+            Console.WriteLine(output);
+        }
+
+        [TestMethod]
+        public void TextFieldVariations()
+        {
+            var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
+            ZPLFont font = new ZPLFont(fontWidth: 50, fontHeight: 50);
+
+            var labelElements = new List<ZPLElementBase>();
+            //Specail character is repalced with space
+            labelElements.Add(new ZPLTextField(sampleText, 10, 10, font, useHexadecimalIndicator: false));
+            //Specail character is using Hex value ^FH
+            labelElements.Add(new ZPLTextField(sampleText, 10, 50, font, useHexadecimalIndicator: true));
+            //Only the first line is displayed
+            labelElements.Add(new ZPLSingleLineFieldBlock(sampleText, 10, 150, 500, font));
+            //Max 2 lines, text exceeding the maximum number of lines overwrites the last line.
+            labelElements.Add(new ZPLFieldBlock(sampleText, 10, 300, 400, font, 2));
+            // Multi - line text within a box region
+            labelElements.Add(new ZPLTextBlock(sampleText, 10, 600, 400, 100, font));
+
+            var renderEngine = new ZPLEngine(labelElements);
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true });
+
+            Console.WriteLine(output);
+        }
     }
 }
