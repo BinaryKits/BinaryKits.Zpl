@@ -327,8 +327,10 @@ namespace BinaryKits.Utility.ZPLUtility
 
     public abstract class ZPLBarcode : ZPLPositionedElementBase
     {
-        public ZPLBarcode(int positionX, int positionY) : base(positionX, positionY)
+        public ZPLBarcode(string content, int positionX, int positionY, int height) : base(positionX, positionY)
         {
+            Content = content;
+            Height = height;
         }
 
         public int Height { get; protected set; }
@@ -343,12 +345,10 @@ namespace BinaryKits.Utility.ZPLUtility
         public bool PrintInterpretationLine { get; private set; }
         public bool PrintInterpretationLineAboveCode { get; private set; }
 
-        public ZPLBarCode128(string content, int positionX, int positionY, int height = 100, string orientation = "", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false) : base(positionX, positionY)
+        public ZPLBarCode128(string content, int positionX, int positionY, int height = 100, string orientation = "", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false) : base(content, positionX, positionY, height)
         {
-            Content = content;
             Origin = new ZPLOrigin(positionX, positionY);
             Orientation = orientation;
-            Height = height;
             PrintInterpretationLine = printInterpretationLine;
             PrintInterpretationLineAboveCode = printInterpretationLineAboveCode;
         }
@@ -365,6 +365,40 @@ namespace BinaryKits.Utility.ZPLUtility
                 + (PrintInterpretationLine ? "Y" : "N") + ","
                 + (PrintInterpretationLineAboveCode ? "Y" : "N"));
             result.Add("^FD" + Content + "^FS");
+
+            return result;
+        }
+    }
+
+    public class ZPLQRCode : ZPLPositionedElementBase
+    {
+        public string Content { get; protected set; }
+
+        public int Model { get; set; }
+
+        public int MagnificationFactor { get; set; }
+
+        public string ErrorCorrection { get; set; }
+        public int MaskValue { get; set; }
+
+        public ZPLQRCode(string content, int positionX, int positionY, int model = 2, int magnificationFactor = 2, string errorCorrection = "Q", int maskValue = 7) : base(positionX, positionY)
+        {
+            Content = content;
+            Model = model;
+            MagnificationFactor = magnificationFactor;
+            ErrorCorrection = errorCorrection;
+            MaskValue = maskValue;
+        }
+
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
+        {
+            //^ FO100,100
+            //^ BQN,2,10
+            //^ FDMM,AAC - 42 ^ FS
+            List<string> result = new List<string>();
+            result.AddRange(Origin.Render(context));
+            result.Add("^BQN," + Model + "," + context.Scale(MagnificationFactor) + "," + ErrorCorrection + "," + MaskValue);
+            result.Add("^FD" + ErrorCorrection+"M," + Content + "^FS");
 
             return result;
         }
