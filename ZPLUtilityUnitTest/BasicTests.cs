@@ -89,5 +89,21 @@ namespace ZPLUtilityUnitTest
 
             Console.WriteLine(output);
         }
+
+        [TestMethod]
+        public void ChaituTest()
+        {
+            var sampleText = "[_~^][LineBreak\n][Kühne + Nagel]";
+            ZPLFont font = new ZPLFont(fontWidth: 50, fontHeight: 50);
+
+            var labelElements = new List<ZPLElementBase>();
+            //Specail character is repalced with space
+            labelElements.Add(new ZPLTextField(sampleText, 10, 10, font, useHexadecimalIndicator: false));
+
+            var renderEngine = new ZPLEngine(labelElements);
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true });
+
+            Console.WriteLine(output);
+        }
     }
 }

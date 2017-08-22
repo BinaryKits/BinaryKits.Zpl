@@ -39,15 +39,22 @@ namespace BinaryKits.Utility.ZPLUtility
                 //Comments
                 if (context.DisplayComments)
                 {
-                    result.Add("^FX");
                     if (e.Comments.Any())
                     {
+                        result.Add("^FX");
                         e.Comments.ForEach(x => result.Add("//" + x.Replace("^", "[caret]").Replace("~", "[tilde]")));
                     }
                 }
 
                 //Actual element
-                result.AddRange(e.Render(context));
+                if (context.CompressedRendering)
+                {
+                    result.Add(string.Join("", e.Render(context)));
+                }
+                else
+                {
+                    result.AddRange(e.Render(context));
+                }
             }
             result.Add("^XZ");
 

@@ -39,6 +39,8 @@ namespace BinaryKits.Utility.ZPLUtility
 
         public int TargetPrintDPI { get; set; }
 
+        public bool CompressedRendering { get; set; }
+
         public double ScaleFactor { get { return (double)TargetPrintDPI / SourcePrintDPI; } }
 
         public int Scale(int input)

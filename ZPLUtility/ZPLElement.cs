@@ -26,6 +26,11 @@ namespace BinaryKits.Utility.ZPLUtility
             return Render(ZPLRenderOptions.DefaultOptions);
         }
 
+        public string RenderToString()
+        {
+            return string.Join(" ", Render());
+        }
+
         public abstract IEnumerable<string> Render(ZPLRenderOptions context);
 
         public string ToZPLString()
@@ -46,20 +51,6 @@ namespace BinaryKits.Utility.ZPLUtility
         public ZPLPositionedElementBase(int positionX, int positionY) : base()
         {
             Origin = new ZPLOrigin(positionX, positionY);
-        }
-    }
-
-    public abstract class ZPLGraphicElement : ZPLPositionedElementBase
-    {
-        //Line color
-        public string LineColor { get; protected set; }
-
-        public int BorderThickness { get; protected set; }
-
-        public ZPLGraphicElement(int positionX, int positionY, int borderThickness = 1, string lineColor = "B") : base(positionX, positionY)
-        {
-            BorderThickness = borderThickness;
-            LineColor = lineColor;
         }
     }
 
@@ -108,7 +99,7 @@ namespace BinaryKits.Utility.ZPLUtility
 
         public int Height { get; private set; }
 
-        public ZPLBarCodeFieldDefault(int moduleWidth = 2, double barWidthRatio = 0.1d, int height = 10)
+        public ZPLBarCodeFieldDefault(int moduleWidth = 2, double barWidthRatio = 3.0d, int height = 10)
         {
             ModuleWidth = moduleWidth;
             BarWidthRatio = barWidthRatio;
@@ -147,6 +138,8 @@ namespace BinaryKits.Utility.ZPLUtility
         public ZPLFont Font { get; protected set; }
         //^FH
         public bool UseHexadecimalIndicator { get; protected set; }
+        //^FR
+        public bool ReversePrint { get; protected set; }
 
         public NewLineConversionMethod NewLineConversion { get; protected set; }
         //^FD
@@ -163,13 +156,14 @@ namespace BinaryKits.Utility.ZPLUtility
         /// <param name="fontName"></param>
         /// <param name="orientation"></param>
         /// <param name="useHexadecimalIndicator"></param>
-        public ZPLTextField(string text, int positionX, int positionY, ZPLFont font, NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace, bool useHexadecimalIndicator = true) : base(positionX, positionY)
+        public ZPLTextField(string text, int positionX, int positionY, ZPLFont font, NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace, bool useHexadecimalIndicator = true, bool reversePrint = false) : base(positionX, positionY)
         {
             Text = text;
             Origin = new ZPLOrigin(positionX, positionY);
             Font = font;
             UseHexadecimalIndicator = useHexadecimalIndicator;
             NewLineConversion = newLineConversion;
+            ReversePrint = reversePrint;
         }
 
         public override IEnumerable<string> Render(ZPLRenderOptions context)
@@ -177,15 +171,17 @@ namespace BinaryKits.Utility.ZPLUtility
             List<string> result = new List<string>();
             result.AddRange(Font.Render(context));
             result.AddRange(Origin.Render(context));
-            result.Add(RenderFDSection());
+            result.Add(RenderFieldDataSection());
 
             return result;
         }
 
-        protected string RenderFDSection()
+        protected string RenderFieldDataSection()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append((UseHexadecimalIndicator ? "^FH" : "") + "^FD");
+            sb.Append(UseHexadecimalIndicator ? "^FH" : "");
+            sb.Append(ReversePrint ? "^FR" : "");
+            sb.Append("^FD");
             foreach (var c in Text)
             {
                 sb.Append(SanitizeCharacter(c));
@@ -261,8 +257,8 @@ namespace BinaryKits.Utility.ZPLUtility
         //hanging indent (in dots) of the second and remaining lines
         public int HangingIndent { get; private set; }
 
-        public ZPLFieldBlock(string text, int positionX, int positionY, int width, ZPLFont font, int maxLineCount = 1, int lineSpace = 0, string textJustification = "L", int hangingIndent = 0, NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToZPLNewLine, bool useHexadecimalIndicator = true)
-            : base(text, positionX, positionY, font, newLineConversion, useHexadecimalIndicator)
+        public ZPLFieldBlock(string text, int positionX, int positionY, int width, ZPLFont font, int maxLineCount = 1, int lineSpace = 0, string textJustification = "L", int hangingIndent = 0, NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToZPLNewLine, bool useHexadecimalIndicator = true, bool reversePrint = false)
+            : base(text, positionX, positionY, font, newLineConversion, useHexadecimalIndicator, reversePrint)
         {
             TextJustification = textJustification;
             Width = width;
@@ -284,7 +280,7 @@ namespace BinaryKits.Utility.ZPLUtility
             result.AddRange(Font.Render(context));
             result.AddRange(Origin.Render(context));
             result.Add("^FB" + context.Scale(Width) + "," + MaxLineCount + "," + context.Scale(LineSpace) + "," + TextJustification + "," + context.Scale(HangingIndent));
-            result.Add(RenderFDSection());
+            result.Add(RenderFieldDataSection());
 
             return result;
         }
@@ -293,8 +289,8 @@ namespace BinaryKits.Utility.ZPLUtility
     //Similar to ZPLTextField with big line spacing, so only the first line is visible
     public class ZPLSingleLineFieldBlock : ZPLFieldBlock
     {
-        public ZPLSingleLineFieldBlock(string text, int positionX, int positionY, int width, ZPLFont font, string textJustification = "L", NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace, bool useHexadecimalIndicator = true)
-            : base(text, positionX, positionY, width, font, 9999, 9999, textJustification, 0, newLineConversion, useHexadecimalIndicator)
+        public ZPLSingleLineFieldBlock(string text, int positionX, int positionY, int width, ZPLFont font, string textJustification = "L", NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace, bool useHexadecimalIndicator = true, bool reversePrint = false)
+            : base(text, positionX, positionY, width, font, 9999, 9999, textJustification, 0, newLineConversion, useHexadecimalIndicator, reversePrint)
         {
         }
     }
@@ -319,52 +315,7 @@ namespace BinaryKits.Utility.ZPLUtility
             result.AddRange(Font.Render(context));
             result.AddRange(Origin.Render(context));
             result.Add("^TB" + Font.Orientation + "," + context.Scale(Width) + "," + context.Scale(Height));
-            result.Add(RenderFDSection());
-
-            return result;
-        }
-    }
-
-    public abstract class ZPLBarcode : ZPLPositionedElementBase
-    {
-        public ZPLBarcode(string content, int positionX, int positionY, int height) : base(positionX, positionY)
-        {
-            Content = content;
-            Height = height;
-        }
-
-        public int Height { get; protected set; }
-
-        public string Orientation { get; protected set; }
-
-        public string Content { get; protected set; }
-    }
-
-    public class ZPLBarCode128 : ZPLBarcode
-    {
-        public bool PrintInterpretationLine { get; private set; }
-        public bool PrintInterpretationLineAboveCode { get; private set; }
-
-        public ZPLBarCode128(string content, int positionX, int positionY, int height = 100, string orientation = "", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false) : base(content, positionX, positionY, height)
-        {
-            Origin = new ZPLOrigin(positionX, positionY);
-            Orientation = orientation;
-            PrintInterpretationLine = printInterpretationLine;
-            PrintInterpretationLineAboveCode = printInterpretationLineAboveCode;
-        }
-
-        public override IEnumerable<string> Render(ZPLRenderOptions context)
-        {
-            //^FO100,100 ^ BY3
-            //^BCN,100,Y,N,N
-            //^FD123456 ^ FS
-            List<string> result = new List<string>();
-            result.AddRange(Origin.Render(context));
-            result.Add("^BC" + Orientation + ","
-                + context.Scale(Height) + ","
-                + (PrintInterpretationLine ? "Y" : "N") + ","
-                + (PrintInterpretationLineAboveCode ? "Y" : "N"));
-            result.Add("^FD" + Content + "^FS");
+            result.Add(RenderFieldDataSection());
 
             return result;
         }
@@ -398,152 +349,50 @@ namespace BinaryKits.Utility.ZPLUtility
             List<string> result = new List<string>();
             result.AddRange(Origin.Render(context));
             result.Add("^BQN," + Model + "," + context.Scale(MagnificationFactor) + "," + ErrorCorrection + "," + MaskValue);
-            result.Add("^FD" + ErrorCorrection+"M," + Content + "^FS");
+            result.Add("^FD" + ErrorCorrection + "M," + Content + "^FS");
 
             return result;
         }
     }
 
-    public class ZPLGraphicBox : ZPLGraphicElement
+    public class ZPLReferenceGrid : ZPLElementBase
     {
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-
-        //0~8
-        public int CornerRounding { get; private set; }
-
-        public ZPLGraphicBox(int positionX, int positionY, int width, int height, int borderThickness = 1, string lineColor = "B", int cornerRounding = 0) : base(positionX, positionY, borderThickness, lineColor)
-        {
-            Width = width;
-            Height = height;
-
-            CornerRounding = cornerRounding;
-        }
-
         public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
-            //^ FO50,50
-            //^ GB300,200,10 ^ FS
             List<string> result = new List<string>();
-            result.AddRange(Origin.Render(context));
-            result.Add("^GB" + context.Scale(Width) + "," + context.Scale(Height) + "," + context.Scale(BorderThickness) + "," + LineColor + "," + context.Scale(CornerRounding) + "^FS");
-
-            return result;
-        }
-    }
-
-    public class ZPLGraphicDiagonalLine : ZPLGraphicBox
-    {
-        public bool RightLeaningiagonal { get; private set; }
-
-        public ZPLGraphicDiagonalLine(int positionX, int positionY, int width, int height, int borderThickness = 1, bool rightLeaningiagonal = false, string lineColor = "B", int cornerRounding = 0) : base(positionX, positionY, width, height, borderThickness, lineColor, 0)
-        {
-            RightLeaningiagonal = rightLeaningiagonal;
-        }
-
-        public override IEnumerable<string> Render(ZPLRenderOptions context)
-        {
-            //^GDw,h,t,c,o
-            List<string> result = new List<string>();
-            result.AddRange(Origin.Render(context));
-            result.Add("^GD" + context.Scale(Width) + "," + context.Scale(Height) + "," + context.Scale(BorderThickness) + "," + LineColor + "," + (RightLeaningiagonal ? "R" : "L") + "^FS");
-
-            return result;
-        }
-    }
-
-    public class ZPLGraphicEllipse : ZPLGraphicBox
-    {
-        public ZPLGraphicEllipse(int positionX, int positionY, int width, int height, int borderThickness = 1, string lineColor = "B") : base(positionX, positionY, width, height, borderThickness, lineColor, 0)
-        {
-        }
-
-        public override IEnumerable<string> Render(ZPLRenderOptions context)
-        {
-            //^ GE300,100,10,B ^ FS
-            List<string> result = new List<string>();
-            result.AddRange(Origin.Render(context));
-            result.Add("^GE" + context.Scale(Width) + "," + context.Scale(Height) + "," + context.Scale(BorderThickness) + "," + LineColor + "^FS");
-
-            return result;
-        }
-    }
-
-    public class ZPLGraphicCircle : ZPLGraphicElement
-    {
-        public int Diameter { get; private set; }
-
-        public ZPLGraphicCircle(int positionX, int positionY, int diameter, int borderThickness = 1, string lineColor = "B") : base(positionX, positionY, borderThickness, lineColor)
-        {
-            Diameter = diameter;
-        }
-
-        public override IEnumerable<string> Render(ZPLRenderOptions context)
-        {
-            //^GCd,t,c
-            List<string> result = new List<string>();
-            result.AddRange(Origin.Render(context));
-            result.Add("^GC" + context.Scale(Diameter) + "," + context.Scale(BorderThickness) + "," + LineColor + "^FS");
-
-            return result;
-        }
-    }
-
-    public class ZPLGraphicSymbol : ZPLPositionedElementBase
-    {
-        public string Orientation { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-
-        public GraphicSymbolCharacter Character { get; private set; }
-
-        string CharacterLetter
-        {
-            get
+            for (int i = 0; i <= 1500; i += 100)
             {
-                switch (Character)
-                {
-                    case GraphicSymbolCharacter.RegisteredTradeMark:
-                        return "A";
-                    case GraphicSymbolCharacter.Copyright:
-                        return "B";
-                    case GraphicSymbolCharacter.TradeMark:
-                        return "C";
-                    case GraphicSymbolCharacter.UnderwritersLaboratoriesApproval:
-                        return "D";
-                    case GraphicSymbolCharacter.CanadianStandardsAssociationApproval:
-                        return "E";
-                    default:
-                        return "";
-                }
+                result.AddRange(new ZPLGraphicBox(0, i, 3000, 1).Render());
             }
+            for (int i = 0; i <= 1500; i += 100)
+            {
+                result.AddRange(new ZPLGraphicBox(i, 0, 1, 3000).Render());
+            }
+            return result;
         }
+    }
 
-        public ZPLGraphicSymbol(GraphicSymbolCharacter character, int positionX, int positionY, int width, int height, string orientation = "N") : base(positionX, positionY)
+    public class ZPLFontIdentifier : ZPLElementBase
+    {
+        public string FontReplaceLetter { get; set; }
+        public string Device { get; set; }
+        public string FontFileName { get; set; }
+
+        public ZPLFontIdentifier(string fontReplaceLetter, string device, string fontFileName)
         {
-            Character = character;
-            Orientation = orientation;
-            Width = width;
-            Height = height;
+            FontReplaceLetter = fontReplaceLetter;
+            Device = device;
+            FontFileName = fontFileName;
         }
 
         public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
-            //^GSo,h,w
+            //^CWa,d:o.x
             List<string> result = new List<string>();
-            result.AddRange(Origin.Render(context));
-            result.Add("^GS" + Orientation + "," + context.Scale(Height) + "," + context.Scale(Width) + "^FD" + CharacterLetter + "^FS");
+
+            result.Add("^CW" + FontReplaceLetter + "," + Device + ":" + FontFileName);
 
             return result;
-        }
-
-        public enum GraphicSymbolCharacter
-        {
-            RegisteredTradeMark,
-            Copyright,
-            TradeMark,
-            UnderwritersLaboratoriesApproval,
-            CanadianStandardsAssociationApproval
         }
     }
 }
