@@ -87,7 +87,12 @@ namespace BinaryKits.Utility.ZPLUtility
 
         public override IEnumerable<string> Render(ZPLRenderOptions context)
         {
-            return new[] { "^A" + FontName + Orientation + "," + context.Scale(FontHeight) + "," + context.Scale(FontWidth) };
+            string textOrientation = Orientation;
+            if (string.IsNullOrEmpty(textOrientation))
+            {
+                textOrientation = context.DefaultTextOrientation;
+            }
+            return new[] { "^A" + FontName + textOrientation + "," + context.Scale(FontHeight) + "," + context.Scale(FontWidth) };
         }
     }
 

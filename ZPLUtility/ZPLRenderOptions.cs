@@ -10,26 +10,12 @@ namespace BinaryKits.Utility.ZPLUtility
     /// </summary>
     public class ZPLRenderOptions
     {
-        static ZPLRenderOptions _DefaultOptions;
-
-        public static ZPLRenderOptions DefaultOptions
-        {
-            get
-            {
-                if (_DefaultOptions == null)
-                {
-                    _DefaultOptions = new ZPLRenderOptions();
-                }
-                return _DefaultOptions;
-            }
-            set
-            {
-                _DefaultOptions = value;
-            }
-        }
+        public static ZPLRenderOptions DefaultOptions = new ZPLRenderOptions();
 
         //^CI
         public string ChangeInternationalFontEncoding { get; set; }
+
+        public string DefaultTextOrientation { get; set; }
 
         public bool DisplayComments { get; set; }
 
@@ -57,6 +43,7 @@ namespace BinaryKits.Utility.ZPLUtility
         {
             ChangeInternationalFontEncoding = ZPLConstants.InternationalFontEncoding.CI28;
             SourcePrintDPI = TargetPrintDPI = 203;
+            DefaultTextOrientation = "N";
         }
     }
 }
