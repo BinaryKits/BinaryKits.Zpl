@@ -91,17 +91,14 @@ namespace ZPLUtilityUnitTest
         }
 
         [TestMethod]
-        public void ChaituTest()
+        public void DownloadGraphics()
         {
-            var sampleText = "[_~^][LineBreak\n][Kühne + Nagel]";
-            ZPLFont font = new ZPLFont(fontWidth: 50, fontHeight: 50);
-
             var labelElements = new List<ZPLElementBase>();
-            //Specail character is repalced with space
-            labelElements.Add(new ZPLTextField(sampleText, 10, 10, font, useHexadecimalIndicator: false));
+            labelElements.Add(new ZPLDownloadGraphics('R', "SAMPLE", "GRC", new System.Drawing.Bitmap("Sample.bmp")));
+            labelElements.Add(new ZPLRecallGraphic(100, 100, 'R', "SAMPLE", "GRC"));
 
             var renderEngine = new ZPLEngine(labelElements);
-            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true });
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true, TargetPrintDPI = 600, SourcePrintDPI = 200 });
 
             Console.WriteLine(output);
         }

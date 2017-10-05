@@ -80,3 +80,14 @@ var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBefor
 
 Console.WriteLine(output);
 ```
+### Draw pictures, auto resize based on DPI
+```C#
+var labelElements = new List<ZPLElementBase>();
+labelElements.Add(new ZPLDownloadGraphics('R', "SAMPLE", "GRC", new System.Drawing.Bitmap("Sample.bmp")));
+labelElements.Add(new ZPLRecallGraphic(100, 100, 'R', "SAMPLE", "GRC"));
+
+var renderEngine = new ZPLEngine(labelElements);
+var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true, TargetPrintDPI = 600, SourcePrintDPI = 200 });
+
+Console.WriteLine(output);
+```
