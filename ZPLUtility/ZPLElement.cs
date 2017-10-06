@@ -77,7 +77,7 @@ namespace BinaryKits.Utility.ZPLUtility
         public int FontWidth { get; private set; }
         public int FontHeight { get; private set; }
 
-        public ZPLFont(int fontWidth = 30, int fontHeight = 30, string fontName = "0", string orientation = "")
+        public ZPLFont(int fontWidth = 30, int fontHeight = 30, string fontName = "0", string orientation = "N")
         {
             FontName = fontName;
             Orientation = orientation;

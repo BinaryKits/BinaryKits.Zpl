@@ -28,7 +28,7 @@ namespace BinaryKits.Utility.ZPLUtility
 
     public class ZPLBarCode128 : ZPLBarcode
     {
-        public ZPLBarCode128(string content, int positionX, int positionY, int height = 100, string orientation = "", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false)
+        public ZPLBarCode128(string content, int positionX, int positionY, int height = 100, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false)
             : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
         }
@@ -54,7 +54,7 @@ namespace BinaryKits.Utility.ZPLUtility
     {
         public bool Mod43CheckDigit { get; private set; }
 
-        public ZPLBarCode39(string content, int positionX, int positionY, int height = 100, string orientation = "", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool mod43CheckDigit = false)
+        public ZPLBarCode39(string content, int positionX, int positionY, int height = 100, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool mod43CheckDigit = false)
             : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
             Mod43CheckDigit = mod43CheckDigit;
@@ -84,7 +84,7 @@ namespace BinaryKits.Utility.ZPLUtility
         public char StartCharacter { get; private set; }
         public char StopCharacter { get; private set; }
 
-        public ZPLBarCodeANSICodabar(string content, int positionX, int positionY, int height, char startCharacter, char stopCharacter, string orientation = "", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool checkDigit = false)
+        public ZPLBarCodeANSICodabar(string content, int positionX, int positionY, int height, char startCharacter, char stopCharacter, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool checkDigit = false)
             : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
             CheckDigit = checkDigit;
