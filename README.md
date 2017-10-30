@@ -80,7 +80,7 @@ var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBefor
 
 Console.WriteLine(output);
 ```
-### Draw pictures, auto resize based on DPI
+### Draw pictures, auto resize based on DPI (Please dither the colorful picture first)
 ```C#
 var labelElements = new List<ZPLElementBase>();
 labelElements.Add(new ZPLDownloadGraphics('R', "SAMPLE", "GRC", new System.Drawing.Bitmap("Sample.bmp")));
