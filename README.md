@@ -4,6 +4,8 @@ Please refer to the Programming Guide for raw ZPL code definitaion, https://www.
 
 Some basic ZPL elements are included, if you have any suggestions please feel free to let me know.
 
+[![NuGet-Stable](https://img.shields.io/nuget/v/Nuget.Core.svg)](https://www.nuget.org/packages/ZPLUtility/)
+
 ## Usage:
 ### Single element
 ```C#
@@ -91,3 +93,4 @@ var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBefor
 
 Console.WriteLine(output);
 ```
+
