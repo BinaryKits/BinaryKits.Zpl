@@ -6,7 +6,7 @@ Some basic ZPL elements are included, if you have any suggestions please feel fr
 
 [![NuGet-Stable](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet%20stable)](https://www.nuget.org/packages/ZPLUtility/)
 
-You can test genereated ZPL code at http://labelary.com/viewer.html
+You can test generated ZPL code at http://labelary.com/viewer.html
 
 ## Usage:
 ### Single element
