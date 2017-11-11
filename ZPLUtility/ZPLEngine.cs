@@ -25,9 +25,11 @@ namespace BinaryKits.Utility.ZPLUtility
         /// <returns></returns>
         public List<string> Render(ZPLRenderOptions context)
         {
-            List<string> result = new List<string>();
-            result.Add("^XA");
-            result.Add(context.ChangeInternationalFontEncoding);
+            List<string> result = new List<string>
+            {
+                "^XA",
+                context.ChangeInternationalFontEncoding
+            };
             foreach (var e in this.Where(x => x.IsEnabled))
             {
                 //Empty line
@@ -72,7 +74,7 @@ namespace BinaryKits.Utility.ZPLUtility
         /// <param name="rawZPLCode"></param>
         public void AddRawZPLCode(string rawZPLCode)
         {
-            this.Add(new ZPLRaw(rawZPLCode));
+            Add(new ZPLRaw(rawZPLCode));
         }
 
         /// <summary>

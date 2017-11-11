@@ -31,7 +31,7 @@ namespace BinaryKits.Utility.ZPLUtility
 
         public int Scale(int input)
         {
-            return Convert.ToInt32(input * ScaleFactor);
+            return (int)(input * ScaleFactor);
         }
 
         public double Scale(double input)

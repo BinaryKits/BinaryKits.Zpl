@@ -47,8 +47,10 @@ namespace BinaryKits.Utility.ZPLUtility
             NumberOfBytesPerRow = (int)(Math.Ceiling(contextImage.Width / 8.0)); //Each pixel is 1 bit or (1/8) byte
             TotalNumberOfBytes = contextImage.Height * NumberOfBytesPerRow;
 
-            List<string> result = new List<string>();
-            result.Add(string.Format("~DG{0}:{1}.{2},{3},{4},", StorageDevice, ImageName, Extension, TotalNumberOfBytes, NumberOfBytesPerRow));
+            List<string> result = new List<string>
+            {
+                string.Format("~DG{0}:{1}.{2},{3},{4},", StorageDevice, ImageName, Extension, TotalNumberOfBytes, NumberOfBytesPerRow)
+            };
 
             //Foreach row
             for (int row = 0; row < contextImage.Height; row++)
