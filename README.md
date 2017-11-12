@@ -62,7 +62,7 @@ var output = renderEngine.ToZPLString(new ZPLRenderOptions() { DisplayComments =
 Console.WriteLine(output);
 ```
 
-### Differnt text field type
+### Different text field type
 ```C#
 var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
 ZPLFont font = new ZPLFont(fontWidth: 50, fontHeight: 50);
