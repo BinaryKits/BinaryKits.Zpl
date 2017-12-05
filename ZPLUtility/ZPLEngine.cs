@@ -27,7 +27,7 @@ namespace BinaryKits.Utility.ZPLUtility
         {
             List<string> result = new List<string>
             {
-                "^XA",
+                "^XA^LH0,0",
                 context.ChangeInternationalFontEncoding
             };
             foreach (var e in this.Where(x => x.IsEnabled))
