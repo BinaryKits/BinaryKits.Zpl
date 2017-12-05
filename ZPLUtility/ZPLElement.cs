@@ -23,7 +23,7 @@ namespace BinaryKits.Utility.ZPLUtility
 
         public IEnumerable<string> Render()
         {
-            return Render(ZPLRenderOptions.DefaultOptions);
+            return Render(new ZPLRenderOptions());
         }
 
         public string RenderToString()
@@ -35,7 +35,7 @@ namespace BinaryKits.Utility.ZPLUtility
 
         public string ToZPLString()
         {
-            return ToZPLString(ZPLRenderOptions.DefaultOptions);
+            return ToZPLString(new ZPLRenderOptions());
         }
 
         public string ToZPLString(ZPLRenderOptions context)

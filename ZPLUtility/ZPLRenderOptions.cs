@@ -10,7 +10,10 @@ namespace BinaryKits.Utility.ZPLUtility
     /// </summary>
     public class ZPLRenderOptions
     {
-        public static ZPLRenderOptions DefaultOptions = new ZPLRenderOptions();
+        //Include ^XA and ^XZ
+        public bool AddStartEndFormat { get; set; }
+        //Include ^LH0,0
+        public bool AddDefaultLabelHome { get; set; }
 
         //^CI
         public string ChangeInternationalFontEncoding { get; set; }
@@ -41,6 +44,8 @@ namespace BinaryKits.Utility.ZPLUtility
 
         public ZPLRenderOptions()
         {
+            AddStartEndFormat = true;
+            AddDefaultLabelHome = true;
             ChangeInternationalFontEncoding = ZPLConstants.InternationalFontEncoding.CI28;
             SourcePrintDPI = TargetPrintDPI = 203;
             DefaultTextOrientation = "N";

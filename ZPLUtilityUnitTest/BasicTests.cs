@@ -94,11 +94,28 @@ namespace ZPLUtilityUnitTest
         public void DownloadGraphics()
         {
             var labelElements = new List<ZPLElementBase>();
-            labelElements.Add(new ZPLDownloadGraphics('R', "SAMPLE", "GRC", new System.Drawing.Bitmap("Sample.bmp")));
+            labelElements.Add(new ZPLGraphicBox(0, 0, 100, 100, 4));
+
+            labelElements.Add(new ZPLDownloadGraphics('R', "SAMPLE", "GRC", new System.Drawing.Bitmap("p.jpg")));
             labelElements.Add(new ZPLRecallGraphic(100, 100, 'R', "SAMPLE", "GRC"));
 
             var renderEngine = new ZPLEngine(labelElements);
-            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true, TargetPrintDPI = 600, SourcePrintDPI = 200 });
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true, TargetPrintDPI = 200, SourcePrintDPI = 200 });
+
+            Console.WriteLine(output);
+        }
+
+        [TestMethod]
+        public void WithoutAutoElements()
+        {
+            var labelElements = new List<ZPLElementBase>();
+
+            var textField = new ZPLTextField("Pure element ZPL only", 50, 100, ZPLConstants.Font.Default);
+            textField.Comments.Add("A important field");
+            labelElements.Add(textField);
+
+            var renderEngine = new ZPLEngine(labelElements);
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { DisplayComments = true, AddDefaultLabelHome = false, AddStartEndFormat = false });
 
             Console.WriteLine(output);
         }

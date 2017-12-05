@@ -25,11 +25,20 @@ namespace BinaryKits.Utility.ZPLUtility
         /// <returns></returns>
         public List<string> Render(ZPLRenderOptions context)
         {
-            List<string> result = new List<string>
+            List<string> result = new List<string>();
+
+            if (context.AddStartEndFormat)
             {
-                "^XA^LH0,0",
-                context.ChangeInternationalFontEncoding
-            };
+                result.Add("^XA");
+            }
+
+            if (context.AddDefaultLabelHome)
+            {
+                result.Add("^LH0,0");
+            }
+
+            result.Add(context.ChangeInternationalFontEncoding);
+
             foreach (var e in this.Where(x => x.IsEnabled))
             {
                 //Empty line
@@ -58,7 +67,11 @@ namespace BinaryKits.Utility.ZPLUtility
                     result.AddRange(e.Render(context));
                 }
             }
-            result.Add("^XZ");
+
+            if (context.AddStartEndFormat)
+            {
+                result.Add("^XZ");
+            }
 
             return result;
         }
