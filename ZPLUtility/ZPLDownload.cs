@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace BinaryKits.Utility.ZPLUtility
 {
@@ -29,7 +31,6 @@ namespace BinaryKits.Utility.ZPLUtility
         public int TotalNumberOfBytes { get; set; }
         public int NumberOfBytesPerRow { get; set; }
         public Bitmap Image { get; set; }
-        public string Data { get; set; }
 
         public ZPLDownloadGraphics(char storageDevice, string imageName, string extension, Bitmap image)
             : base(storageDevice)
@@ -72,6 +73,75 @@ namespace BinaryKits.Utility.ZPLUtility
 
                 result.Add(rowHex);
             }
+
+            return result;
+        }
+    }
+
+    /// <summary>
+    /// ~DYd:f,b,x,t,w,data
+    /// </summary>
+    public class ZPLDownloadObjects : ZPLDownload
+    {
+        public string ObjectName { get; set; }
+        public Bitmap Image { get; set; }
+
+        public ZPLDownloadObjects(char storageDevice, string imageName, Bitmap image)
+            : base(storageDevice)
+        {
+            ObjectName = imageName;
+            Image = image;
+        }
+
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
+        {
+            var contextImage = new Bitmap(Image, new Size((int)Math.Round(Image.Width * context.ScaleFactor), (int)Math.Round(Image.Height * context.ScaleFactor)));
+
+            byte[] objectData;
+            using (var ms = new MemoryStream())
+            {
+                contextImage.Save(ms, ImageFormat.Png);
+                objectData = ms.ToArray();
+            }
+
+            StringBuilder sb = new StringBuilder();
+            foreach (Byte b in objectData)
+            {
+                sb.Append(String.Format("{0:X}", b).PadLeft(2, '0'));
+            }
+            string dataString = sb.ToString();
+
+            List<string> result = new List<string>
+            {
+                string.Format("~DY{0}:{1}{2},{3},{4},{5},{6},{7}", StorageDevice, ObjectName,"", "P", "P", objectData.Length, "", dataString)
+            };
+
+            return result;
+        }
+    }
+
+    /// <summary>
+    /// ^IMd:o.x
+    /// </summary>
+    public class ZPLImageMove : ZPLPositionedElementBase
+    {
+        public char StorageDevice { get; set; }
+        public string ObjectName { get; set; }
+        public string Extension { get; set; }
+
+        public ZPLImageMove(int positionX, int positionY, char storageDevice, string objectName, string extension)
+            : base(positionX, positionY)
+        {
+            StorageDevice = storageDevice;
+            ObjectName = objectName;
+            Extension = extension;
+        }
+
+        public override IEnumerable<string> Render(ZPLRenderOptions context)
+        {
+            List<string> result = new List<string>();
+            result.AddRange(Origin.Render(context));
+            result.Add(string.Format("^IM{0}:{1}.{2}", StorageDevice, ObjectName, Extension));
 
             return result;
         }
