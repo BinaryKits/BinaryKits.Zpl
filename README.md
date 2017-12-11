@@ -85,12 +85,28 @@ var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBefor
 Console.WriteLine(output);
 ```
 ### Draw pictures, auto resize based on DPI (Please dither the colorful picture first)
+You have 2 options:
+1. Use ~DY and ^IM
 ```C#
-var labelElements = new List<ZPLElementBase>();
-labelElements.Add(new ZPLDownloadGraphics('R', "SAMPLE", "GRC", new System.Drawing.Bitmap("Sample.bmp")));
-labelElements.Add(new ZPLRecallGraphic(100, 100, 'R', "SAMPLE", "GRC"));
+var elements = new List<ZPLElementBase>();
+elements.Add(new ZPLGraphicBox(0, 0, 100, 100, 4));
+elements.Add(new ZPLDownloadObjects('R', "SAMPLE.PNG", new System.Drawing.Bitmap("sample.bmp")));
+elements.Add(new ZPLImageMove(100, 100, 'R', "SAMPLE", "PNG"));
 
-var renderEngine = new ZPLEngine(labelElements);
+var renderEngine = new ZPLEngine(elements);
+var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true, TargetPrintDPI = 300, SourcePrintDPI = 200 });
+
+Console.WriteLine(output);
+```
+
+2. Use ~DG and ^XG
+
+```C#
+var elements = new List<ZPLElementBase>();
+elements.Add(new ZPLDownloadGraphics('R', "SAMPLE", "GRC", new System.Drawing.Bitmap("Sample.bmp")));
+elements.Add(new ZPLRecallGraphic(100, 100, 'R', "SAMPLE", "GRC"));
+
+var renderEngine = new ZPLEngine(elements);
 var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true, TargetPrintDPI = 600, SourcePrintDPI = 200 });
 
 Console.WriteLine(output);
