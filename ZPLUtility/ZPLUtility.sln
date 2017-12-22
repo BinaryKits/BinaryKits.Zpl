@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZPLUtility", "ZPLUtility.csproj", "{A836CA9D-CF58-4289-85F7-781EFF51E091}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZPLUtilityUnitTest", "..\ZPLUtilityUnitTest\ZPLUtilityUnitTest.csproj", "{CE141155-ACCE-4F1E-BD86-49CC65E11302}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGHLabel", "..\SGHLabel\SGHLabel.csproj", "{E263F6CE-3E12-473E-BAF4-74B9736E525C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +21,11 @@ Global
 		{CE141155-ACCE-4F1E-BD86-49CC65E11302}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE141155-ACCE-4F1E-BD86-49CC65E11302}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE141155-ACCE-4F1E-BD86-49CC65E11302}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E263F6CE-3E12-473E-BAF4-74B9736E525C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E263F6CE-3E12-473E-BAF4-74B9736E525C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E263F6CE-3E12-473E-BAF4-74B9736E525C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E263F6CE-3E12-473E-BAF4-74B9736E525C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DE547187-CDDD-42FF-8E23-06EF2FC8F378}
 	EndGlobalSection
 EndGlobal

@@ -40,6 +40,20 @@ namespace ZPLUtilityUnitTest
         }
 
         [TestMethod]
+        public void Barcode()
+        {
+            var elements = new List<ZPLElementBase>();
+
+            elements.Add(new ZPLBarCode39("123ABC", 100, 100));
+            elements.Add(new ZPLBarCode128("123ABC", 100, 300));
+
+            var renderEngine = new ZPLEngine(elements);
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true });
+
+            Console.WriteLine(output);
+        }
+
+        [TestMethod]
         public void ChangeDPI()
         {
             var elements = new List<ZPLElementBase>();
