@@ -17,6 +17,15 @@ Console.WriteLine(result);
 //^FO100,100
 //^GB100,100,1,B,0^FS
 ```
+### Barcode
+```C#
+var result = new ZPLBarCode128("123ABC", 100, 300).ToZPLString();
+Console.WriteLine(result);
+//Output
+//^FO100,300
+//^BCN,100,Y,N
+//^FD123ABC^FS
+```
 ### Whole label
 ```C#
 var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
