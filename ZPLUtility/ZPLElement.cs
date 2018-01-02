@@ -134,6 +134,17 @@ namespace BinaryKits.Utility.ZPLUtility
             //^ FO50,50
             return new string[] { "^FO" + context.Scale(PositionX) + "," + context.Scale(PositionY) };
         }
+
+        /// <summary>
+        /// Return a new instance with offset applied
+        /// </summary>
+        /// <param name="OffsetX"></param>
+        /// <param name="OffsetY"></param>
+        /// <returns></returns>
+        public ZPLOrigin Offset(int OffsetX, int OffsetY)
+        {
+            return new ZPLOrigin(PositionX + OffsetX, PositionY + OffsetY);
+        }
     }
 
     //^FD – Field Data

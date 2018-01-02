@@ -66,6 +66,28 @@ namespace ZPLUtilityUnitTest
         }
 
         [TestMethod]
+        public void LayoutWithOriginOffset()
+        {
+            var elements = new List<ZPLElementBase>();
+
+            var o = new ZPLOrigin(100, 100);
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    elements.Add(new ZPLGraphicBox(o.PositionX, o.PositionY, 50, 50));
+                    o = o.Offset(0, 100);
+                }
+                o = o.Offset(100, -300);
+            }
+
+            var options = new ZPLRenderOptions();
+            var output = new ZPLEngine(elements).ToZPLString(options);
+
+            Console.WriteLine(output);
+        }
+
+        [TestMethod]
         public void RenderComments()
         {
             var elements = new List<ZPLElementBase>();
