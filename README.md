@@ -1,6 +1,8 @@
 # ZPLUtility
 A .net library helping to generate ZPL string.
-Please refer to the Programming Guide for raw ZPL code definitaion, https://www.zebra.com/content/dam/zebra/manuals/en-us/software/zpl-zbi2-pm-en.pdf
+Please refer to the Programming Guide for raw ZPL code definitaion, <s>https://www.zebra.com/content/dam/zebra/manuals/en-us/software/zpl-zbi2-pm-en.pdf</s>
+
+[https://github.com/robmachado/webetiq/blob/master/local/Doc/zpl-zbi2-pm-en.pdf](https://github.com/robmachado/webetiq/blob/master/local/Doc/zpl-zbi2-pm-en.pdf)
 
 Some basic ZPL elements are included, if you have any suggestions please feel free to let me know.
 
