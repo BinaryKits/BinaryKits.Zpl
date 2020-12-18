@@ -365,7 +365,7 @@ namespace BinaryKits.Utility.ZPLUtility
             List<string> result = new List<string>();
             result.AddRange(Origin.Render(context));
             result.Add("^BQN," + Model + "," + context.Scale(MagnificationFactor) + "," + ErrorCorrection + "," + MaskValue);
-            result.Add("^FD" + ErrorCorrection + "M," + Content + "^FS");
+            result.Add("^FD" + ErrorCorrection + "A," + Content + "^FS");
 
             return result;
         }
