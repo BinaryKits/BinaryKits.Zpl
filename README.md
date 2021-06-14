@@ -121,8 +121,8 @@ You have 2 options:
 ```C#
 var elements = new List<ZPLElementBase>();
 elements.Add(new ZPLGraphicBox(0, 0, 100, 100, 4));
-elements.Add(new ZPLDownloadObjects('R', "SAMPLE.PNG", new System.Drawing.Bitmap("sample.bmp")));
-elements.Add(new ZPLImageMove(100, 100, 'R', "SAMPLE", "PNG"));
+elements.Add(new ZPLDownloadObjects('R', "SAMPLE.BMP", new System.Drawing.Bitmap("sample.bmp")));
+elements.Add(new ZPLImageMove(100, 100, 'R', "SAMPLE", "BMP"));
 
 var renderEngine = new ZPLEngine(elements);
 var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true, TargetPrintDPI = 300, SourcePrintDPI = 200 });

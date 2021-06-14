@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BinaryKits.Utility.ZPLUtility
+﻿namespace BinaryKits.Utility.ZPLUtility
 {
     /// <summary>
     /// Holding redering settings
@@ -24,8 +19,16 @@ namespace BinaryKits.Utility.ZPLUtility
 
         public bool AddEmptyLineBeforeElementStart { get; set; }
 
+        /// <summary>
+        /// SourcePrint DPI
+        /// </summary>
+        /// <remarks>Default: 203</remarks>
         public int SourcePrintDPI { get; set; }
 
+        /// <summary>
+        /// TargetPrint DPI
+        /// </summary>
+        /// <remarks>Default: 203</remarks>
         public int TargetPrintDPI { get; set; }
 
         public bool CompressedRendering { get; set; }

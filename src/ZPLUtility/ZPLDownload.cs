@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.IO;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Text;
 
 namespace BinaryKits.Utility.ZPLUtility
 {
@@ -105,9 +104,9 @@ namespace BinaryKits.Utility.ZPLUtility
             }
 
             StringBuilder sb = new StringBuilder();
-            foreach (Byte b in objectData)
+            foreach (byte b in objectData)
             {
-                sb.Append(String.Format("{0:X}", b).PadLeft(2, '0'));
+                sb.Append(string.Format("{0:X}", b).PadLeft(2, '0'));
             }
             string dataString = sb.ToString();
 

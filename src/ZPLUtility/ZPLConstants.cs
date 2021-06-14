@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BinaryKits.Utility.ZPLUtility
+﻿namespace BinaryKits.Utility.ZPLUtility
 {
     public static class ZPLConstants
     {
