@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;netstandard2.0;net5.0</TargetFrameworks>
+    <Description>A .net library helping to generate ZPL string. Please visit https://github.com/BinaryKits/ZPLUtility for more information</Description>
+    <Company>Binary Kits Pte. Ltd.</Company>
+    <Version>1.4.0</Version>
+    <Authors>Binary Kits Pte. Ltd.</Authors>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>Zebra ZPL</PackageTags>
+    <PackageProjectUrl>https://github.com/BinaryKits/ZPLUtility</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/BinaryKits/ZPLUtility</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageId>ZPLUtility</PackageId>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+ 
+</Project>

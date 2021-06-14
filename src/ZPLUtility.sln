@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZPLUtility", "ZPLUtility.csproj", "{A836CA9D-CF58-4289-85F7-781EFF51E091}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZPLUtility", "ZPLUtility\ZPLUtility.csproj", "{A836CA9D-CF58-4289-85F7-781EFF51E091}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZPLUtilityUnitTest", "..\ZPLUtilityUnitTest\ZPLUtilityUnitTest.csproj", "{CE141155-ACCE-4F1E-BD86-49CC65E11302}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZPLUtilityUnitTest", "ZPLUtilityUnitTest\ZPLUtilityUnitTest.csproj", "{CE141155-ACCE-4F1E-BD86-49CC65E11302}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

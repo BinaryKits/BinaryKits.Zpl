@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BinaryKits.Utility.ZPLUtility
 {
@@ -92,12 +91,12 @@ namespace BinaryKits.Utility.ZPLUtility
             {
                 throw new InvalidOperationException("ANSI Codabar start charactor must be one of A, B, C D");
             }
-            StartCharacter = Char.ToUpper(startCharacter);
+            StartCharacter = char.ToUpper(startCharacter);
             if (!"ABCDabcd".Contains(stopCharacter))
             {
                 throw new InvalidOperationException("ANSI Codabar stop charactor must be one of A, B, C D");
             }
-            StopCharacter = Char.ToUpper(stopCharacter);
+            StopCharacter = char.ToUpper(stopCharacter);
         }
 
         public override IEnumerable<string> Render(ZPLRenderOptions context)
