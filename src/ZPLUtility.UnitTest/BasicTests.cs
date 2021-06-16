@@ -19,7 +19,8 @@ namespace ZPLUtilityUnitTest
         public void MultipleElements()
         {
             var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
-            ZPLFont font = new ZPLFont(fontWidth: 50, fontHeight: 50);
+            var font = new ZPLFont(fontWidth: 50, fontHeight: 50);
+
             var elements = new List<ZPLElementBase>();
             elements.Add(new ZPLTextField(sampleText, 50, 100, font));
             elements.Add(new ZPLGraphicBox(400, 700, 100, 100, 5));
@@ -27,7 +28,7 @@ namespace ZPLUtilityUnitTest
             elements.Add(new ZPLGraphicCircle(400, 700, 100, 5));
             elements.Add(new ZPLGraphicDiagonalLine(400, 700, 100, 50, 5));
             elements.Add(new ZPLGraphicDiagonalLine(400, 700, 50, 100, 5));
-            elements.Add(new ZPLGraphicSymbol(ZPLGraphicSymbol.GraphicSymbolCharacter.Copyright, 600, 600, 50, 50));
+            elements.Add(new ZPLGraphicSymbol(GraphicSymbolCharacter.Copyright, 600, 600, 50, 50));
             elements.Add(new ZPLQRCode("MM,AAC-42", 200, 800));
 
             //Add raw ZPL code
