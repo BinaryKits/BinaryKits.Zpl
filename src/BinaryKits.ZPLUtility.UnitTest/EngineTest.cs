@@ -2,17 +2,21 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BinaryKits.Utility.ZPLUtility;
 using System.Collections.Generic;
+using System.Diagnostics;
 
-namespace ZPLUtilityUnitTest
+namespace ZPLUtility.UnitTest
 {
     [TestClass]
-    public class BasicTests
+    public class EngineTest
     {
         [TestMethod]
         public void SingelElement()
         {
-            var result = new ZPLGraphicBox(100, 100, 100, 100).ToZPLString();
-            Console.WriteLine(result);
+            var output = new ZPLGraphicBox(100, 100, 100, 100).ToZPLString();
+
+            Debug.WriteLine(output);
+            Assert.IsNotNull(output);
+            Assert.AreEqual("^FO100,100\n^GB100,100,1,B,0^FS", output);
         }
 
         [TestMethod]
@@ -35,23 +39,9 @@ namespace ZPLUtilityUnitTest
             elements.Add(new ZPLRaw("^FO200, 200^GB300, 200, 10 ^FS"));
 
             var renderEngine = new ZPLEngine(elements);
-            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true });
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions { AddEmptyLineBeforeElementStart = true });
 
-            Console.WriteLine(output);
-        }
-
-        [TestMethod]
-        public void Barcode()
-        {
-            var elements = new List<ZPLElementBase>();
-
-            elements.Add(new ZPLBarCode39("123ABC", 100, 100));
-            elements.Add(new ZPLBarCode128("123ABC", 100, 300));
-
-            var renderEngine = new ZPLEngine(elements);
-            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true });
-
-            Console.WriteLine(output);
+            Debug.WriteLine(output);
         }
 
         [TestMethod]
@@ -60,10 +50,12 @@ namespace ZPLUtilityUnitTest
             var elements = new List<ZPLElementBase>();
             elements.Add(new ZPLGraphicBox(400, 700, 100, 100, 5));
 
-            var options = new ZPLRenderOptions() { SourcePrintDPI = 203, TargetPrintDPI = 300 };
+            var options = new ZPLRenderOptions { SourcePrintDPI = 203, TargetPrintDPI = 300 };
             var output = new ZPLEngine(elements).ToZPLString(options);
 
-            Console.WriteLine(output);
+            Debug.WriteLine(output);
+            Assert.IsNotNull(output);
+            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n^FO591,1034\n^GB147,147,7,B,0^FS\n^XZ", output);
         }
 
         [TestMethod]
@@ -85,7 +77,7 @@ namespace ZPLUtilityUnitTest
             var options = new ZPLRenderOptions();
             var output = new ZPLEngine(elements).ToZPLString(options);
 
-            Console.WriteLine(output);
+            Debug.WriteLine(output);
         }
 
         [TestMethod]
@@ -98,16 +90,16 @@ namespace ZPLUtilityUnitTest
             elements.Add(textField);
 
             var renderEngine = new ZPLEngine(elements);
-            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { DisplayComments = true });
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions { DisplayComments = true });
 
-            Console.WriteLine(output);
+            Debug.WriteLine(output);
         }
 
         [TestMethod]
         public void TextFieldVariations()
         {
             var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
-            ZPLFont font = new ZPLFont(fontWidth: 50, fontHeight: 50);
+            var font = new ZPLFont(fontWidth: 50, fontHeight: 50);
 
             var elements = new List<ZPLElementBase>();
             //Specail character is repalced with space
@@ -122,39 +114,9 @@ namespace ZPLUtilityUnitTest
             elements.Add(new ZPLTextBlock(sampleText, 10, 600, 400, 100, font));
 
             var renderEngine = new ZPLEngine(elements);
-            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true });
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions { AddEmptyLineBeforeElementStart = true });
 
-            Console.WriteLine(output);
-        }
-
-        [TestMethod]
-        public void DownloadGraphics()
-        {
-            var elements = new List<ZPLElementBase>();
-            elements.Add(new ZPLGraphicBox(0, 0, 100, 100, 4));
-
-            elements.Add(new ZPLDownloadGraphics('R', "SAMPLE", "GRC", new System.Drawing.Bitmap("p.jpg")));
-            elements.Add(new ZPLRecallGraphic(100, 100, 'R', "SAMPLE", "GRC"));
-
-            var renderEngine = new ZPLEngine(elements);
-            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true, TargetPrintDPI = 200, SourcePrintDPI = 200 });
-
-            Console.WriteLine(output);
-        }
-
-        [TestMethod]
-        public void DownloadObjets()
-        {
-            var elements = new List<ZPLElementBase>();
-
-            elements.Add(new ZPLGraphicBox(0, 0, 100, 100, 4));
-            elements.Add(new ZPLDownloadObjects('R', "SAMPLE.PNG", new System.Drawing.Bitmap("sample.bmp")));
-            elements.Add(new ZPLImageMove(100, 100, 'R', "SAMPLE", "PNG"));
-
-            var renderEngine = new ZPLEngine(elements);
-            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBeforeElementStart = true, TargetPrintDPI = 300, SourcePrintDPI = 200 });
-
-            Console.WriteLine(output);
+            Debug.WriteLine(output);
         }
 
         [TestMethod]
@@ -167,9 +129,11 @@ namespace ZPLUtilityUnitTest
             elements.Add(textField);
 
             var renderEngine = new ZPLEngine(elements);
-            var output = renderEngine.ToZPLString(new ZPLRenderOptions() { DisplayComments = true, AddDefaultLabelHome = false, AddStartEndFormat = false });
+            var output = renderEngine.ToZPLString(new ZPLRenderOptions { DisplayComments = true, AddDefaultLabelHome = false, AddStartEndFormat = false });
 
-            Console.WriteLine(output);
+            Debug.WriteLine(output);
+            Assert.IsNotNull(output);
+            Assert.AreEqual("^CI28\n^FX\n//A important field\n^A0N,30,30\n^FO50,100\n^FH^FDPure element ZPL only^FS", output);
         }
     }
 }
