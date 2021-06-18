@@ -1,4 +1,4 @@
-﻿namespace BinaryKits.Utility.ZPLUtility
+﻿namespace BinaryKits.Utility.ZPLUtility.Elements
 {
     public abstract class ZPLPositionedElementBase : ZPLElementBase
     {

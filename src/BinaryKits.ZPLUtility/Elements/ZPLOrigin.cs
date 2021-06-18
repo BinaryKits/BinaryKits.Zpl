@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BinaryKits.Utility.ZPLUtility
+namespace BinaryKits.Utility.ZPLUtility.Elements
 {
     //^FO – Field Origin
     public class ZPLOrigin : ZPLElementBase

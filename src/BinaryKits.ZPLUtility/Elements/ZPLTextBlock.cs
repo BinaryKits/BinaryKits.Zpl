@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BinaryKits.Utility.ZPLUtility
+namespace BinaryKits.Utility.ZPLUtility.Elements
 {
     /// <summary>
     /// The ^TB command prints a text block with defined width and height.

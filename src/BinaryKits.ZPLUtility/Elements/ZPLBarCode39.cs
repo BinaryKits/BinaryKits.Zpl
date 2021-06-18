@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BinaryKits.Utility.ZPLUtility
+namespace BinaryKits.Utility.ZPLUtility.Elements
 {
     /// <summary>
     /// Code 39
@@ -23,7 +23,7 @@ namespace BinaryKits.Utility.ZPLUtility
             var result = new List<string>();
             result.AddRange(Origin.Render(context));
             result.Add($"^B3{Orientation},{(Mod43CheckDigit ? "Y" : "N")},{context.Scale(Height)},{(PrintInterpretationLine ? "Y" : "N")},{(PrintInterpretationLineAboveCode ? "Y" : "N")}");
-            result.Add("^FD" + Content + "^FS");
+            result.Add($"^FD{Content}^FS");
 
             return result;
         }
