@@ -10,6 +10,8 @@ Some basic ZPL elements are included, if you have any suggestions please feel fr
 
 You can test generated ZPL code at http://labelary.com/viewer.html
 
+Thanks @tinohager for great improvmenets done!
+
 ## Usage:
 ### Single element
 ```C#
