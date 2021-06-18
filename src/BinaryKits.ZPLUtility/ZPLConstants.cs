@@ -4,20 +4,36 @@
     {
         public static class InternationalFontEncoding
         {
-            //Unicode (UTF-8 encoding) - Unicode Character Set
+            /// <summary>
+            /// Unicode (UTF-8 encoding) - Unicode Character Set
+            /// </summary>
             public static readonly string CI28 = "^CI28";
-            //13 = Zebra Code Page 850 (see page 1194)
+            /// <summary>
+            /// 13 = Zebra Code Page 850 (see page 1194)
+            /// </summary>
             public static readonly string CI13 = "^CI13";
         }
 
+        /// <summary>
+        /// Orientation
+        /// </summary>
         public static class Orientation
         {
+            /// <summary>
+            /// Normal
+            /// </summary>
             public static readonly string Normal = "N";
-            //R = rotated 90 degrees(clockwise)
+            /// <summary>
+            /// Rotated 90 degrees(clockwise)
+            /// </summary>
             public static readonly string Rotated90 = "R";
-            //I = inverted 180 degrees
+            /// <summary>
+            /// Inverted 180 degrees
+            /// </summary>
             public static readonly string Rotated180 = "I";
-            //B = read from bottom up, 270 degrees
+            /// <summary>
+            /// Read from bottom up, 270 degrees
+            /// </summary>
             public static readonly string Rotated270 = "B";
         }
 
@@ -29,19 +45,33 @@
         //^FB
         public static class TextJustification
         {
-            //L = left
+            /// <summary>
+            /// Left
+            /// </summary>
             public static readonly string Left = "L";
-            //C = center
+            /// <summary>
+            /// Center
+            /// </summary>
             public static readonly string Center = "C";
-            //R = right
+            /// <summary>
+            /// Right
+            /// </summary>
             public static readonly string Right = "R";
-            //J = justified
+            /// <summary>
+            /// justified
+            /// </summary>
             public static readonly string Justified = "J";
         }
 
         public static class LineColor
         {
+            /// <summary>
+            /// Black
+            /// </summary>
             public static readonly string Black = "B";
+            /// <summary>
+            /// White
+            /// </summary>
             public static readonly string White = "W";
         }
     }

@@ -24,7 +24,7 @@ namespace BinaryKits.Utility.ZPLUtility
         /// <returns></returns>
         public List<string> Render(ZPLRenderOptions context)
         {
-            List<string> result = new List<string>();
+            var result = new List<string>();
 
             if (context.AddStartEndFormat)
             {
