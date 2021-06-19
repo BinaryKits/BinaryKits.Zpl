@@ -2,6 +2,18 @@
 
 namespace BinaryKits.Utility.ZPLUtility.Elements
 {
+    /// <summary>
+    /// Graphic Circle<br/>
+    /// The ^GC command produces a circle on the printed label.
+    /// The command parameters specify the diameter(width) of the circle, outline thickness, and color.
+    /// Thickness extends inward from the outline.
+    /// </summary>
+    /// <remarks>
+    /// Format:^GCd,t,c
+    /// d = circle diameter
+    /// t = border thickness
+    /// c = line color
+    /// </remarks>
     public class ZPLGraphicCircle : ZPLGraphicElement
     {
         public int Diameter { get; private set; }
