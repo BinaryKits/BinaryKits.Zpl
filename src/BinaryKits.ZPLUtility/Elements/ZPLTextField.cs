@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BinaryKits.Utility.ZPLUtility
+namespace BinaryKits.Utility.ZPLUtility.Elements
 {
     //^FD – Field Data
     public class ZPLTextField : ZPLPositionedElementBase
@@ -52,13 +52,21 @@ namespace BinaryKits.Utility.ZPLUtility
         protected string RenderFieldDataSection()
         {
             var sb = new StringBuilder();
-            sb.Append(UseHexadecimalIndicator ? "^FH" : "");
-            sb.Append(ReversePrint ? "^FR" : "");
+            if (UseHexadecimalIndicator)
+            {
+                sb.Append("^FH");
+            }
+            if (ReversePrint)
+            {
+                sb.Append("^FR");
+            }
+            
             sb.Append("^FD");
             foreach (var c in Text)
             {
                 sb.Append(SanitizeCharacter(c));
             }
+
             sb.Append("^FS");
 
             return sb.ToString();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BinaryKits.Utility.ZPLUtility
+namespace BinaryKits.Utility.ZPLUtility.Elements
 {
     public class ZPLFontIdentifier : ZPLElementBase
     {

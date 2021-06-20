@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BinaryKits.Utility.ZPLUtility
+namespace BinaryKits.Utility.ZPLUtility.Elements
 {
     /// <summary>
     /// Code 128

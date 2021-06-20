@@ -1,4 +1,4 @@
-﻿namespace BinaryKits.Utility.ZPLUtility
+﻿namespace BinaryKits.Utility.ZPLUtility.Elements
 {
     //Similar to ZPLTextField with big line spacing, so only the first line is visible
     public class ZPLSingleLineFieldBlock : ZPLFieldBlock

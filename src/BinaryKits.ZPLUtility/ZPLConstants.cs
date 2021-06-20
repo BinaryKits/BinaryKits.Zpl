@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Utility.ZPLUtility
+﻿using BinaryKits.Utility.ZPLUtility.Elements;
+
+namespace BinaryKits.Utility.ZPLUtility
 {
     public static class ZPLConstants
     {

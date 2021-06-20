@@ -5,12 +5,18 @@
     /// </summary>
     public class ZPLRenderOptions
     {
-        //Include ^XA and ^XZ
+        /// <summary>
+        /// Include ^XA and ^XZ
+        /// </summary>
         public bool AddStartEndFormat { get; set; }
-        //Include ^LH0,0
+        /// <summary>
+        /// Include ^LH0,0
+        /// </summary>
         public bool AddDefaultLabelHome { get; set; }
 
-        //^CI
+        /// <summary>
+        /// ^CI
+        /// </summary>
         public string ChangeInternationalFontEncoding { get; set; }
 
         public string DefaultTextOrientation { get; set; }

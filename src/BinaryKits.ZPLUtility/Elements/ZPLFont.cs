@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace BinaryKits.Utility.ZPLUtility
+namespace BinaryKits.Utility.ZPLUtility.Elements
 {
-    //^A – Scalable/Bitmapped Font
+    /// <summary>
+    /// ^A – Scalable/Bitmapped Font
+    /// </summary>
     public class ZPLFont : ZPLElementBase
     {
         public string FontName { get; private set; }
@@ -25,6 +27,7 @@ namespace BinaryKits.Utility.ZPLUtility
             {
                 textOrientation = context.DefaultTextOrientation;
             }
+
             return new[] { $"^A{FontName}{textOrientation},{context.Scale(FontHeight)},{context.Scale(FontWidth)}" };
         }
     }

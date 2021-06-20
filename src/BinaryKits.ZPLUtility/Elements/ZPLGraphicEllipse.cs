@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BinaryKits.Utility.ZPLUtility
+namespace BinaryKits.Utility.ZPLUtility.Elements
 {
     public class ZPLGraphicEllipse : ZPLGraphicBox
     {
