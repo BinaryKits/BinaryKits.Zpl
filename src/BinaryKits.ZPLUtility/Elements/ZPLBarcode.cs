@@ -19,5 +19,18 @@
         public string Content { get; protected set; }
         public bool PrintInterpretationLine { get; protected set; }
         public bool PrintInterpretationLineAboveCode { get; protected set; }
+
+        protected bool IsDigitsOnly(string text)
+        {
+            foreach (char c in text)
+            {
+                if (c < '0' || c > '9')
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

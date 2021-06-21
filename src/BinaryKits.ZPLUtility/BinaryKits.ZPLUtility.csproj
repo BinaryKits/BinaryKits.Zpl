@@ -26,5 +26,13 @@
       <Version>5.0.2</Version>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Elements\ZPLBarcodeANSICodabar.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Elements\ZPLBarcodeANSICodabar.cs" />
+  </ItemGroup>
  
 </Project>

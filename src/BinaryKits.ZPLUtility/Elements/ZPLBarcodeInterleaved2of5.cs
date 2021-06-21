@@ -6,11 +6,11 @@ namespace BinaryKits.Utility.ZPLUtility.Elements
     /// <summary>
     /// Interleaved 2 of 5 Barcode 
     /// </summary>
-    public class ZPLBarCodeInterleaved2of5 : ZPLBarcode
+    public class ZPLBarcodeInterleaved2of5 : ZPLBarcode
     {
         public bool Mod10CheckDigit { get; private set; }
 
-        public ZPLBarCodeInterleaved2of5(string content, int positionX, int positionY, int height = 100, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool mod10CheckDigit = false)
+        public ZPLBarcodeInterleaved2of5(string content, int positionX, int positionY, int height = 100, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool mod10CheckDigit = false)
             : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
             if (!IsDigitsOnly(content))
@@ -29,19 +29,6 @@ namespace BinaryKits.Utility.ZPLUtility.Elements
             result.Add($"^FD{Content}^FS");
 
             return result;
-        }
-
-        private bool IsDigitsOnly(string text)
-        {
-            foreach (char c in text)
-            {
-                if (c < '0' || c > '9')
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }
