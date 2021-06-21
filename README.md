@@ -1,37 +1,62 @@
 # ZPLUtility
 A .net library helping to generate ZPL string.
-Please refer to the Programming Guide for raw ZPL code definitaion, <s>https://www.zebra.com/content/dam/zebra/manuals/en-us/software/zpl-zbi2-pm-en.pdf</s>
-
-[https://github.com/robmachado/webetiq/blob/master/local/Doc/zpl-zbi2-pm-en.pdf](https://github.com/robmachado/webetiq/blob/master/local/Doc/zpl-zbi2-pm-en.pdf)
-
+Please refer to the Programming Guide for raw ZPL code definitaion, 
+[ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf)
 Some basic ZPL elements are included, if you have any suggestions please feel free to let me know.
 
-[![NuGet-Stable](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet%20stable)](https://www.nuget.org/packages/ZPLUtility/)
+## How can I use it?
 
-You can test generated ZPL code at http://labelary.com/viewer.html
+If you are use .net you can install the package via nuget
 
-Thanks @tinohager for great improvmenets done!
+### nuget
+The package is available via [![NuGet-Stable](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet)](https://www.nuget.org/packages/ZPLUtility)
+```
+PM> install-package ZPLUtility
+```
 
-## Usage:
+## Is there a way to generate a preview?
+
+Yes, you can test the generated ZPL code via http://labelary.com/viewer.html
+
+## How can I send the generated data to my printer?
+
+For example, the data can be transmitted to the printer IpAddress on port 9100.
+
+```cs
+var zplData = @"^XA^MMP^PW300^LS0^LT0^FT10,60^APN,30,30^FH\^FDSAMPLE TEXT^FS^XZ";
+// Open connection
+var tcpClient = new System.Net.Sockets.TcpClient();
+tcpClient.Connect("10.10.5.85", 9100);
+
+// Send ZPL data to printer
+var writer = new System.IO.StreamWriter(tcpClient.GetStream());
+writer.Write(zplData);
+writer.Flush();
+
+// Close Connection
+writer.Close();
+client.Close();
+```
+
+## Examples
+
 ### Single element
-```C#
-var result = new ZPLGraphicBox(100, 100, 100, 100).ToZPLString();
-Console.WriteLine(result); 
-//Output
-//^FO100,100
-//^GB100,100,1,B,0^FS
+
+```cs
+var output = new ZPLGraphicBox(100, 100, 100, 100).ToZPLString();
+Console.WriteLine(output);
 ```
+
 ### Barcode
-```C#
-var result = new ZPLBarCode128("123ABC", 100, 300).ToZPLString();
-Console.WriteLine(result);
-//Output
-//^FO100,300
-//^BCN,100,Y,N
-//^FD123ABC^FS
+
+```cs
+var output = new ZPLBarCode128("123ABC", 100, 300).ToZPLString();
+Console.WriteLine(output);
 ```
+
 ### Whole label
-```C#
+
+```cs
 var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
 ZPLFont font = new ZPLFont(fontWidth: 50, fontHeight: 50);
 var labelElements = new List<ZPLElementBase>();
@@ -51,8 +76,10 @@ var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBefor
 
 Console.WriteLine(output);
 ```
+
 ### Simple layout
-```C#
+
+```cs
 var elements = new List<ZPLElementBase>();
 
 var o = new ZPLOrigin(100, 100);
@@ -71,8 +98,10 @@ var output = new ZPLEngine(elements).ToZPLString(options);
 
 Console.WriteLine(output);
 ```
+
 ### Auto scale based on DPI
-```C#
+
+```cs
 var labelElements = new List<ZPLElementBase>();
 labelElements.Add(new ZPLGraphicBox(400, 700, 100, 100, 5));
 
@@ -82,7 +111,8 @@ var output = new ZPLEngine(labelElements).ToZPLString(options);
 Console.WriteLine(output);
 ```
 ### Render with comment for easy debugging
-```C#
+
+```cs
 var labelElements = new List<ZPLElementBase>();
 
 var textField = new ZPLTextField("AAA", 50, 100, ZPLConstants.Font.Default);
@@ -96,7 +126,8 @@ Console.WriteLine(output);
 ```
 
 ### Different text field type
-```C#
+
+```cs
 var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
 ZPLFont font = new ZPLFont(fontWidth: 50, fontHeight: 50);
 
@@ -117,10 +148,14 @@ var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBefor
 
 Console.WriteLine(output);
 ```
+
 ### Draw pictures, auto resize based on DPI (Please dither the colorful picture first)
+
 You have 2 options:
-1. Use ~DY and ^IM
-```C#
+
+**1. Use ~DY and ^IM**
+
+```cs
 var elements = new List<ZPLElementBase>();
 elements.Add(new ZPLGraphicBox(0, 0, 100, 100, 4));
 elements.Add(new ZPLDownloadObjects('R', "SAMPLE.BMP", new System.Drawing.Bitmap("sample.bmp")));
@@ -132,9 +167,9 @@ var output = renderEngine.ToZPLString(new ZPLRenderOptions() { AddEmptyLineBefor
 Console.WriteLine(output);
 ```
 
-2. Use ~DG and ^XG
+**2. Use ~DG and ^XG**
 
-```C#
+```cs
 var elements = new List<ZPLElementBase>();
 elements.Add(new ZPLDownloadGraphics('R', "SAMPLE", "GRC", new System.Drawing.Bitmap("Sample.bmp")));
 elements.Add(new ZPLRecallGraphic(100, 100, 'R', "SAMPLE", "GRC"));
