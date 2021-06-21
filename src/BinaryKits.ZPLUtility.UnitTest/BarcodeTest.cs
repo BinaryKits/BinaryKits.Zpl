@@ -10,11 +10,11 @@ namespace ZPLUtility.UnitTest
     public class BarcodeTest
     {
         [TestMethod]
-        public void BarCode39()
+        public void Barcode39()
         {
             var elements = new List<ZPLElementBase>
             {
-                new ZPLBarCode39("123ABC", 100, 100)
+                new ZPLBarcode39("123ABC", 100, 100)
             };
 
             var renderEngine = new ZPLEngine(elements);
@@ -26,11 +26,11 @@ namespace ZPLUtility.UnitTest
         }
 
         [TestMethod]
-        public void BarCode128()
+        public void Barcode128()
         {
             var elements = new List<ZPLElementBase>
             {
-                new ZPLBarCode128("123ABC", 100, 300)
+                new ZPLBarcode128("123ABC", 100, 300)
             };
 
             var renderEngine = new ZPLEngine(elements);
