@@ -26,13 +26,15 @@ namespace BinaryKits.Utility.ZPLUtility.Elements
         public int TotalNumberOfBytes { get; set; }
         public int NumberOfBytesPerRow { get; set; }
         public Bitmap Image { get; set; }
+        public bool IsCompressionActive { get; set; }
 
-        public ZPLDownloadGraphics(char storageDevice, string imageName, string extension, Bitmap image)
+        public ZPLDownloadGraphics(char storageDevice, string imageName, string extension, Bitmap image, bool isCompressionActive = true)
             : base(storageDevice)
         {
             ImageName = imageName;
             Extension = extension;
             Image = image;
+            IsCompressionActive = isCompressionActive;
         }
 
         public override IEnumerable<string> Render(ZPLRenderOptions context)
@@ -49,14 +51,18 @@ namespace BinaryKits.Utility.ZPLUtility.Elements
             }
 
             var hex = ImageHelper.ConvertBitmapToHex(contextImage, out var binaryByteCount, out var bytesPerRow);
-            var compressedHex = ImageHelper.CompressHex(hex, bytesPerRow);
+
+            if (IsCompressionActive)
+            {
+                hex = ImageHelper.CompressHex(hex, bytesPerRow);
+            }
 
             var result = new List<string>
             {
                 $"~DG{StorageDevice}:{ImageName}.{Extension},{binaryByteCount},{bytesPerRow},"
             };
 
-            result.Add(compressedHex);
+            result.Add(hex);
 
             return result;
         }
