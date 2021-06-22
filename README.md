@@ -6,10 +6,7 @@ Some basic ZPL elements are included, if you have any suggestions please feel fr
 
 ## How can I use it?
 
-If you are use .net you can install the package via nuget
-
-### nuget
-The package is available via [![NuGet-Stable](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet)](https://www.nuget.org/packages/ZPLUtility)
+The package is available via [![NuGet](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet)](https://www.nuget.org/packages/ZPLUtility)
 ```
 PM> install-package ZPLUtility
 ```
