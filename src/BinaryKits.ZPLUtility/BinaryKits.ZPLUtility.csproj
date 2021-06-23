@@ -4,7 +4,7 @@
     <TargetFrameworks>net45;netstandard2.0;net5.0</TargetFrameworks>
     <Description>A .net library helping to generate ZPL string. Please visit https://github.com/BinaryKits/ZPLUtility for more information</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Zebra ZPL</PackageTags>
