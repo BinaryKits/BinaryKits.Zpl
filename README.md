@@ -65,7 +65,7 @@ labelElements.Add(new ZPLGraphicDiagonalLine(400, 700, 100, 50, 5));
 labelElements.Add(new ZPLGraphicDiagonalLine(400, 700, 50, 100, 5));
 labelElements.Add(new ZPLGraphicSymbol(GraphicSymbolCharacter.Copyright, 600, 600, 50, 50));
 
-//Add raw ZPL code
+// Add raw ZPL code
 labelElements.Add(new ZPLRaw("^FO200, 200^GB300, 200, 10 ^FS"));
 
 var renderEngine = new ZPLEngine(labelElements);
@@ -129,13 +129,13 @@ var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
 ZPLFont font = new ZPLFont(fontWidth: 50, fontHeight: 50);
 
 var labelElements = new List<ZPLElementBase>();
-//Specail character is repalced with space
+// Specail character is repalced with space
 labelElements.Add(new ZPLTextField(sampleText, 10, 10, font, useHexadecimalIndicator: false));
-//Specail character is repalced Hex value using ^FH
+// Specail character is repalced Hex value using ^FH
 labelElements.Add(new ZPLTextField(sampleText, 10, 50, font, useHexadecimalIndicator: true));
-//Only the first line is displayed
+// Only the first line is displayed
 labelElements.Add(new ZPLSingleLineFieldBlock(sampleText, 10, 150, 500, font));
-//Max 2 lines, text exceeding the maximum number of lines overwrites the last line.
+// Max 2 lines, text exceeding the maximum number of lines overwrites the last line.
 labelElements.Add(new ZPLFieldBlock(sampleText, 10, 300, 400, font, 2));
 // Multi - line text within a box region
 labelElements.Add(new ZPLTextBlock(sampleText, 10, 600, 400, 100, font));
