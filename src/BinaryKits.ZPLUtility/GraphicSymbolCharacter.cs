@@ -1,4 +1,4 @@
-﻿namespace BinaryKits.Utility.ZPLUtility
+﻿namespace BinaryKits.ZPLUtility
 {
     public enum GraphicSymbolCharacter
     {

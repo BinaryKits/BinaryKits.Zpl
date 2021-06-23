@@ -1,4 +1,4 @@
-﻿namespace BinaryKits.Utility.ZPLUtility.Elements
+﻿namespace BinaryKits.ZPLUtility.Elements
 {
     public abstract class ZPLBarcode : ZPLPositionedElementBase
     {

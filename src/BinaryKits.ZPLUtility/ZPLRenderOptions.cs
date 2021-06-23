@@ -1,4 +1,4 @@
-﻿namespace BinaryKits.Utility.ZPLUtility
+﻿namespace BinaryKits.ZPLUtility
 {
     /// <summary>
     /// Holding redering settings

@@ -1,5 +1,5 @@
-﻿using BinaryKits.Utility.ZPLUtility;
-using BinaryKits.Utility.ZPLUtility.Elements;
+﻿using BinaryKits.ZPLUtility;
+using BinaryKits.ZPLUtility.Elements;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Diagnostics;
