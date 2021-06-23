@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace BinaryKits.Utility.ZPLUtility.Elements
 {
-    public class ZPLBarCodeANSICodabar : ZPLBarcode
+    public class ZPLBarcodeANSICodabar : ZPLBarcode
     {
         public bool CheckDigit { get; private set; }
         public char StartCharacter { get; private set; }
         public char StopCharacter { get; private set; }
 
-        public ZPLBarCodeANSICodabar(string content, int positionX, int positionY, int height, char startCharacter, char stopCharacter, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool checkDigit = false)
+        public ZPLBarcodeANSICodabar(string content, int positionX, int positionY, int height, char startCharacter, char stopCharacter, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool checkDigit = false)
             : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
             CheckDigit = checkDigit;

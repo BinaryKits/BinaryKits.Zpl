@@ -13,6 +13,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>ZPLUtility</PackageId>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>BinaryKits.Utility.ZPLUtility</AssemblyName>
+    <RootNamespace>BinaryKits.Utility.ZPLUtility</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">

@@ -5,11 +5,11 @@ namespace BinaryKits.Utility.ZPLUtility.Elements
     /// <summary>
     /// Code 39
     /// </summary>
-    public class ZPLBarCode39 : ZPLBarcode
+    public class ZPLBarcode39 : ZPLBarcode
     {
         public bool Mod43CheckDigit { get; private set; }
 
-        public ZPLBarCode39(string content, int positionX, int positionY, int height = 100, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool mod43CheckDigit = false)
+        public ZPLBarcode39(string content, int positionX, int positionY, int height = 100, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool mod43CheckDigit = false)
             : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
             Mod43CheckDigit = mod43CheckDigit;

@@ -47,7 +47,7 @@ Console.WriteLine(output);
 ### Barcode
 
 ```cs
-var output = new ZPLBarCode128("123ABC", 100, 300).ToZPLString();
+var output = new ZPLBarcode128("123ABC", 100, 300).ToZPLString();
 Console.WriteLine(output);
 ```
 
