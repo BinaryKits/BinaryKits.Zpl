@@ -26,13 +26,4 @@ namespace BinaryKits.Utility.ZPLUtility.Elements
             return result;
         }
     }
-
-    [Obsolete("ZPLBarCode128 is deprecated, please use ZPLBarcode128 instead.")]
-    public class ZPLBarCode128 : ZPLBarcode128
-    {
-        public ZPLBarCode128(string content, int positionX, int positionY, int height = 100, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false) 
-            : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
-        {
-        }
-    }
 }

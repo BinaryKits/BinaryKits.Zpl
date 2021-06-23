@@ -13,6 +13,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>ZPLUtility</PackageId>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>BinaryKits.Utility.ZPLUtility</AssemblyName>
+    <RootNamespace>BinaryKits.Utility.ZPLUtility</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -25,14 +27,6 @@
     <PackageReference Include="System.Drawing.Common">
       <Version>5.0.2</Version>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Elements\ZPLBarcodeANSICodabar.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Elements\ZPLBarcodeANSICodabar.cs" />
   </ItemGroup>
  
 </Project>
