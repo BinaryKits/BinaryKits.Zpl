@@ -11,7 +11,7 @@ Some basic ZPL elements are included, if you have any suggestions please feel fr
 The package is available via [![NuGet](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet)](https://www.nuget.org/packages/ZPLUtility)
 
 ```
-dotnet add package ZPLUtility --version 1.5.0
+dotnet add package ZPLUtility
 ```
 or
 ```
