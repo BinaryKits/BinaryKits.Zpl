@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace BinaryKits.Utility.ZPLUtility.Elements
+namespace BinaryKits.ZPLUtility.Elements
 {
     /// <summary>
     /// Download Graphics<br/>

@@ -1,5 +1,4 @@
-﻿using BinaryKits.Utility.ZPLUtility;
-using BinaryKits.Utility.ZPLUtility.Elements;
+﻿using BinaryKits.ZPLUtility.Elements;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;

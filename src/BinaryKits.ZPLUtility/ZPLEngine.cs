@@ -1,9 +1,9 @@
-﻿using BinaryKits.Utility.ZPLUtility.Elements;
+﻿using BinaryKits.ZPLUtility.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BinaryKits.Utility.ZPLUtility
+namespace BinaryKits.ZPLUtility
 {
     public class ZPLEngine : List<ZPLElementBase>
     {

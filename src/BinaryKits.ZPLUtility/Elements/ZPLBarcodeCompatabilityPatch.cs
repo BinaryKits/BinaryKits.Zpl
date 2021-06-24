@@ -3,7 +3,7 @@
 /// <summary>
 /// Keep the old "ZPLBarCode" class names, prevent breaking change at user side
 /// </summary>
-namespace BinaryKits.Utility.ZPLUtility.Elements
+namespace BinaryKits.ZPLUtility.Elements
 {
     [Obsolete("ZPLBarCode39 is deprecated, please use ZPLBarcode39 instead.")]
     public class ZPLBarCode39 : ZPLBarcode39

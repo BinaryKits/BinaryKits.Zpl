@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BinaryKits.Utility.ZPLUtility.Elements
+namespace BinaryKits.ZPLUtility.Elements
 {
     /// <summary>
     /// Code 128

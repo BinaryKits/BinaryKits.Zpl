@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BinaryKits.Utility.ZPLUtility.Elements
+namespace BinaryKits.ZPLUtility.Elements
 {
     public class ZPLBarcodeANSICodabar : ZPLBarcode
     {

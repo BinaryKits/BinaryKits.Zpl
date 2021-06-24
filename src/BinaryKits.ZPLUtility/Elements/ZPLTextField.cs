@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BinaryKits.Utility.ZPLUtility.Elements
+namespace BinaryKits.ZPLUtility.Elements
 {
     //^FD – Field Data
     public class ZPLTextField : ZPLPositionedElementBase

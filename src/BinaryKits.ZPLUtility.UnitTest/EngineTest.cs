@@ -1,9 +1,8 @@
-﻿using System;
+﻿using BinaryKits.ZPLUtility;
+using BinaryKits.ZPLUtility.Elements;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BinaryKits.Utility.ZPLUtility;
 using System.Collections.Generic;
 using System.Diagnostics;
-using BinaryKits.Utility.ZPLUtility.Elements;
 
 namespace ZPLUtility.UnitTest
 {
