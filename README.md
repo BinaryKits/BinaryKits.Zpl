@@ -4,6 +4,8 @@ Please refer to the Programming Guide for raw ZPL code definitaion,
 [ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf)
 Some basic ZPL elements are included, if you have any suggestions please feel free to let me know.
 
+<img src="https://raw.githubusercontent.com/BinaryKits/ZPLUtility/bca374ecd2f010794de50a12521e778d47fd6d78/doc/logo.png" width="100">
+
 ## How can I use it?
 
 The package is available via [![NuGet](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet)](https://www.nuget.org/packages/ZPLUtility)
