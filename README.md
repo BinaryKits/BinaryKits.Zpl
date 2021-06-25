@@ -25,7 +25,6 @@ Yes, you can test the generated ZPL code via http://labelary.com/viewer.html
 ## How can I send the generated data to my printer?
 
 For example, the data can be transmitted to the printer IpAddress on port 9100.
-A Virutal Printer for Zebra is available as [Chrome Plugin](https://chrome.google.com/webstore/detail/zpl-printer/phoidlklenidapnijkabnfdgmadlcmjo)
 
 ```cs
 var zplData = @"^XA^MMP^PW300^LS0^LT0^FT10,60^APN,30,30^FH\^FDSAMPLE TEXT^FS^XZ";
@@ -42,6 +41,8 @@ writer.Flush();
 writer.Close();
 client.Close();
 ```
+
+Also, a Virutal Printer for Zebra is available as [Chrome Plugin](https://chrome.google.com/webstore/detail/zpl-printer/phoidlklenidapnijkabnfdgmadlcmjo)
 
 ## Examples
 
