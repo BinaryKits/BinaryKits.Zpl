@@ -39,7 +39,7 @@ writer.Flush();
 
 // Close Connection
 writer.Close();
-client.Close();
+tcpClient.Close();
 ```
 
 Also, a Virutal Printer for Zebra is available as [Chrome Plugin](https://chrome.google.com/webstore/detail/zpl-printer/phoidlklenidapnijkabnfdgmadlcmjo)
