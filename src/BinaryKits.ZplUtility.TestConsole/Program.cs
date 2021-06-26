@@ -1,4 +1,5 @@
 ﻿using BinaryKits.ZplUtility.Elements;
+using BinaryKits.ZplUtility.TestConsole.Preview;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -37,7 +38,7 @@ namespace BinaryKits.ZplUtility.TestConsole
             });
 
             var client = new LabelaryApiClient();
-            var previewData = await client.GetPreviewAsync(output);
+            var previewData = await client.GetPreviewAsync(output, PrintDensity.PD8dpmm, new LabelSize(6, 8, Measure.Inch));
 
             var fileName = "preview.png";
             File.WriteAllBytes(fileName, previewData);

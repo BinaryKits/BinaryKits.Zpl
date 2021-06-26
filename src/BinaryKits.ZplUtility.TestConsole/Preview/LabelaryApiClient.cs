@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BinaryKits.ZplUtility.TestConsole
+namespace BinaryKits.ZplUtility.TestConsole.Preview
 {
     public class LabelaryApiClient
     {
@@ -13,19 +13,14 @@ namespace BinaryKits.ZplUtility.TestConsole
             _apiEndpoint = apiEndpoint;
         }
 
-        public async Task<byte[]> GetPreviewAsync(string zplText)
+        public async Task<byte[]> GetPreviewAsync(string zplData, PrintDensity printDensity, LabelSize labelSize)
         {
-            byte[] zpl = Encoding.UTF8.GetBytes(zplText);
-            var byteContent = new ByteArrayContent(zpl);
-
-            var widthMillimeter = 100;
-            var heightMillimeter = 300;
-
-            var widthInch = Math.Round(widthMillimeter / 25.4, 0);
-            var heightInch = Math.Round(heightMillimeter / 25.4, 0);
-
+            var dpi = printDensity.ToString().Substring(2);
+            var zpl = Encoding.UTF8.GetBytes(zplData);
+            
             using var httpClient = new HttpClient();
-            var response = await httpClient.PostAsync($"{_apiEndpoint}/8dpmm/labels/{widthInch}x{heightInch}/0/", byteContent);
+            var byteContent = new ByteArrayContent(zpl);
+            var response = await httpClient.PostAsync($"{_apiEndpoint}/{dpi}/labels/{labelSize.WidthInInch}x{labelSize.HeightInInch}/0/", byteContent);
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine("Cannot get a preview");
