@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace BinaryKits.ZplUtility.TestConsole.cs
+namespace BinaryKits.ZplUtility.TestConsole
 {
     class Program
     {
