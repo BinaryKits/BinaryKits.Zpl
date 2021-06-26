@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BinaryKits.ZplUtility.TestConsole.cs
+namespace BinaryKits.ZplUtility.TestConsole
 {
     public class LabelaryApiClient
     {
