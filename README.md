@@ -46,6 +46,13 @@ Also, a Virutal Printer for Zebra is available as [Chrome Plugin](https://chrome
 
 ## Examples
 
+### Using statement
+
+```cs
+using BinaryKits.ZplUtility;
+using BinaryKits.ZplUtility.Elements;
+```
+
 ### Single element
 
 ```cs
