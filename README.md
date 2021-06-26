@@ -71,7 +71,7 @@ Console.WriteLine(output);
 
 ```cs
 var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
-ZplFont font = new ZplFont(fontWidth: 50, fontHeight: 50);
+var font = new ZplFont(fontWidth: 50, fontHeight: 50);
 var labelElements = new List<ZplElementBase>();
 labelElements.Add(new ZplTextField(sampleText, 50, 100, font));
 labelElements.Add(new ZplGraphicBox(400, 700, 100, 100, 5));
