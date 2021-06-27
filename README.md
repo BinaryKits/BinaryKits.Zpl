@@ -202,4 +202,4 @@ You need to install `libgdiplus`, on openSUSE:
 ```
 zypper install libgdiplus0
 ```
-
+https://github.com/dotnet/core/issues/2746
