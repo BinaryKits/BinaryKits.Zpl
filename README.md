@@ -145,9 +145,9 @@ var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
 var font = new ZplFont(fontWidth: 50, fontHeight: 50);
 
 var labelElements = new List<ZplElementBase>();
-// Specail character is repalced with space
+// Special character is repalced with space
 labelElements.Add(new ZplextField(sampleText, 10, 10, font, useHexadecimalIndicator: false));
-// Specail character is repalced Hex value using ^FH
+// Special character is repalced Hex value using ^FH
 labelElements.Add(new ZplTextField(sampleText, 10, 50, font, useHexadecimalIndicator: true));
 // Only the first line is displayed
 labelElements.Add(new ZplSingleLineFieldBlock(sampleText, 10, 150, 500, font));
