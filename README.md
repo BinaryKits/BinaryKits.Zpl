@@ -10,13 +10,9 @@ Some basic ZPL elements are included, if you have any suggestions please feel fr
 
 The package is available via [![NuGet](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet)](https://www.nuget.org/packages/ZPLUtility)
 
-```
-dotnet add package ZPLUtility
-```
-or
-```
-PM> install-package ZPLUtility
-```
+| Package Manager | .NET CLI |
+| ------------- | ------------- |
+| ``` PM> install-package ZPLUtility ``` | ``` > dotnet add package ZPLUtility ``` |
 
 ## Is there a way to generate a preview?
 
