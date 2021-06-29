@@ -1,2 +1,2 @@
 # 2010
-src/BinaryKits.ZplUtility.UnitTest/ZplData/*.txt -lf
+src/BinaryKits.ZplUtility.UnitTest/ZplData/*.txt text eol=lf
