@@ -10,13 +10,9 @@ Some basic ZPL elements are included, if you have any suggestions please feel fr
 
 The package is available via [![NuGet](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet)](https://www.nuget.org/packages/ZPLUtility)
 
-```
-dotnet add package ZPLUtility
-```
-or
-```
-PM> install-package ZPLUtility
-```
+| Package Manager | .NET CLI |
+| ------------- | ------------- |
+| ``` PM> install-package ZPLUtility ``` | ``` > dotnet add package ZPLUtility ``` |
 
 ## Is there a way to generate a preview?
 
@@ -145,9 +141,9 @@ var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
 var font = new ZplFont(fontWidth: 50, fontHeight: 50);
 
 var labelElements = new List<ZplElementBase>();
-// Specail character is repalced with space
+// Special character is repalced with space
 labelElements.Add(new ZplextField(sampleText, 10, 10, font, useHexadecimalIndicator: false));
-// Specail character is repalced Hex value using ^FH
+// Special character is repalced Hex value using ^FH
 labelElements.Add(new ZplTextField(sampleText, 10, 50, font, useHexadecimalIndicator: true));
 // Only the first line is displayed
 labelElements.Add(new ZplSingleLineFieldBlock(sampleText, 10, 150, 500, font));
@@ -193,3 +189,13 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 Console.WriteLine(output);
 ```
 
+## Issues
+
+### .NET Core on Linux error: Unable to load shared library 'libgdiplus' or one of its dependencies
+
+You need to install `libgdiplus`, on openSUSE:
+
+```
+zypper install libgdiplus0
+```
+https://github.com/dotnet/core/issues/2746
