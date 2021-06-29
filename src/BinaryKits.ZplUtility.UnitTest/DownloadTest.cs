@@ -120,7 +120,7 @@ namespace BinaryKits.ZplUtility.UnitTest
             Assert.IsNotNull(output);
 
             var zplData = File.ReadAllText("DownloadGraphics.txt");
-            Assert.AreEqual(zplData.Trim(), output.Trim());
+            Assert.AreEqual(zplData, output);
         }
 
         [TestMethod]
@@ -143,7 +143,7 @@ namespace BinaryKits.ZplUtility.UnitTest
             Assert.IsNotNull(output);
 
             var zplData = File.ReadAllText("DownloadObject.txt");
-            Assert.AreEqual(zplData.Trim(), output.Trim());
+            Assert.AreEqual(zplData, output);
         }
     }
 }
