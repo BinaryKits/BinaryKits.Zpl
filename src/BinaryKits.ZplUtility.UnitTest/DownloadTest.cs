@@ -86,6 +86,7 @@ namespace BinaryKits.ZplUtility.UnitTest
             var bitmap = new Bitmap(130, 70);
 
             using var canvas = Graphics.FromImage(bitmap);
+            canvas.SmoothingMode = SmoothingMode.None;
             canvas.Clear(Color.White);
 
             DrawLines(canvas, pointsForZ);
