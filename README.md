@@ -45,21 +45,20 @@ Also, a Virutal Printer for Zebra is available as [Chrome Plugin](https://chrome
 ### Using statement
 
 ```cs
-using BinaryKits.ZplUtility;
-using BinaryKits.ZplUtility.Elements;
+using BinaryKits.Utility.ZPLUtility;
 ```
 
 ### Single element
 
 ```cs
-var output = new ZplGraphicBox(100, 100, 100, 100).ToZplString();
+var output = new ZPLGraphicBox(100, 100, 100, 100).ToZplString();
 Console.WriteLine(output);
 ```
 
 ### Barcode
 
 ```cs
-var output = new ZplBarcode128("123ABC", 100, 300).ToZplString();
+var output = new ZPLBarcode128("123ABC", 100, 300).ToZplString();
 Console.WriteLine(output);
 ```
 
@@ -67,21 +66,21 @@ Console.WriteLine(output);
 
 ```cs
 var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
-var font = new ZplFont(fontWidth: 50, fontHeight: 50);
-var labelElements = new List<ZplElementBase>();
-labelElements.Add(new ZplTextField(sampleText, 50, 100, font));
-labelElements.Add(new ZplGraphicBox(400, 700, 100, 100, 5));
-labelElements.Add(new ZplGraphicBox(450, 750, 100, 100, 50, ZplConstants.LineColor.White));
-labelElements.Add(new ZplGraphicCircle(400, 700, 100, 5));
-labelElements.Add(new ZplGraphicDiagonalLine(400, 700, 100, 50, 5));
-labelElements.Add(new ZplGraphicDiagonalLine(400, 700, 50, 100, 5));
-labelElements.Add(new ZplGraphicSymbol(GraphicSymbolCharacter.Copyright, 600, 600, 50, 50));
+var font = new ZPLFont(fontWidth: 50, fontHeight: 50);
+var labelElements = new List<ZPLElementBase>();
+labelElements.Add(new ZPLTextField(sampleText, 50, 100, font));
+labelElements.Add(new ZPLGraphicBox(400, 700, 100, 100, 5));
+labelElements.Add(new ZPLGraphicBox(450, 750, 100, 100, 50, ZPLConstants.LineColor.White));
+labelElements.Add(new ZPLGraphicCircle(400, 700, 100, 5));
+labelElements.Add(new ZPLGraphicDiagonalLine(400, 700, 100, 50, 5));
+labelElements.Add(new ZPLGraphicDiagonalLine(400, 700, 50, 100, 5));
+labelElements.Add(new ZPLGraphicSymbol(GraphicSymbolCharacter.Copyright, 600, 600, 50, 50));
 
 // Add raw Zpl code
-labelElements.Add(new ZplRaw("^FO200, 200^GB300, 200, 10 ^FS"));
+labelElements.Add(new ZPLRaw("^FO200, 200^GB300, 200, 10 ^FS"));
 
-var renderEngine = new ZplEngine(labelElements);
-var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeElementStart = true });
+var renderEngine = new ZPLEngine(labelElements);
+var output = renderEngine.ToZPLString(new ZPLRenderOptions { AddEmptyLineBeforeElementStart = true });
 
 Console.WriteLine(output);
 ```
