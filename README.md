@@ -56,6 +56,8 @@ var output = new ZplGraphicBox(100, 100, 100, 100).ToZplString();
 Console.WriteLine(output);
 ```
 
+Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `ZplElement` in version 2 (under development).
+
 ### Barcode
 
 ```cs
