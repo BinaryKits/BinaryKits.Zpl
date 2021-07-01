@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>net472;netstandard2.0;net5.0</TargetFrameworks>
     <Description>A .net library helping to generate ZPL string. Please visit https://github.com/BinaryKits/ZPLUtility for more information</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
     <Version>1.5.0</Version>
@@ -19,18 +19,12 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Drawing.Common">
-      <Version>5.0.2</Version>
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp">
+      <Version>1.0.3</Version>
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <PackageReference Include="System.Drawing.Common">
-      <Version>5.0.2</Version>
-    </PackageReference>
-  </ItemGroup>
-  
   <ItemGroup>
     <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE" />
   </ItemGroup>
@@ -42,5 +36,5 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
- 
+
 </Project>

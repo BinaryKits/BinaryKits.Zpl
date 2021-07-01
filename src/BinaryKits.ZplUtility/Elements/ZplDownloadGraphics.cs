@@ -1,7 +1,10 @@
 ﻿using BinaryKits.ZplUtility.Helper;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.IO;
 
 namespace BinaryKits.ZplUtility.Elements
 {
@@ -25,32 +28,39 @@ namespace BinaryKits.ZplUtility.Elements
         public string Extension { get; set; }
         public int TotalNumberOfBytes { get; set; }
         public int NumberOfBytesPerRow { get; set; }
-        public Bitmap Image { get; set; }
+        public byte[] ImageData { get; set; }
         public bool IsCompressionActive { get; set; }
 
-        public ZplDownloadGraphics(char storageDevice, string imageName, string extension, Bitmap image, bool isCompressionActive = true)
+        public ZplDownloadGraphics(char storageDevice, string imageName, string extension, byte[] imageData, bool isCompressionActive = true)
             : base(storageDevice)
         {
             ImageName = imageName;
             Extension = extension;
-            Image = image;
+            ImageData = imageData;
             IsCompressionActive = isCompressionActive;
         }
 
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
-            Bitmap contextImage;
-            if (context.ScaleFactor == 1)
+            byte[] objectData;
+            using (var image = Image.Load(ImageData))
             {
-                contextImage = Image;
-            }
-            else
-            {
-                //Resize based on dpi
-                contextImage = new Bitmap(Image, new Size((int)Math.Round(Image.Width * context.ScaleFactor), (int)Math.Round(Image.Height * context.ScaleFactor)));
+                if (context.ScaleFactor != 1)
+                {
+                    var scaleWidth = (int)Math.Round(image.Width * context.ScaleFactor);
+                    var scaleHeight = (int)Math.Round(image.Height * context.ScaleFactor);
+
+                    image.Mutate(x => x.Resize(image.Width / 2, image.Height / 2));
+                }
+
+                using (var ms = new MemoryStream())
+                {
+                    image.Save(ms, new PngEncoder());
+                    objectData = ms.ToArray();
+                }
             }
 
-            var hex = ImageHelper.ConvertBitmapToHex(contextImage, out var binaryByteCount, out var bytesPerRow);
+            var hex = ImageHelper.ConvertBitmap(objectData, out var binaryByteCount, out var bytesPerRow);
 
             if (IsCompressionActive)
             {
