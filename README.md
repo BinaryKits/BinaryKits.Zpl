@@ -61,9 +61,11 @@ Note we are changing the class name prefix, from `ZPLElement` in version 1.x to 
 ### Barcode
 
 ```cs
-var output = new ZplBarcode128("123ABC", 100, 300).ToZplString();
+var output = new ZplBarcode128("123ABC", 10, 50).ToZplString();
 Console.WriteLine(output);
 ```
+
+![Barcode 128](doc/preview-barcode128.png)
 
 ### Whole label
 
@@ -88,6 +90,8 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 Console.WriteLine(output);
 ```
 
+![Whole label](doc/preview-whole.label.png)
+
 ### Simple layout
 
 ```cs
@@ -109,6 +113,7 @@ var output = new ZplEngine(elements).ToZplString(options);
 
 Console.WriteLine(output);
 ```
+![Simple layout](doc/preview-simple-layout.png)
 
 ### Auto scale based on DPI
 
