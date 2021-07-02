@@ -1,4 +1,5 @@
 ﻿using BinaryKits.ZplUtility.Helper;
+using BinaryKits.ZplUtility.ImageConverter;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
@@ -29,15 +30,30 @@ namespace BinaryKits.ZplUtility.Elements
         public int TotalNumberOfBytes { get; set; }
         public int NumberOfBytesPerRow { get; set; }
         public byte[] ImageData { get; set; }
-        public bool IsCompressionActive { get; set; }
 
-        public ZplDownloadGraphics(char storageDevice, string imageName, string extension, byte[] imageData, bool isCompressionActive = true)
+        private bool _isCompressionActive;
+        private IImageConverter _imageConverter;
+
+        public ZplDownloadGraphics(
+            char storageDevice,
+            string imageName,
+            string extension,
+            byte[] imageData,
+            bool isCompressionActive = true,
+            IImageConverter imageConverter = default)
             : base(storageDevice)
         {
             ImageName = imageName;
             Extension = extension;
             ImageData = imageData;
-            IsCompressionActive = isCompressionActive;
+
+            if (imageConverter == default)
+            {
+                imageConverter = new ImageSharpImageConverter();
+            }
+
+            _isCompressionActive = isCompressionActive;
+            _imageConverter = imageConverter;
         }
 
         public override IEnumerable<string> Render(ZplRenderOptions context)
@@ -60,21 +76,18 @@ namespace BinaryKits.ZplUtility.Elements
                 }
             }
 
-            var hex = ImageHelper.ConvertBitmap(objectData, out var binaryByteCount, out var bytesPerRow);
+            var imageResult = _imageConverter.ConvertImage(objectData);
 
-            if (IsCompressionActive)
+            if (_isCompressionActive)
             {
-                hex = ImageHelper.CompressHex(hex, bytesPerRow);
+                imageResult.ZplData = CompressHelper.CompressHex(imageResult.ZplData, imageResult.BytesPerRow);
             }
 
-            var result = new List<string>
+            return new List<string>
             {
-                $"~DG{StorageDevice}:{ImageName}.{Extension},{binaryByteCount},{bytesPerRow},"
+                $"~DG{StorageDevice}:{ImageName}.{Extension},{imageResult.BinaryByteCount},{imageResult.BytesPerRow},",
+                imageResult.ZplData
             };
-
-            result.Add(hex);
-
-            return result;
         }
     }
 }
