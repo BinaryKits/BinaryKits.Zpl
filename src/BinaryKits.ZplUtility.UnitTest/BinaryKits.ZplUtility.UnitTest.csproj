@@ -20,4 +20,16 @@
     <ProjectReference Include="..\BinaryKits.ZplUtility\BinaryKits.ZplUtility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ZplData\DownloadGraphics.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplData\DownloadObject.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplData\Zpl.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

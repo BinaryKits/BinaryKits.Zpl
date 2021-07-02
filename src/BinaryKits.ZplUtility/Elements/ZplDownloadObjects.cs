@@ -1,7 +1,8 @@
-﻿using System;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 
@@ -27,23 +28,31 @@ namespace BinaryKits.ZplUtility.Elements
     public class ZplDownloadObjects : ZplDownload
     {
         public string ObjectName { get; set; }
-        public Bitmap Image { get; set; }
+        public byte[] ImageData { get; set; }
 
-        public ZplDownloadObjects(char storageDevice, string imageName, Bitmap image)
+        public ZplDownloadObjects(char storageDevice, string imageName, byte[] imageData)
             : base(storageDevice)
         {
             ObjectName = imageName;
-            Image = image;
+            ImageData = imageData;
         }
 
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             byte[] objectData;
-            using (var contextImage = new Bitmap(Image, new Size((int)Math.Round(Image.Width * context.ScaleFactor), (int)Math.Round(Image.Height * context.ScaleFactor))))
+            using (var image = Image.Load(ImageData))
             {
+                if (context.ScaleFactor != 1)
+                {
+                    var scaleWidth = (int)Math.Round(image.Width * context.ScaleFactor);
+                    var scaleHeight = (int)Math.Round(image.Height * context.ScaleFactor);
+
+                    image.Mutate(x => x.Resize(scaleWidth, scaleHeight, KnownResamplers.Lanczos3));
+                }
+
                 using (var ms = new MemoryStream())
                 {
-                    contextImage.Save(ms, ImageFormat.Png);
+                    image.Save(ms, new PngEncoder());
                     objectData = ms.ToArray();
                 }
             }

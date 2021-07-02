@@ -2,16 +2,16 @@
 // See https://github.com/sungaila/PDFtoZPL/blob/master/LICENSE for full license details.
 // Source: https://github.com/sungaila/PDFtoZPL/blob/master/PDFtoZPL/Conversion.cs
 
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace BinaryKits.ZplUtility.Helper
 {
     public static class ImageHelper
+
     {
         /// <summary>
         /// The mapping table used for compression.
@@ -25,67 +25,46 @@ namespace BinaryKits.ZplUtility.Helper
             {220, "q"}, {240, "r"}, {260, "s"}, {280, "t"}, {300, "u"}, {320, "v"}, {340, "w"}, {360, "x"}, {380, "y"}, {400, "z" }
         };
 
-        public static string ConvertBitmapToHex(Bitmap bitmap, out int binaryByteCount, out int bytesPerRow)
+        public static string ConvertBitmap(byte[] imageData, out int binaryByteCount, out int bytesPerRow)
         {
             var zplBuilder = new StringBuilder();
 
-            bytesPerRow = bitmap.Width % 8 > 0
-                ? bitmap.Width / 8 + 1
-                : bitmap.Width / 8;
-
-            binaryByteCount = bitmap.Height * bytesPerRow;
-
-            int colorBits = 0;
-            int j = 0;
-
-            int width = bitmap.Width;
-            int height = bitmap.Height;
-
-            BitmapData data = null;
-            byte[] rgbValues = new byte[0];
-            int stride;
-
-            try
+            using (Image<Rgba32> image = Image.Load(imageData))
             {
-                data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-                stride = data.Stride;
-                int bytes = stride * bitmap.Height;
-                rgbValues = new byte[bytes];
-                Marshal.Copy(data.Scan0, rgbValues, 0, bytes);
-            }
-            finally
-            {
-                if (data != null)
+                bytesPerRow = image.Width % 8 > 0
+                    ? image.Width / 8 + 1
+                    : image.Width / 8;
+
+                binaryByteCount = image.Height * bytesPerRow;
+
+                var colorBits = 0;
+                var j = 0;
+
+                for (var y = 0; y < image.Height; y++)
                 {
-                    bitmap.UnlockBits(data);
-                }
-            }
+                    var row = image.GetPixelRowSpan(y);
 
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    byte red = rgbValues[y * stride + x * 3];
-                    byte green = rgbValues[y * stride + x * 3 + 1];
-                    byte blue = rgbValues[y * stride + x * 3 + 2];
-
-                    bool blackPixel = ((red + green + blue) / 3) < 128;
-
-                    if (blackPixel)
+                    for (var x = 0; x < image.Width; x++)
                     {
-                        colorBits |= 1 << (7 - j);
-                    }
+                        var pixel = row[x];
 
-                    j++;
+                        var isBlackPixel = ((pixel.R + pixel.G + pixel.B) / 3) < 128;
+                        if (isBlackPixel)
+                        {
+                            colorBits |= 1 << (7 - j);
+                        }
 
-                    if (j == 8 || x == (width - 1))
-                    {
-                        zplBuilder.Append(colorBits.ToString("X2"));
-                        colorBits = 0;
-                        j = 0;
+                        j++;
+
+                        if (j == 8 || x == (image.Width - 1))
+                        {
+                            zplBuilder.Append(colorBits.ToString("X2"));
+                            colorBits = 0;
+                            j = 0;
+                        }
                     }
-                }
-                zplBuilder.Append('\n');
+                    zplBuilder.Append('\n');
+                }                
             }
 
             return zplBuilder.ToString();
