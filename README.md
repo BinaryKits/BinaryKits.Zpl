@@ -201,3 +201,11 @@ You need to install `libgdiplus`, on openSUSE:
 zypper install libgdiplus0
 ```
 https://github.com/dotnet/core/issues/2746
+
+## Alternative projects
+
+| Language | Project |
+| ------------- | ------------- |
+| JavaScript | [JSZPL](https://github.com/DanieLeeuwner/JSZPL) |
+| .NET | [sharpzebra](https://github.com/rkone/sharpzebra) |
+| .NET | [PDFtoZPL](https://github.com/sungaila/PDFtoZPL) |
