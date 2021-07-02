@@ -193,13 +193,10 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 Console.WriteLine(output);
 ```
 
-## Issues
+## Alternative projects
 
-### .NET Core on Linux error: Unable to load shared library 'libgdiplus' or one of its dependencies
-
-You need to install `libgdiplus`, on openSUSE:
-
-```
-zypper install libgdiplus0
-```
-https://github.com/dotnet/core/issues/2746
+| Language | Project |
+| ------------- | ------------- |
+| JavaScript | [JSZPL](https://github.com/DanieLeeuwner/JSZPL) |
+| .NET | [sharpzebra](https://github.com/rkone/sharpzebra) |
+| .NET | [PDFtoZPL](https://github.com/sungaila/PDFtoZPL) |
