@@ -61,7 +61,7 @@ Note we are changing the class name prefix, from `ZPLElement` in version 1.x to 
 ### Barcode
 
 ```cs
-var output = new ZplBarcode128("123ABC", 100, 300).ToZplString();
+var output = new ZplBarcode128("123ABC", 10, 50).ToZplString();
 Console.WriteLine(output);
 ```
 
