@@ -37,7 +37,7 @@ namespace BinaryKits.ZplUtility.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BN,100,Y,N\n^FD123ABC^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BCN,100,Y,N\n^FD123ABC^FS\n^XZ", output);
         }
 
         [TestMethod]
