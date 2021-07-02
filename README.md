@@ -90,6 +90,8 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 Console.WriteLine(output);
 ```
 
+![Barcode 128](doc/preview-whole.label.png)
+
 ### Simple layout
 
 ```cs
