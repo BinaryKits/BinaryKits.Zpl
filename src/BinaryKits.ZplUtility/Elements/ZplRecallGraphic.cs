@@ -13,7 +13,14 @@ namespace BinaryKits.ZplUtility.Elements
         public int MagnificationFactorX { get; set; }
         public int MagnificationFactorY { get; set; }
 
-        public ZplRecallGraphic(int positionX, int positionY, char storageDevice, string imageName, string extension, int magnificationFactorX = 1, int magnificationFactorY = 1)
+        public ZplRecallGraphic(
+            int positionX,
+            int positionY,
+            char storageDevice,
+            string imageName,
+            string extension,
+            int magnificationFactorX = 1,
+            int magnificationFactorY = 1)
             : base(positionX, positionY)
         {
             StorageDevice = storageDevice;

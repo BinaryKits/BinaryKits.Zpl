@@ -13,7 +13,15 @@ namespace BinaryKits.ZplUtility.Elements
         public string ErrorCorrection { get; set; }
         public int MaskValue { get; set; }
 
-        public ZplQrCode(string content, int positionX, int positionY, int model = 2, int magnificationFactor = 2, string errorCorrection = "Q", int maskValue = 7) : base(positionX, positionY)
+        public ZplQrCode(
+            string content,
+            int positionX,
+            int positionY,
+            int model = 2,
+            int magnificationFactor = 2,
+            string errorCorrection = "Q",
+            int maskValue = 7)
+            : base(positionX, positionY)
         {
             Content = content;
             Model = model;

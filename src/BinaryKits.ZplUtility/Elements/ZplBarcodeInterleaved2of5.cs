@@ -10,7 +10,15 @@ namespace BinaryKits.ZplUtility.Elements
     {
         public bool Mod10CheckDigit { get; private set; }
 
-        public ZplBarcodeInterleaved2of5(string content, int positionX, int positionY, int height = 100, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool mod10CheckDigit = false)
+        public ZplBarcodeInterleaved2of5(
+            string content,
+            int positionX,
+            int positionY,
+            int height = 100,
+            string orientation = "N",
+            bool printInterpretationLine = true,
+            bool printInterpretationLineAboveCode = false,
+            bool mod10CheckDigit = false)
             : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
             if (!IsDigitsOnly(content))

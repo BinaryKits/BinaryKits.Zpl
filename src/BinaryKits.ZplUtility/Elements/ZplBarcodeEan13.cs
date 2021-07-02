@@ -8,7 +8,14 @@ namespace BinaryKits.ZplUtility.Elements
     /// </summary>
     public class ZplBarcodeEan13 : ZplBarcode
     {
-        public ZplBarcodeEan13(string content, int positionX, int positionY, int height = 100, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false)
+        public ZplBarcodeEan13(
+            string content,
+            int positionX,
+            int positionY,
+            int height = 100,
+            string orientation = "N",
+            bool printInterpretationLine = true,
+            bool printInterpretationLineAboveCode = false)
             : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
             if (!IsDigitsOnly(content))

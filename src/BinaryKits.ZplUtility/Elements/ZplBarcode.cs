@@ -2,7 +2,15 @@
 {
     public abstract class ZplBarcode : ZplPositionedElementBase
     {
-        public ZplBarcode(string content, int positionX, int positionY, int height, string orientation, bool printInterpretationLine, bool printInterpretationLineAboveCode) : base(positionX, positionY)
+        public ZplBarcode(
+            string content,
+            int positionX,
+            int positionY,
+            int height,
+            string orientation,
+            bool printInterpretationLine,
+            bool printInterpretationLineAboveCode) 
+            : base(positionX, positionY)
         {
             Origin = new ZplOrigin(positionX, positionY);
             Content = content;

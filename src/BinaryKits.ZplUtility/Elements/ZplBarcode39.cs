@@ -9,7 +9,15 @@ namespace BinaryKits.ZplUtility.Elements
     {
         public bool Mod43CheckDigit { get; private set; }
 
-        public ZplBarcode39(string content, int positionX, int positionY, int height = 100, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool mod43CheckDigit = false)
+        public ZplBarcode39(
+            string content,
+            int positionX,
+            int positionY,
+            int height = 100,
+            string orientation = "N",
+            bool printInterpretationLine = true,
+            bool printInterpretationLineAboveCode = false,
+            bool mod43CheckDigit = false)
             : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
             Mod43CheckDigit = mod43CheckDigit;
