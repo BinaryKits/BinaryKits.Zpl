@@ -65,6 +65,8 @@ var output = new ZplBarcode128("123ABC", 10, 50).ToZplString();
 Console.WriteLine(output);
 ```
 
+![Barcode 128](doc/preview-barcode128.png)
+
 ### Whole label
 
 ```cs
