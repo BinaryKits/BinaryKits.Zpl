@@ -90,7 +90,7 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 Console.WriteLine(output);
 ```
 
-![Barcode 128](doc/preview-whole.label.png)
+![Whole label](doc/preview-whole.label.png)
 
 ### Simple layout
 
@@ -113,6 +113,7 @@ var output = new ZplEngine(elements).ToZplString(options);
 
 Console.WriteLine(output);
 ```
+![Simple layout](doc/preview-simple-layout.png)
 
 ### Auto scale based on DPI
 
