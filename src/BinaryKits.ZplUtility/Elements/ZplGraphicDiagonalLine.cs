@@ -6,7 +6,16 @@ namespace BinaryKits.ZplUtility.Elements
     {
         public bool RightLeaningiagonal { get; private set; }
 
-        public ZplGraphicDiagonalLine(int positionX, int positionY, int width, int height, int borderThickness = 1, bool rightLeaningiagonal = false, string lineColor = "B", int cornerRounding = 0) : base(positionX, positionY, width, height, borderThickness, lineColor, 0)
+        public ZplGraphicDiagonalLine(
+            int positionX,
+            int positionY,
+            int width,
+            int height,
+            int borderThickness = 1,
+            bool rightLeaningiagonal = false,
+            string lineColor = "B",
+            int cornerRounding = 0)
+            : base(positionX, positionY, width, height, borderThickness, lineColor, 0)
         {
             RightLeaningiagonal = rightLeaningiagonal;
         }

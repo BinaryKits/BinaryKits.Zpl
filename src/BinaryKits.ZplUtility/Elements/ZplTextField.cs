@@ -29,7 +29,15 @@ namespace BinaryKits.ZplUtility.Elements
         /// <param name="newLineConversion"></param>
         /// <param name="useHexadecimalIndicator"></param>
         /// <param name="reversePrint"></param>
-        public ZplTextField(string text, int positionX, int positionY, ZplFont font, NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace, bool useHexadecimalIndicator = true, bool reversePrint = false) : base(positionX, positionY)
+        public ZplTextField(
+            string text,
+            int positionX,
+            int positionY,
+            ZplFont font,
+            NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace,
+            bool useHexadecimalIndicator = true,
+            bool reversePrint = false)
+            : base(positionX, positionY)
         {
             Text = text;
             Origin = new ZplOrigin(positionX, positionY);

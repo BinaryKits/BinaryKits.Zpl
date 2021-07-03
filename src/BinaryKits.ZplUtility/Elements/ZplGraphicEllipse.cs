@@ -4,7 +4,14 @@ namespace BinaryKits.ZplUtility.Elements
 {
     public class ZplGraphicEllipse : ZplGraphicBox
     {
-        public ZplGraphicEllipse(int positionX, int positionY, int width, int height, int borderThickness = 1, string lineColor = "B") : base(positionX, positionY, width, height, borderThickness, lineColor, 0)
+        public ZplGraphicEllipse(
+            int positionX,
+            int positionY,
+            int width,
+            int height,
+            int borderThickness = 1,
+            string lineColor = "B")
+            : base(positionX, positionY, width, height, borderThickness, lineColor, 0)
         {
         }
 

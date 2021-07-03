@@ -10,7 +10,15 @@ namespace BinaryKits.ZplUtility.Elements
         //0~8
         public int CornerRounding { get; private set; }
 
-        public ZplGraphicBox(int positionX, int positionY, int width, int height, int borderThickness = 1, string lineColor = "B", int cornerRounding = 0) : base(positionX, positionY, borderThickness, lineColor)
+        public ZplGraphicBox(
+            int positionX,
+            int positionY,
+            int width,
+            int height,
+            int borderThickness = 1,
+            string lineColor = "B",
+            int cornerRounding = 0)
+            : base(positionX, positionY, borderThickness, lineColor)
         {
             Width = width;
             Height = height;

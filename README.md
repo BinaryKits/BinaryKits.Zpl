@@ -169,7 +169,8 @@ Console.WriteLine(output);
 
 You have 2 options:
 
-**1. Use ~DY and ^IM**
+#### 1. ZplDownloadObjects (Use ~DY and ^IM)
+With this option, the image is sent to the printer in the original graphic format and the printer converts the graphic to a black and white graphic
 
 ```cs
 var elements = new List<ZplElementBase>();
@@ -183,7 +184,8 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 Console.WriteLine(output);
 ```
 
-**2. Use ~DG and ^XG**
+#### 2. ZplDownloadGraphics (Use ~DG and ^XG)
+With this option, the image is converted from the library into a black and white graphic and the printer already receives the finished print data
 
 ```cs
 var elements = new List<ZplElementBase>();

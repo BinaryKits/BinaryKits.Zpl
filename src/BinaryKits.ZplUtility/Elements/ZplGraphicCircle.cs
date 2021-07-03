@@ -18,7 +18,13 @@ namespace BinaryKits.ZplUtility.Elements
     {
         public int Diameter { get; private set; }
 
-        public ZplGraphicCircle(int positionX, int positionY, int diameter, int borderThickness = 1, string lineColor = "B") : base(positionX, positionY, borderThickness, lineColor)
+        public ZplGraphicCircle(
+            int positionX,
+            int positionY,
+            int diameter,
+            int borderThickness = 1,
+            string lineColor = "B")
+            : base(positionX, positionY, borderThickness, lineColor)
         {
             Diameter = diameter;
         }

@@ -32,7 +32,14 @@ namespace BinaryKits.ZplUtility.Elements
             }
         }
 
-        public ZplGraphicSymbol(GraphicSymbolCharacter character, int positionX, int positionY, int width, int height, string orientation = "N") : base(positionX, positionY)
+        public ZplGraphicSymbol(
+            GraphicSymbolCharacter character,
+            int positionX,
+            int positionY,
+            int width,
+            int height,
+            string orientation = "N")
+            : base(positionX, positionY)
         {
             Character = character;
             Orientation = orientation;

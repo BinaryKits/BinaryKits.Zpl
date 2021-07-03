@@ -16,7 +16,19 @@ namespace BinaryKits.ZplUtility.Elements
         //hanging indent (in dots) of the second and remaining lines
         public int HangingIndent { get; private set; }
 
-        public ZplFieldBlock(string text, int positionX, int positionY, int width, ZplFont font, int maxLineCount = 1, int lineSpace = 0, string textJustification = "L", int hangingIndent = 0, NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToZplNewLine, bool useHexadecimalIndicator = true, bool reversePrint = false)
+        public ZplFieldBlock(
+            string text,
+            int positionX,
+            int positionY,
+            int width,
+            ZplFont font,
+            int maxLineCount = 1,
+            int lineSpace = 0,
+            string textJustification = "L",
+            int hangingIndent = 0,
+            NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToZplNewLine,
+            bool useHexadecimalIndicator = true,
+            bool reversePrint = false)
             : base(text, positionX, positionY, font, newLineConversion, useHexadecimalIndicator, reversePrint)
         {
             TextJustification = textJustification;

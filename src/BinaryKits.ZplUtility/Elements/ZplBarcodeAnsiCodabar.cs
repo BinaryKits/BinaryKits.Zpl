@@ -10,7 +10,17 @@ namespace BinaryKits.ZplUtility.Elements
         public char StartCharacter { get; private set; }
         public char StopCharacter { get; private set; }
 
-        public ZplBarcodeAnsiCodabar(string content, int positionX, int positionY, int height, char startCharacter, char stopCharacter, string orientation = "N", bool printInterpretationLine = true, bool printInterpretationLineAboveCode = false, bool checkDigit = false)
+        public ZplBarcodeAnsiCodabar(
+            string content,
+            int positionX,
+            int positionY,
+            int height,
+            char startCharacter,
+            char stopCharacter,
+            string orientation = "N",
+            bool printInterpretationLine = true,
+            bool printInterpretationLineAboveCode = false,
+            bool checkDigit = false)
             : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
             CheckDigit = checkDigit;
