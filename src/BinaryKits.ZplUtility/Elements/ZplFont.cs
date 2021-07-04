@@ -7,6 +7,9 @@ namespace BinaryKits.ZplUtility.Elements
     /// </summary>
     public class ZplFont : ZplElementBase
     {
+        /// <summary>
+        /// Any font in the printer (downloaded, EPROM, stored fonts, fonts A through Z and 0 to 9).
+        /// </summary>
         public string FontName { get; private set; }
         public string Orientation { get; private set; }
         public int FontWidth { get; private set; }

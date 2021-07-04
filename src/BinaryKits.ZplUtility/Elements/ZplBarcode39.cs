@@ -3,22 +3,33 @@
 namespace BinaryKits.ZplUtility.Elements
 {
     /// <summary>
-    /// Code 39
+    /// Code 39 Barcode
     /// </summary>
     public class ZplBarcode39 : ZplBarcode
     {
         public bool Mod43CheckDigit { get; private set; }
 
+        /// <summary>
+        /// Code 39 Barcode
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="positionX"></param>
+        /// <param name="positionY"></param>
+        /// <param name="height"></param>
+        /// <param name="fieldOrientation"></param>
+        /// <param name="printInterpretationLine"></param>
+        /// <param name="printInterpretationLineAboveCode"></param>
+        /// <param name="mod43CheckDigit"></param>
         public ZplBarcode39(
             string content,
             int positionX,
             int positionY,
             int height = 100,
-            string orientation = "N",
+            FieldOrientation fieldOrientation = FieldOrientation.Normal,
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
             bool mod43CheckDigit = false)
-            : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
+            : base(content, positionX, positionY, height, fieldOrientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
             Mod43CheckDigit = mod43CheckDigit;
         }
@@ -30,7 +41,7 @@ namespace BinaryKits.ZplUtility.Elements
             //^FD123456 ^ FS
             var result = new List<string>();
             result.AddRange(Origin.Render(context));
-            result.Add($"^B3{Orientation},{(Mod43CheckDigit ? "Y" : "N")},{context.Scale(Height)},{(PrintInterpretationLine ? "Y" : "N")},{(PrintInterpretationLineAboveCode ? "Y" : "N")}");
+            result.Add($"^B3{RenderFieldOrientation()},{(Mod43CheckDigit ? "Y" : "N")},{context.Scale(Height)},{(PrintInterpretationLine ? "Y" : "N")},{(PrintInterpretationLineAboveCode ? "Y" : "N")}");
             result.Add($"^FD{Content}^FS");
 
             return result;

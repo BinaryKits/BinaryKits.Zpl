@@ -16,29 +16,6 @@ namespace BinaryKits.ZplUtility
             public static readonly string CI13 = "^CI13";
         }
 
-        /// <summary>
-        /// Orientation
-        /// </summary>
-        public static class Orientation
-        {
-            /// <summary>
-            /// Normal
-            /// </summary>
-            public static readonly string Normal = "N";
-            /// <summary>
-            /// Rotated 90 degrees(clockwise)
-            /// </summary>
-            public static readonly string Rotated90 = "R";
-            /// <summary>
-            /// Inverted 180 degrees
-            /// </summary>
-            public static readonly string Rotated180 = "I";
-            /// <summary>
-            /// Read from bottom up, 270 degrees
-            /// </summary>
-            public static readonly string Rotated270 = "B";
-        }
-
         public static class Font
         {
             public static readonly ZplFont Default = new ZplFont(30, 30, "0", "N");

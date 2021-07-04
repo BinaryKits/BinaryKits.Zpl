@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BinaryKits.ZplUtility.Elements
 {
@@ -33,6 +34,23 @@ namespace BinaryKits.ZplUtility.Elements
         }
 
         public abstract IEnumerable<string> Render(ZplRenderOptions context);
+
+        public string RenderFieldOrientation(FieldOrientation fieldOrientation)
+        {
+            switch (fieldOrientation)
+            {
+                case FieldOrientation.Normal:
+                    return "N";
+                case FieldOrientation.Rotated90:
+                    return "R";
+                case FieldOrientation.Rotated180:
+                    return "I";
+                case FieldOrientation.Rotated270:
+                    return "B";
+            }
+
+            throw new NotImplementedException("Unknown Field Orientation");
+        }
 
         public string ToZplString()
         {
