@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BinaryKits.ZplUtility.Elements
 {
@@ -7,25 +8,30 @@ namespace BinaryKits.ZplUtility.Elements
     /// </summary>
     public class ZplRecallGraphic : ZplPositionedElementBase
     {
-        public char StorageDevice { get; set; }
-        public string ImageName { get; set; }
-        public string Extension { get; set; }
-        public int MagnificationFactorX { get; set; }
-        public int MagnificationFactorY { get; set; }
+        public char StorageDevice { get; private set; }
+        public string ImageName { get; private set; }
+        private string _extension { get; set; }
+        public int MagnificationFactorX { get; private set; }
+        public int MagnificationFactorY { get; private set; }
 
         public ZplRecallGraphic(
             int positionX,
             int positionY,
             char storageDevice,
             string imageName,
-            string extension,
             int magnificationFactorX = 1,
             int magnificationFactorY = 1)
             : base(positionX, positionY)
         {
+            if (imageName.Length > 8)
+            {
+                new ArgumentException("maximum length of 8 characters exceeded", nameof(imageName));
+            }
+
+            _extension = "GRF";
+
             StorageDevice = storageDevice;
             ImageName = imageName;
-            Extension = extension;
             MagnificationFactorX = magnificationFactorX;
             MagnificationFactorY = magnificationFactorY;
         }
@@ -34,7 +40,7 @@ namespace BinaryKits.ZplUtility.Elements
         {
             var result = new List<string>();
             result.AddRange(Origin.Render(context));
-            result.Add($"^XG{StorageDevice}:{ImageName}.{Extension},{MagnificationFactorX},{MagnificationFactorY},");
+            result.Add($"^XG{StorageDevice}:{ImageName}.{_extension},{MagnificationFactorX},{MagnificationFactorY}^FS");
 
             return result;
         }
