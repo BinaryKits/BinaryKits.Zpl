@@ -6,16 +6,22 @@ namespace BinaryKits.ZplUtility.Elements
     {
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
+            var gridSize = 100;
+            var font = new ZplFont(fontWidth: 0, fontHeight: 20, fontName: "0");
+
             var result = new List<string>();
 
-            for (int i = 0; i <= 1500; i += 100)
+            for (var x = 0; x < 30; x++)
             {
-                result.AddRange(new ZplGraphicBox(0, i, 3000, 1).Render());
-            }
+                for (var y = 0; y < 30; y++)
+                {
+                    var positionX = x * gridSize;
+                    var positionY = y * gridSize;
 
-            for (int i = 0; i <= 1500; i += 100)
-            {
-                result.AddRange(new ZplGraphicBox(i, 0, 1, 3000).Render());
+                    result.AddRange(new ZplGraphicBox(positionX, positionY, gridSize, gridSize).Render());
+                    result.AddRange(new ZplTextField($"X:{positionX}", positionX + 10, positionY + 30, font).Render());
+                    result.AddRange(new ZplTextField($"Y:{positionY}", positionX + 10, positionY + 50, font).Render());
+                }
             }
 
             return result;
