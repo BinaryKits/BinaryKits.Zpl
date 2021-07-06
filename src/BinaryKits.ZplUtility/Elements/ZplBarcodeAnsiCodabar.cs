@@ -20,8 +20,8 @@ namespace BinaryKits.ZplUtility.Elements
         /// <param name="positionX"></param>
         /// <param name="positionY"></param>
         /// <param name="height"></param>
-        /// <param name="startCharacter"></param>
-        /// <param name="stopCharacter"></param>
+        /// <param name="startCharacter">A,B,C,D</param>
+        /// <param name="stopCharacter">A,B,C,D</param>
         /// <param name="fieldOrientation"></param>
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
@@ -39,19 +39,25 @@ namespace BinaryKits.ZplUtility.Elements
             bool checkDigit = false)
             : base(content, positionX, positionY, height, fieldOrientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
+            if (!IsValidCharacter(startCharacter))
+            {
+                throw new InvalidOperationException("ANSI Codabar start charactor must be one of A, B, C, D");
+            }
+
+            if (!IsValidCharacter(stopCharacter))
+            {
+                throw new InvalidOperationException("ANSI Codabar stop charactor must be one of A, B, C, D");
+            }
+
             CheckDigit = checkDigit;
-
-            if (!"ABCDabcd".Contains(startCharacter))
-            {
-                throw new InvalidOperationException("ANSI Codabar start charactor must be one of A, B, C D");
-            }
             StartCharacter = char.ToUpper(startCharacter);
-
-            if (!"ABCDabcd".Contains(stopCharacter))
-            {
-                throw new InvalidOperationException("ANSI Codabar stop charactor must be one of A, B, C D");
-            }
             StopCharacter = char.ToUpper(stopCharacter);
+        }
+
+        private bool IsValidCharacter(char character)
+        {
+            var chars = new[] { 'A', 'B', 'C', 'D' };
+            return chars.Contains(char.ToUpperInvariant(character));
         }
 
         public override IEnumerable<string> Render(ZplRenderOptions context)
