@@ -11,25 +11,25 @@ namespace BinaryKits.ZplUtility.TestConsole
     {
         static async Task Main(string[] args)
         {
-            //Console.WriteLine("Render Label1");
-            //var zplData = RenderLabel1();
-            //await RenderPreviewAsync(zplData);
-
-            Console.WriteLine("Render Label2");
-            var zplData = RenderLabel2();
+            Console.WriteLine("Render Label1");
+            var zplData = RenderLabel1();
             await RenderPreviewAsync(zplData);
 
-            //Console.WriteLine("Render Label3");
-            //zplData = RenderLabel3();
-            //await RenderPreviewAsync(zplData);
+            Console.WriteLine("Render Label2");
+            zplData = RenderLabel2();
+            await RenderPreviewAsync(zplData);
 
-            //Console.WriteLine("Render Label4");
-            //zplData = RenderLabel4();
-            //await RenderPreviewAsync(zplData);
+            Console.WriteLine("Render Label3");
+            zplData = RenderLabel3();
+            await RenderPreviewAsync(zplData);
 
-            //Console.WriteLine("Render Label5");
-            //zplData = RenderLabel5();
-            //await RenderPreviewAsync(zplData);
+            Console.WriteLine("Render Label4");
+            zplData = RenderLabel4();
+            await RenderPreviewAsync(zplData);
+
+            Console.WriteLine("Render Label5");
+            zplData = RenderLabel5();
+            await RenderPreviewAsync(zplData);
         }
 
         static string RenderLabel1()
