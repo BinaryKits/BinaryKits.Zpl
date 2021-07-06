@@ -4,6 +4,10 @@ Please refer to the Programming Guide for raw ZPL code definitaion,
 [ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf)
 Some basic ZPL elements are included, if you have any suggestions please feel free to let me know.
 
+## :information_source: Info
+> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `ZplElement` in version 2 (under development).
+> The documentation for version 1 is available [here](https://github.com/BinaryKits/ZPLUtility/tree/v1)
+
 <img src="https://raw.githubusercontent.com/BinaryKits/ZPLUtility/master/doc/logo.png" width="200">
 
 ## How can I use it?
@@ -55,8 +59,6 @@ using BinaryKits.ZplUtility.Elements;
 var output = new ZplGraphicBox(100, 100, 100, 100).ToZplString();
 Console.WriteLine(output);
 ```
-
-Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `ZplElement` in version 2 (under development).
 
 ### Barcode
 
