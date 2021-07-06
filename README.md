@@ -75,7 +75,7 @@ var font = new ZplFont(fontWidth: 50, fontHeight: 50);
 var elements = new List<ZplElementBase>();
 elements.Add(new ZplTextField(sampleText, 50, 100, font));
 elements.Add(new ZplGraphicBox(400, 700, 100, 100, 5));
-elements.Add(new ZplGraphicBox(450, 750, 100, 100, 50, ZplConstants.LineColor.White));
+elements.Add(new ZplGraphicBox(450, 750, 100, 100, 50, LineColor.White));
 elements.Add(new ZplGraphicCircle(400, 700, 100, 5));
 elements.Add(new ZplGraphicDiagonalLine(400, 700, 100, 50, 5));
 elements.Add(new ZplGraphicDiagonalLine(400, 700, 50, 100, 5));
