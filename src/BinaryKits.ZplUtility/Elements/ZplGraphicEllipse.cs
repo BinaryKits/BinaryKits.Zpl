@@ -10,7 +10,7 @@ namespace BinaryKits.ZplUtility.Elements
             int width,
             int height,
             int borderThickness = 1,
-            string lineColor = "B")
+            LineColor lineColor = LineColor.Black)
             : base(positionX, positionY, width, height, borderThickness, lineColor, 0)
         {
         }
@@ -20,7 +20,7 @@ namespace BinaryKits.ZplUtility.Elements
             //^ GE300,100,10,B ^ FS
             var result = new List<string>();
             result.AddRange(Origin.Render(context));
-            result.Add($"^GE{context.Scale(Width)},{context.Scale(Height)},{context.Scale(BorderThickness)},{LineColor}^FS");
+            result.Add($"^GE{context.Scale(Width)},{context.Scale(Height)},{context.Scale(BorderThickness)},{RenderLineColor(LineColor)}^FS");
 
             return result;
         }

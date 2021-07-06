@@ -23,7 +23,7 @@ namespace BinaryKits.ZplUtility.Elements
             int positionY,
             int diameter,
             int borderThickness = 1,
-            string lineColor = "B")
+            LineColor lineColor = LineColor.Black)
             : base(positionX, positionY, borderThickness, lineColor)
         {
             Diameter = diameter;
@@ -34,7 +34,7 @@ namespace BinaryKits.ZplUtility.Elements
             //^GCd,t,c
             var result = new List<string>();
             result.AddRange(Origin.Render(context));
-            result.Add($"^GC{context.Scale(Diameter)},{context.Scale(BorderThickness)},{LineColor}^FS");
+            result.Add($"^GC{context.Scale(Diameter)},{context.Scale(BorderThickness)},{RenderLineColor(LineColor)}^FS");
 
             return result;
         }

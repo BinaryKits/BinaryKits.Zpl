@@ -13,8 +13,7 @@ namespace BinaryKits.ZplUtility.Elements
             int height,
             int borderThickness = 1,
             bool rightLeaningiagonal = false,
-            string lineColor = "B",
-            int cornerRounding = 0)
+            LineColor lineColor = LineColor.Black)
             : base(positionX, positionY, width, height, borderThickness, lineColor, 0)
         {
             RightLeaningiagonal = rightLeaningiagonal;
@@ -25,7 +24,7 @@ namespace BinaryKits.ZplUtility.Elements
             //^GDw,h,t,c,o
             var result = new List<string>();
             result.AddRange(Origin.Render(context));
-            result.Add($"^GD{context.Scale(Width)},{context.Scale(Height)},{context.Scale(BorderThickness)},{LineColor},{(RightLeaningiagonal ? "R" : "L")}^FS");
+            result.Add($"^GD{context.Scale(Width)},{context.Scale(Height)},{context.Scale(BorderThickness)},{RenderLineColor(LineColor)},{(RightLeaningiagonal ? "R" : "L")}^FS");
 
             return result;
         }

@@ -18,7 +18,7 @@ namespace BinaryKits.ZplUtility
 
         public static class Font
         {
-            public static readonly ZplFont Default = new ZplFont(30, 30, "0", "N");
+            public static readonly ZplFont Default = new ZplFont(30, 30, "0", FieldOrientation.Normal);
         }
 
         //^FB
@@ -40,18 +40,6 @@ namespace BinaryKits.ZplUtility
             /// justified
             /// </summary>
             public static readonly string Justified = "J";
-        }
-
-        public static class LineColor
-        {
-            /// <summary>
-            /// Black
-            /// </summary>
-            public static readonly string Black = "B";
-            /// <summary>
-            /// White
-            /// </summary>
-            public static readonly string White = "W";
         }
     }
 }

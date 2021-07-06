@@ -19,8 +19,6 @@
         /// </summary>
         public string ChangeInternationalFontEncoding { get; set; }
 
-        public string DefaultTextOrientation { get; set; }
-
         public bool DisplayComments { get; set; }
 
         public bool AddEmptyLineBeforeElementStart { get; set; }
@@ -57,7 +55,6 @@
             AddDefaultLabelHome = true;
             ChangeInternationalFontEncoding = ZplConstants.InternationalFontEncoding.CI28;
             SourcePrintDpi = TargetPrintDpi = 203;
-            DefaultTextOrientation = "N";
         }
     }
 }

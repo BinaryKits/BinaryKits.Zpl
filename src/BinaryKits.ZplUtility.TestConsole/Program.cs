@@ -19,7 +19,7 @@ namespace BinaryKits.ZplUtility.TestConsole
                 //new ZplRaw("^POI"), //Invert
                 new ZplTextField(sampleText, 50, 100, font),
                 new ZplGraphicBox(400, 700, 100, 100, 5),
-                new ZplGraphicBox(450, 750, 100, 100, 50, ZplConstants.LineColor.White),
+                new ZplGraphicBox(450, 750, 100, 100, 50, LineColor.White),
                 new ZplGraphicCircle(400, 700, 100, 5),
                 new ZplGraphicDiagonalLine(400, 700, 100, 50, 5),
                 new ZplGraphicDiagonalLine(400, 700, 50, 100, 5),

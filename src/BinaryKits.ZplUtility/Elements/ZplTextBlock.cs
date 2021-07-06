@@ -33,7 +33,7 @@ namespace BinaryKits.ZplUtility.Elements
             var result = new List<string>();
             result.AddRange(Font.Render(context));
             result.AddRange(Origin.Render(context));
-            result.Add($"^TB{Font.Orientation},{context.Scale(Width)},{context.Scale(Height)}");
+            result.Add($"^TB{RenderFieldOrientation(Font.FieldOrientation)},{context.Scale(Width)},{context.Scale(Height)}");
             result.Add(RenderFieldDataSection());
 
             return result;

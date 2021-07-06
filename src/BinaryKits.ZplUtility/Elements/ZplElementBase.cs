@@ -52,6 +52,36 @@ namespace BinaryKits.ZplUtility.Elements
             throw new NotImplementedException("Unknown Field Orientation");
         }
 
+        public string RenderLineColor(LineColor lineColor)
+        {
+            switch (lineColor)
+            {
+                case LineColor.Black:
+                    return "B";
+                case LineColor.White:
+                    return "W";
+            }
+
+            throw new NotImplementedException("Unknown Line Color");
+        }
+
+        public string RenderErrorCorrectionLevel(ErrorCorrectionLevel errorCorrectionLevel)
+        {
+            switch (errorCorrectionLevel)
+            {
+                case ErrorCorrectionLevel.UltraHighReliability:
+                    return "H";
+                case ErrorCorrectionLevel.HighReliability:
+                    return "Q";
+                case ErrorCorrectionLevel.Standard:
+                    return "M";
+                case ErrorCorrectionLevel.HighDensity:
+                    return "L";
+            }
+
+            throw new NotImplementedException("Unknown Error Correction Level");
+        }
+
         public string ToZplString()
         {
             return ToZplString(new ZplRenderOptions());

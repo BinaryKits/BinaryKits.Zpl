@@ -11,27 +11,25 @@ namespace BinaryKits.ZplUtility.Elements
         /// Any font in the printer (downloaded, EPROM, stored fonts, fonts A through Z and 0 to 9).
         /// </summary>
         public string FontName { get; private set; }
-        public string Orientation { get; private set; }
+        public FieldOrientation FieldOrientation { get; private set; }
         public int FontWidth { get; private set; }
         public int FontHeight { get; private set; }
 
-        public ZplFont(int fontWidth = 30, int fontHeight = 30, string fontName = "0", string orientation = "N")
+        public ZplFont(
+            int fontWidth = 30,
+            int fontHeight = 30,
+            string fontName = "0",
+            FieldOrientation fieldOrientation = FieldOrientation.Normal)
         {
             FontName = fontName;
-            Orientation = orientation;
+            FieldOrientation = fieldOrientation;
             FontWidth = fontWidth;
             FontHeight = fontHeight;
         }
 
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
-            string textOrientation = Orientation;
-            if (string.IsNullOrEmpty(textOrientation))
-            {
-                textOrientation = context.DefaultTextOrientation;
-            }
-
-            return new[] { $"^A{FontName}{textOrientation},{context.Scale(FontHeight)},{context.Scale(FontWidth)}" };
+            return new[] { $"^A{FontName}{RenderFieldOrientation(FieldOrientation)},{context.Scale(FontHeight)},{context.Scale(FontWidth)}" };
         }
     }
 }

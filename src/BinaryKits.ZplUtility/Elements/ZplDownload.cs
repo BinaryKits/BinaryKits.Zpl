@@ -6,7 +6,7 @@
         /// DRAM, Memory Card, EPROM, Flash
         /// R, E, B, and A
         /// </summary>
-        public char StorageDevice { get; set; }
+        public char StorageDevice { get; private set; }
 
         public ZplDownload(char storageDevice)
         {

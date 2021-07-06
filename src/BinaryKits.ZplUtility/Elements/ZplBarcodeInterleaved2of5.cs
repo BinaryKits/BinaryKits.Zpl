@@ -44,7 +44,7 @@ namespace BinaryKits.ZplUtility.Elements
         {
             var result = new List<string>();
             result.AddRange(Origin.Render(context));
-            result.Add($"^B2{RenderFieldOrientation()},{context.Scale(Height)},{(PrintInterpretationLine ? "Y" : "N")},{(PrintInterpretationLineAboveCode ? "Y" : "N")},{(Mod10CheckDigit ? "Y" : "N")}");
+            result.Add($"^B2{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{(Mod10CheckDigit ? "Y" : "N")}");
             result.Add($"^FD{Content}^FS");
 
             return result;

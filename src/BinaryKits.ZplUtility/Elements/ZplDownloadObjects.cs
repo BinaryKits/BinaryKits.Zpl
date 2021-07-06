@@ -27,8 +27,8 @@ namespace BinaryKits.ZplUtility.Elements
     /// </remarks>
     public class ZplDownloadObjects : ZplDownload
     {
-        public string ObjectName { get; set; }
-        public byte[] ImageData { get; set; }
+        public string ObjectName { get; private set; }
+        public byte[] ImageData { get; private set; }
 
         public ZplDownloadObjects(char storageDevice, string imageName, byte[] imageData)
             : base(storageDevice)

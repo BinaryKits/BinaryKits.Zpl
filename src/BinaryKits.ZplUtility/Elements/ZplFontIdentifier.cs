@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace BinaryKits.ZplUtility.Elements
 {
+    /// <summary>
+    /// All built-in fonts are referenced using a one-character identifier. The ^CW command assigns a single
+    /// alphanumeric character to a font stored in DRAM, memory card, EPROM, or Flash
+    /// </summary>
     public class ZplFontIdentifier : ZplElementBase
     {
-        public string FontReplaceLetter { get; set; }
-        public string Device { get; set; }
-        public string FontFileName { get; set; }
+        public char FontReplaceLetter { get; private set; }
+        public string Device { get; private set; }
+        public string FontFileName { get; private set; }
 
-        public ZplFontIdentifier(string fontReplaceLetter, string device, string fontFileName)
+        /// <summary>
+        /// All built-in fonts are referenced using a one-character identifier. The ^CW command assigns a single
+        /// alphanumeric character to a font stored in DRAM, memory card, EPROM, or Flash
+        /// </summary>
+        public ZplFontIdentifier(char fontReplaceLetter, string device, string fontFileName)
         {
             FontReplaceLetter = fontReplaceLetter;
             Device = device;

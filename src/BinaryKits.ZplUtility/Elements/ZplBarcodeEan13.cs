@@ -38,7 +38,7 @@ namespace BinaryKits.ZplUtility.Elements
         {
             var result = new List<string>();
             result.AddRange(Origin.Render(context));
-            result.Add($"^BE{RenderFieldOrientation()},{context.Scale(Height)},{(PrintInterpretationLine ? "Y" : "N")},{(PrintInterpretationLineAboveCode ? "Y" : "N")}");
+            result.Add($"^BE{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()}");
             result.Add($"^FD{Content}^FS");
 
             return result;

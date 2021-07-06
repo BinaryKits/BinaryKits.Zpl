@@ -28,6 +28,16 @@
         public bool PrintInterpretationLine { get; protected set; }
         public bool PrintInterpretationLineAboveCode { get; protected set; }
 
+        public string RenderPrintInterpretationLine()
+        {
+            return PrintInterpretationLine ? "Y" : "N";
+        }
+
+        public string RenderPrintInterpretationLineAboveCode()
+        {
+            return PrintInterpretationLineAboveCode ? "Y" : "N";
+        }
+
         protected string RenderFieldOrientation()
         {
             return RenderFieldOrientation(FieldOrientation);
