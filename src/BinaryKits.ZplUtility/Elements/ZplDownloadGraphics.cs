@@ -25,26 +25,37 @@ namespace BinaryKits.ZplUtility.Elements
     /// </remarks>
     public class ZplDownloadGraphics : ZplDownload
     {
-        public string ImageName { get; set; }
-        public string Extension { get; set; }
-        public int TotalNumberOfBytes { get; set; }
-        public int NumberOfBytesPerRow { get; set; }
-        public byte[] ImageData { get; set; }
+        public string ImageName { get; private set; }
+        private string _extension { get; set; }
+        public byte[] ImageData { get; private set; }
 
         private bool _isCompressionActive;
         private IImageConverter _imageConverter;
 
+        /// <summary>
+        /// Zpl Download Graphics
+        /// </summary>
+        /// <param name="storageDevice"></param>
+        /// <param name="imageName"></param>
+        /// <param name="imageData"></param>
+        /// <param name="isCompressionActive"></param>
+        /// <param name="imageConverter"></param>
         public ZplDownloadGraphics(
             char storageDevice,
             string imageName,
-            string extension,
             byte[] imageData,
             bool isCompressionActive = true,
             IImageConverter imageConverter = default)
             : base(storageDevice)
         {
+            if (imageName.Length > 8)
+            {
+                new ArgumentException("maximum length of 8 characters exceeded", nameof(imageName));
+            }
+
+            _extension = "GRF"; //Fixed
+
             ImageName = imageName;
-            Extension = extension;
             ImageData = imageData;
 
             if (imageConverter == default)
@@ -85,7 +96,7 @@ namespace BinaryKits.ZplUtility.Elements
 
             return new List<string>
             {
-                $"~DG{StorageDevice}:{ImageName}.{Extension},{imageResult.BinaryByteCount},{imageResult.BytesPerRow},",
+                $"~DG{StorageDevice}:{ImageName}.{_extension},{imageResult.BinaryByteCount},{imageResult.BytesPerRow},",
                 imageResult.ZplData
             };
         }
