@@ -22,7 +22,30 @@ jobs:
       run: dotnet restore
     - name: Build
       working-directory: ./src
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore /p:NoWarn=1591
     - name: Test
       working-directory: ./src
       run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
+  
+  build-Linux:
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      working-directory: ./src
+      run: dotnet restore
+    - name: Build
+      working-directory: ./src
+      run: dotnet build --configuration Release --no-restore /p:NoWarn=1591
+    - name: Test
+      working-directory: ./src
+      run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
+
+
+
