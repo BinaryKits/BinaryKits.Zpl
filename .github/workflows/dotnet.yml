@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-windows:
 
     runs-on: windows-latest
 
@@ -27,7 +27,7 @@ jobs:
       working-directory: ./src
       run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
   
-  build-Linux:
+  build-linux:
     
     runs-on: ubuntu-latest
     
