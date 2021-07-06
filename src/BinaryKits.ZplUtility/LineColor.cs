@@ -1,5 +1,8 @@
 ﻿namespace BinaryKits.ZplUtility
 {
+    /// <summary>
+    /// Line Color
+    /// </summary>
     public enum LineColor
     {
         /// <summary>

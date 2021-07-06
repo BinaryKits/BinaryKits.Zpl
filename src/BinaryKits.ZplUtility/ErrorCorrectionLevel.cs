@@ -1,5 +1,8 @@
 ﻿namespace BinaryKits.ZplUtility
 {
+    /// <summary>
+    /// Error Correction Level 
+    /// </summary>
     public enum ErrorCorrectionLevel
     {
         /// <summary>
