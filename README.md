@@ -189,8 +189,8 @@ With this option, the image is converted from the library into a black and white
 
 ```cs
 var elements = new List<ZplElementBase>();
-elements.Add(new ZplDownloadGraphics('R', "SAMPLE", "BMP", System.IO.File.ReadAllBytes("sample.bmp")));
-elements.Add(new ZplRecallGraphic(100, 100, 'R', "SAMPLE", "BMP"));
+elements.Add(new ZplDownloadGraphics('R', "SAMPLE", System.IO.File.ReadAllBytes("sample.bmp")));
+elements.Add(new ZplRecallGraphic(100, 100, 'R', "SAMPLE"));
 
 var renderEngine = new ZplEngine(elements);
 var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeElementStart = true, TargetPrintDpi = 600, SourcePrintDpi = 200 });

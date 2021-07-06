@@ -19,8 +19,8 @@ namespace BinaryKits.ZplUtility.UnitTest
             var elements = new List<ZplElementBase>
             {
                 new ZplGraphicBox(0, 0, 100, 100, 4),
-                new ZplDownloadGraphics('R', "SAMPLE", "PNG", imageData),
-                new ZplRecallGraphic(100, 100, 'R', "SAMPLE", "PNG")
+                new ZplDownloadGraphics('R', "SAMPLE", imageData),
+                new ZplRecallGraphic(100, 100, 'R', "SAMPLE")
             };
 
             var renderEngine = new ZplEngine(elements);
