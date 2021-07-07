@@ -4,12 +4,28 @@ using System.Linq;
 
 namespace BinaryKits.ZplUtility.Elements
 {
+    /// <summary>
+    /// Ansi Codabar Barcode
+    /// </summary>
     public class ZplBarcodeAnsiCodabar : ZplBarcode
     {
         public bool CheckDigit { get; private set; }
         public char StartCharacter { get; private set; }
         public char StopCharacter { get; private set; }
 
+        /// <summary>
+        /// Ansi Codabar Barcode
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="positionX"></param>
+        /// <param name="positionY"></param>
+        /// <param name="height"></param>
+        /// <param name="startCharacter">A,B,C,D</param>
+        /// <param name="stopCharacter">A,B,C,D</param>
+        /// <param name="fieldOrientation"></param>
+        /// <param name="printInterpretationLine"></param>
+        /// <param name="printInterpretationLineAboveCode"></param>
+        /// <param name="checkDigit"></param>
         public ZplBarcodeAnsiCodabar(
             string content,
             int positionX,
@@ -17,23 +33,31 @@ namespace BinaryKits.ZplUtility.Elements
             int height,
             char startCharacter,
             char stopCharacter,
-            string orientation = "N",
+            FieldOrientation fieldOrientation = FieldOrientation.Normal,
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
             bool checkDigit = false)
-            : base(content, positionX, positionY, height, orientation, printInterpretationLine, printInterpretationLineAboveCode)
+            : base(content, positionX, positionY, height, fieldOrientation, printInterpretationLine, printInterpretationLineAboveCode)
         {
+            if (!IsValidCharacter(startCharacter))
+            {
+                throw new InvalidOperationException("ANSI Codabar start charactor must be one of A, B, C, D");
+            }
+
+            if (!IsValidCharacter(stopCharacter))
+            {
+                throw new InvalidOperationException("ANSI Codabar stop charactor must be one of A, B, C, D");
+            }
+
             CheckDigit = checkDigit;
-            if (!"ABCDabcd".Contains(startCharacter))
-            {
-                throw new InvalidOperationException("ANSI Codabar start charactor must be one of A, B, C D");
-            }
             StartCharacter = char.ToUpper(startCharacter);
-            if (!"ABCDabcd".Contains(stopCharacter))
-            {
-                throw new InvalidOperationException("ANSI Codabar stop charactor must be one of A, B, C D");
-            }
             StopCharacter = char.ToUpper(stopCharacter);
+        }
+
+        private bool IsValidCharacter(char character)
+        {
+            var chars = new[] { 'A', 'B', 'C', 'D' };
+            return chars.Contains(char.ToUpperInvariant(character));
         }
 
         public override IEnumerable<string> Render(ZplRenderOptions context)
@@ -43,7 +67,7 @@ namespace BinaryKits.ZplUtility.Elements
             //  ^ FD123456 ^ FS
             var result = new List<string>();
             result.AddRange(Origin.Render(context));
-            result.Add($"^BK{Orientation},{(CheckDigit ? "Y" : "N")},{context.Scale(Height)},{(PrintInterpretationLine ? "Y" : "N")},{(PrintInterpretationLineAboveCode ? "Y" : "N")},{StartCharacter},{StopCharacter}");
+            result.Add($"^BK{RenderFieldOrientation()},{(CheckDigit ? "Y" : "N")},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{StartCharacter},{StopCharacter}");
             result.Add($"^FD{Content}^FS");
 
             return result;

@@ -4,7 +4,7 @@ namespace BinaryKits.ZplUtility.Elements
 {
     public class ZplRaw : ZplElementBase
     {
-        public string RawContent { get; set; }
+        public string RawContent { get; private set; }
 
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {

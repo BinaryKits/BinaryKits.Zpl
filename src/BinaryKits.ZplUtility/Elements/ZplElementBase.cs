@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BinaryKits.ZplUtility.Elements
 {
@@ -33,6 +34,53 @@ namespace BinaryKits.ZplUtility.Elements
         }
 
         public abstract IEnumerable<string> Render(ZplRenderOptions context);
+
+        public string RenderFieldOrientation(FieldOrientation fieldOrientation)
+        {
+            switch (fieldOrientation)
+            {
+                case FieldOrientation.Normal:
+                    return "N";
+                case FieldOrientation.Rotated90:
+                    return "R";
+                case FieldOrientation.Rotated180:
+                    return "I";
+                case FieldOrientation.Rotated270:
+                    return "B";
+            }
+
+            throw new NotImplementedException("Unknown Field Orientation");
+        }
+
+        public string RenderLineColor(LineColor lineColor)
+        {
+            switch (lineColor)
+            {
+                case LineColor.Black:
+                    return "B";
+                case LineColor.White:
+                    return "W";
+            }
+
+            throw new NotImplementedException("Unknown Line Color");
+        }
+
+        public string RenderErrorCorrectionLevel(ErrorCorrectionLevel errorCorrectionLevel)
+        {
+            switch (errorCorrectionLevel)
+            {
+                case ErrorCorrectionLevel.UltraHighReliability:
+                    return "H";
+                case ErrorCorrectionLevel.HighReliability:
+                    return "Q";
+                case ErrorCorrectionLevel.Standard:
+                    return "M";
+                case ErrorCorrectionLevel.HighDensity:
+                    return "L";
+            }
+
+            throw new NotImplementedException("Unknown Error Correction Level");
+        }
 
         public string ToZplString()
         {

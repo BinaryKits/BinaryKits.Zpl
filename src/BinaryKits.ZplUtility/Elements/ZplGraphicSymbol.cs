@@ -4,7 +4,7 @@ namespace BinaryKits.ZplUtility.Elements
 {
     public class ZplGraphicSymbol : ZplPositionedElementBase
     {
-        public string Orientation { get; private set; }
+        public FieldOrientation FieldOrientation { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
 
@@ -38,11 +38,11 @@ namespace BinaryKits.ZplUtility.Elements
             int positionY,
             int width,
             int height,
-            string orientation = "N")
+            FieldOrientation fieldOrientation = FieldOrientation.Normal)
             : base(positionX, positionY)
         {
             Character = character;
-            Orientation = orientation;
+            FieldOrientation = fieldOrientation;
             Width = width;
             Height = height;
         }
@@ -52,7 +52,7 @@ namespace BinaryKits.ZplUtility.Elements
             //^GSo,h,w
             var result = new List<string>();
             result.AddRange(Origin.Render(context));
-            result.Add($"^GS{Orientation},{context.Scale(Height)},{context.Scale(Width)}^FD{CharacterLetter}^FS");
+            result.Add($"^GS{RenderFieldOrientation(FieldOrientation)},{context.Scale(Height)},{context.Scale(Width)}^FD{CharacterLetter}^FS");
 
             return result;
         }

@@ -15,9 +15,9 @@ namespace BinaryKits.ZplUtility.Elements
     /// </remarks>
     public class ZplImageMove : ZplPositionedElementBase
     {
-        public char StorageDevice { get; set; }
-        public string ObjectName { get; set; }
-        public string Extension { get; set; }
+        public char StorageDevice { get; private set; }
+        public string ObjectName { get; private set; }
+        public string Extension { get; private set; }
 
         /// <summary>
         /// Image Move

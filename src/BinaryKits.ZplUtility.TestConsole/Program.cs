@@ -1,6 +1,6 @@
 ﻿using BinaryKits.ZplUtility.Elements;
 using BinaryKits.ZplUtility.TestConsole.Preview;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -11,15 +11,37 @@ namespace BinaryKits.ZplUtility.TestConsole
     {
         static async Task Main(string[] args)
         {
+            Console.WriteLine("Render Label1");
+            var zplData = RenderLabel1();
+            await RenderPreviewAsync(zplData);
+
+            Console.WriteLine("Render Label2");
+            zplData = RenderLabel2();
+            await RenderPreviewAsync(zplData);
+
+            Console.WriteLine("Render Label3");
+            zplData = RenderLabel3();
+            await RenderPreviewAsync(zplData);
+
+            Console.WriteLine("Render Label4");
+            zplData = RenderLabel4();
+            await RenderPreviewAsync(zplData);
+
+            Console.WriteLine("Render Label5");
+            zplData = RenderLabel5();
+            await RenderPreviewAsync(zplData);
+        }
+
+        static string RenderLabel1()
+        {
             var sampleText = "[_~^][LineBreak\n][The quick fox jumps over the lazy dog.]";
             var font = new ZplFont(fontWidth: 50, fontHeight: 50);
 
-            var labelElements = new List<ZplElementBase>
+            var elements = new ZplElementBase[]
             {
-                //new ZplRaw("^POI"), //Invert
                 new ZplTextField(sampleText, 50, 100, font),
                 new ZplGraphicBox(400, 700, 100, 100, 5),
-                new ZplGraphicBox(450, 750, 100, 100, 50, ZplConstants.LineColor.White),
+                new ZplGraphicBox(450, 750, 100, 100, 50, LineColor.White),
                 new ZplGraphicCircle(400, 700, 100, 5),
                 new ZplGraphicDiagonalLine(400, 700, 100, 50, 5),
                 new ZplGraphicDiagonalLine(400, 700, 50, 100, 5),
@@ -29,19 +51,112 @@ namespace BinaryKits.ZplUtility.TestConsole
                 new ZplRaw("^FO200, 200^GB300, 200, 10 ^FS")
             };
 
-            var renderEngine = new ZplEngine(labelElements);
-            var output = renderEngine.ToZplString(new ZplRenderOptions
+            var renderEngine = new ZplEngine(elements);
+            return renderEngine.ToZplString(new ZplRenderOptions
             {
                 //AddEmptyLineBeforeElementStart = true,
                 SourcePrintDpi = 203,
                 TargetPrintDpi = 203
             });
+        }
 
+        static string RenderLabel2()
+        {
+            var elements = new ZplElementBase[]
+            {
+                new ZplReferenceGrid(),
+            };
+
+            var renderEngine = new ZplEngine(elements);
+            return renderEngine.ToZplString(new ZplRenderOptions
+            {
+                //AddEmptyLineBeforeElementStart = true,
+                SourcePrintDpi = 203,
+                TargetPrintDpi = 203
+            });
+        }
+
+        static string RenderLabel3()
+        {
+            var elements = new ZplElementBase[]
+            {
+                new ZplBarcode128("Barcode128", 10, 0),
+                new ZplBarcode39("Barcode39", 10, 150),
+                new ZplBarcodeAnsiCodabar("123456", 10, 300, 100, 'a', 'd'),
+                new ZplBarcodeEan13("123456789", 10, 450),
+                new ZplBarcodeInterleaved2of5("123456789", 10, 600),
+                new ZplQrCode("BinaryKits ZplUtility BinaryKits ZplUtility BinaryKits ZplUtility", 10, 800, magnificationFactor: 6)
+            };
+
+            var renderEngine = new ZplEngine(elements);
+            return renderEngine.ToZplString(new ZplRenderOptions
+            {
+                //AddEmptyLineBeforeElementStart = true,
+                SourcePrintDpi = 203,
+                TargetPrintDpi = 203
+            });
+        }
+
+        static string RenderLabel4()
+        {
+            var elements = new ZplElementBase[]
+            {
+                new ZplDownloadGraphics('R', "TEST", File.ReadAllBytes("logo_sw.png")),
+                new ZplRecallGraphic(0, 0, 'R', "TEST")
+            };
+
+            var renderEngine = new ZplEngine(elements);
+            return renderEngine.ToZplString(new ZplRenderOptions
+            {
+                //AddEmptyLineBeforeElementStart = true,
+                SourcePrintDpi = 203,
+                TargetPrintDpi = 203
+            });
+        }
+
+        static string RenderLabel5()
+        {
+            var font1 = new ZplFont(fontWidth: 0, fontHeight: 50, fontName: "0");
+            var font2 = new ZplFont(fontWidth: 0, fontHeight: 50, fontName: "1");
+            var font3 = new ZplFont(fontWidth: 0, fontHeight: 80, fontName: "A");
+            var font4 = new ZplFont(fontWidth: 0, fontHeight: 50, fontName: "B");
+            var font5 = new ZplFont(fontWidth: 0, fontHeight: 20, fontName: "C");
+            var font6 = new ZplFont(fontWidth: 20, fontHeight: 0, fontName: "D");
+            var font7 = new ZplFont(fontWidth: 20, fontHeight: 20, fontName: "D");
+            var font8 = new ZplFont(fontWidth: 20, fontHeight: 0, fontName: "D", fieldOrientation: FieldOrientation.Rotated90);
+
+            var elements = new ZplElementBase[]
+            {
+                new ZplTextField("Font1 Demo Text", 10, 0, font1),
+                new ZplTextField("Font2 Demo Text", 10, 100, font2),
+                new ZplTextField("Font3 Demo Text", 10, 200, font3),
+                new ZplTextField("Font4 Demo Text", 10, 300, font4),
+                new ZplTextField("Font5 Demo Text", 10, 400, font5),
+                new ZplTextField("Font6 Demo Text", 10, 500, font6),
+                new ZplTextField("Font7 Demo Text", 10, 600, font7),
+                new ZplTextField("Font8 Demo Text", 900, 10, font8),
+            };
+
+            var renderEngine = new ZplEngine(elements);
+            return renderEngine.ToZplString(new ZplRenderOptions
+            {
+                //AddEmptyLineBeforeElementStart = true,
+                SourcePrintDpi = 203,
+                TargetPrintDpi = 203
+            });
+        }
+
+        static async Task RenderPreviewAsync(string zplData)
+        {
             var client = new LabelaryApiClient();
-            var previewData = await client.GetPreviewAsync(output, PrintDensity.PD8dpmm, new LabelSize(6, 8, Measure.Inch));
+            var previewData = await client.GetPreviewAsync(zplData, PrintDensity.PD8dpmm, new LabelSize(6, 8, Measure.Inch));
+            if (previewData.Length == 0)
+            {
+                return;
+            }
 
-            var fileName = "preview.png";
-            File.WriteAllBytes(fileName, previewData);
+            var fileName = $"preview-{Guid.NewGuid()}.png";
+            await File.WriteAllBytesAsync(fileName, previewData);
 
             var processStartInfo = new ProcessStartInfo
             {

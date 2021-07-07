@@ -5,11 +5,11 @@
         /// <summary>
         /// Line color
         /// </summary>
-        public string LineColor { get; protected set; }
+        public LineColor LineColor { get; protected set; }
 
         public int BorderThickness { get; protected set; }
 
-        public ZplGraphicElement(int positionX, int positionY, int borderThickness = 1, string lineColor = "B") : base(positionX, positionY)
+        public ZplGraphicElement(int positionX, int positionY, int borderThickness = 1, LineColor lineColor = LineColor.Black) : base(positionX, positionY)
         {
             BorderThickness = borderThickness;
             LineColor = lineColor;
