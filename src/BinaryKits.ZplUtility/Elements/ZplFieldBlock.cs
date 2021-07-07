@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BinaryKits.ZplUtility.Elements
 {
@@ -11,7 +12,7 @@ namespace BinaryKits.ZplUtility.Elements
 
         public int LineSpace { get; private set; }
 
-        public string TextJustification { get; private set; }
+        public TextJustification TextJustification { get; private set; }
 
         //hanging indent (in dots) of the second and remaining lines
         public int HangingIndent { get; private set; }
@@ -24,7 +25,7 @@ namespace BinaryKits.ZplUtility.Elements
             ZplFont font,
             int maxLineCount = 1,
             int lineSpace = 0,
-            string textJustification = "L",
+            TextJustification textJustification = TextJustification.Left,
             int hangingIndent = 0,
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToZplNewLine,
             bool useHexadecimalIndicator = true,
@@ -36,6 +37,23 @@ namespace BinaryKits.ZplUtility.Elements
             MaxLineCount = maxLineCount;
             LineSpace = lineSpace;
             HangingIndent = hangingIndent;
+        }
+
+        private string RenderTextJustification()
+        {
+            switch (TextJustification)
+            {
+                case TextJustification.Left:
+                    return "L";
+                case TextJustification.Center:
+                    return "C";
+                case TextJustification.Right:
+                    return "R";
+                case TextJustification.Justified:
+                    return "J";
+            }
+
+            throw new NotImplementedException("Unknown Text Justification");
         }
 
         public override IEnumerable<string> Render(ZplRenderOptions context)
@@ -50,7 +68,7 @@ namespace BinaryKits.ZplUtility.Elements
             var result = new List<string>();
             result.AddRange(Font.Render(context));
             result.AddRange(Origin.Render(context));
-            result.Add($"^FB{context.Scale(Width)},{MaxLineCount},{context.Scale(LineSpace)},{TextJustification},{context.Scale(HangingIndent)}");
+            result.Add($"^FB{context.Scale(Width)},{MaxLineCount},{context.Scale(LineSpace)},{RenderTextJustification()},{context.Scale(HangingIndent)}");
             result.Add(RenderFieldDataSection());
 
             return result;

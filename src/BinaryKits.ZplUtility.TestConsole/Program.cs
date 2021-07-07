@@ -11,25 +11,22 @@ namespace BinaryKits.ZplUtility.TestConsole
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Render Label1");
-            var zplData = RenderLabel1();
-            await RenderPreviewAsync(zplData);
+            var renderActions = new Func<string>[]
+            {
+                RenderLabel1,
+                RenderLabel2,
+                RenderLabel3,
+                RenderLabel4,
+                RenderLabel5,
+                RenderLabel6,
+            };
 
-            Console.WriteLine("Render Label2");
-            zplData = RenderLabel2();
-            await RenderPreviewAsync(zplData);
-
-            Console.WriteLine("Render Label3");
-            zplData = RenderLabel3();
-            await RenderPreviewAsync(zplData);
-
-            Console.WriteLine("Render Label4");
-            zplData = RenderLabel4();
-            await RenderPreviewAsync(zplData);
-
-            Console.WriteLine("Render Label5");
-            zplData = RenderLabel5();
-            await RenderPreviewAsync(zplData);
+            foreach (var renderAction in renderActions)
+            {
+                Console.WriteLine(renderAction.Method.Name);
+                var zplData = renderAction.Invoke();
+                await RenderPreviewAsync(zplData);
+            }
         }
 
         static string RenderLabel1()
@@ -135,6 +132,29 @@ namespace BinaryKits.ZplUtility.TestConsole
                 new ZplTextField("Font6 Demo Text", 10, 500, font6),
                 new ZplTextField("Font7 Demo Text", 10, 600, font7),
                 new ZplTextField("Font8 Demo Text", 900, 10, font8),
+            };
+
+            var renderEngine = new ZplEngine(elements);
+            return renderEngine.ToZplString(new ZplRenderOptions
+            {
+                //AddEmptyLineBeforeElementStart = true,
+                SourcePrintDpi = 203,
+                TargetPrintDpi = 203
+            });
+        }
+
+        static string RenderLabel6()
+        {
+            var text = "Lorem Ipsum is simply dummy text\nof the printing and typesetting industry.\nLorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book";
+            var font1 = new ZplFont(fontWidth: 0, fontHeight: 20, fontName: "0");
+            var font2 = new ZplFont(fontWidth: 0, fontHeight: 13, fontName: "0");
+
+            var elements = new ZplElementBase[]
+            {
+                new ZplTextBlock(text, 10, 0, 400, 100, font1, NewLineConversionMethod.ToSpace),
+                new ZplTextBlock(text, 10, 120, 400, 100, font1, NewLineConversionMethod.ToZplNewLine),
+
+                new ZplTextBlock(text, 10, 240, 400, 100, font2, NewLineConversionMethod.ToZplNewLine),
             };
 
             var renderEngine = new ZplEngine(elements);

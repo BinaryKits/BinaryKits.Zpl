@@ -20,26 +20,5 @@ namespace BinaryKits.ZplUtility
         {
             public static readonly ZplFont Default = new ZplFont(30, 30, "0", FieldOrientation.Normal);
         }
-
-        //^FB
-        public static class TextJustification
-        {
-            /// <summary>
-            /// Left
-            /// </summary>
-            public static readonly string Left = "L";
-            /// <summary>
-            /// Center
-            /// </summary>
-            public static readonly string Center = "C";
-            /// <summary>
-            /// Right
-            /// </summary>
-            public static readonly string Right = "R";
-            /// <summary>
-            /// justified
-            /// </summary>
-            public static readonly string Justified = "J";
-        }
     }
 }

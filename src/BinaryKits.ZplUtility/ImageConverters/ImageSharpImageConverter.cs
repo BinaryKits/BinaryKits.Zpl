@@ -2,7 +2,7 @@
 using SixLabors.ImageSharp.PixelFormats;
 using System.Text;
 
-namespace BinaryKits.ZplUtility.ImageConverter
+namespace BinaryKits.ZplUtility.ImageConverters
 {
     public class ImageSharpImageConverter : IImageConverter
     {

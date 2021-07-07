@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BinaryKits.ZplUtility.Helper
+namespace BinaryKits.ZplUtility.Helpers
 {
     public static class CompressHelper
     {

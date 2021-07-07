@@ -11,7 +11,7 @@
             int positionY,
             int width,
             ZplFont font,
-            string textJustification = "L",
+            TextJustification textJustification = TextJustification.Left,
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace,
             bool useHexadecimalIndicator = true,
             bool reversePrint = false)

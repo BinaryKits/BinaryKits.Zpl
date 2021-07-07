@@ -1,5 +1,5 @@
-﻿using BinaryKits.ZplUtility.Helper;
-using BinaryKits.ZplUtility.ImageConverter;
+﻿using BinaryKits.ZplUtility.Helpers;
+using BinaryKits.ZplUtility.ImageConverters;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
