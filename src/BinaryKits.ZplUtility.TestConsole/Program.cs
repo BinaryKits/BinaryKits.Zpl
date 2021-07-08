@@ -155,6 +155,8 @@ namespace BinaryKits.ZplUtility.TestConsole
                 new ZplTextBlock(text, 10, 120, 400, 100, font1, NewLineConversionMethod.ToZplNewLine),
 
                 new ZplTextBlock(text, 10, 240, 400, 100, font2, NewLineConversionMethod.ToZplNewLine),
+                
+                new ZplFieldBlock(text, 10, 360, 400, font1, 4)
             };
 
             var renderEngine = new ZplEngine(elements);
