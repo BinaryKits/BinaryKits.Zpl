@@ -1,4 +1,4 @@
-﻿namespace BinaryKits.ZplUtility.ImageConverter
+﻿namespace BinaryKits.ZplUtility.ImageConverters
 {
     public class ImageResult
     {
