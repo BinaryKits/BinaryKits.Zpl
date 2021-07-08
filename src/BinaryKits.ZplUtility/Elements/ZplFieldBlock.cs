@@ -56,6 +56,7 @@ namespace BinaryKits.ZplUtility.Elements
             throw new NotImplementedException("Unknown Text Justification");
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^ XA

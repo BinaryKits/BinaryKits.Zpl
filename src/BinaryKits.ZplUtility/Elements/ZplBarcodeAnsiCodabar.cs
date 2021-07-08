@@ -60,6 +60,7 @@ namespace BinaryKits.ZplUtility.Elements
             return chars.Contains(char.ToUpperInvariant(character));
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^ FO100,100 ^ BY3

@@ -23,6 +23,7 @@ namespace BinaryKits.ZplUtility.Elements
             FontFileName = fontFileName;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^CWa,d:o.x

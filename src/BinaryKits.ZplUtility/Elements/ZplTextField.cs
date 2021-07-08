@@ -19,8 +19,8 @@ namespace BinaryKits.ZplUtility.Elements
         public string Text { get; protected set; }
 
         /// <summary>
-        /// Constuct a ^FD (Field Data) element, together with the ^FO, ^A and ^FH.
-        /// Control character will be handled (Conver to Hex or replace with ' ')
+        /// Construct a ^FD (Field Data) element, together with the ^FO, ^A and ^FH.
+        /// Control character will be handled (Convert to Hex or replace with ' ')
         /// </summary>
         /// <param name="text">Original text content</param>
         /// <param name="positionX"></param>
@@ -47,6 +47,7 @@ namespace BinaryKits.ZplUtility.Elements
             ReversePrint = reversePrint;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             var result = new List<string>();

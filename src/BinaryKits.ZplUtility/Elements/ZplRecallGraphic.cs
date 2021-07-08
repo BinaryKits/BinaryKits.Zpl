@@ -25,7 +25,7 @@ namespace BinaryKits.ZplUtility.Elements
         {
             if (imageName.Length > 8)
             {
-                new ArgumentException("maximum length of 8 characters exceeded", nameof(imageName));
+                new ArgumentException("Maximum length of 8 characters exceeded", nameof(imageName));
             }
 
             _extension = "GRF";
@@ -36,6 +36,7 @@ namespace BinaryKits.ZplUtility.Elements
             MagnificationFactorY = magnificationFactorY;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             var result = new List<string>();

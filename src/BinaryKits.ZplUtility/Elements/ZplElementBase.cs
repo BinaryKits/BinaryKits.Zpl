@@ -23,6 +23,10 @@ namespace BinaryKits.ZplUtility.Elements
             IsEnabled = true;
         }
 
+        /// <summary>
+        /// Render Zpl data
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<string> Render()
         {
             return Render(new ZplRenderOptions());
@@ -33,6 +37,11 @@ namespace BinaryKits.ZplUtility.Elements
             return string.Join(" ", Render());
         }
 
+        /// <summary>
+        /// Render Zpl data
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public abstract IEnumerable<string> Render(ZplRenderOptions context);
 
         public string RenderFieldOrientation(FieldOrientation fieldOrientation)

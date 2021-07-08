@@ -40,6 +40,7 @@ namespace BinaryKits.ZplUtility.Elements
             MaskValue = maskValue;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^ FO100,100

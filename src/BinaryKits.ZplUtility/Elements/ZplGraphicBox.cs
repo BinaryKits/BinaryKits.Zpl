@@ -26,6 +26,7 @@ namespace BinaryKits.ZplUtility.Elements
             CornerRounding = cornerRounding;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^ FO50,50

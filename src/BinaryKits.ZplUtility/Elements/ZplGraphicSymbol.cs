@@ -47,6 +47,7 @@ namespace BinaryKits.ZplUtility.Elements
             Height = height;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^GSo,h,w

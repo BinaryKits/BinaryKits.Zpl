@@ -34,6 +34,7 @@ namespace BinaryKits.ZplUtility.Elements
             }
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             var result = new List<string>();

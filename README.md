@@ -123,7 +123,7 @@ Console.WriteLine(output);
 var elements = new List<ZplElementBase>();
 elements.Add(new ZplGraphicBox(400, 700, 100, 100, 5));
 
-var options = new ZplRenderOptions { SourcePrintDPI = 203, TargetPrintDPI = 300 };
+var options = new ZplRenderOptions { SourcePrintDpi = 203, TargetPrintDpi = 300 };
 var output = new ZplEngine(elements).ToZplString(options);
 
 Console.WriteLine(output);

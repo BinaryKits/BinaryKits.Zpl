@@ -39,7 +39,7 @@ namespace BinaryKits.ZplUtility
 
             result.Add(context.ChangeInternationalFontEncoding);
 
-            foreach (var e in this.Where(x => x.IsEnabled))
+            foreach (var element in this.Where(x => x.IsEnabled))
             {
                 //Empty line
                 if (context.AddEmptyLineBeforeElementStart)
@@ -50,21 +50,21 @@ namespace BinaryKits.ZplUtility
                 //Comments
                 if (context.DisplayComments)
                 {
-                    if (e.Comments.Any())
+                    if (element.Comments.Any())
                     {
                         result.Add("^FX");
-                        e.Comments.ForEach(x => result.Add("//" + x.Replace("^", "[caret]").Replace("~", "[tilde]")));
+                        element.Comments.ForEach(x => result.Add("//" + x.Replace("^", "[caret]").Replace("~", "[tilde]")));
                     }
                 }
 
                 //Actual element
                 if (context.CompressedRendering)
                 {
-                    result.Add(string.Join("", e.Render(context)));
+                    result.Add(string.Join("", element.Render(context)));
                 }
                 else
                 {
-                    result.AddRange(e.Render(context));
+                    result.AddRange(element.Render(context));
                 }
             }
 
