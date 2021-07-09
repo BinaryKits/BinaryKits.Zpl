@@ -29,6 +29,7 @@ namespace BinaryKits.ZplUtility.Elements
             Diameter = diameter;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^GCd,t,c

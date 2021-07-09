@@ -4,6 +4,7 @@ namespace BinaryKits.ZplUtility.Elements
 {
     public class ZplReferenceGrid : ZplElementBase
     {
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             var gridSize = 100;

@@ -38,6 +38,7 @@ namespace BinaryKits.ZplUtility.TestConsole
             {
                 new ZplTextField(sampleText, 50, 100, font),
                 new ZplGraphicBox(400, 700, 100, 100, 5),
+                new ZplGraphicBox(200, 700, 100, 200, 3, cornerRounding: 8),
                 new ZplGraphicBox(450, 750, 100, 100, 50, LineColor.White),
                 new ZplGraphicCircle(400, 700, 100, 5),
                 new ZplGraphicDiagonalLine(400, 700, 100, 50, 5),
@@ -152,9 +153,9 @@ namespace BinaryKits.ZplUtility.TestConsole
             var elements = new ZplElementBase[]
             {
                 new ZplTextBlock(text, 10, 0, 400, 100, font1, NewLineConversionMethod.ToSpace),
-                new ZplTextBlock(text, 10, 120, 400, 100, font1, NewLineConversionMethod.ToZplNewLine),
+                new ZplTextBlock(text, 10, 120, 400, 100, font1, NewLineConversionMethod.ToSpace),
 
-                new ZplTextBlock(text, 10, 240, 400, 100, font2, NewLineConversionMethod.ToZplNewLine),
+                new ZplTextBlock(text, 10, 240, 400, 100, font2, NewLineConversionMethod.ToEmpty),
                 
                 new ZplFieldBlock(text, 10, 360, 400, font1, 4)
             };

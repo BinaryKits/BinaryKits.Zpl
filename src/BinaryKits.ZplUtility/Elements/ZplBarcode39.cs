@@ -34,6 +34,7 @@ namespace BinaryKits.ZplUtility.Elements
             Mod43CheckDigit = mod43CheckDigit;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^FO100,100 ^ BY3

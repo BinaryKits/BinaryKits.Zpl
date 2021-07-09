@@ -6,14 +6,15 @@ namespace BinaryKits.ZplUtility.Elements
     {
         public string RawContent { get; private set; }
 
-        public override IEnumerable<string> Render(ZplRenderOptions context)
-        {
-            return new[] { RawContent };
-        }
-
         public ZplRaw(string rawZplCode)
         {
             RawContent = rawZplCode;
+        }
+
+        ///<inheritdoc/>
+        public override IEnumerable<string> Render(ZplRenderOptions context)
+        {
+            return new[] { RawContent };
         }
     }
 }

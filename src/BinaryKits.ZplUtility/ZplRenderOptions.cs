@@ -1,7 +1,7 @@
 ﻿namespace BinaryKits.ZplUtility
 {
     /// <summary>
-    /// Holding redering settings
+    /// Holding rendering settings
     /// </summary>
     public class ZplRenderOptions
     {

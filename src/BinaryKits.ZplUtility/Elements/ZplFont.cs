@@ -27,6 +27,7 @@ namespace BinaryKits.ZplUtility.Elements
             FontHeight = fontHeight;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             return new[] { $"^A{FontName}{RenderFieldOrientation(FieldOrientation)},{context.Scale(FontHeight)},{context.Scale(FontWidth)}" };

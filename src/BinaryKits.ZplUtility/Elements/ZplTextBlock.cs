@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BinaryKits.ZplUtility.Elements
 {
@@ -26,8 +27,14 @@ namespace BinaryKits.ZplUtility.Elements
         {
             Width = width;
             Height = height;
+
+            if (newLineConversion == NewLineConversionMethod.ToZplNewLine)
+            {
+                throw new NotSupportedException("ToZplNewLine is not supported, use ZplFieldBlock");
+            }
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             var result = new List<string>();

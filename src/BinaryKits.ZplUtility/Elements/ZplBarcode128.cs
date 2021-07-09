@@ -29,6 +29,7 @@ namespace BinaryKits.ZplUtility.Elements
         {
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^FO100,100 ^ BY3

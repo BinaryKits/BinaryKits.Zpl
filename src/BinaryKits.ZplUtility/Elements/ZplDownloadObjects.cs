@@ -37,6 +37,7 @@ namespace BinaryKits.ZplUtility.Elements
             ImageData = imageData;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             byte[] objectData;

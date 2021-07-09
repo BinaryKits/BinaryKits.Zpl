@@ -40,6 +40,7 @@ namespace BinaryKits.ZplUtility.Elements
             Mod10CheckDigit = mod10CheckDigit;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             var result = new List<string>();

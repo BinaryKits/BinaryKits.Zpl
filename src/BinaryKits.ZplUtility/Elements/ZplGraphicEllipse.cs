@@ -15,6 +15,7 @@ namespace BinaryKits.ZplUtility.Elements
         {
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^ GE300,100,10,B ^ FS

@@ -26,6 +26,7 @@ namespace BinaryKits.ZplUtility.Elements
             PositionY = positionY;
         }
 
+        ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^ FO50,50
