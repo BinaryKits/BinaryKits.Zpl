@@ -5,8 +5,8 @@ Please refer to the Programming Guide for raw ZPL code definitaion,
 Some basic ZPL elements are included, if you have any suggestions please feel free to let me know.
 
 ## :information_source: Info
-> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `ZplElement` in version 2 (under development).
-> The documentation for version 1 is available [here](https://github.com/BinaryKits/ZPLUtility/tree/v1)
+> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `ZplElement` in version 2.
+> The documentation for the old version 1 is available [here](https://github.com/BinaryKits/ZPLUtility/tree/v1)
 
 <img src="https://raw.githubusercontent.com/BinaryKits/ZPLUtility/master/doc/logo.png" width="200">
 
