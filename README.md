@@ -200,6 +200,15 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 Console.WriteLine(output);
 ```
 
+## Printer manufacturers that support zpl
+
+| Manufacturer | Simulator |
+| ------------- | ------------- |
+| Zebra Technologies | - |
+| Honeywell International Inc | ZSIM |
+| Avery Dennison | MLI (Monarch Language Interpreter) |
+| cab Produkttechnik GmbH & Co. KG | |
+
 ## Alternative projects
 
 | Language | Project |
