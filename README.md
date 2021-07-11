@@ -204,10 +204,14 @@ Console.WriteLine(output);
 
 | Manufacturer | Simulator |
 | ------------- | ------------- |
-| Zebra Technologies | - |
-| Honeywell International Inc | ZSIM |
-| Avery Dennison | MLI (Monarch Language Interpreter) |
-| cab Produkttechnik GmbH & Co. KG | |
+| [Zebra Technologies](https://www.zebra.com) | - |
+| [Honeywell International Inc](https://sps.honeywell.com) | ZSIM |
+| [Avery Dennison](https://www.averydennison.com) | MLI (Monarch Language Interpreter) |
+| [cab Produkttechnik GmbH & Co. KG](https://www.cab.de) | |
+| [AirTrack](https://airtrack.com) | |
+| [SATO](https://www.satoeurope.com) | SZPL |
+| [printronix](https://www.printronix.com) | ZGL |
+| [Toshiba Tec](https://www.toshibatec.eu) |  |
 
 ## Alternative projects
 
