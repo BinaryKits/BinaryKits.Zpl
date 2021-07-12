@@ -3,16 +3,6 @@ A .net library helping to generate ZPL string.
 Please refer to the Programming Guide for raw ZPL code definitaion, 
 [ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf)
 
-This library supports following elements:
-
-| Element | Informations |
-| ------------- | ------------- |
-| Barcode | ANSI Codabar, Code 30, Code 128, EAN-13, Interleaved 2 of 5 |
-| QR-Code | - |
-| Image | DownloadObjects, DownloadGraphics  |
-| Text | TextBlock, TextField, FieldBlock, SingleLineFieldBlock |
-| Drawing | GraphicBox, DiagonalLine, Circle, Ellipse |
-
 ## :information_source: Info
 > :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `ZplElement` in version 2.
 > The documentation for the old version 1 is available [here](https://github.com/BinaryKits/ZPLUtility/tree/v1)
@@ -26,6 +16,18 @@ The package is available via [![NuGet](https://img.shields.io/nuget/v/ZPLUtility
 | Package Manager | .NET CLI |
 | ------------- | ------------- |
 | ``` PM> install-package ZPLUtility ``` | ``` > dotnet add package ZPLUtility ``` |
+
+## Supported Elements
+
+This library supports following elements:
+
+| Element | Informations |
+| ------------- | ------------- |
+| Barcode | ANSI Codabar, Code 30, Code 128, EAN-13, Interleaved 2 of 5 |
+| QR-Code | - |
+| Image | DownloadObjects, DownloadGraphics  |
+| Text | TextBlock, TextField, FieldBlock, SingleLineFieldBlock |
+| Drawing | GraphicBox, DiagonalLine, Circle, Ellipse |
 
 ## Is there a way to generate a preview?
 
