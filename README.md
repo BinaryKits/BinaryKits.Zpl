@@ -2,7 +2,16 @@
 A .net library helping to generate ZPL string.
 Please refer to the Programming Guide for raw ZPL code definitaion, 
 [ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf)
-Some basic ZPL elements are included, if you have any suggestions please feel free to let me know.
+
+This library supports following elements:
+
+| Element | Informations |
+| ------------- | ------------- |
+| Barcode | ANSI Codabar, Code 30, Code 128, EAN-13, Interleaved 2 of 5 |
+| QR-Code | - |
+| Image | DownloadObjects, DownloadGraphics  |
+| Text | TextBlock, TextField, FieldBlock, SingleLineFieldBlock |
+| Drawing | GraphicBox, DiagonalLine, Circle, Ellipse |
 
 ## :information_source: Info
 > :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `ZplElement` in version 2.
