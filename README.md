@@ -176,9 +176,11 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 Console.WriteLine(output);
 ```
 
-### Draw pictures, auto resize based on DPI (Please dither the colorful picture first)
+### Draw pictures
 
-You have 2 options:
+> For the best image result, first convert your graphic to black and white. The library auto resize the image based on DPI.
+
+You have 2 possibilities to transfer the graphic to the printer:
 
 #### 1. ZplDownloadObjects (Use ~DY and ^IM)
 With this option, the image is sent to the printer in the original graphic format and the printer converts the graphic to a black and white graphic
