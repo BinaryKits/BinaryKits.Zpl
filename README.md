@@ -189,7 +189,6 @@ With this option, the image is sent to the printer in the original graphic forma
 
 ```cs
 var elements = new List<ZplElementBase>();
-elements.Add(new ZplGraphicBox(0, 0, 100, 100, 4));
 elements.Add(new ZplDownloadObjects('R', "SAMPLE.BMP", System.IO.File.ReadAllBytes("sample.bmp")));
 elements.Add(new ZplImageMove(100, 100, 'R', "SAMPLE", "BMP"));
 
