@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryKits.Zpl.Label", "BinaryKits.Zpl.Label\BinaryKits.Zpl.Label.csproj", "{A836CA9D-CF58-4289-85F7-781EFF51E091}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryKits.ZplUtility.UnitTest", "BinaryKits.ZplUtility.UnitTest\BinaryKits.ZplUtility.UnitTest.csproj", "{B385D358-B68A-4089-8FD9-6084D766FF8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryKits.Zpl.Label.UnitTest", "BinaryKits.Zpl.Label.UnitTest\BinaryKits.Zpl.Label.UnitTest.csproj", "{B385D358-B68A-4089-8FD9-6084D766FF8C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryKits.ZplUtility.TestConsole", "BinaryKits.ZplUtility.TestConsole\BinaryKits.ZplUtility.TestConsole.csproj", "{BCE2C0DF-6D8B-48D3-883B-DDF018C9A9CC}"
 EndProject
