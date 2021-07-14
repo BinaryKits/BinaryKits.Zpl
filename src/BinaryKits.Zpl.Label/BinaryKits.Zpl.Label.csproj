@@ -17,6 +17,8 @@
     <AssemblyName>BinaryKits.Zpl.Label</AssemblyName>
     <RootNamespace>BinaryKits.Zpl.Label</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
