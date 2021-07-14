@@ -1,6 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
-using BinaryKits.Zpl.TestConsole.Preview;
+using BinaryKits.Zpl.Viewer.Labelary;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -172,7 +172,7 @@ namespace BinaryKits.Zpl.TestConsole
 
         static async Task RenderPreviewAsync(string zplData)
         {
-            var client = new LabelaryApiClient();
+            var client = new LabelaryClient();
             var previewData = await client.GetPreviewAsync(zplData, PrintDensity.PD8dpmm, new LabelSize(6, 8, Measure.Inch));
             if (previewData.Length == 0)
             {
