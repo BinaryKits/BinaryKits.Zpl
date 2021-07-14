@@ -4,7 +4,7 @@ Please refer to the Programming Guide for raw ZPL code definitaion,
 [ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf)
 
 ## :information_source: Info
-> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `ZplElement` in version 2.
+> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `BinaryKits.Zpl.Label.Elements` in version 3.
 > The documentation for the old version 1 is available [here](https://github.com/BinaryKits/ZPLUtility/tree/v1)
 
 <img src="https://raw.githubusercontent.com/BinaryKits/ZPLUtility/master/doc/logo.png" width="200">
@@ -60,8 +60,8 @@ Also, a Virutal Printer for Zebra is available as [Chrome Plugin](https://chrome
 ### Using statement
 
 ```cs
-using BinaryKits.ZplUtility;
-using BinaryKits.ZplUtility.Elements;
+using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 ```
 
 ### Single element
