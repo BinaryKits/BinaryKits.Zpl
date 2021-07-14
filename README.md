@@ -223,7 +223,8 @@ Console.WriteLine(output);
 | [AirTrack](https://airtrack.com) | |
 | [SATO](https://www.satoeurope.com) | SZPL |
 | [printronix](https://www.printronix.com) | ZGL |
-| [Toshiba Tec](https://www.toshibatec.eu) |  |
+| [Toshiba Tec](https://www.toshibatec.eu) | |
+| [GoDEX](https://www.godexintl.com) | |
 
 ## Alternative projects
 
