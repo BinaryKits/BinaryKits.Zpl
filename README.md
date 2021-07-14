@@ -224,7 +224,7 @@ Console.WriteLine(output);
 | [SATO](https://www.satoeurope.com) | SZPL |
 | [printronix](https://www.printronix.com) | ZGL |
 | [Toshiba Tec](https://www.toshibatec.eu) | |
-| [GoDEX](https://www.godexintl.com) | |
+| [GoDEX](https://www.godexintl.com) | GZPL |
 
 ## Alternative projects
 
