@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BinaryKits.ZplUtility.TestConsole.Preview
+namespace BinaryKits.Zpl.TestConsole.Preview
 {
     public class LabelSize
     {

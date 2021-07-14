@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace BinaryKits.ZplUtility.TestConsole
+namespace BinaryKits.Zpl.TestConsole
 {
     public static class DrawImageHelper
     {

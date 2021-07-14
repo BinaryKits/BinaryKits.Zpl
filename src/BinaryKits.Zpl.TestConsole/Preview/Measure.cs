@@ -1,4 +1,4 @@
-﻿namespace BinaryKits.ZplUtility.TestConsole.Preview
+﻿namespace BinaryKits.Zpl.TestConsole.Preview
 {
     public enum Measure
     {

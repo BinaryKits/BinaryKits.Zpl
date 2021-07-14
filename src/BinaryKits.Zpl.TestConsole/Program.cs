@@ -1,11 +1,12 @@
-﻿using BinaryKits.ZplUtility.Elements;
-using BinaryKits.ZplUtility.TestConsole.Preview;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.TestConsole.Preview;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace BinaryKits.ZplUtility.TestConsole
+namespace BinaryKits.Zpl.TestConsole
 {
     class Program
     {

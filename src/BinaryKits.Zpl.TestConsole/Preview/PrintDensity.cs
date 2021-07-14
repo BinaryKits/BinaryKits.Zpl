@@ -1,4 +1,4 @@
-﻿namespace BinaryKits.ZplUtility.TestConsole.Preview
+﻿namespace BinaryKits.Zpl.TestConsole.Preview
 {
     /// <summary>
     /// The desired print density, in dots per millimeter
