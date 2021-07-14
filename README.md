@@ -11,7 +11,7 @@ Please refer to the Programming Guide for raw ZPL code definitaion,
 
 ## How can I use it?
 
-The package is available via [![NuGet](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Label)
+The package is available via [![NuGet](https://img.shields.io/nuget/v/BinaryKits.Zpl.Label.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Label)
 
 | Package Manager | .NET CLI |
 | ------------- | ------------- |
