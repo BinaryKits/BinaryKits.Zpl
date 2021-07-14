@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BinaryKits.ZplUtility\BinaryKits.ZplUtility.csproj" />
+    <ProjectReference Include="..\BinaryKits.ZplUtility\BinaryKits.Zpl.Label.csproj" />
   </ItemGroup>
 
   <ItemGroup>
