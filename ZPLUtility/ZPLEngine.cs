@@ -5,6 +5,7 @@ using System.Text;
 
 namespace BinaryKits.Utility.ZPLUtility
 {
+    [Obsolete("Use \"BinaryKits.Zpl.Label\" instead. https://github.com/BinaryKits/BinaryKits.Zpl")]
     public class ZPLEngine : List<ZPLElementBase>
     {
         /// <summary>
