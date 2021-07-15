@@ -46,10 +46,10 @@ jobs:
     - name: Test
       working-directory: ./src
       run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
-    - name: Build project and generate NuGet package
+    - name: Build project and generate NuGet package BinaryKits.Zpl.Label
       run: |
         dotnet pack --configuration Release --output $GITHUB_WORKSPACE/out src/BinaryKits.Zpl.Label/BinaryKits.Zpl.Label.csproj
-    - name: Push NuGet package
+    - name: Push NuGet package BinaryKits.Zpl.Label
       if: github.event_name != 'pull_request'
       run: |
         cd $GITHUB_WORKSPACE/out
