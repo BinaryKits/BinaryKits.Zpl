@@ -48,7 +48,7 @@ jobs:
       run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
     - name: Build project and generate NuGet package BinaryKits.Zpl.Label
       run: |
-        dotnet pack --configuration Release --output $GITHUB_WORKSPACE/out src/BinaryKits.Zpl.Label/BinaryKits.Zpl.Label.csproj
+        dotnet pack --configuration Release --output $GITHUB_WORKSPACE/out src/BinaryKits.Zpl.Label/BinaryKits.Zpl.Label.csproj -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
     - name: Push NuGet package BinaryKits.Zpl.Label
       if: github.event_name != 'pull_request'
       run: |
