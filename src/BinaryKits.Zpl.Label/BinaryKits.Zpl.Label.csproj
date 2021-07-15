@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://github.com/BinaryKits/BinaryKits.Zpl</PackageProjectUrl>
     <RepositoryUrl>https://github.com/BinaryKits/BinaryKits.Zpl</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageId>ZPLUtility</PackageId>
+    <PackageId>BinaryKits.Zpl.Label</PackageId>
     <PackageIcon>logo_128.png</PackageIcon>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>BinaryKits.Zpl.Label</AssemblyName>
