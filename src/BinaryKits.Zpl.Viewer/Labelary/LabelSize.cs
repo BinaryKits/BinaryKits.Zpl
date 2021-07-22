@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace BinaryKits.Zpl.TestConsole.Preview
+namespace BinaryKits.Zpl.Viewer.Labelary
 {
     public class LabelSize
     {
-        private double _width { get; set; }
-        private double _height { get; set; }
-        private Measure _measure { get; set; }
-        private double _millimeterToInch = 25.4;
+        private readonly double _width;
+        private readonly double _height;
+        private readonly Measure _measure;
+        private readonly double _millimeterToInch = 25.4;
 
         public LabelSize(double width, double height, Measure measure)
         {

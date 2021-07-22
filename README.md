@@ -1,21 +1,21 @@
-# ZPLUtility
+# BinaryKits.Zpl
 A .net library helping to generate ZPL string.
 Please refer to the Programming Guide for raw ZPL code definitaion, 
 [ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf)
 
 ## :information_source: Info
 > :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `BinaryKits.Zpl.Label.Elements` in version 3.
-> The documentation for the old version 1 is available [here](https://github.com/BinaryKits/ZPLUtility/tree/v1)
+> The documentation for the old version 1 is available [here](https://github.com/BinaryKits/BinaryKits.Zpl/tree/v1)
 
 <img src="https://raw.githubusercontent.com/BinaryKits/ZPLUtility/master/doc/logo.png" width="200">
 
 ## How can I use it?
 
-The package is available via [![NuGet](https://img.shields.io/nuget/v/ZPLUtility.svg?label=NuGet)](https://www.nuget.org/packages/ZPLUtility)
+The package is available via [![NuGet](https://img.shields.io/nuget/v/BinaryKits.Zpl.Label.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Label)
 
 | Package Manager | .NET CLI |
 | ------------- | ------------- |
-| ``` PM> install-package ZPLUtility ``` | ``` > dotnet add package ZPLUtility ``` |
+| ``` PM> install-package BinaryKits.Zpl.Label ``` | ``` > dotnet add package BinaryKits.Zpl.Label ``` |
 
 ## Supported Elements
 
@@ -223,7 +223,8 @@ Console.WriteLine(output);
 | [AirTrack](https://airtrack.com) | |
 | [SATO](https://www.satoeurope.com) | SZPL |
 | [printronix](https://www.printronix.com) | ZGL |
-| [Toshiba Tec](https://www.toshibatec.eu) |  |
+| [Toshiba Tec](https://www.toshibatec.eu) | |
+| [GoDEX](https://www.godexintl.com) | GZPL |
 
 ## Alternative projects
 
