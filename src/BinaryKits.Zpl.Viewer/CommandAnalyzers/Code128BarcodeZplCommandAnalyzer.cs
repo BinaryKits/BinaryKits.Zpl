@@ -2,9 +2,9 @@
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
-    public class Code39BarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
+    public class Code128BarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public Code39BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^B3", virtualPrinter)
+        public Code128BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BC", virtualPrinter)
         { }
 
         public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
@@ -18,30 +18,30 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             var zplDataParts = zplCommandData.Split(',');
 
-            var mod43CheckDigit = false;
+            var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
             var height = this.VirtualPrinter.BarcodeInfo.Height;
             var printInterpretationLine = true;
             var printInterpretationLineAboveCode = false;
+            var uccCheckDigit = false;
 
-            var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
             if (zplDataParts.Length > 1)
             {
-                mod43CheckDigit = this.ConvertBoolean(zplDataParts[1]);
+                _ = int.TryParse(zplDataParts[1], out height);
             }
             if (zplDataParts.Length > 2)
             {
-                _ = int.TryParse(zplDataParts[2], out height);
+                printInterpretationLine = !this.ConvertBoolean(zplDataParts[2]);
             }
             if (zplDataParts.Length > 3)
             {
-                printInterpretationLine = !this.ConvertBoolean(zplDataParts[3]);
+                printInterpretationLineAboveCode = this.ConvertBoolean(zplDataParts[3]);
             }
             if (zplDataParts.Length > 4)
             {
-                printInterpretationLineAboveCode = this.ConvertBoolean(zplDataParts[4]);
+                uccCheckDigit = this.ConvertBoolean(zplDataParts[4]);
             }
 
-            return new ZplBarcode39("123456", x, y, height, fieldOrientation, printInterpretationLine, printInterpretationLineAboveCode, mod43CheckDigit);
+            return new ZplBarcode128("123456", x, y, height, fieldOrientation, printInterpretationLine, printInterpretationLineAboveCode);
         }
     }
 }

@@ -9,7 +9,17 @@ namespace BinaryKits.Zpl.Viewer
         public int FontHeight { get; private set; } = 10;
         public string FontName { get; private set; } = "0";
 
+        /// <summary>
+        /// Override the default font, only for the next element
+        /// </summary>
         public FontInfo NextFont { get; private set; }
+
+        public BarcodeInfo BarcodeInfo { get; private set; }
+
+        public VirtualPrinter()
+        {
+            this.BarcodeInfo = new BarcodeInfo();
+        }
 
         public void SetNextElementPosition(int x, int y)
         {
@@ -48,6 +58,21 @@ namespace BinaryKits.Zpl.Viewer
         public void SetFontName(string fontName)
         {
             this.FontName = fontName;
+        }
+
+        public void SetBarcodeModuleWidth(int moduleWidth)
+        {
+            this.BarcodeInfo.ModuleWidth = moduleWidth;
+        }
+
+        public void SetBarcodeWideBarToNarrowBarWidthRatio(double wideBarToNarrowBarWidthRatio)
+        {
+            this.BarcodeInfo.WideBarToNarrowBarWidthRatio = wideBarToNarrowBarWidthRatio;
+        }
+
+        public void SetBarcodeHeight(int height)
+        {
+            this.BarcodeInfo.Height = height;
         }
     }
 }

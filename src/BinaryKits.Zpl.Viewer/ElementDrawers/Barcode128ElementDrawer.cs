@@ -2,24 +2,24 @@
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
-    public class Barcode39ElementDrawer : ElementDrawerBase
+    public class Barcode128ElementDrawer : ElementDrawerBase
     {
         public override bool CanDraw(ZplElementBase element)
         {
-            return element is ZplBarcode39;
+            return element is ZplBarcode128;
         }
 
         public override void Draw(ZplElementBase element)
         {
-            if (element is ZplBarcode39 barcode)
+            if (element is ZplBarcode128 barcode)
             {
                 var writer = new ZXing.SkiaSharp.BarcodeWriter
                 {
-                    Format = ZXing.BarcodeFormat.CODE_39
+                    Format = ZXing.BarcodeFormat.CODE_128
                 };
 
                 writer.Options.Height = barcode.Height;
-                writer.Options.PureBarcode = barcode.PrintInterpretationLine;
+                writer.Options.PureBarcode = !barcode.PrintInterpretationLine;
 
                 //TODO
                 //^BY command (narrow bar width)

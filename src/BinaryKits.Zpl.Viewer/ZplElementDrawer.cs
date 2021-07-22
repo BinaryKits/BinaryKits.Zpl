@@ -19,7 +19,8 @@ namespace BinaryKits.Zpl.Viewer
                 new ImageMoveElementDrawer(),
                 new GraphicCircleElementDrawer(),
                 new TextFieldElementDrawer(),
-                new Barcode39ElementDrawer()
+                new Barcode39ElementDrawer(),
+                new Barcode128ElementDrawer()
             };
         }
 

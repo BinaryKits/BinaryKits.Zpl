@@ -24,6 +24,7 @@ namespace BinaryKits.Zpl.Viewer
             var elementAnalyzers = new List<IZplCommandAnalyzer>
             {
                 new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
+                new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
                 new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter),
                 new FieldOriginZplCommandAnalzer(this._virtualPrinter),
                 new FieldDataZplCommandAnalyzer(this._virtualPrinter),
@@ -31,7 +32,8 @@ namespace BinaryKits.Zpl.Viewer
                 new GraphicCircleZplCommandAnalyzer(this._virtualPrinter),
                 new DownloadObjectsZplCommandAnaylzer(this._virtualPrinter, this._printerStorage),
                 new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
-                new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter)
+                new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter)
             };
 
             var elements = new List<ZplElementBase>();

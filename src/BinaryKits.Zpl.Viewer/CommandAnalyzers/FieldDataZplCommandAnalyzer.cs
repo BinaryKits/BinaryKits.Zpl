@@ -17,23 +17,34 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
             var text = zplCommandData;
 
+            var font = this.GetFontFromVirtualPrinter();
             if (this.VirtualPrinter.NextFont != null)
             {
-                var fontWidth1 = this.VirtualPrinter.NextFont.FontWidth;
-                var fontHeight1 = this.VirtualPrinter.NextFont.FontHeight;
-                var fontName1 = this.VirtualPrinter.NextFont.FontName;
-                var fieldOrientation = this.VirtualPrinter.NextFont.FieldOrientation;
-
-                this.VirtualPrinter.ClearNextFont();
-
-                return new ZplTextField(text, x, y, new ZplFont(fontWidth1, fontHeight1, fontName1, fieldOrientation));
+                font = this.GetNextFontFromVirtualPrinter();
             }
 
+            return new ZplTextField(text, x, y, font);
+        }
+
+        private ZplFont GetFontFromVirtualPrinter()
+        {
             var fontWidth = this.VirtualPrinter.FontWidth;
             var fontHeight = this.VirtualPrinter.FontHeight;
             var fontName = this.VirtualPrinter.FontName;
 
-            return new ZplTextField(text, x, y, new ZplFont(fontWidth, fontHeight, fontName));
+            return new ZplFont(fontWidth, fontHeight, fontName);
+        }
+
+        private ZplFont GetNextFontFromVirtualPrinter()
+        {
+            var fontWidth = this.VirtualPrinter.NextFont.FontWidth;
+            var fontHeight = this.VirtualPrinter.NextFont.FontHeight;
+            var fontName = this.VirtualPrinter.NextFont.FontName;
+            var fieldOrientation = this.VirtualPrinter.NextFont.FieldOrientation;
+
+            this.VirtualPrinter.ClearNextFont();
+
+            return new ZplFont(fontWidth, fontHeight, fontName, fieldOrientation);
         }
     }
 }
