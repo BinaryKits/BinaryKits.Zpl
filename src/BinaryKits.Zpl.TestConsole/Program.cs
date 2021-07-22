@@ -1,6 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
-using BinaryKits.Zpl.Viewer.Labelary;
+using BinaryKits.Zpl.Labelary;
 using System;
 using System.Diagnostics;
 using System.IO;

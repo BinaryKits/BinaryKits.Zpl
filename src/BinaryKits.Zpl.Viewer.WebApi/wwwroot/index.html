@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Viewer</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/axios@0.21.1/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@4.1.0/dist/css/bootstrap.css" />
+</head>
+<body>
+    <div id="app" class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <textarea class="form-control" v-model="zplData" rows="10" cols="100"></textarea><br />
+                <button type="button" class="btn btn-primary" @click="render">Render</button><br />
+            </div>
+            <div class="col-6">
+                <img v-if="image" :src="`data:image/gif;base64,${image}`" style="border:1px solid #ccc" />
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const App = {
+            data() {
+                return {
+                    zplData: "^XA^FO100,100^BY3^B3N,N,100,Y,N^FD123ABC^FS^XZ",
+                    image: null
+                }
+            },
+            methods: {
+                async render() {
+                    const payload = { zplData: this.zplData }
+                    const response = await axios.post('api/v1/viewer', payload)
+                    this.image = response.data.imageBase64
+                }
+            }
+        };
+        Vue.createApp(App).mount('#app');
+    </script>
+</body>
+</html>
