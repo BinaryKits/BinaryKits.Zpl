@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryKits.Zpl.Viewer", "Bi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryKits.Zpl.Labelary", "BinaryKits.Zpl.Labelary\BinaryKits.Zpl.Labelary.csproj", "{B6663C8C-BC7F-4105-8565-58187C79B0FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryKits.Zpl.Viewer.WebApi", "BinaryKits.Zpl.Viewer.WebApi\BinaryKits.Zpl.Viewer.WebApi.csproj", "{0F5DFD93-782C-4FC6-AC8B-FB342E150131}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryKits.Zpl.Viewer.WebApi", "BinaryKits.Zpl.Viewer.WebApi\BinaryKits.Zpl.Viewer.WebApi.csproj", "{0F5DFD93-782C-4FC6-AC8B-FB342E150131}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

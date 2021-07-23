@@ -12,5 +12,29 @@
     <ProjectReference Include="..\BinaryKits.Zpl.Viewer\BinaryKits.Zpl.Viewer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ZplDatas\Barcode39.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplDatas\DownloadObject.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplDatas\FieldDataText1.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplDatas\FieldDataText2.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplDatas\FullLabel.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplDatas\GraphicBox.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplDatas\GraphicCircle.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>
