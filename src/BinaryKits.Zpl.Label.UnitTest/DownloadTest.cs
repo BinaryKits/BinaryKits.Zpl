@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace BinaryKits.ZplUtility.UnitTest
+namespace BinaryKits.Zpl.Label.UnitTest
 {
     [TestClass]
     public class DownloadTest
