@@ -23,7 +23,7 @@ namespace BinaryKits.Zpl.Viewer.WebApi
 
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Portalum.Smartboxx.Portal.WebApi", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "BinaryKits.Zpl.Viewer.WebApi", Version = "v1" });
             });
 
         }
