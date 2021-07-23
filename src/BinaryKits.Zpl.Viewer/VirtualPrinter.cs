@@ -1,10 +1,12 @@
 ﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Viewer.Models;
 
 namespace BinaryKits.Zpl.Viewer
 {
     public class VirtualPrinter
     {
         public ElementPosition NextElementPosition { get; private set; }
+        public FieldDataBase NextFieldDataElement { get; private set; }
         public int FontWidth { get; private set; } = 0;
         public int FontHeight { get; private set; } = 10;
         public string FontName { get; private set; } = "0";
@@ -29,6 +31,16 @@ namespace BinaryKits.Zpl.Viewer
         public void ClearNextElementPosition()
         {
             this.NextElementPosition = new ElementPosition(0, 0);
+        }
+
+        public void SetNextFieldDataElement(FieldDataBase fieldData)
+        {
+            this.NextFieldDataElement = fieldData;
+        }
+
+        public void ClearNextFieldDataElement()
+        {
+            this.NextFieldDataElement = null;
         }
 
         public void SetNextFont(

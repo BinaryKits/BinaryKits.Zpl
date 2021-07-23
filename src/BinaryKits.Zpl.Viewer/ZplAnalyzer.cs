@@ -33,7 +33,8 @@ namespace BinaryKits.Zpl.Viewer
                 new DownloadObjectsZplCommandAnaylzer(this._virtualPrinter, this._printerStorage),
                 new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
                 new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter)
+                new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter)
             };
 
             var elements = new List<ZplElementBase>();

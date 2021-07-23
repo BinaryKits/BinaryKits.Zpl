@@ -1,4 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Models;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -16,6 +17,29 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
             var text = zplCommandData;
+
+            if (this.VirtualPrinter.NextFieldDataElement != null)
+            {
+                try
+                {
+                    if (this.VirtualPrinter.NextFieldDataElement is Code39BarcodeFieldData code39)
+                    {
+                        return new ZplBarcode39(text, x, y, code39.Height, code39.FieldOrientation, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit);
+                    }
+                    if (this.VirtualPrinter.NextFieldDataElement is Code128BarcodeFieldData code128)
+                    {
+                        return new ZplBarcode128(text, x, y, code128.Height, code128.FieldOrientation, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode);
+                    }
+                    if (this.VirtualPrinter.NextFieldDataElement is QrCodeBarcodeFieldData qrCode)
+                    {
+                        return new ZplQrCode(text, x, y, 2, qrCode.MagnificationFactor, Label.ErrorCorrectionLevel.Standard, qrCode.MaskValue);
+                    }
+                }
+                finally
+                {
+                    this.VirtualPrinter.ClearNextFieldDataElement();
+                }
+            }
 
             var font = this.GetFontFromVirtualPrinter();
             if (this.VirtualPrinter.NextFont != null)

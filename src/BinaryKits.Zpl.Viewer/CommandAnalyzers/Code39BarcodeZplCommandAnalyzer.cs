@@ -1,4 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Models;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -9,11 +10,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
         {
-            var x = this.VirtualPrinter.NextElementPosition.X;
-            var y = this.VirtualPrinter.NextElementPosition.Y;
-
-            this.VirtualPrinter.ClearNextElementPosition();
-
             var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
 
             var zplDataParts = zplCommandData.Split(',');
@@ -41,7 +37,16 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 printInterpretationLineAboveCode = this.ConvertBoolean(zplDataParts[4]);
             }
 
-            return new ZplBarcode39("123456", x, y, height, fieldOrientation, printInterpretationLine, printInterpretationLineAboveCode, mod43CheckDigit);
+            this.VirtualPrinter.SetNextFieldDataElement(new Code39BarcodeFieldData
+            {
+                FieldOrientation = fieldOrientation,
+                Height = height,
+                PrintInterpretationLine = printInterpretationLine,
+                PrintInterpretationLineAboveCode = printInterpretationLineAboveCode,
+                Mod43CheckDigit = mod43CheckDigit
+            });
+
+            return null;
         }
     }
 }

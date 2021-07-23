@@ -20,7 +20,8 @@ namespace BinaryKits.Zpl.Viewer
                 new GraphicCircleElementDrawer(),
                 new TextFieldElementDrawer(),
                 new Barcode39ElementDrawer(),
-                new Barcode128ElementDrawer()
+                new Barcode128ElementDrawer(),
+                new QrCodeElementDrawer(),
             };
         }
 
