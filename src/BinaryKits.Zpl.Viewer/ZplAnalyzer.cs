@@ -27,6 +27,7 @@ namespace BinaryKits.Zpl.Viewer
                 new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
                 new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter),
                 new FieldOriginZplCommandAnalzer(this._virtualPrinter),
+                new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),
                 new FieldDataZplCommandAnalyzer(this._virtualPrinter),
                 new GraphicBoxZplCommandAnalyzer(this._virtualPrinter),
                 new GraphicCircleZplCommandAnalyzer(this._virtualPrinter),

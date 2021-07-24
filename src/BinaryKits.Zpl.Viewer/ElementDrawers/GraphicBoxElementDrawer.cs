@@ -28,7 +28,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var width = graphicBox.Width - offset;
                 var height = graphicBox.Height - offset;
 
-                this._skCanvas.DrawRect(x, y, width, height, this._skPaint);
+                this._skCanvas.DrawRoundRect(x, y, width, height, graphicBox.CornerRounding, graphicBox.CornerRounding, this._skPaint);
             }
         }
     }

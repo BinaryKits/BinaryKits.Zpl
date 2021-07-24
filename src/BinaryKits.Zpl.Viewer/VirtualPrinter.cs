@@ -16,6 +16,8 @@ namespace BinaryKits.Zpl.Viewer
         /// </summary>
         public FontInfo NextFont { get; private set; }
 
+        public bool FieldReversePrintForNextElement { get; private set; }
+
         public BarcodeInfo BarcodeInfo { get; private set; }
 
         public VirtualPrinter()
@@ -55,6 +57,16 @@ namespace BinaryKits.Zpl.Viewer
         public void ClearNextFont()
         {
             this.NextFont = null;
+        }
+
+        public void SetFieldReversePrint()
+        {
+            this.FieldReversePrintForNextElement = true;
+        }
+
+        public void ClearFieldReversePrint()
+        {
+            this.FieldReversePrintForNextElement = false;
         }
 
         public void SetFontWidth(int fontWidth)
