@@ -49,6 +49,7 @@ jobs:
     - name: Build project and generate NuGet package
       run: |
         dotnet pack --configuration Release --output $GITHUB_WORKSPACE/out src/BinaryKits.Zpl.Label/BinaryKits.Zpl.Label.csproj
+        dotnet pack --configuration Release --output $GITHUB_WORKSPACE/out src/BinaryKits.Zpl.Labelary/BinaryKits.Zpl.Labelary.csproj
     - name: Push NuGet package
       if: github.event_name != 'pull_request'
       run: |
