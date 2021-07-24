@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>BinaryKits.Zpl.Viewer.WebApi</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/axios@0.21.1/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@4.1.0/dist/css/bootstrap.css" />
+</head>
+<body>
+    <div id="app" class="container-fluid mt-1">
+        <div class="row">
+            <div class="col-2">
+                <div class="list-group">
+                    <div v-for="item in items" :key="item.name" class="list-group-item list-group-item-action" style="cursor:pointer; overflow:hidden" @click="zplData = item.content">
+                        {{ item.name }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <textarea class="form-control" v-model="zplData" rows="20" cols="100"></textarea><br />
+                <button type="button" class="btn btn-primary" @click="render">Render</button>
+            </div>
+            <div class="col-5">
+                <img v-if="image" :src="`data:image/png;base64,${image}`" class="img-fluid" style="border:1px solid #ccc" />
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const App = {
+            data() {
+                return {
+                    zplData: "^XA^FO100,100^BY3^B3N,N,100,Y,N^FD123ABC^FS^XZ",
+                    items: null,
+                    image: null
+                }
+            },
+            async created () {
+                await this.loadTestData()
+            },
+            methods: {
+                async loadTestData () {
+                    const response = await axios.get('api/v1/testdata')
+                    this.items = response.data.items
+                },
+                async render () {
+                    const payload = { zplData: this.zplData }
+                    const response = await axios.post('api/v1/viewer', payload)
+                    this.image = response.data.imageBase64
+                }
+            }
+        };
+        Vue.createApp(App).mount('#app');
+    </script>
+</body>
+</html>

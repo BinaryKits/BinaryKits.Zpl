@@ -1,4 +1,4 @@
-﻿namespace BinaryKits.Zpl.Viewer.Labelary
+﻿namespace BinaryKits.Zpl.Labelary
 {
     /// <summary>
     /// The desired print density, in dots per millimeter

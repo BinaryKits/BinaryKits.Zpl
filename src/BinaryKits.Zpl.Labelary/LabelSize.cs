@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BinaryKits.Zpl.Viewer.Labelary
+namespace BinaryKits.Zpl.Labelary
 {
     public class LabelSize
     {

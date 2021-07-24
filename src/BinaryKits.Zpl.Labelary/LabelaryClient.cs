@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BinaryKits.Zpl.Viewer.Labelary
+namespace BinaryKits.Zpl.Labelary
 {
     public class LabelaryClient : IDisposable
     {
