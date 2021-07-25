@@ -9,10 +9,14 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
         {
-            var x = this.VirtualPrinter.NextElementPosition.X;
-            var y = this.VirtualPrinter.NextElementPosition.Y;
+            var x = 0;
+            var y = 0;
 
-            this.VirtualPrinter.ClearNextElementPosition();
+            if (this.VirtualPrinter.NextElementPosition != null)
+            {
+                x = this.VirtualPrinter.NextElementPosition.X;
+                y = this.VirtualPrinter.NextElementPosition.Y;
+            }
 
             var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
 

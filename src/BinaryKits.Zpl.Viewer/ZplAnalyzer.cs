@@ -20,13 +20,16 @@ namespace BinaryKits.Zpl.Viewer
         public ZplElementBase[] Analyze(string zplData)
         {
             var zplCommands = this.SplitZplCommands(zplData);
+            var unknownCommands = new List<string>();
 
             var elementAnalyzers = new List<IZplCommandAnalyzer>
             {
+                new LabelHomeZplCommandAnalyzer(this._virtualPrinter),
                 new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
                 new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
                 new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter),
                 new FieldOriginZplCommandAnalzer(this._virtualPrinter),
+                new FieldTypesetZplCommandAnalyzer(this._virtualPrinter),
                 new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),
                 new FieldDataZplCommandAnalyzer(this._virtualPrinter),
                 new GraphicBoxZplCommandAnalyzer(this._virtualPrinter),
@@ -35,7 +38,8 @@ namespace BinaryKits.Zpl.Viewer
                 new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
                 new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter)
+                new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter)
             };
 
             var elements = new List<ZplElementBase>();
@@ -43,6 +47,12 @@ namespace BinaryKits.Zpl.Viewer
             {
                 var currentCommand = zplCommands[i];
                 var validAnalyzers = elementAnalyzers.Where(o => o.CanAnalyze(currentCommand));
+
+                if (!validAnalyzers.Any())
+                {
+                    unknownCommands.Add(currentCommand);
+                    continue;
+                }
 
                 var previousIndex = i - 1;
                 var nextIndex = i + 1;
@@ -77,7 +87,7 @@ namespace BinaryKits.Zpl.Viewer
         {
             var replacementString = string.Empty;
             var cleanZpl = Regex.Replace(zplData, @"\r\n?|\n", replacementString);
-            return Regex.Split(cleanZpl, "(?=\\^)|(?=\\~)").ToArray();
+            return Regex.Split(cleanZpl, "(?=\\^)|(?=\\~)").Where(x => !string.IsNullOrEmpty(x)).ToArray();
         }
     }
 }

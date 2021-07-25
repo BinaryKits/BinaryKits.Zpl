@@ -10,34 +10,31 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
         {
-            var x = this.VirtualPrinter.NextElementPosition.X;
-            var y = this.VirtualPrinter.NextElementPosition.Y;
+            var x = 0;
+            var y = 0;
 
-            this.VirtualPrinter.ClearNextElementPosition();
+            if (this.VirtualPrinter.NextElementPosition != null)
+            {
+                x = this.VirtualPrinter.NextElementPosition.X;
+                y = this.VirtualPrinter.NextElementPosition.Y;
+            }
 
             var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
             var text = zplCommandData;
 
             if (this.VirtualPrinter.NextFieldDataElement != null)
             {
-                try
+                if (this.VirtualPrinter.NextFieldDataElement is Code39BarcodeFieldData code39)
                 {
-                    if (this.VirtualPrinter.NextFieldDataElement is Code39BarcodeFieldData code39)
-                    {
-                        return new ZplBarcode39(text, x, y, code39.Height, code39.FieldOrientation, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit);
-                    }
-                    if (this.VirtualPrinter.NextFieldDataElement is Code128BarcodeFieldData code128)
-                    {
-                        return new ZplBarcode128(text, x, y, code128.Height, code128.FieldOrientation, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode);
-                    }
-                    if (this.VirtualPrinter.NextFieldDataElement is QrCodeBarcodeFieldData qrCode)
-                    {
-                        return new ZplQrCode(text, x, y, 2, qrCode.MagnificationFactor, Label.ErrorCorrectionLevel.Standard, qrCode.MaskValue);
-                    }
+                    return new ZplBarcode39(text, x, y, code39.Height, code39.FieldOrientation, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit);
                 }
-                finally
+                if (this.VirtualPrinter.NextFieldDataElement is Code128BarcodeFieldData code128)
                 {
-                    this.VirtualPrinter.ClearNextFieldDataElement();
+                    return new ZplBarcode128(text, x, y, code128.Height, code128.FieldOrientation, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode);
+                }
+                if (this.VirtualPrinter.NextFieldDataElement is QrCodeBarcodeFieldData qrCode)
+                {
+                    return new ZplQrCode(text, x, y, 2, qrCode.MagnificationFactor, Label.ErrorCorrectionLevel.Standard, qrCode.MaskValue);
                 }
             }
 
@@ -65,8 +62,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var fontHeight = this.VirtualPrinter.NextFont.FontHeight;
             var fontName = this.VirtualPrinter.NextFont.FontName;
             var fieldOrientation = this.VirtualPrinter.NextFont.FieldOrientation;
-
-            this.VirtualPrinter.ClearNextFont();
 
             return new ZplFont(fontWidth, fontHeight, fontName, fieldOrientation);
         }

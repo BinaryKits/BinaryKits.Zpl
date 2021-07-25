@@ -5,7 +5,8 @@ namespace BinaryKits.Zpl.Viewer
 {
     public class VirtualPrinter
     {
-        public ElementPosition NextElementPosition { get; private set; }
+        public LabelPosition LabelHomePosition { get; private set; }
+        public LabelPosition NextElementPosition { get; private set; }
         public FieldDataBase NextFieldDataElement { get; private set; }
         public int FontWidth { get; private set; } = 0;
         public int FontHeight { get; private set; } = 10;
@@ -27,12 +28,12 @@ namespace BinaryKits.Zpl.Viewer
 
         public void SetNextElementPosition(int x, int y)
         {
-            this.NextElementPosition = new ElementPosition(x, y);
+            this.NextElementPosition = new LabelPosition(x, y);
         }
 
         public void ClearNextElementPosition()
         {
-            this.NextElementPosition = new ElementPosition(0, 0);
+            this.NextElementPosition = new LabelPosition(0, 0);
         }
 
         public void SetNextFieldDataElement(FieldDataBase fieldData)
@@ -97,6 +98,11 @@ namespace BinaryKits.Zpl.Viewer
         public void SetBarcodeHeight(int height)
         {
             this.BarcodeInfo.Height = height;
+        }
+
+        public void SetLabelHome(int x, int y)
+        {
+            this.LabelHomePosition = new LabelPosition(x, y);
         }
     }
 }
