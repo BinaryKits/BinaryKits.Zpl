@@ -5,7 +5,7 @@ namespace BinaryKits.Zpl.Viewer
 {
     public class VirtualPrinter
     {
-        public LabelPosition LabelHomePosition { get; private set; }
+        public LabelHome LabelHomePosition { get; private set; }
         public LabelPosition NextElementPosition { get; private set; }
         public FieldDataBase NextFieldDataElement { get; private set; }
         public int FontWidth { get; private set; } = 0;
@@ -26,14 +26,14 @@ namespace BinaryKits.Zpl.Viewer
             this.BarcodeInfo = new BarcodeInfo();
         }
 
-        public void SetNextElementPosition(int x, int y)
+        public void SetNextElementPosition(int x, int y, bool calculateFromBottom = false)
         {
-            this.NextElementPosition = new LabelPosition(x, y);
+            this.NextElementPosition = new LabelPosition(x, y, calculateFromBottom);
         }
 
         public void ClearNextElementPosition()
         {
-            this.NextElementPosition = new LabelPosition(0, 0);
+            this.NextElementPosition = new LabelPosition(0, 0, false);
         }
 
         public void SetNextFieldDataElement(FieldDataBase fieldData)
@@ -102,7 +102,7 @@ namespace BinaryKits.Zpl.Viewer
 
         public void SetLabelHome(int x, int y)
         {
-            this.LabelHomePosition = new LabelPosition(x, y);
+            this.LabelHomePosition = new LabelHome(x, y);
         }
     }
 }

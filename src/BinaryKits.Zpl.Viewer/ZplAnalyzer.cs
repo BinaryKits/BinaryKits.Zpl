@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.CommandAnalyzers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -85,6 +86,11 @@ namespace BinaryKits.Zpl.Viewer
 
         private string[] SplitZplCommands(string zplData)
         {
+            if (string.IsNullOrEmpty(zplData))
+            {
+                return Array.Empty<string>();
+            }
+
             var replacementString = string.Empty;
             var cleanZpl = Regex.Replace(zplData, @"\r\n?|\n", replacementString);
             return Regex.Split(cleanZpl, "(?=\\^)|(?=\\~)").Where(x => !string.IsNullOrEmpty(x)).ToArray();

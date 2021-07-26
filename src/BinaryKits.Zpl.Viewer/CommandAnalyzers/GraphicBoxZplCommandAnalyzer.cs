@@ -13,12 +13,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var x = 0;
             var y = 0;
 
-            if (this.VirtualPrinter.NextElementPosition != null)
-            {
-                x = this.VirtualPrinter.NextElementPosition.X;
-                y = this.VirtualPrinter.NextElementPosition.Y;
-            }
-
             var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
 
             var zplDataParts = zplCommandData.Split(',');
@@ -26,6 +20,22 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             _ = int.TryParse(zplDataParts[0], out var widht);
             _ = int.TryParse(zplDataParts[1], out var height);
             _ = int.TryParse(zplDataParts[2], out var borderThickness);
+
+            if (this.VirtualPrinter.NextElementPosition != null)
+            {
+                x = this.VirtualPrinter.NextElementPosition.X;
+                y = this.VirtualPrinter.NextElementPosition.Y;
+
+                if (this.VirtualPrinter.NextElementPosition.CalculateFromBottom)
+                {
+                    y -= height;
+                }
+            }
+
+            if (borderThickness > 8)
+            {
+                //error message -> not possible
+            }
 
             var lineColor = LineColor.Black;
             if (zplDataParts.Length > 3)

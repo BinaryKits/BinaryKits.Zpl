@@ -33,7 +33,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y += this.VirtualPrinter.LabelHomePosition.Y;
             }
 
-            this.VirtualPrinter.SetNextElementPosition(x, y);
+            this.VirtualPrinter.SetNextElementPosition(x, y, calculateFromBottom: true);
 
             return null;
         }
