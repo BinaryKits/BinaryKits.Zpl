@@ -17,6 +17,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             {
                 x = this.VirtualPrinter.NextElementPosition.X;
                 y = this.VirtualPrinter.NextElementPosition.Y;
+
+                //TODO:if (this.VirtualPrinter.NextElementPosition.CalculateFromBottom)
+                //^FO  -->  ^FT
             }
 
             var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);

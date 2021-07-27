@@ -22,7 +22,7 @@
 ^ADN,20,20
 ^FO10,600
 ^FH^FDFont7 Demo Text^FS
-^ADR,0,20
-^FO800,10
+^ADB,0,20
+^FO800,160
 ^FH^FDFont8 Demo Text^FS
 ^XZ

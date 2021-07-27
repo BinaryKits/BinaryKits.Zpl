@@ -28,7 +28,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     scaleX = (float)font.FontWidth / fontSize;
                 }
 
-                fontSize *= 0.9f;
+                fontSize *= 0.95f;
 
                 var typeface = SKTypeface.Default;
                 if (font.FontName == "0")
@@ -43,6 +43,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var textBounds = new SKRect();
                 this._skPaint.MeasureText(textField.Text, ref textBounds);
+
+                y -= textBounds.Height;
 
                 using (new SKAutoCanvasRestore(this._skCanvas))
                 {

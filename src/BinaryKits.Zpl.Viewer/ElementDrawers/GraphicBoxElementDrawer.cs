@@ -14,8 +14,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplGraphicBox graphicBox)
             {
-                //TODO: fix calculation with border and the shit...
-
                 var border1 = graphicBox.BorderThickness;
                 var width1 = graphicBox.Width;
                 var height1 = graphicBox.Height;
@@ -29,11 +27,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 {
                     height1 = border1;
                 }
-
-                //if (border1 == height1 && border1 == width1)
-                //{
-                //    //border1 = border1 / 2;
-                //}
 
                 this._skPaint.StrokeWidth = border1;
 

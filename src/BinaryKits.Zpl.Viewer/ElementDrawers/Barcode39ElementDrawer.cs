@@ -21,7 +21,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 writer.Options.Height = barcode.Height;
                 writer.Options.PureBarcode = barcode.PrintInterpretationLine;
 
-                //TODO
+                //TODO:narrow bar width
                 //^BY command (narrow bar width)
                 //https://github.com/micjahn/ZXing.Net/issues/60
                 //https://github.com/zxing/zxing/issues/322
