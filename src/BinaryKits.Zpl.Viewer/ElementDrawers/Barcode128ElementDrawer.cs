@@ -1,4 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -13,6 +14,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplBarcode128 barcode)
             {
+                float x = barcode.Origin.PositionX + this._padding;
+                float y = barcode.Origin.PositionY + this._padding;
+
                 var writer = new ZXing.SkiaSharp.BarcodeWriter
                 {
                     Format = ZXing.BarcodeFormat.CODE_128
@@ -32,7 +36,37 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 //https://github.com/micjahn/ZXing.Net/issues/351
 
                 using var bitmap = writer.Write(barcode.Content);
-                this._skCanvas.DrawBitmap(bitmap, barcode.Origin.PositionX, barcode.Origin.PositionY);
+
+                using (new SKAutoCanvasRestore(this._skCanvas))
+                {
+                    SKMatrix matrix = SKMatrix.Empty;
+
+                    switch (barcode.FieldOrientation)
+                    {
+                        case Label.FieldOrientation.Rotated90:
+                            matrix = SKMatrix.CreateRotationDegrees(90, x, y);
+                            x += bitmap.Height;
+                            break;
+                        case Label.FieldOrientation.Rotated180:
+                            matrix = SKMatrix.CreateRotationDegrees(180, x, y);
+                            //y -= bitmap.Height;
+                            break;
+                        case Label.FieldOrientation.Rotated270:
+                            matrix = SKMatrix.CreateRotationDegrees(270, x, y);
+                            y -= bitmap.Height;
+                            break;
+                        case Label.FieldOrientation.Normal:
+                            //y += bitmap.Height;
+                            break;
+                    }
+
+                    if (matrix != SKMatrix.Empty)
+                    {
+                        this._skCanvas.SetMatrix(matrix);
+                    }
+
+                    this._skCanvas.DrawBitmap(bitmap, x, y);
+                }
             }
         }
     }
