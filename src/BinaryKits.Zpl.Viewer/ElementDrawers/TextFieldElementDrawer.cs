@@ -16,8 +16,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             {
                 this._skPaint.Style = SKPaintStyle.Fill;
 
-                float x = textField.Origin.PositionX + this._padding;
-                float y = textField.Origin.PositionY + this._padding;
+                float x = textField.PositionX + this._padding;
+                float y = textField.PositionY + this._padding;
 
                 var font = textField.Font;
 
@@ -44,7 +44,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var textBounds = new SKRect();
                 this._skPaint.MeasureText(textField.Text, ref textBounds);
 
-                y -= textBounds.Height;
+                if (textField.FieldTypeset != null)
+                {
+                    y -= textBounds.Height;
+                }
 
                 using (new SKAutoCanvasRestore(this._skCanvas))
                 {

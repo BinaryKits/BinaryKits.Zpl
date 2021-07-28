@@ -32,7 +32,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^ FO50,50
             //^ GB300,200,10 ^ FS
             var result = new List<string>();
-            result.AddRange(Origin.Render(context));
+            result.AddRange(FieldOrigin.Render(context));
             result.Add($"^GB{context.Scale(Width)},{context.Scale(Height)},{context.Scale(BorderThickness)},{RenderLineColor(LineColor)},{context.Scale(CornerRounding)}^FS");
 
             return result;

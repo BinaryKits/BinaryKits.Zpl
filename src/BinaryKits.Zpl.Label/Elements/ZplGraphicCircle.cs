@@ -34,7 +34,7 @@ namespace BinaryKits.Zpl.Label.Elements
         {
             //^GCd,t,c
             var result = new List<string>();
-            result.AddRange(Origin.Render(context));
+            result.AddRange(FieldOrigin.Render(context));
             result.Add($"^GC{context.Scale(Diameter)},{context.Scale(BorderThickness)},{RenderLineColor(LineColor)}^FS");
 
             return result;

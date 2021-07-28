@@ -12,7 +12,6 @@
             bool printInterpretationLineAboveCode) 
             : base(positionX, positionY)
         {
-            Origin = new ZplOrigin(positionX, positionY);
             Content = content;
             Height = height;
             FieldOrientation = fieldOrientation;

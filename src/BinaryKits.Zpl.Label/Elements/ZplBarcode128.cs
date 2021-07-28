@@ -36,7 +36,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^BCN,100,Y,N,N
             //^FD123456 ^ FS
             var result = new List<string>();
-            result.AddRange(Origin.Render(context));
+            result.AddRange(FieldOrigin.Render(context));
             result.Add($"^BC{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()}");
             result.Add($"^FD{Content}^FS");
 

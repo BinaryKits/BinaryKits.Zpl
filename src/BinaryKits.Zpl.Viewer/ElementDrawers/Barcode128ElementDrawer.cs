@@ -14,8 +14,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplBarcode128 barcode)
             {
-                float x = barcode.Origin.PositionX + this._padding;
-                float y = barcode.Origin.PositionY + this._padding;
+                float x = barcode.PositionX + this._padding;
+                float y = barcode.PositionY + this._padding;
 
                 var writer = new ZXing.SkiaSharp.BarcodeWriter
                 {

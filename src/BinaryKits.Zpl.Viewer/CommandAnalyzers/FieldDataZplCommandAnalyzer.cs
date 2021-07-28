@@ -12,14 +12,14 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         {
             var x = 0;
             var y = 0;
+            var calculateFromBottom = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
                 x = this.VirtualPrinter.NextElementPosition.X;
                 y = this.VirtualPrinter.NextElementPosition.Y;
 
-                //TODO:if (this.VirtualPrinter.NextElementPosition.CalculateFromBottom)
-                //^FO  -->  ^FT
+                calculateFromBottom = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
             }
 
             var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
@@ -47,7 +47,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 font = this.GetNextFontFromVirtualPrinter();
             }
 
-            return new ZplTextField(text, x, y, font);
+            return new ZplTextField(text, x, y, font, bottomToTop: calculateFromBottom);
         }
 
         private ZplFont GetFontFromVirtualPrinter()

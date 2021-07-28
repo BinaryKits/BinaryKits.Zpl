@@ -13,6 +13,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplBarcode39 barcode)
             {
+                float x = barcode.PositionX + this._padding;
+                float y = barcode.PositionY + this._padding;
+
                 var writer = new ZXing.SkiaSharp.BarcodeWriter
                 {
                     Format = ZXing.BarcodeFormat.CODE_39
@@ -27,7 +30,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 //https://github.com/zxing/zxing/issues/322
 
                 using var bitmap = writer.Write(barcode.Content);
-                this._skCanvas.DrawBitmap(bitmap, barcode.Origin.PositionX, barcode.Origin.PositionY);
+                this._skCanvas.DrawBitmap(bitmap, x, y);
             }
         }
     }

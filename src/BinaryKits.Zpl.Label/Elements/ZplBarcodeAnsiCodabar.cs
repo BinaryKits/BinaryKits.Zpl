@@ -67,7 +67,7 @@ namespace BinaryKits.Zpl.Label.Elements
             // ^ BKN,N,150,Y,N,A,A
             //  ^ FD123456 ^ FS
             var result = new List<string>();
-            result.AddRange(Origin.Render(context));
+            result.AddRange(FieldOrigin.Render(context));
             result.Add($"^BK{RenderFieldOrientation()},{(CheckDigit ? "Y" : "N")},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{StartCharacter},{StopCharacter}");
             result.Add($"^FD{Content}^FS");
 

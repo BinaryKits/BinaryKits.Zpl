@@ -63,7 +63,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
         {
             var elements = new List<ZplElementBase>();
 
-            var origin = new ZplOrigin(100, 100);
+            var origin = new ZplFieldOrigin(100, 100);
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)

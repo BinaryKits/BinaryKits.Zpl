@@ -20,7 +20,7 @@ namespace BinaryKits.Zpl.Label.Elements
         {
             //^ GE300,100,10,B ^ FS
             var result = new List<string>();
-            result.AddRange(Origin.Render(context));
+            result.AddRange(FieldOrigin.Render(context));
             result.Add($"^GE{context.Scale(Width)},{context.Scale(Height)},{context.Scale(BorderThickness)},{RenderLineColor(LineColor)}^FS");
 
             return result;
