@@ -12,14 +12,14 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         {
             var x = 0;
             var y = 0;
-            var calculateFromBottom = false;
+            var bottomToTop = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
                 x = this.VirtualPrinter.NextElementPosition.X;
                 y = this.VirtualPrinter.NextElementPosition.Y;
 
-                calculateFromBottom = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
+                bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
             }
 
             var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
@@ -27,13 +27,16 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             if (this.VirtualPrinter.NextFieldDataElement != null)
             {
+                var moduleWidth = this.VirtualPrinter.BarcodeInfo.ModuleWidth;
+                var wideBarToNarrowBarWidthRatio = this.VirtualPrinter.BarcodeInfo.WideBarToNarrowBarWidthRatio;
+
                 if (this.VirtualPrinter.NextFieldDataElement is Code39BarcodeFieldData code39)
                 {
-                    return new ZplBarcode39(text, x, y, code39.Height, code39.FieldOrientation, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit);
+                    return new ZplBarcode39(text, x, y, code39.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code39.FieldOrientation, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit);
                 }
                 if (this.VirtualPrinter.NextFieldDataElement is Code128BarcodeFieldData code128)
                 {
-                    return new ZplBarcode128(text, x, y, code128.Height, code128.FieldOrientation, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode);
+                    return new ZplBarcode128(text, x, y, code128.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code128.FieldOrientation, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode, bottomToTop);
                 }
                 if (this.VirtualPrinter.NextFieldDataElement is QrCodeBarcodeFieldData qrCode)
                 {
@@ -47,7 +50,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 font = this.GetNextFontFromVirtualPrinter();
             }
 
-            return new ZplTextField(text, x, y, font, bottomToTop: calculateFromBottom);
+            return new ZplTextField(text, x, y, font, bottomToTop: bottomToTop);
         }
 
         private ZplFont GetFontFromVirtualPrinter()
