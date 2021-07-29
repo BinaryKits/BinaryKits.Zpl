@@ -5,11 +5,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public class GraphicBoxElementDrawer : ElementDrawerBase
     {
+        ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
             return element is ZplGraphicBox;
         }
 
+        ///<inheritdoc/>
         public override void Draw(ZplElementBase element)
         {
             if (element is ZplGraphicBox graphicBox)

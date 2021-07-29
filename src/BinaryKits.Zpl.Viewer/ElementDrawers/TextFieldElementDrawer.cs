@@ -5,11 +5,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public class TextFieldElementDrawer : ElementDrawerBase
     {
+        ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
             return element is ZplTextField;
         }
 
+        ///<inheritdoc/>
         public override void Draw(ZplElementBase element)
         {
             if (element is ZplTextField textField)

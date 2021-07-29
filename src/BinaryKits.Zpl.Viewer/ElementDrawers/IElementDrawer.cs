@@ -11,8 +11,17 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             SKCanvas skCanvas,
             int padding);
 
+        /// <summary>
+        /// Check the drawer can draw this element
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
         bool CanDraw(ZplElementBase element);
 
+        /// <summary>
+        /// Draw the element
+        /// </summary>
+        /// <param name="element"></param>
         void Draw(ZplElementBase element);
     }
 }

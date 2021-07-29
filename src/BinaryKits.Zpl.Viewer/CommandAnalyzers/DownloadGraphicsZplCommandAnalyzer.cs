@@ -1,16 +1,17 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.ImageConverters;
 using System;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
-    public class DownloadObjectsZplCommandAnaylzer : ZplCommandAnalyzerBase
+    public class DownloadGraphicsZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
         private readonly IPrinterStorage _printerStorage;
 
-        public DownloadObjectsZplCommandAnaylzer(
+        public DownloadGraphicsZplCommandAnalyzer(
             VirtualPrinter virtualPrinter,
             IPrinterStorage printerStorage)
-            : base("~DY", virtualPrinter)
+            : base("~DG", virtualPrinter)
         {
             this._printerStorage = printerStorage;
         }
@@ -26,17 +27,43 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             zplCommandData = zplCommandData.Substring(2);
             var zplDataParts = zplCommandData.Split(',');
 
-            var objectName = zplDataParts[0];
-            var formatDownloadedInDataField = zplDataParts[1];
-            var extensionOfStoredFile = zplDataParts[2];
-            _ = int.TryParse(zplDataParts[3], out var objectDataLength);
-            _ = int.TryParse(zplDataParts[4], out var totalNumberOfBytesPerRow);
+            var imageName = zplDataParts[0];
+            _ = int.TryParse(zplDataParts[1], out var totalNumberOfBytesInGraphic);
+            _ = int.TryParse(zplDataParts[2], out var totalNumberOfBytesPerRow);
 
-            var dataHex = zplDataParts[5];
+            //third comma is the start of the image data
+            var indexOfThirdComma = this.IndexOfNthCharacter(zplCommandData, 3, ',');
 
-            this._printerStorage.AddFile(storageDevice, objectName, this.StringToByteArray(dataHex));
+            var dataHex = zplCommandData.Substring(indexOfThirdComma + 1);
+            var grfImageData = this.StringToByteArray(dataHex);
+
+            if (grfImageData.Length != totalNumberOfBytesInGraphic)
+            {
+                return null;
+            }
+
+            var converter = new ImageSharpImageConverter();
+            var imageData = converter.ConvertImage(grfImageData, totalNumberOfBytesPerRow);
+
+            this._printerStorage.AddFile(storageDevice, imageName, imageData);
 
             return null;
+        }
+
+        private int IndexOfNthCharacter(string input, int occurranceToFind, char charToFind)
+        {
+            var index = -1;
+            for (var i = 0; i < occurranceToFind; i++)
+            {
+                index = input.IndexOf(charToFind, index + 1);
+
+                if (index == -1)
+                {
+                    break;
+                }
+            }
+
+            return index;
         }
 
         private byte[] StringToByteArray(string hex)

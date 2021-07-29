@@ -6,11 +6,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public class Barcode128ElementDrawer : ElementDrawerBase
     {
+        ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
             return element is ZplBarcode128;
         }
 
+        ///<inheritdoc/>
         public override void Draw(ZplElementBase element)
         {
             if (element is ZplBarcode128 barcode)
@@ -25,17 +27,24 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 #region NetBarcode
                
-                var barcodeElement = new Barcode(barcode.Content, Type.Code128B, false, 0, barcode.Height, null);
-                var barcodeWidth = barcodeElement.GetImage().Width;
+                var barcodeElement = new Barcode();
+                //barcode.Content, Type.Code128B, false, 0, barcode.Height, null
+                barcodeElement.Configure(new BarcodeSettings
+                {
+                    BarcodeHeight = barcode.Height,
+                    BarcodeType = BarcodeType.Code128B,
+                    BarWidth = barcode.ModuleWidth
+                });
+                var barcodeWidth = barcodeElement.GetImage(barcode.Content).Width;
 
                 //TODO Optimize logic
-                if (barcode.ModuleWidth != 3)
-                {
-                    barcodeElement = new Barcode(barcode.Content, Type.Code128B, false, (int)(barcodeWidth * (barcode.ModuleWidth / 2.0f)), barcode.Height, null);
-                    barcodeWidth = barcodeElement.GetImage().Width;
-                }
+                //if (barcode.ModuleWidth != 3)
+                //{
+                //    barcodeElement = new Barcode(barcode.Content, Type.Code128B, false, (int)(barcodeWidth * (barcode.ModuleWidth / 2.0f)), barcode.Height, null);
+                //    barcodeWidth = barcodeElement.GetImage().Width;
+                //}
 
-                var barcodeImageData = barcodeElement.GetByteArray();
+                var barcodeImageData = barcodeElement.GetByteArray(barcode.Content);
 
                 #endregion
 

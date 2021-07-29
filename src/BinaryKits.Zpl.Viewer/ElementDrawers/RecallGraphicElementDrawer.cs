@@ -3,28 +3,28 @@ using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
-    public class ImageMoveElementDrawer : ElementDrawerBase
+    public class RecallGraphicElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
-            return element is ZplImageMove;
+            return element is ZplRecallGraphic;
         }
 
         ///<inheritdoc/>
         public override void Draw(ZplElementBase element)
         {
-            if (element is ZplImageMove imageMove)
+            if (element is ZplRecallGraphic recallGraphic)
             {
-                var imageData = this._printerStorage.GetFile(imageMove.StorageDevice, imageMove.ObjectName);
+                var imageData = this._printerStorage.GetFile(recallGraphic.StorageDevice, recallGraphic.ImageName);
 
                 if (imageData.Length == 0)
                 {
                     return;
                 }
 
-                var x = imageMove.PositionX + this._padding;
-                var y = imageMove.PositionY + this._padding;
+                var x = recallGraphic.PositionX + this._padding;
+                var y = recallGraphic.PositionY + this._padding;
 
                 this._skCanvas.DrawBitmap(SKBitmap.Decode(imageData), x, y);
             }

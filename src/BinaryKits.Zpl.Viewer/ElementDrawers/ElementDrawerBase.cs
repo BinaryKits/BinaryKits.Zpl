@@ -5,10 +5,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public abstract class ElementDrawerBase : IElementDrawer
     {
-        protected IPrinterStorage _printerStorage;
-        protected SKPaint _skPaint;
-        protected SKCanvas _skCanvas;
-        protected int _padding;
+        internal IPrinterStorage _printerStorage;
+        internal SKPaint _skPaint;
+        internal SKCanvas _skCanvas;
+        internal int _padding;
 
         public void Prepare(
             IPrinterStorage printerStorage,
@@ -22,8 +22,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             this._padding = padding;
         }
 
+        ///<inheritdoc/>
         public abstract bool CanDraw(ZplElementBase element);
 
+        ///<inheritdoc/>
         public abstract void Draw(ZplElementBase element);
     }
 }

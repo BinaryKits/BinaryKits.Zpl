@@ -4,11 +4,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public class Barcode39ElementDrawer : ElementDrawerBase
     {
+        ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
             return element is ZplBarcode39;
         }
 
+        ///<inheritdoc/>
         public override void Draw(ZplElementBase element)
         {
             if (element is ZplBarcode39 barcode)

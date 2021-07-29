@@ -16,18 +16,19 @@ namespace BinaryKits.Zpl.Viewer
             this._elementDrawers = new IElementDrawer[]
             {
                 new GraphicBoxElementDrawer(),
-                new ImageMoveElementDrawer(),
                 new GraphicCircleElementDrawer(),
+                new ImageMoveElementDrawer(),
+                new RecallGraphicElementDrawer(),
                 new TextFieldElementDrawer(),
                 new Barcode39ElementDrawer(),
                 new Barcode128ElementDrawer(),
-                new QrCodeElementDrawer(),
+                new QrCodeElementDrawer()
             };
         }
 
         public byte[] Draw(ZplElementBase[] elements)
         {
-            using var skBitmap = new SKBitmap(900, 1200);
+            using var skBitmap = new SKBitmap(900, 1400);
             using var skCanvas = new SKCanvas(skBitmap);
             var padding = 0;
 

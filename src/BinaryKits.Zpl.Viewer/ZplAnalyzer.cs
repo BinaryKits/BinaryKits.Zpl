@@ -36,6 +36,8 @@ namespace BinaryKits.Zpl.Viewer
                 new GraphicBoxZplCommandAnalyzer(this._virtualPrinter),
                 new GraphicCircleZplCommandAnalyzer(this._virtualPrinter),
                 new DownloadObjectsZplCommandAnaylzer(this._virtualPrinter, this._printerStorage),
+                new DownloadGraphicsZplCommandAnalyzer(this._virtualPrinter, this._printerStorage),
+                new RecallGraphicZplCommandAnalyzer(this._virtualPrinter),
                 new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
                 new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
