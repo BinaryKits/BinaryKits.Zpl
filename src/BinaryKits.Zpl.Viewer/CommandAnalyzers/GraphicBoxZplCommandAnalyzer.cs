@@ -8,12 +8,12 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public GraphicBoxZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GB", virtualPrinter)
         { }
 
-        public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
+        public override ZplElementBase Analyze(string zplCommand)
         {
             var x = 0;
             var y = 0;
 
-            var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
+            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             var zplDataParts = zplCommandData.Split(',');
 

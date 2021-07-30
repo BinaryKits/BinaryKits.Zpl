@@ -7,9 +7,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public FieldTypesetZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FT", virtualPrinter)
         { }
 
-        public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
+        public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
+            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             var zplDataParts = zplCommandData.Split(',');
 

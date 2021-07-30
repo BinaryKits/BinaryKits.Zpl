@@ -47,6 +47,8 @@ namespace BinaryKits.Zpl.Label.Elements
         ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
+            //TODO:Add 'UCC check digit' and 'mode'
+
             //^FO100,100 ^ BY3
             //^BCN,100,Y,N,N
             //^FD123456 ^ FS

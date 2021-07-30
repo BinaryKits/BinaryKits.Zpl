@@ -7,7 +7,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public ImageMoveZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^IM", virtualPrinter)
         { }
 
-        public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
+        public override ZplElementBase Analyze(string zplCommand)
         {
             var x = 0;
             var y = 0;
@@ -18,7 +18,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y = this.VirtualPrinter.NextElementPosition.Y;
             }
 
-            var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
+            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             //Get StorageDevice
             var storageDevice = zplCommandData[0];

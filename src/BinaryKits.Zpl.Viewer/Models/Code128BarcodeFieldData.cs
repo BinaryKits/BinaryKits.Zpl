@@ -9,5 +9,6 @@ namespace BinaryKits.Zpl.Viewer.Models
         public bool PrintInterpretationLine { get; set; }
         public bool PrintInterpretationLineAboveCode { get; set; }
         public bool UccCheckDigit { get; set; }
+        public string Mode { get; set; }
     }
 }

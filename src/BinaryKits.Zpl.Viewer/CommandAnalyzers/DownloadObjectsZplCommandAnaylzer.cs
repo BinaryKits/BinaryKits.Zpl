@@ -15,11 +15,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             this._printerStorage = printerStorage;
         }
 
-        public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
+        public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplLine = zplCommandStructure.CurrentCommand;
-
-            var zplCommandData = zplLine.Substring(this.PrinterCommandPrefix.Length);
+            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             var storageDevice = zplCommandData[0];
 

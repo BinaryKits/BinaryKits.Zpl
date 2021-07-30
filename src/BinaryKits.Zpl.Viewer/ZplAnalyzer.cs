@@ -57,30 +57,7 @@ namespace BinaryKits.Zpl.Viewer
                     continue;
                 }
 
-                var previousIndex = i - 1;
-                var nextIndex = i + 1;
-
-                var nextCommand = string.Empty;
-                var previousCommand = string.Empty;
-
-                if (previousIndex > 0)
-                {
-                    previousCommand = zplCommands[previousIndex];
-                }
-
-                if (zplCommands.Length > nextIndex)
-                {
-                    nextCommand = zplCommands[nextIndex];
-                }
-
-                var structure = new ZplCommandStructure
-                {
-                    CurrentCommand = currentCommand,
-                    PreviousCommand = previousCommand,
-                    NextCommand = nextCommand
-                };
-
-                elements.AddRange(validAnalyzers.Select(analyzer => analyzer.Analyze(structure)).Where(o => o != null));
+                elements.AddRange(validAnalyzers.Select(analyzer => analyzer.Analyze(currentCommand)).Where(o => o != null));
             }
 
             return elements.ToArray();

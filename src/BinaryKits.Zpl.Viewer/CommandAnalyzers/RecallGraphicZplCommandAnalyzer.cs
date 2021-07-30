@@ -7,7 +7,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public RecallGraphicZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^XG", virtualPrinter)
         { }
 
-        public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
+        public override ZplElementBase Analyze(string zplCommand)
         {
             var x = 0;
             var y = 0;
@@ -18,9 +18,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y = this.VirtualPrinter.NextElementPosition.Y;
             }
 
-            var zplLine = zplCommandStructure.CurrentCommand;
-
-            var zplCommandData = zplLine.Substring(this.PrinterCommandPrefix.Length);
+            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             var storageDevice = zplCommandData[0];
 

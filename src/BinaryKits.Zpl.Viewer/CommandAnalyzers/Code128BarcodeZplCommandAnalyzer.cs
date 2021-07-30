@@ -8,9 +8,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public Code128BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BC", virtualPrinter)
         { }
 
-        public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
+        public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
+            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             var zplDataParts = zplCommandData.Split(',');
 
@@ -19,6 +19,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var printInterpretationLine = true;
             var printInterpretationLineAboveCode = false;
             var uccCheckDigit = false;
+            var mode = "N";
 
             if (zplDataParts.Length > 1)
             {
@@ -36,6 +37,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             {
                 uccCheckDigit = this.ConvertBoolean(zplDataParts[4]);
             }
+            if (zplDataParts.Length > 5)
+            {
+                mode = zplDataParts[5];
+            }
 
             this.VirtualPrinter.SetNextFieldDataElement(new Code128BarcodeFieldData
             {
@@ -43,7 +48,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 Height = height,
                 PrintInterpretationLine = printInterpretationLine,
                 PrintInterpretationLineAboveCode = printInterpretationLineAboveCode,
-                UccCheckDigit = uccCheckDigit
+                UccCheckDigit = uccCheckDigit,
+                Mode = mode
             });
 
             return null;

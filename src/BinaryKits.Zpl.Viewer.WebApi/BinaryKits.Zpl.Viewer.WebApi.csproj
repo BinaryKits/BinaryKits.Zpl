@@ -13,10 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ZplDatas\Barcode128.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ZplDatas\Barcode39.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\DownloadGraphics.zpl2">
+    <None Update="ZplDatas\DownloadUncompressedGraphics.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ZplDatas\DownloadObject.zpl2">

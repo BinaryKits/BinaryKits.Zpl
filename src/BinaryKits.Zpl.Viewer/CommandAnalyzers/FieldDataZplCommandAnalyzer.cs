@@ -8,7 +8,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public FieldDataZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FD", virtualPrinter)
         { }
 
-        public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
+        public override ZplElementBase Analyze(string zplCommand)
         {
             var x = 0;
             var y = 0;
@@ -22,7 +22,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
             }
 
-            var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
+            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
             var text = zplCommandData;
 
             if (this.VirtualPrinter.NextFieldDataElement != null)

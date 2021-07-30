@@ -1,6 +1,7 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using NetBarcode;
 using SkiaSharp;
+using System.Drawing;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -25,52 +26,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y -= barcode.Height;
                 }
 
-                #region NetBarcode
-               
                 var barcodeElement = new Barcode();
-                //barcode.Content, Type.Code128B, false, 0, barcode.Height, null
                 barcodeElement.Configure(new BarcodeSettings
                 {
                     BarcodeHeight = barcode.Height,
+                    //TODO: Choose barcodeType over the mode config of zpl barcode config
                     BarcodeType = BarcodeType.Code128B,
-                    BarWidth = barcode.ModuleWidth
+                    BarWidth = barcode.ModuleWidth,
+                    BackgroundColor = Color.Transparent
                 });
+
                 var barcodeWidth = barcodeElement.GetImage(barcode.Content).Width;
-
-                //TODO Optimize logic
-                //if (barcode.ModuleWidth != 3)
-                //{
-                //    barcodeElement = new Barcode(barcode.Content, Type.Code128B, false, (int)(barcodeWidth * (barcode.ModuleWidth / 2.0f)), barcode.Height, null);
-                //    barcodeWidth = barcodeElement.GetImage().Width;
-                //}
-
                 var barcodeImageData = barcodeElement.GetByteArray(barcode.Content);
-
-                #endregion
-
-                #region XZing
-
-                //var writer = new ZXing.SkiaSharp.BarcodeWriter
-                //{
-                //    Format = ZXing.BarcodeFormat.CODE_128
-                //};
-
-                //writer.Options.Height = barcode.Height;
-                //writer.Options.PureBarcode = !barcode.PrintInterpretationLine;
-                //writer.Options.Width = barcode.Content.Length * 80;
-
-                //TODO:narrow bar width
-                //^BY command (narrow bar width)
-                //https://github.com/micjahn/ZXing.Net/issues/60
-                //https://github.com/zxing/zxing/issues/322
-
-                //http://www.keepautomation.com/online_barcode_generator/code_128/
-                //Require Code 128B
-                //https://github.com/micjahn/ZXing.Net/issues/351
-
-                //using var bitmap = writer.Write(barcode.Content);
-
-                #endregion
 
                 using (new SKAutoCanvasRestore(this._skCanvas))
                 {
@@ -99,7 +66,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         this._skCanvas.SetMatrix(matrix);
                     }
 
-                    //this._skCanvas.DrawBitmap(bitmap, x, y);
                     this._skCanvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y);
                 }
             }

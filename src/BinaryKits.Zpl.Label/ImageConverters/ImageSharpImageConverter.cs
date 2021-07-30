@@ -1,6 +1,8 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace BinaryKits.Zpl.Label.ImageConverters
@@ -57,33 +59,38 @@ namespace BinaryKits.Zpl.Label.ImageConverters
             }
         }
 
+        private byte Reverse(byte b)
+        {
+            var reverse = 0;
+            for (var i = 0; i < 8; i++)
+            {
+                if ((b & (1 << i)) != 0)
+                {
+                    reverse |= 1 << (7 - i);
+                }
+            }
+            return (byte)reverse;
+        }
+
         public byte[] ConvertImage(byte[] imageData, int bytesPerRow)
         {
-            var imageWidth = imageData.Length / bytesPerRow;
-            var imageHeight = bytesPerRow * 8;
+            imageData = imageData.Select(b => Reverse(b)).ToArray();
+
+            var imageHeight = imageData.Length / bytesPerRow;
+            var imageWidth = bytesPerRow * 8;
 
             using (var image = new Image<Rgba32>(imageWidth, imageHeight))
             {
                 for (var y = 0; y < image.Height; y++)
                 {
                     var row = image.GetPixelRowSpan(y);
+                    var bits = new BitArray(imageData.Skip(bytesPerRow * y).Take(bytesPerRow).ToArray());
 
-                    for (var x = 0; x < image.Width; x++)
+                    for (var x = 0 ; x < image.Width; x++)
                     {
-                        var index = x * y;
-                        if (index >= imageData.Length)
-                        {
-                            continue;
-                        }
-                        var imageByte = imageData[index];
-
-                        //TODO: fix, does not work yet
-                        if (imageByte > 0)
+                        if (bits[x])
                         {
                             row[x].A = 255;
-                            row[x].R = 0;
-                            row[x].G = 0;
-                            row[x].B = 0;
                         }
                     }
                 }
