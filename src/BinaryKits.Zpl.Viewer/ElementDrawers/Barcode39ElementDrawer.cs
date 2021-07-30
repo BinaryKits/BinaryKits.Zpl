@@ -1,4 +1,7 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using NetBarcode;
+using SkiaSharp;
+using System.Drawing;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -18,21 +21,52 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = barcode.PositionX + this._padding;
                 float y = barcode.PositionY + this._padding;
 
-                var writer = new ZXing.SkiaSharp.BarcodeWriter
+                if (barcode.FieldTypeset != null)
                 {
-                    Format = ZXing.BarcodeFormat.CODE_39
-                };
+                    y -= barcode.Height;
+                }
 
-                writer.Options.Height = barcode.Height;
-                writer.Options.PureBarcode = barcode.PrintInterpretationLine;
+                var barcodeElement = new Barcode();
+                barcodeElement.Configure(new BarcodeSettings
+                {
+                    BarcodeHeight = barcode.Height,
+                    BarcodeType = BarcodeType.Code39E,
+                    BarWidth = barcode.ModuleWidth,
+                    BackgroundColor = Color.Transparent
+                });
 
-                //TODO:narrow bar width
-                //^BY command (narrow bar width)
-                //https://github.com/micjahn/ZXing.Net/issues/60
-                //https://github.com/zxing/zxing/issues/322
+                var barcodeWidth = barcodeElement.GetImage(barcode.Content).Width;
+                var barcodeImageData = barcodeElement.GetByteArray(barcode.Content);
 
-                using var bitmap = writer.Write(barcode.Content);
-                this._skCanvas.DrawBitmap(bitmap, x, y);
+                using (new SKAutoCanvasRestore(this._skCanvas))
+                {
+                    SKMatrix matrix = SKMatrix.Empty;
+
+                    switch (barcode.FieldOrientation)
+                    {
+                        case Label.FieldOrientation.Rotated90:
+                            matrix = SKMatrix.CreateRotationDegrees(90, x, y);
+                            x += barcode.Height;
+                            break;
+                        case Label.FieldOrientation.Rotated180:
+                            matrix = SKMatrix.CreateRotationDegrees(180, x, y);
+                            break;
+                        case Label.FieldOrientation.Rotated270:
+                            matrix = SKMatrix.CreateRotationDegrees(270, x, y);
+                            y -= barcode.Height;
+                            x -= barcodeWidth;
+                            break;
+                        case Label.FieldOrientation.Normal:
+                            break;
+                    }
+
+                    if (matrix != SKMatrix.Empty)
+                    {
+                        this._skCanvas.SetMatrix(matrix);
+                    }
+
+                    this._skCanvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y);
+                }
             }
         }
     }
