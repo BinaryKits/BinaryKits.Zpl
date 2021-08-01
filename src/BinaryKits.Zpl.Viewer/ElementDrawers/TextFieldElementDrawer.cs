@@ -55,28 +55,59 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 {
                     SKMatrix matrix = SKMatrix.Empty;
 
-                    switch (textField.Font.FieldOrientation)
+                    if (textField.FieldOrigin != null)
                     {
-                        case Label.FieldOrientation.Rotated90:
-                            matrix = SKMatrix.CreateRotationDegrees(90, x, y);
-                            x += textBounds.Height;
-                            break;
-                        case Label.FieldOrientation.Rotated180:
-                            matrix = SKMatrix.CreateRotationDegrees(180, x, y);
-                            y -= textBounds.Height;
-                            break;
-                        case Label.FieldOrientation.Rotated270:
-                            matrix = SKMatrix.CreateRotationDegrees(270, x, y);
-                            x -= textBounds.Height;
-                            break;
-                        case Label.FieldOrientation.Normal:
-                            y += textBounds.Height;
-                            break;
+                        switch (textField.Font.FieldOrientation)
+                        {
+                            case Label.FieldOrientation.Rotated90:
+                                matrix = SKMatrix.CreateRotationDegrees(90, x, y);
+                                y -= font.FontHeight - textBounds.Height;
+                                break;
+                            case Label.FieldOrientation.Rotated180:
+                                matrix = SKMatrix.CreateRotationDegrees(180, x, y);
+                                x -= textBounds.Width;
+                                y -= font.FontHeight - textBounds.Height;
+                                break;
+                            case Label.FieldOrientation.Rotated270:
+                                matrix = SKMatrix.CreateRotationDegrees(270, x, y);
+                                x -= textBounds.Width;
+                                y += textBounds.Height;
+                                break;
+                            case Label.FieldOrientation.Normal:
+                                y += textBounds.Height;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (textField.Font.FieldOrientation)
+                        {
+                            case Label.FieldOrientation.Rotated90:
+                                matrix = SKMatrix.CreateRotationDegrees(90, x, y);
+                                x += textBounds.Height;
+                                break;
+                            case Label.FieldOrientation.Rotated180:
+                                matrix = SKMatrix.CreateRotationDegrees(180, x, y);
+                                y -= textBounds.Height;
+                                break;
+                            case Label.FieldOrientation.Rotated270:
+                                matrix = SKMatrix.CreateRotationDegrees(270, x, y);
+                                x -= textBounds.Height;
+                                break;
+                            case Label.FieldOrientation.Normal:
+                                y += textBounds.Height;
+                                break;
+                        }
                     }
 
                     if (matrix != SKMatrix.Empty)
                     {
                         this._skCanvas.SetMatrix(matrix);
+                    }
+
+                    if (textField.ReversePrint)
+                    {
+                        this.ReversePrint();
                     }
 
                     this._skCanvas.DrawText(textField.Text, x, y, new SKFont(typeface, fontSize, scaleX, 0), this._skPaint);

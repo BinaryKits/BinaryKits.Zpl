@@ -12,8 +12,8 @@
         <div class="row">
             <div class="col-2">
                 <div v-if="!loading" class="list-group">
-                    <div v-for="item in items" :key="item.name" class="list-group-item list-group-item-action" style="cursor:pointer; overflow:hidden" @click="changeZplData(item.content)">
-                        {{ item.name }}
+                    <div v-for="templateLabel in templateLabels" :key="templateLabel.name" class="list-group-item list-group-item-action" style="cursor:pointer; overflow:hidden" @click="changeZplData(templateLabel.content)">
+                        {{ templateLabel.name }}
                     </div>
                 </div>
                 <div v-else>loading...</div>
@@ -23,7 +23,20 @@
                 <button type="button" class="btn btn-primary" @click="render">Render</button>
             </div>
             <div class="col-6">
-                <img v-if="image" :src="`data:image/png;base64,${image}`" class="img-fluid" style="border:1px solid #ccc" />
+                <div v-if="renderResponse">
+
+                    <div v-for="(labelInfo, index) in renderResponse.labels" :key="index">
+                        <img :src="`data:image/png;base64,${labelInfo.imageBase64}`" class="img-fluid" style="border:1px solid #ccc" />
+                    </div>
+                    <div v-if="renderResponse.unknownCommands.length > 0" class="alert alert-warning mt-1" role="alert">
+                        <h4>Unknown commands</h4>
+                        <ul>
+                            <li v-for="(unknownCommand, index) in renderResponse.unknownCommands" :key="index">
+                                {{unknownCommand}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -40,20 +53,20 @@
                 return {
                     loading: false,
                     zplData: null,
-                    items: null,
-                    image: null
+                    templateLabels: null,
+                    renderResponse: null
                 }
             },
             async created () {
                 await this.loadTestData()
-                await this.changeZplData(this.items[0].content)
+                await this.changeZplData(this.templateLabels[0].content)
             },
             methods: {
                 async loadTestData() {
                     try {
                         this.loading = true
                         const response = await axios.get('api/v1/testdata')
-                        this.items = response.data.items
+                        this.templateLabels = response.data.items
                     } finally {
                         this.loading = false
                     }
@@ -65,7 +78,7 @@
                 async render() {
                     const payload = { zplData: this.zplData }
                     const response = await axios.post('api/v1/viewer', payload)
-                    this.image = response.data.imageBase64
+                    this.renderResponse = response.data
                 }
             }
         };

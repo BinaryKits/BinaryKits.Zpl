@@ -28,16 +28,16 @@ namespace BinaryKits.Zpl.Viewer
 
         public byte[] Draw(ZplElementBase[] elements)
         {
-            using var skBitmap = new SKBitmap(900, 1400);
-            using var skCanvas = new SKCanvas(skBitmap);
             var padding = 0;
+
+            using var skBitmap = new SKBitmap(900, 2000);
+            using var skCanvas = new SKCanvas(skBitmap);
+            skCanvas.Clear(SKColors.White);
 
             using var skPaint = new SKPaint();
             skPaint.Style = SKPaintStyle.Stroke;
             skPaint.Color = SKColors.Black;
             skPaint.StrokeCap = SKStrokeCap.Square;
-
-            skCanvas.Clear(SKColors.White);
 
             foreach (var element in elements)
             {

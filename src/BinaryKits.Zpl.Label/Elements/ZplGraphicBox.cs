@@ -17,8 +17,9 @@ namespace BinaryKits.Zpl.Label.Elements
             int height,
             int borderThickness = 1,
             LineColor lineColor = LineColor.Black,
-            int cornerRounding = 0)
-            : base(positionX, positionY, borderThickness, lineColor)
+            int cornerRounding = 0,
+            bool reversePrint = false)
+            : base(positionX, positionY, borderThickness, lineColor, reversePrint)
         {
             Width = width;
             Height = height;

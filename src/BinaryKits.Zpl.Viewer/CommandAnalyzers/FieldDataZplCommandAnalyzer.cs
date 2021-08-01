@@ -32,7 +32,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
                 if (this.VirtualPrinter.NextFieldDataElement is Code39BarcodeFieldData code39)
                 {
-                    return new ZplBarcode39(text, x, y, code39.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code39.FieldOrientation, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit);
+                    return new ZplBarcode39(text, x, y, code39.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code39.FieldOrientation, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit, bottomToTop: bottomToTop);
                 }
                 if (this.VirtualPrinter.NextFieldDataElement is Code128BarcodeFieldData code128)
                 {
@@ -50,7 +50,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 font = this.GetNextFontFromVirtualPrinter();
             }
 
-            return new ZplTextField(text, x, y, font, bottomToTop: bottomToTop);
+            var reversePrint = this.VirtualPrinter.FieldReversePrintForNextElement;
+
+            return new ZplTextField(text, x, y, font, reversePrint: reversePrint, bottomToTop: bottomToTop);
         }
 
         private ZplFont GetFontFromVirtualPrinter()

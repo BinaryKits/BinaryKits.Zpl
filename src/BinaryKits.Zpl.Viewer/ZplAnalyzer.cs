@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.CommandAnalyzers;
+using BinaryKits.Zpl.Viewer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace BinaryKits.Zpl.Viewer
     {
         private readonly VirtualPrinter _virtualPrinter;
         private readonly IPrinterStorage _printerStorage;
+        private readonly string _labelStartCommand = "^XA";
+        private readonly string _labelEndCommand = "^XZ";
 
         public ZplAnalyzer(IPrinterStorage printerStorage)
         {
@@ -18,7 +21,7 @@ namespace BinaryKits.Zpl.Viewer
             this._virtualPrinter = new VirtualPrinter();
         }
 
-        public ZplElementBase[] Analyze(string zplData)
+        public AnalyzeInfo Analyze(string zplData)
         {
             var zplCommands = this.SplitZplCommands(zplData);
             var unknownCommands = new List<string>();
@@ -45,10 +48,28 @@ namespace BinaryKits.Zpl.Viewer
                 new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter)
             };
 
+            var labelInfos = new List<LabelInfo>();
+
             var elements = new List<ZplElementBase>();
             for (var i = 0; i < zplCommands.Length; i++)
             {
                 var currentCommand = zplCommands[i];
+
+                if (this._labelStartCommand.Equals(currentCommand, StringComparison.OrdinalIgnoreCase))
+                {
+                    elements.Clear();
+                    continue;
+                }
+
+                if (this._labelEndCommand.Equals(currentCommand, StringComparison.OrdinalIgnoreCase))
+                {
+                    labelInfos.Add(new LabelInfo
+                    {
+                        ZplElements = elements.ToArray()
+                    });
+                    continue;
+                }
+
                 var validAnalyzers = elementAnalyzers.Where(o => o.CanAnalyze(currentCommand));
 
                 if (!validAnalyzers.Any())
@@ -60,7 +81,11 @@ namespace BinaryKits.Zpl.Viewer
                 elements.AddRange(validAnalyzers.Select(analyzer => analyzer.Analyze(currentCommand)).Where(o => o != null));
             }
 
-            return elements.ToArray();
+            var analyzeInfo = new AnalyzeInfo();
+            analyzeInfo.LabelInfos = labelInfos.ToArray();
+            analyzeInfo.UnknownCommands = unknownCommands.ToArray();
+
+            return analyzeInfo;
         }
 
         private string[] SplitZplCommands(string zplData)

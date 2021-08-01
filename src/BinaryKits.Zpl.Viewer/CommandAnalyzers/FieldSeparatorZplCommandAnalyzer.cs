@@ -12,6 +12,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             this.VirtualPrinter.ClearNextElementPosition();
             this.VirtualPrinter.ClearNextFont();
             this.VirtualPrinter.ClearNextFieldDataElement();
+            this.VirtualPrinter.ClearFieldReversePrint();
 
             return null;
         }

@@ -40,6 +40,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var width = width1 - border1;
                 var height = height1 - border1;
 
+
+                if (graphicBox.ReversePrint)
+                {
+                    this.ReversePrint();
+                }
+
                 var cornerRadius = (graphicBox.CornerRounding / 8.0f) * (Math.Min(width1, height1) / 2.0f);
                 if (cornerRadius == 0)
                 {
