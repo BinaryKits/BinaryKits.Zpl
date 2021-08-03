@@ -24,6 +24,11 @@ namespace BinaryKits.Zpl.Label.Helpers
 
         public static string CompressHex(string code, int widthBytes)
         {
+            if (string.IsNullOrEmpty(code))
+            {
+                throw new ArgumentException("Invalid data", nameof(code));
+            }
+
             int maxlinea = widthBytes * 2;
             var sbCode = new StringBuilder();
             var sbLinea = new StringBuilder();
