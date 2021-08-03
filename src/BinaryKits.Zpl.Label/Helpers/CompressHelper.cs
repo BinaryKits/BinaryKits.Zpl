@@ -8,6 +8,12 @@ using System.Text;
 
 namespace BinaryKits.Zpl.Label.Helpers
 {
+    /// <summary>
+    /// Alternative Data Compression Scheme for ~DG and ~DB Commands
+    /// There is an alternative data compression scheme recognized by the Zebra printer. This scheme further
+    /// reduces the actual number of data bytes and the amount of time required to download graphic images and
+    /// bitmapped fonts with the ~DG and ~DB commands
+    /// </summary>
     public static class CompressHelper
     {
         /// <summary>
@@ -33,9 +39,9 @@ namespace BinaryKits.Zpl.Label.Helpers
             var sbCode = new StringBuilder();
             var sbLinea = new StringBuilder();
             string previousLine = null;
-            int counter = 0;
+            var counter = 0;
             char aux = code[0];
-            bool firstChar = false;
+            var firstChar = false;
 
             foreach (char item in code)
             {
