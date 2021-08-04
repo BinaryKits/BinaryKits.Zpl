@@ -26,6 +26,10 @@
     <PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.10" />
   </ItemGroup>
 
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE" />
   </ItemGroup>
