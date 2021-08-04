@@ -22,6 +22,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="NetBarcode" Version="2.0.0-beta.1" />
     <PackageReference Include="SkiaSharp" Version="2.80.3" />
+    <PackageReference Include="ZXing.Net" Version="0.16.6" />
+    <PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.10" />
   </ItemGroup>
 
   <ItemGroup>
