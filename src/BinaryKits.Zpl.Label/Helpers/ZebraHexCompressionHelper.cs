@@ -112,7 +112,7 @@ namespace BinaryKits.Zpl.Label.Helpers
         }
 
         /// <summary>
-        /// Decompress data
+        /// Uncompress data
         /// </summary>
         /// <param name="compressedHexData"></param>
         /// <param name="bytesPerRow"></param>
