@@ -92,7 +92,7 @@ namespace BinaryKits.Zpl.Label.Elements
 
             if (_isCompressionActive)
             {
-                imageResult.ZplData = CompressHelper.CompressHex(imageResult.ZplData, imageResult.BytesPerRow);
+                imageResult.ZplData = ZebraHexCompressionHelper.Compress(imageResult.ZplData, imageResult.BytesPerRow);
             }
 
             return new List<string>
