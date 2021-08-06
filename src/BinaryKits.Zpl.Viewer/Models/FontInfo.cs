@@ -1,6 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
 
-namespace BinaryKits.Zpl.Viewer
+namespace BinaryKits.Zpl.Viewer.Models
 {
     public class FontInfo
     {

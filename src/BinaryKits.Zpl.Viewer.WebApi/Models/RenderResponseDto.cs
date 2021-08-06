@@ -2,6 +2,7 @@
 {
     public class RenderResponseDto
     {
-        public string ImageBase64 { get; set; }
+        public string[] UnknownCommands { get; set; }
+        public LabelDto[] Labels { get; set; }
     }
 }

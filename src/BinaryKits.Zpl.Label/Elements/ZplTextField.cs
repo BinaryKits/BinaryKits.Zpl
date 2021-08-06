@@ -29,6 +29,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="newLineConversion"></param>
         /// <param name="useHexadecimalIndicator"></param>
         /// <param name="reversePrint"></param>
+        /// <param name="bottomToTop"></param>
         public ZplTextField(
             string text,
             int positionX,
@@ -36,11 +37,11 @@ namespace BinaryKits.Zpl.Label.Elements
             ZplFont font,
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace,
             bool useHexadecimalIndicator = true,
-            bool reversePrint = false)
-            : base(positionX, positionY)
+            bool reversePrint = false,
+            bool bottomToTop = false)
+            : base(positionX, positionY, bottomToTop)
         {
             Text = text;
-            Origin = new ZplOrigin(positionX, positionY);
             Font = font;
             UseHexadecimalIndicator = useHexadecimalIndicator;
             NewLineConversion = newLineConversion;
@@ -52,7 +53,7 @@ namespace BinaryKits.Zpl.Label.Elements
         {
             var result = new List<string>();
             result.AddRange(Font.Render(context));
-            result.AddRange(Origin.Render(context));
+            result.AddRange(RenderPosition(context));
             result.Add(RenderFieldDataSection());
 
             return result;

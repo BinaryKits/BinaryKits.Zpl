@@ -8,20 +8,34 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public GraphicBoxZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GB", virtualPrinter)
         { }
 
-        public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
+        public override ZplElementBase Analyze(string zplCommand)
         {
-            var x = this.VirtualPrinter.NextElementPosition.X;
-            var y = this.VirtualPrinter.NextElementPosition.Y;
+            var x = 0;
+            var y = 0;
 
-            this.VirtualPrinter.ClearNextElementPosition();
-
-            var zplCommandData = zplCommandStructure.CurrentCommand.Substring(this.PrinterCommandPrefix.Length);
+            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             var zplDataParts = zplCommandData.Split(',');
 
             _ = int.TryParse(zplDataParts[0], out var widht);
             _ = int.TryParse(zplDataParts[1], out var height);
             _ = int.TryParse(zplDataParts[2], out var borderThickness);
+
+            if (this.VirtualPrinter.NextElementPosition != null)
+            {
+                x = this.VirtualPrinter.NextElementPosition.X;
+                y = this.VirtualPrinter.NextElementPosition.Y;
+
+                if (this.VirtualPrinter.NextElementPosition.CalculateFromBottom)
+                {
+                    y -= height;
+                }
+            }
+
+            if (borderThickness > 8)
+            {
+                //error message -> not possible
+            }
 
             var lineColor = LineColor.Black;
             if (zplDataParts.Length > 3)
@@ -36,7 +50,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 _ = int.TryParse(zplDataParts[4], out cornerRounding);
             }
 
-            return new ZplGraphicBox(x, y, widht, height, borderThickness, lineColor, cornerRounding);
+            var reversePrint = this.VirtualPrinter.FieldReversePrintForNextElement;
+
+            return new ZplGraphicBox(x, y, widht, height, borderThickness, lineColor, cornerRounding, reversePrint);
         }
     }
 }

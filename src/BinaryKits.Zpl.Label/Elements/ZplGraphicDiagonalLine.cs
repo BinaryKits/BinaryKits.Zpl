@@ -24,7 +24,7 @@ namespace BinaryKits.Zpl.Label.Elements
         {
             //^GDw,h,t,c,o
             var result = new List<string>();
-            result.AddRange(Origin.Render(context));
+            result.AddRange(FieldOrigin.Render(context));
             result.Add($"^GD{context.Scale(Width)},{context.Scale(Height)},{context.Scale(BorderThickness)},{RenderLineColor(LineColor)},{(RightLeaningDiagonal ? "R" : "L")}^FS");
 
             return result;

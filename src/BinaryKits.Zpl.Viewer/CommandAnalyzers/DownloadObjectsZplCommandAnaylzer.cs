@@ -7,16 +7,17 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
     {
         private readonly IPrinterStorage _printerStorage;
 
-        public DownloadObjectsZplCommandAnaylzer(VirtualPrinter virtualPrinter, IPrinterStorage printerStorage) : base("~DY", virtualPrinter)
+        public DownloadObjectsZplCommandAnaylzer(
+            VirtualPrinter virtualPrinter,
+            IPrinterStorage printerStorage)
+            : base("~DY", virtualPrinter)
         {
             this._printerStorage = printerStorage;
         }
 
-        public override ZplElementBase Analyze(ZplCommandStructure zplCommandStructure)
+        public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplLine = zplCommandStructure.CurrentCommand;
-
-            var zplCommandData = zplLine.Substring(this.PrinterCommandPrefix.Length);
+            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             var storageDevice = zplCommandData[0];
 
@@ -27,7 +28,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var formatDownloadedInDataField = zplDataParts[1];
             var extensionOfStoredFile = zplDataParts[2];
             _ = int.TryParse(zplDataParts[3], out var objectDataLength);
-            var totalNumberOfBytesPerRow = zplDataParts[4];
+            _ = int.TryParse(zplDataParts[4], out var totalNumberOfBytesPerRow);
+
             var dataHex = zplDataParts[5];
 
             this._printerStorage.AddFile(storageDevice, objectName, this.StringToByteArray(dataHex));

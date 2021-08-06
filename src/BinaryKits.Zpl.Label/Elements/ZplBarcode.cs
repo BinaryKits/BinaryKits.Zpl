@@ -7,18 +7,28 @@
             int positionX,
             int positionY,
             int height,
+            int moduleWidth,
+            double wideBarToNarrowBarWidthRatio,
             FieldOrientation fieldOrientation,
             bool printInterpretationLine,
-            bool printInterpretationLineAboveCode) 
-            : base(positionX, positionY)
+            bool printInterpretationLineAboveCode,
+            bool bottomToTop = false) 
+            : base(positionX, positionY, bottomToTop)
         {
-            Origin = new ZplOrigin(positionX, positionY);
             Content = content;
             Height = height;
+            ModuleWidth = moduleWidth;
+            WideBarToNarrowBarWidthRatio = wideBarToNarrowBarWidthRatio;
             FieldOrientation = fieldOrientation;
             PrintInterpretationLine = printInterpretationLine;
             PrintInterpretationLineAboveCode = printInterpretationLineAboveCode;
         }
+
+        /// <summary>
+        /// Module width (in dots)
+        /// </summary>
+        public int ModuleWidth { get; protected set; }
+        public double WideBarToNarrowBarWidthRatio { get; protected set; }
 
         public int Height { get; protected set; }
 

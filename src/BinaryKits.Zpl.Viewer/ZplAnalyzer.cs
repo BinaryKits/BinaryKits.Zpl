@@ -1,5 +1,7 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.CommandAnalyzers;
+using BinaryKits.Zpl.Viewer.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -10,6 +12,8 @@ namespace BinaryKits.Zpl.Viewer
     {
         private readonly VirtualPrinter _virtualPrinter;
         private readonly IPrinterStorage _printerStorage;
+        private readonly string _labelStartCommand = "^XA";
+        private readonly string _labelEndCommand = "^XZ";
 
         public ZplAnalyzer(IPrinterStorage printerStorage)
         {
@@ -17,66 +21,83 @@ namespace BinaryKits.Zpl.Viewer
             this._virtualPrinter = new VirtualPrinter();
         }
 
-        public ZplElementBase[] Analyze(string zplData)
+        public AnalyzeInfo Analyze(string zplData)
         {
             var zplCommands = this.SplitZplCommands(zplData);
+            var unknownCommands = new List<string>();
 
             var elementAnalyzers = new List<IZplCommandAnalyzer>
             {
+                new LabelHomeZplCommandAnalyzer(this._virtualPrinter),
                 new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
                 new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
                 new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter),
                 new FieldOriginZplCommandAnalzer(this._virtualPrinter),
+                new FieldTypesetZplCommandAnalyzer(this._virtualPrinter),
+                new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),
                 new FieldDataZplCommandAnalyzer(this._virtualPrinter),
                 new GraphicBoxZplCommandAnalyzer(this._virtualPrinter),
                 new GraphicCircleZplCommandAnalyzer(this._virtualPrinter),
                 new DownloadObjectsZplCommandAnaylzer(this._virtualPrinter, this._printerStorage),
+                new DownloadGraphicsZplCommandAnalyzer(this._virtualPrinter, this._printerStorage),
+                new RecallGraphicZplCommandAnalyzer(this._virtualPrinter),
                 new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
                 new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter)
+                new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter)
             };
+
+            var labelInfos = new List<LabelInfo>();
 
             var elements = new List<ZplElementBase>();
             for (var i = 0; i < zplCommands.Length; i++)
             {
                 var currentCommand = zplCommands[i];
+
+                if (this._labelStartCommand.Equals(currentCommand, StringComparison.OrdinalIgnoreCase))
+                {
+                    elements.Clear();
+                    continue;
+                }
+
+                if (this._labelEndCommand.Equals(currentCommand, StringComparison.OrdinalIgnoreCase))
+                {
+                    labelInfos.Add(new LabelInfo
+                    {
+                        ZplElements = elements.ToArray()
+                    });
+                    continue;
+                }
+
                 var validAnalyzers = elementAnalyzers.Where(o => o.CanAnalyze(currentCommand));
 
-                var previousIndex = i - 1;
-                var nextIndex = i + 1;
-
-                var nextCommand = string.Empty;
-                var previousCommand = string.Empty;
-
-                if (previousIndex > 0)
+                if (!validAnalyzers.Any())
                 {
-                    previousCommand = zplCommands[previousIndex];
+                    unknownCommands.Add(currentCommand);
+                    continue;
                 }
 
-                if (zplCommands.Length > nextIndex)
-                {
-                    nextCommand = zplCommands[nextIndex];
-                }
-
-                var structure = new ZplCommandStructure
-                {
-                    CurrentCommand = currentCommand,
-                    PreviousCommand = previousCommand,
-                    NextCommand = nextCommand
-                };
-
-                elements.AddRange(validAnalyzers.Select(analyzer => analyzer.Analyze(structure)).Where(o => o != null));
+                elements.AddRange(validAnalyzers.Select(analyzer => analyzer.Analyze(currentCommand)).Where(o => o != null));
             }
 
-            return elements.ToArray();
+            var analyzeInfo = new AnalyzeInfo();
+            analyzeInfo.LabelInfos = labelInfos.ToArray();
+            analyzeInfo.UnknownCommands = unknownCommands.ToArray();
+
+            return analyzeInfo;
         }
 
         private string[] SplitZplCommands(string zplData)
         {
+            if (string.IsNullOrEmpty(zplData))
+            {
+                return Array.Empty<string>();
+            }
+
             var replacementString = string.Empty;
             var cleanZpl = Regex.Replace(zplData, @"\r\n?|\n", replacementString);
-            return Regex.Split(cleanZpl, "(?=\\^)|(?=\\~)").ToArray();
+            return Regex.Split(cleanZpl, "(?=\\^)|(?=\\~)").Where(x => !string.IsNullOrEmpty(x)).ToArray();
         }
     }
 }

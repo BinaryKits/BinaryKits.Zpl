@@ -4,11 +4,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public class GraphicCircleElementDrawer : ElementDrawerBase
     {
+        ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
             return element is ZplGraphicCircle;
         }
 
+        ///<inheritdoc/>
         public override void Draw(ZplElementBase element)
         {
             if (element is ZplGraphicCircle graphicCircle)
@@ -18,8 +20,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var radius = graphicCircle.Diameter / 2;
                 var offset = (graphicCircle.BorderThickness / 2) + radius;
 
-                var x = graphicCircle.Origin.PositionX + this._padding + offset;
-                var y = graphicCircle.Origin.PositionY + this._padding + offset;
+                var x = graphicCircle.PositionX + this._padding + offset;
+                var y = graphicCircle.PositionY + this._padding + offset;
 
                 this._skCanvas.DrawCircle(x, y, radius, this._skPaint);
             }

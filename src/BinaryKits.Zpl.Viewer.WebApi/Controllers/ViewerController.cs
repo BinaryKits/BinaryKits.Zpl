@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
 {
@@ -21,16 +22,25 @@ namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
         public ActionResult<RenderResponseDto> Render(RenderRequestDto request)
         {
             IPrinterStorage printerStorage = new PrinterStorage();
+            var drawer = new ZplElementDrawer(printerStorage);
 
             var analyzer = new ZplAnalyzer(printerStorage);
-            var elements = analyzer.Analyze(request.ZplData);
+            var analyzeInfo = analyzer.Analyze(request.ZplData);
 
-            var drawer = new ZplElementDrawer(printerStorage);
-            var imageData = drawer.Draw(elements);
+            var labels = new List<LabelDto>();
+            foreach (var labelInfo in analyzeInfo.LabelInfos)
+            {
+                var imageData = drawer.Draw(labelInfo.ZplElements);
+                labels.Add(new LabelDto
+                {
+                    ImageBase64 = Convert.ToBase64String(imageData)
+                });
+            }
 
             var response = new RenderResponseDto
             {
-                ImageBase64 = Convert.ToBase64String(imageData)
+                Labels = labels.ToArray(),
+                UnknownCommands = analyzeInfo.UnknownCommands
             };
 
             return this.StatusCode(StatusCodes.Status200OK, response);

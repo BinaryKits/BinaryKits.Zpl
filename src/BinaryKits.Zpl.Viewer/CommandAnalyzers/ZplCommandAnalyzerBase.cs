@@ -19,7 +19,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             return zplLine.StartsWith(this.PrinterCommandPrefix);
         }
 
-        public abstract ZplElementBase Analyze(ZplCommandStructure zplCommandStructure);
+        public abstract ZplElementBase Analyze(string zplCommand);
 
         protected FieldOrientation ConvertFieldOrientation(string fieldOrientation)
         {

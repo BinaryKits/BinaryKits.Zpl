@@ -6,6 +6,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
     {
         bool CanAnalyze(string zplLine);
 
-        ZplElementBase Analyze(ZplCommandStructure zplCommandStructure);
+        ZplElementBase Analyze(string zplCommand);
     }
 }

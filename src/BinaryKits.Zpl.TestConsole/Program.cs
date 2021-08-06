@@ -81,7 +81,7 @@ namespace BinaryKits.Zpl.TestConsole
             {
                 new ZplBarcode128("Barcode128", 10, 0),
                 new ZplBarcode39("Barcode39", 10, 150),
-                new ZplBarcodeAnsiCodabar("123456", 10, 300, 100, 'a', 'd'),
+                new ZplBarcodeAnsiCodabar("123456", 'a', 'd', 10, 300, 100),
                 new ZplBarcodeEan13("123456789", 10, 450),
                 new ZplBarcodeInterleaved2of5("123456789", 10, 600),
                 new ZplQrCode("BinaryKits ZplUtility BinaryKits ZplUtility BinaryKits ZplUtility", 10, 800, magnificationFactor: 6)

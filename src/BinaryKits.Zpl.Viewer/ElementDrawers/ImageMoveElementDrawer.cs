@@ -5,11 +5,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public class ImageMoveElementDrawer : ElementDrawerBase
     {
+        ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
             return element is ZplImageMove;
         }
 
+        ///<inheritdoc/>
         public override void Draw(ZplElementBase element)
         {
             if (element is ZplImageMove imageMove)
@@ -21,8 +23,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     return;
                 }
 
-                var x = imageMove.Origin.PositionX + this._padding;
-                var y = imageMove.Origin.PositionY + this._padding;
+                var x = imageMove.PositionX + this._padding;
+                var y = imageMove.PositionY + this._padding;
 
                 this._skCanvas.DrawBitmap(SKBitmap.Decode(imageData), x, y);
             }

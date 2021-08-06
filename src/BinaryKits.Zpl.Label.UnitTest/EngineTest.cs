@@ -1,5 +1,4 @@
-﻿using BinaryKits.Zpl.Label;
-using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label.Elements;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -63,7 +62,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
         {
             var elements = new List<ZplElementBase>();
 
-            var origin = new ZplOrigin(100, 100);
+            var origin = new ZplFieldOrigin(100, 100);
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)

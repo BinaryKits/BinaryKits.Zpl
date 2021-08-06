@@ -1,11 +1,11 @@
-﻿namespace BinaryKits.Zpl.Viewer
+﻿namespace BinaryKits.Zpl.Viewer.Models
 {
-    public class ElementPosition
+    public class LabelHome
     {
         public int X { get; private set; }
         public int Y { get; private set; }
 
-        public ElementPosition(int x, int y)
+        public LabelHome(int x, int y)
         {
             this.X = x;
             this.Y = y;

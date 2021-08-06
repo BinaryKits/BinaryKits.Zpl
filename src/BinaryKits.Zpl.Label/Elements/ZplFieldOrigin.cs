@@ -10,17 +10,17 @@ namespace BinaryKits.Zpl.Label.Elements
     /// <remarks>
     /// Format:^FOx,y
     /// </remarks>
-    public class ZplOrigin : ZplElementBase
+    public class ZplFieldOrigin : ZplElementBase
     {
         public int PositionX { get; protected set; }
         public int PositionY { get; protected set; }
 
         /// <summary>
-        /// ZplOrigin
+        /// Field Origin
         /// </summary>
         /// <param name="positionX">X Position (0-32000)</param>
         /// <param name="positionY">Y Position (0-32000)</param>
-        public ZplOrigin(int positionX, int positionY)
+        public ZplFieldOrigin(int positionX, int positionY)
         {
             PositionX = positionX;
             PositionY = positionY;
@@ -29,19 +29,19 @@ namespace BinaryKits.Zpl.Label.Elements
         ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
-            //^ FO50,50
+            //^FO50,50
             return new string[] { $"^FO{context.Scale(PositionX)},{context.Scale(PositionY)}" };
         }
 
         /// <summary>
         /// Return a new instance with offset applied
         /// </summary>
-        /// <param name="OffsetX"></param>
-        /// <param name="OffsetY"></param>
+        /// <param name="offsetX">Offset on x</param>
+        /// <param name="offsetY">Offset on y</param>
         /// <returns></returns>
-        public ZplOrigin Offset(int OffsetX, int OffsetY)
+        public ZplFieldOrigin Offset(int offsetX, int offsetY)
         {
-            return new ZplOrigin(PositionX + OffsetX, PositionY + OffsetY);
+            return new ZplFieldOrigin(PositionX + offsetX, PositionY + offsetY);
         }
     }
 }
