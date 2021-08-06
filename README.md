@@ -31,7 +31,7 @@ This library supports following elements:
 
 ## Is there a way to generate a preview?
 
-Yes, you can test the generated ZPL code via http://labelary.com/viewer.html
+Yes, you can test the generated ZPL code via http://labelary.com/viewer.html.<br>
 Alternative you can use our viewer it is still under development https://binarykits-zpl-viewer.azurewebsites.net
 
 ## How can I send the generated data to my printer?
