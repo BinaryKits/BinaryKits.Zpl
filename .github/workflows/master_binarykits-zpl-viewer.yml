@@ -24,9 +24,11 @@ jobs:
         dotnet-version: '5.0.x'
 
     - name: Build with dotnet
+      working-directory: ./src/BinaryKits.Zpl.Viewer.WebApi
       run: dotnet build --configuration Release
 
     - name: dotnet publish
+      working-directory: ./src/BinaryKits.Zpl.Viewer.WebApi
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
     - name: Run Azure webapp deploy action using publish profile credentials
