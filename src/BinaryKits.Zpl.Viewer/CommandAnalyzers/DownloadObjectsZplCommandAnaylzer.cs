@@ -1,5 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
-using System;
+using BinaryKits.Zpl.Viewer.Helpers;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -32,37 +32,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             var dataHex = zplDataParts[5];
 
-            this._printerStorage.AddFile(storageDevice, objectName, this.StringToByteArray(dataHex));
+            this._printerStorage.AddFile(storageDevice, objectName, ByteHelper.StringToByteArray(dataHex));
 
             return null;
-        }
-
-        private byte[] StringToByteArray(string hex)
-        {
-            if (hex.Length % 2 == 1)
-            {
-                throw new Exception("The binary key cannot have an odd number of digits");
-            }
-
-            var array = new byte[hex.Length >> 1];
-
-            for (var i = 0; i < hex.Length >> 1; ++i)
-            {
-                array[i] = (byte)((this.GetHexVal(hex[i << 1]) << 4) + (this.GetHexVal(hex[(i << 1) + 1])));
-            }
-
-            return array;
-        }
-
-        private int GetHexVal(char hex)
-        {
-            int val = (int)hex;
-            //For uppercase A-F letters:
-            //return val - (val < 58 ? 48 : 55);
-            //For lowercase a-f letters:
-            //return val - (val < 58 ? 48 : 87);
-            //Or the two combined, but a bit slower:
-            return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
         }
     }
 }

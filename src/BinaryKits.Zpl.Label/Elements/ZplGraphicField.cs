@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
+    /// <summary>
+    /// Graphic Field - ^GF
+    /// </summary>
     public class ZplGraphicField : ZplPositionedElementBase
     {
         public char CompressionType { get; private set; }
@@ -18,19 +20,29 @@ namespace BinaryKits.Zpl.Label.Elements
             int graphicFieldCount,
             int bytesPerRow,
             string data,
+            bool bottomToTop = false,
             char compressionType = 'A')
-            : base(positionX, positionY)
+            : base(positionX, positionY, bottomToTop)
         {
-            this.CompressionType = compressionType;
-            this.BinaryByteCount = binaryByteCount;
-            this.GraphicFieldCount = graphicFieldCount;
-            this.BytesPerRow = bytesPerRow;
-            this.Data = data;
+            CompressionType = compressionType;
+            BinaryByteCount = binaryByteCount;
+            GraphicFieldCount = graphicFieldCount;
+            BytesPerRow = bytesPerRow;
+            Data = data;
         }
 
+        /// <summary>
+        /// Render (^GFa,b,c,d,data)
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
-            throw new NotImplementedException();
+            var result = new List<string>();
+            result.AddRange(FieldOrigin.Render(context));
+            result.Add($"^GF{CompressionType},{BinaryByteCount},{GraphicFieldCount},{BytesPerRow},{Data}");
+
+            return result;
         }
     }
 }
