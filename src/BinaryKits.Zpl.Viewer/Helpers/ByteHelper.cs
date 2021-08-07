@@ -11,8 +11,13 @@ namespace BinaryKits.Zpl.Viewer.Helpers
                 throw new Exception("The binary key cannot have an odd number of digits");
             }
 
-            var array = new byte[hex.Length >> 1];
+            if (hex.IndexOfAny(new[] {'\r', '\n'} ) != -1)
+            {
+                hex = hex.Replace("\n", string.Empty);
+                hex = hex.Replace("\r", string.Empty);
+            }
 
+            var array = new byte[hex.Length >> 1];
             for (var i = 0; i < hex.Length >> 1; ++i)
             {
                 array[i] = (byte)((GetHexVal(hex[i << 1]) << 4) + (GetHexVal(hex[(i << 1) + 1])));

@@ -1,7 +1,7 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.Helpers;
 using BinaryKits.Zpl.Label.ImageConverters;
 using BinaryKits.Zpl.Viewer.Helpers;
-using System;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -28,7 +28,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             var imageName = zplDataParts[0];
             _ = int.TryParse(zplDataParts[1], out var totalNumberOfBytesInGraphic);
-            _ = int.TryParse(zplDataParts[2], out var totalNumberOfBytesPerRow);
+            _ = int.TryParse(zplDataParts[2], out var numberOfBytesPerRow);
 
             //third comma is the start of the image data
             var indexOfThirdComma = this.IndexOfNthCharacter(zplCommandData, 3, ',');
@@ -38,31 +38,16 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             if (grfImageData.Length != totalNumberOfBytesInGraphic)
             {
-                return null;
+                dataHex = ZebraHexCompressionHelper.Uncompress(dataHex, numberOfBytesPerRow);
+                grfImageData = ByteHelper.HexToBytes(dataHex);
             }
 
             var converter = new ImageSharpImageConverter();
-            var imageData = converter.ConvertImage(grfImageData, totalNumberOfBytesPerRow);
+            var imageData = converter.ConvertImage(grfImageData, numberOfBytesPerRow);
 
             this._printerStorage.AddFile(storageDevice, imageName, imageData);
 
             return null;
-        }
-
-        private int IndexOfNthCharacter(string input, int occurranceToFind, char charToFind)
-        {
-            var index = -1;
-            for (var i = 0; i < occurranceToFind; i++)
-            {
-                index = input.IndexOf(charToFind, index + 1);
-
-                if (index == -1)
-                {
-                    break;
-                }
-            }
-
-            return index;
         }
     }
 }

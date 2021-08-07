@@ -1,4 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.Helpers;
 using BinaryKits.Zpl.Label.ImageConverters;
 using BinaryKits.Zpl.Viewer.Helpers;
 
@@ -27,12 +28,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             var zplDataParts = zplCommandData.Split(',');
 
-
             var compressionType = zplDataParts[0][0];
             var binaryByteCount = 0;
             var graphicFieldCount = 0;
             var bytesPerRow = 0;
-            var data = string.Empty;
 
             if (zplDataParts.Length > 1)
             {
@@ -46,15 +45,23 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             {
                 _ = int.TryParse(zplDataParts[3], out bytesPerRow);
             }
-            if (zplDataParts.Length > 4)
+
+            //fourth comma is the start of the image data
+            var indexOfFourthComma = this.IndexOfNthCharacter(zplCommandData, 4, ',');
+
+            var dataHex = zplCommandData.Substring(indexOfFourthComma + 1);
+
+            if (dataHex.Length != binaryByteCount * 2)
             {
-                var grfImageData = ByteHelper.HexToBytes(zplDataParts[4]);
-                var converter = new ImageSharpImageConverter();
-                var imageData = converter.ConvertImage(grfImageData, bytesPerRow);
-                data = ByteHelper.BytesToHex(imageData);
+                dataHex = ZebraHexCompressionHelper.Uncompress(dataHex, bytesPerRow);
             }
 
-            return new ZplGraphicField(x, y, binaryByteCount, graphicFieldCount, bytesPerRow, data, bottomToTop: bottomToTop, compressionType);
+            var grfImageData = ByteHelper.HexToBytes(dataHex);
+            var converter = new ImageSharpImageConverter();
+            var imageData = converter.ConvertImage(grfImageData, bytesPerRow);
+            dataHex = ByteHelper.BytesToHex(imageData);
+
+            return new ZplGraphicField(x, y, binaryByteCount, graphicFieldCount, bytesPerRow, dataHex, bottomToTop: bottomToTop, compressionType);
         }
     }
 }

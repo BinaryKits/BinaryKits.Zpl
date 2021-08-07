@@ -25,6 +25,9 @@
     <None Update="ZplDatas\Barcode39.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="ZplDatas\DownloadCompressedGraphics.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ZplDatas\DownloadUncompressedGraphics.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

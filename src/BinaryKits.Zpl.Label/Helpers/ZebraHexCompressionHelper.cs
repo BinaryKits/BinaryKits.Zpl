@@ -159,6 +159,11 @@ namespace BinaryKits.Zpl.Label.Helpers
                     continue;
                 }
 
+                if (totalCount == 0)
+                {
+                    totalCount = 1;
+                }
+
                 var append = new string(c, totalCount);
                 hexData.Append(append);
                 lineIndex += append.Length;

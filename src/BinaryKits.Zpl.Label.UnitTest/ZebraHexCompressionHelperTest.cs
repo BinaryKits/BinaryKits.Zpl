@@ -119,5 +119,23 @@ namespace BinaryKits.Zpl.Label.UnitTest
             var uncompressed = ZebraHexCompressionHelper.Uncompress(compressed, 10);
             Assert.AreEqual(originalData, uncompressed);
         }
+
+        [TestMethod]
+        public void Uncompress_ValidData1_Successful()
+        {
+            var compressedData = "gO0E\n";
+
+            var uncompressed = ZebraHexCompressionHelper.Uncompress(compressedData, 10);
+            Assert.AreEqual("00000000000000000000000000000E\n", uncompressed);
+        }
+
+        [TestMethod]
+        public void Uncompress_ValidData2_Successful()
+        {
+            var compressedData = "gO0GE\n";
+
+            var uncompressed = ZebraHexCompressionHelper.Uncompress(compressedData, 10);
+            Assert.AreEqual("00000000000000000000000000000E\n", uncompressed);
+        }
     }
 }
