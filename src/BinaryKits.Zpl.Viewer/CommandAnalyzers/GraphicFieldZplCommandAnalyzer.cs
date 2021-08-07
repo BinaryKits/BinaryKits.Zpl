@@ -1,4 +1,6 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.ImageConverters;
+using BinaryKits.Zpl.Viewer.Helpers;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -29,7 +31,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var compressionType = zplDataParts[0][0];
             var binaryByteCount = 0;
             var graphicFieldCount = 0;
-            var bytesPeRow = 7;
+            var bytesPerRow = 0;
             var data = string.Empty;
 
             if (zplDataParts.Length > 1)
@@ -42,14 +44,17 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
             if (zplDataParts.Length > 3)
             {
-                _ = int.TryParse(zplDataParts[3], out bytesPeRow);
+                _ = int.TryParse(zplDataParts[3], out bytesPerRow);
             }
             if (zplDataParts.Length > 4)
             {
-                data = zplDataParts[4];
+                var grfImageData = ByteHelper.HexToBytes(zplDataParts[4]);
+                var converter = new ImageSharpImageConverter();
+                var imageData = converter.ConvertImage(grfImageData, bytesPerRow);
+                data = ByteHelper.BytesToHex(imageData);
             }
 
-            return new ZplGraphicField(x, y, binaryByteCount, graphicFieldCount, bytesPeRow, data, bottomToTop: bottomToTop, compressionType);
+            return new ZplGraphicField(x, y, binaryByteCount, graphicFieldCount, bytesPerRow, data, bottomToTop: bottomToTop, compressionType);
         }
     }
 }

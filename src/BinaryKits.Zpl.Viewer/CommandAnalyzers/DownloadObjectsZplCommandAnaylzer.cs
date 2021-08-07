@@ -32,7 +32,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             var dataHex = zplDataParts[5];
 
-            this._printerStorage.AddFile(storageDevice, objectName, ByteHelper.StringToByteArray(dataHex));
+            this._printerStorage.AddFile(storageDevice, objectName, ByteHelper.HexToBytes(dataHex));
 
             return null;
         }

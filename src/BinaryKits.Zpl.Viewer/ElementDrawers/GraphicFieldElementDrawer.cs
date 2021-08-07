@@ -17,7 +17,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplGraphicField graphicField)
             {
-                var imageData = ByteHelper.StringToByteArray(graphicField.Data);
+                var imageData = ByteHelper.HexToBytes(graphicField.Data);
 
                 var x = graphicField.PositionX + this._padding;
                 var y = graphicField.PositionY + this._padding;
