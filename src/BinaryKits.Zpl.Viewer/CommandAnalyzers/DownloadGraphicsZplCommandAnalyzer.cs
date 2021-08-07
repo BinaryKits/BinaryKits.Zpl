@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Label.ImageConverters;
+using BinaryKits.Zpl.Viewer.Helpers;
 using System;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
@@ -33,7 +34,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var indexOfThirdComma = this.IndexOfNthCharacter(zplCommandData, 3, ',');
 
             var dataHex = zplCommandData.Substring(indexOfThirdComma + 1);
-            var grfImageData = this.StringToByteArray(dataHex);
+            var grfImageData = ByteHelper.HexToBytes(dataHex);
 
             if (grfImageData.Length != totalNumberOfBytesInGraphic)
             {
@@ -62,34 +63,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
 
             return index;
-        }
-
-        private byte[] StringToByteArray(string hex)
-        {
-            if (hex.Length % 2 == 1)
-            {
-                throw new Exception("The binary key cannot have an odd number of digits");
-            }
-
-            var array = new byte[hex.Length >> 1];
-
-            for (var i = 0; i < hex.Length >> 1; ++i)
-            {
-                array[i] = (byte)((this.GetHexVal(hex[i << 1]) << 4) + (this.GetHexVal(hex[(i << 1) + 1])));
-            }
-
-            return array;
-        }
-
-        private int GetHexVal(char hex)
-        {
-            int val = (int)hex;
-            //For uppercase A-F letters:
-            //return val - (val < 58 ? 48 : 55);
-            //For lowercase a-f letters:
-            //return val - (val < 58 ? 48 : 87);
-            //Or the two combined, but a bit slower:
-            return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
         }
     }
 }
