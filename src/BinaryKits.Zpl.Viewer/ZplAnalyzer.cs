@@ -25,6 +25,7 @@ namespace BinaryKits.Zpl.Viewer
         {
             var zplCommands = this.SplitZplCommands(zplData);
             var unknownCommands = new List<string>();
+            var errors = new List<string>();
 
             var elementAnalyzers = new List<IZplCommandAnalyzer>
             {
@@ -79,12 +80,22 @@ namespace BinaryKits.Zpl.Viewer
                     continue;
                 }
 
-                elements.AddRange(validAnalyzers.Select(analyzer => analyzer.Analyze(currentCommand)).Where(o => o != null));
+                try
+                {
+                    elements.AddRange(validAnalyzers.Select(analyzer => analyzer.Analyze(currentCommand)).Where(o => o != null));
+                }
+                catch (Exception exception)
+                {
+                    errors.Add($"Cannot analyze command {currentCommand} {exception}");
+                }
             }
 
-            var analyzeInfo = new AnalyzeInfo();
-            analyzeInfo.LabelInfos = labelInfos.ToArray();
-            analyzeInfo.UnknownCommands = unknownCommands.ToArray();
+            var analyzeInfo = new AnalyzeInfo
+            {
+                LabelInfos = labelInfos.ToArray(),
+                UnknownCommands = unknownCommands.ToArray(),
+                Errors = errors.ToArray()
+            };
 
             return analyzeInfo;
         }
