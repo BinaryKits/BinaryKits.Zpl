@@ -18,12 +18,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y = this.VirtualPrinter.NextElementPosition.Y;
             }
 
-            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
+            var storageDevice = zplCommand.Substring(this.PrinterCommandPrefix.Length)[0];
 
-            var storageDevice = zplCommandData[0];
-
-            zplCommandData = zplCommandData.Substring(2);
-            var zplDataParts = zplCommandData.Split(',');
+            var zplDataParts = this.SplitCommand(zplCommand, 2);
 
             var imageName = zplDataParts[0];
             var magnificationFactorX = 1;

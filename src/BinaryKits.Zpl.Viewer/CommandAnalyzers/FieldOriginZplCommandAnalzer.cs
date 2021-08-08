@@ -9,8 +9,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
-            var zplDataParts = zplCommandData.Split(',');
+            var zplDataParts = this.SplitCommand(zplCommand);
 
             _ = int.TryParse(zplDataParts[0], out var x);
             _ = int.TryParse(zplDataParts[1], out var y);

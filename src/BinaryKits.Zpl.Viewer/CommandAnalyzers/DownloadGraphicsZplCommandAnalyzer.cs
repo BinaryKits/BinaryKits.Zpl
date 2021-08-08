@@ -19,21 +19,18 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
+            var storageDevice = zplCommand.Substring(this.PrinterCommandPrefix.Length)[0];
 
-            var storageDevice = zplCommandData[0];
-
-            zplCommandData = zplCommandData.Substring(2);
-            var zplDataParts = zplCommandData.Split(',');
+            var zplDataParts = this.SplitCommand(zplCommand, 2);
 
             var imageName = zplDataParts[0];
             _ = int.TryParse(zplDataParts[1], out var totalNumberOfBytesInGraphic);
             _ = int.TryParse(zplDataParts[2], out var numberOfBytesPerRow);
 
             //third comma is the start of the image data
-            var indexOfThirdComma = this.IndexOfNthCharacter(zplCommandData, 3, ',');
+            var indexOfThirdComma = this.IndexOfNthCharacter(zplCommand, 3, ',');
+            var dataHex = zplCommand.Substring(indexOfThirdComma + 1);
 
-            var dataHex = zplCommandData.Substring(indexOfThirdComma + 1);
             var grfImageData = ByteHelper.HexToBytes(dataHex);
 
             if (grfImageData.Length != totalNumberOfBytesInGraphic)

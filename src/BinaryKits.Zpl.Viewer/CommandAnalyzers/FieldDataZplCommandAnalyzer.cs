@@ -22,8 +22,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
             }
 
-            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
-            var text = zplCommandData;
+            var text = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             if (this.VirtualPrinter.NextFieldDataElement != null)
             {

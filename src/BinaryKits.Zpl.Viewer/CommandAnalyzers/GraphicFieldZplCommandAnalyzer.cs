@@ -24,9 +24,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
             }
 
-            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
-
-            var zplDataParts = zplCommandData.Split(',');
+            var zplDataParts = this.SplitCommand(zplCommand);
 
             var compressionType = zplDataParts[0][0];
             var binaryByteCount = 0;
@@ -47,9 +45,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
 
             //fourth comma is the start of the image data
-            var indexOfFourthComma = this.IndexOfNthCharacter(zplCommandData, 4, ',');
-
-            var dataHex = zplCommandData.Substring(indexOfFourthComma + 1);
+            var indexOfFourthComma = this.IndexOfNthCharacter(zplCommand, 4, ',');
+            var dataHex = zplCommand.Substring(indexOfFourthComma + 1);
 
             if (dataHex.Length != binaryByteCount * 2)
             {

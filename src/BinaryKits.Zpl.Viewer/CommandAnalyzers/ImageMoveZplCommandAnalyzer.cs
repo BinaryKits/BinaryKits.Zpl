@@ -22,9 +22,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             //Get StorageDevice
             var storageDevice = zplCommandData[0];
-            zplCommandData = zplCommandData.Substring(2);
 
-            var objectName = zplCommandData;
+            var objectName = zplCommandData.Substring(2);
 
             return new ZplImageMove(x, y, storageDevice, objectName, string.Empty);
         }
