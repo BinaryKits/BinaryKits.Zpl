@@ -18,11 +18,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             if (element is ZplGraphicField graphicField)
             {
                 var imageData = ByteHelper.HexToBytes(graphicField.Data);
+                var image = SKBitmap.Decode(imageData);
 
                 var x = graphicField.PositionX + this._padding;
                 var y = graphicField.PositionY + this._padding;
 
-                this._skCanvas.DrawBitmap(SKBitmap.Decode(imageData), x, y);
+                var useFieldTypeset = graphicField.FieldTypeset != null;
+                if (useFieldTypeset)
+                {
+                    y -= image.Height;
+                }
+
+                this._skCanvas.DrawBitmap(image, x, y);
             }
         }
     }
