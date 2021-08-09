@@ -2,7 +2,7 @@
 
 # BinaryKits.Zpl
 
-This project contains several modules for working with Zebra Printer Language. ZPL is a very common printer language that is supported by various manufacturers.
+This project contains several modules for working with Zebra Programming Language. ZPL is a very common printer language that is supported by various manufacturers.
 The project helps you to describe a label and generates a preview from the ZPL data. We can convert different image formats to the Zebra image format. The image data is compressed to cause as little traffic as possible. More information about Zebra printer languages can be found in the [ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf).
 
 ## How can I use it?
