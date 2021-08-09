@@ -43,7 +43,7 @@ namespace BinaryKits.Zpl.Labelary
             var dpi = printDensity.ToString().Substring(2);
             var zpl = Encoding.UTF8.GetBytes(zplData);
 
-            var byteContent = new ByteArrayContent(zpl);
+            using var byteContent = new ByteArrayContent(zpl);
             using (var response = await _httpClient.PostAsync($"{_apiEndpoint}/{dpi}/labels/{labelSize.WidthInInch}x{labelSize.HeightInInch}/0/", byteContent))
             {
                 if (!response.IsSuccessStatusCode)

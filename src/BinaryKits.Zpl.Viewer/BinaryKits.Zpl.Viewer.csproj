@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <Description>zpl viewer</Description>
+    <Description>This package provides a rendering logic for ZPL data</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
     <Version>1.0.0</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <PackageTags>Zebra ZPL ZPL2</PackageTags>
+    <PackageTags>Zebra ZPL ZPL2 ZPLEmulator ZPLVirtualPrinter ZPLViewer ZPLParser</PackageTags>
     <PackageProjectUrl>https://github.com/BinaryKits/BinaryKits.Zpl</PackageProjectUrl>
     <RepositoryUrl>https://github.com/BinaryKits/BinaryKits.Zpl</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
