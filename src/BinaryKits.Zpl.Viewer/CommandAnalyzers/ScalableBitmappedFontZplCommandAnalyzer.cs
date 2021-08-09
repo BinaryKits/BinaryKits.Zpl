@@ -9,7 +9,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var fontName = zplCommand.Substring(this.PrinterCommandPrefix.Length)[0].ToString();
+            var fontName = zplCommand[this.PrinterCommandPrefix.Length].ToString();
 
             var zplDataParts = this.SplitCommand(zplCommand, 1);
 

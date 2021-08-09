@@ -17,7 +17,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var storageDevice = zplCommand.Substring(this.PrinterCommandPrefix.Length)[0];
+            var storageDevice = zplCommand[this.PrinterCommandPrefix.Length];
 
             var zplDataParts = this.SplitCommand(zplCommand, 2);
 
