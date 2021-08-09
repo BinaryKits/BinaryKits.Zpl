@@ -10,9 +10,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
-
-            var zplDataParts = zplCommandData.Split(',');
+            var zplDataParts = this.SplitCommand(zplCommand);
 
             var mod43CheckDigit = false;
             var height = this.VirtualPrinter.BarcodeInfo.Height;

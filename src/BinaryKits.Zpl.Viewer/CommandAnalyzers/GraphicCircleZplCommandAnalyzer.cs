@@ -19,9 +19,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y = this.VirtualPrinter.NextElementPosition.Y;
             }
 
-            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
-
-            var zplDataParts = zplCommandData.Split(',');
+            var zplDataParts = this.SplitCommand(zplCommand);
 
             _ = int.TryParse(zplDataParts[0], out var circleDiameter);
             _ = int.TryParse(zplDataParts[1], out var borderThickness);

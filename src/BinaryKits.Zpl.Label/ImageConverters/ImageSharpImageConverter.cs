@@ -9,6 +9,11 @@ namespace BinaryKits.Zpl.Label.ImageConverters
 {
     public class ImageSharpImageConverter : IImageConverter
     {
+        /// <summary>
+        /// Convert image to grf image
+        /// </summary>
+        /// <param name="imageData"></param>
+        /// <returns></returns>
         public ImageResult ConvertImage(byte[] imageData)
         {
             var zplBuilder = new StringBuilder();
@@ -72,6 +77,12 @@ namespace BinaryKits.Zpl.Label.ImageConverters
             return (byte)reverse;
         }
 
+        /// <summary>
+        /// Convert grf image to png image
+        /// </summary>
+        /// <param name="imageData"></param>
+        /// <param name="bytesPerRow"></param>
+        /// <returns></returns>
         public byte[] ConvertImage(byte[] imageData, int bytesPerRow)
         {
             imageData = imageData.Select(b => Reverse(b)).ToArray();

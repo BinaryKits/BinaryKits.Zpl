@@ -21,6 +21,12 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public abstract ZplElementBase Analyze(string zplCommand);
 
+        protected string[] SplitCommand(string zplCommand, int dataStartIndex = 0)
+        {
+            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length + dataStartIndex);
+            return zplCommandData.Split(',');
+        }
+
         protected FieldOrientation ConvertFieldOrientation(string fieldOrientation)
         {
             switch (fieldOrientation)
@@ -46,6 +52,22 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
 
             return false;
+        }
+
+        protected int IndexOfNthCharacter(string input, int occurranceToFind, char charToFind)
+        {
+            var index = -1;
+            for (var i = 0; i < occurranceToFind; i++)
+            {
+                index = input.IndexOf(charToFind, index + 1);
+
+                if (index == -1)
+                {
+                    break;
+                }
+            }
+
+            return index;
         }
     }
 }

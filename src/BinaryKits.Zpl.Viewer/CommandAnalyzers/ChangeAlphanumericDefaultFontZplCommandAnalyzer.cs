@@ -9,22 +9,20 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
-
-            var zplDataParts = zplCommandData.Split(',');
+            var zplDataParts = this.SplitCommand(zplCommand);
 
             this.VirtualPrinter.SetFontName(zplDataParts[0]);
 
-            var fontWidht = 0;
+            var fontWidth = 0;
 
             _ = int.TryParse(zplDataParts[1], out var fontHeight);
             if (zplDataParts.Length > 2)
             {
-                _ = int.TryParse(zplDataParts[2], out fontWidht);
+                _ = int.TryParse(zplDataParts[2], out fontWidth);
             }
 
             this.VirtualPrinter.SetFontHeight(fontHeight);
-            this.VirtualPrinter.SetFontWidth(fontWidht);
+            this.VirtualPrinter.SetFontWidth(fontWidth);
 
             return null;
         }

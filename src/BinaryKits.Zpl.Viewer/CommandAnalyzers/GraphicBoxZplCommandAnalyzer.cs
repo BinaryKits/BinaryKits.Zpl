@@ -13,9 +13,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var x = 0;
             var y = 0;
 
-            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length);
-
-            var zplDataParts = zplCommandData.Split(',');
+            var zplDataParts = this.SplitCommand(zplCommand);
 
             _ = int.TryParse(zplDataParts[0], out var widht);
             _ = int.TryParse(zplDataParts[1], out var height);

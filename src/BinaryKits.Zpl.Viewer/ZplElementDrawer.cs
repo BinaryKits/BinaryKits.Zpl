@@ -15,14 +15,15 @@ namespace BinaryKits.Zpl.Viewer
             this._printerStorage = printerStorage;
             this._elementDrawers = new IElementDrawer[]
             {
+                new Barcode128ElementDrawer(),
+                new Barcode39ElementDrawer(),
                 new GraphicBoxElementDrawer(),
                 new GraphicCircleElementDrawer(),
+                new GraphicFieldElementDrawer(),
                 new ImageMoveElementDrawer(),
+                new QrCodeElementDrawer(),
                 new RecallGraphicElementDrawer(),
-                new TextFieldElementDrawer(),
-                new Barcode39ElementDrawer(),
-                new Barcode128ElementDrawer(),
-                new QrCodeElementDrawer()
+                new TextFieldElementDrawer()
             };
         }
 

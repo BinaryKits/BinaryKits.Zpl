@@ -29,8 +29,8 @@ namespace BinaryKits.Zpl.Label.Elements
         private string _extension { get; set; }
         public byte[] ImageData { get; private set; }
 
-        private bool _isCompressionActive;
-        private IImageConverter _imageConverter;
+        private readonly bool _isCompressionActive;
+        private readonly IImageConverter _imageConverter;
 
         /// <summary>
         /// Zpl Download Graphics
