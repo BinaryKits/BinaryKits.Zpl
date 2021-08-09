@@ -1,13 +1,9 @@
-# BinaryKits.Zpl
-A .net library helping to generate ZPL string.
-Please refer to the Programming Guide for raw ZPL code definitaion, 
-[ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf)
-
-## :information_source: Info
-> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `BinaryKits.Zpl.Label.Elements` in version 3.
-> The documentation for the old version 1 is available [here](https://github.com/BinaryKits/BinaryKits.Zpl/tree/v1)
-
 <img src="https://raw.githubusercontent.com/BinaryKits/ZPLUtility/master/doc/logo.png" width="200">
+
+# BinaryKits.Zpl
+
+This project contains several modules for working with Zebra Printer Language. ZPL is a very common printer language that is supported by various manufacturers.
+The project helps you to describe a label and generates a preview from the ZPL data. We can convert different image formats to the Zebra image format. The image data is compressed to cause as little traffic as possible. More information about Zebra printer languages can be found in the [ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf).
 
 ## How can I use it?
 
@@ -29,10 +25,19 @@ This library supports following elements:
 | Text | TextBlock, TextField, FieldBlock, SingleLineFieldBlock |
 | Drawing | GraphicBox, DiagonalLine, Circle, Ellipse |
 
+## :information_source: Update from 1.x to 2.x
+> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `BinaryKits.Zpl.Label.Elements` in version 3.
+> The documentation for the old version 1 is available [here](https://github.com/BinaryKits/BinaryKits.Zpl/tree/v1)
+
 ## Is there a way to generate a preview?
 
-Yes, you can test the generated ZPL code via http://labelary.com/viewer.html.<br>
-Alternative you can use our viewer it is still under development https://binarykits-zpl-viewer.azurewebsites.net
+There are several ways to view the result from the ZPL data.
+
+| Variant | Description |
+| ------------- | ------------- |
+| [labelary.com](http://labelary.com/viewer.html) | A widely used and accurate solution. Unfortunately, there is no information who runs the project. Therefore, no customer information should be sent to this service. |
+| BinaryKits.Zpl.Viewer | This viewer is part of our project, it is open source and can be easily used on your infrastructure. |
+| [Zpl Printer](https://chrome.google.com/webstore/detail/zpl-printer/phoidlklenidapnijkabnfdgmadlcmjo) | A Chrome plugin that simulates a network printer on port 9100 in the background the label is then sent to a Labelary API and displayed. |
 
 ## How can I send the generated data to my printer?
 
@@ -54,9 +59,7 @@ writer.Close();
 tcpClient.Close();
 ```
 
-Also, a Virutal Printer for Zebra is available as [Chrome Plugin](https://chrome.google.com/webstore/detail/zpl-printer/phoidlklenidapnijkabnfdgmadlcmjo)
-
-## Examples
+## Examples to describe Labels
 
 ### Using statement
 
@@ -72,7 +75,7 @@ var output = new ZplGraphicBox(100, 100, 100, 100).ToZplString();
 Console.WriteLine(output);
 ```
 
-### Barcode
+### Barcode 128
 
 ```cs
 var output = new ZplBarcode128("123ABC", 10, 50).ToZplString();
