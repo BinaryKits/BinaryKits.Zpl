@@ -25,10 +25,10 @@
     <None Update="ZplDatas\Barcode39.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\DownloadCompressedGraphics.zpl2">
+    <None Update="ZplDatas\DownloadGraphicsCompressed.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\DownloadUncompressedGraphics.zpl2">
+    <None Update="ZplDatas\DownloadGraphicsUncompressed.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ZplDatas\DownloadObject.zpl2">
@@ -55,19 +55,16 @@
     <None Update="ZplDatas\FullLabel3.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FullLabel2.zpl2">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="ZplDatas\FullLabel1.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ZplDatas\GraphicBox.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\Test.zpl2">
+    <None Update="ZplDatas\GraphicCircle2.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\GraphicCircle.zpl2">
+    <None Update="ZplDatas\GraphicCircle1.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ZplDatas\TextRotation1.zpl2">

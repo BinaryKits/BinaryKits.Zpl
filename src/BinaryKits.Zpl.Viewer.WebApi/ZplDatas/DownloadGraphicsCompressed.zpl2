@@ -1,4 +1,5 @@
 ^XA
+
 ^LH0,0
 
 ~DGR:SAMPLE.GRF,1190,17,
@@ -6,4 +7,5 @@
 
 ^FO100,100
 ^XGR:SAMPLE.GRF,1,1^FS
+
 ^XZ
