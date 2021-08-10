@@ -107,6 +107,8 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 Console.WriteLine(output);
 ```
 
+Sample code: https://dotnetfiddle.net/cnJ1XG
+
 ![Whole label](doc/preview-whole.label.png)
 
 ### Simple layout
