@@ -1,4 +1,5 @@
 ﻿^XA
+
 ^FX {0} = Odd threadline ^FS
 ^FX {1} = Even threadline ^FS
 ^FX {2} = Type ^FS
@@ -57,4 +58,5 @@
 ^FX example: 10A7037F49, 10A703A758 ^FS
 ^FO190,36^BY12,2.2^B3B,N,32,Y,Y^FD71521501001^FS
 ^FO490,36^BY12,2.2^B3B,N,32,Y,Y^FD71521501002^FS
+
 ^XZ

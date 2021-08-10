@@ -1,28 +1,38 @@
 ﻿^XA
+
 ^LH0,0
 ^CI28
+
 ^A0N,50,0
 ^FO10,0
 ^FH^FDFont1 Demo Text^FS
+
 ^A1N,50,0
 ^FO10,100
 ^FH^FDFont2 Demo Text^FS
+
 ^AAN,80,0
 ^FO10,200
 ^FH^FDFont3 Demo Text^FS
+
 ^ABN,50,0
 ^FO10,300
 ^FH^FDFont4 Demo Text^FS
+
 ^ACN,20,0
 ^FO10,400
 ^FH^FDFont5 Demo Text^FS
+
 ^ADN,0,20
 ^FO10,500
 ^FH^FDFont6 Demo Text^FS
+
 ^ADN,20,20
 ^FO10,600
 ^FH^FDFont7 Demo Text^FS
+
 ^ADR,0,20
 ^FO800,10
 ^FH^FDFont8 Demo Text^FS
+
 ^XZ

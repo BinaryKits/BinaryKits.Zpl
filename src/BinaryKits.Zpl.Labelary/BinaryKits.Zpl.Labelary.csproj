@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <Description>Labelary Client - ZPL rendering</Description>
+    <Description>This package provides a client for the Labelary API for rendering ZPL data</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <PackageTags>Zebra ZPL ZPL2 ZPLEmulator ZPLVirtualPrinter ZPLViewer</PackageTags>
+    <PackageTags>Zebra ZPL ZPL2 ZPLEmulator ZPLVirtualPrinter ZPLViewer Labelary</PackageTags>
     <PackageProjectUrl>https://github.com/BinaryKits/BinaryKits.Zpl</PackageProjectUrl>
     <RepositoryUrl>https://github.com/BinaryKits/BinaryKits.Zpl</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -16,6 +16,8 @@
     <AssemblyName>BinaryKits.Zpl.Labelary</AssemblyName>
     <RootNamespace>BinaryKits.Zpl.Labelary</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
