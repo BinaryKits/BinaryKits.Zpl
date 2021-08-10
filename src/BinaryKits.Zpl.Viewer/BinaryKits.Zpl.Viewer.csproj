@@ -16,6 +16,8 @@
     <AssemblyName>BinaryKits.Zpl.Viewer</AssemblyName>
     <RootNamespace>BinaryKits.Zpl.Viewer</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>

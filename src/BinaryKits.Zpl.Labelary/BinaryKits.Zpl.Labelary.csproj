@@ -16,6 +16,8 @@
     <AssemblyName>BinaryKits.Zpl.Labelary</AssemblyName>
     <RootNamespace>BinaryKits.Zpl.Labelary</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
