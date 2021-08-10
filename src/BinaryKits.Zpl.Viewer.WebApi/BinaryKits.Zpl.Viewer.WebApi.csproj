@@ -58,7 +58,16 @@
     <None Update="ZplDatas\FullLabel1.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\GraphicBox.zpl2">
+    <None Update="ZplDatas\GraphicBox3.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplDatas\GraphicBox2.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplDatas\GraphicBox1.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplDatas\GraphicCircle3.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ZplDatas\GraphicCircle2.zpl2">

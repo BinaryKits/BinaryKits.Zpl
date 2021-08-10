@@ -12,11 +12,13 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         {
             var x = 0;
             var y = 0;
+            var bottomToTop = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
                 x = this.VirtualPrinter.NextElementPosition.X;
                 y = this.VirtualPrinter.NextElementPosition.Y;
+                bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
             }
 
             var zplDataParts = this.SplitCommand(zplCommand);
@@ -31,7 +33,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 lineColor = lineColorTemp == "B" ? LineColor.Black : LineColor.White;
             }
 
-            return new ZplGraphicCircle(x, y, circleDiameter, borderThickness, lineColor);
+            return new ZplGraphicCircle(x, y, circleDiameter, borderThickness, lineColor, bottomToTop);
         }
     }
 }

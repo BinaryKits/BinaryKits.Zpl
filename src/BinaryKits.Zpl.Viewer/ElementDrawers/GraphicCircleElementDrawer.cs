@@ -15,15 +15,34 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplGraphicCircle graphicCircle)
             {
-                this._skPaint.StrokeWidth = graphicCircle.BorderThickness;
+                var radius = graphicCircle.Diameter / 2.0f;
+                var border = (float)graphicCircle.BorderThickness;
 
-                var radius = graphicCircle.Diameter / 2;
-                var offset = (graphicCircle.BorderThickness / 2) + radius;
+                if (border > radius)
+                {
+                    border = radius;
+                }
 
-                var x = graphicCircle.PositionX + this._padding + offset;
-                var y = graphicCircle.PositionY + this._padding + offset;
+                this._skPaint.StrokeWidth = border;
 
-                this._skCanvas.DrawCircle(x, y, radius, this._skPaint);
+                var halfBorderThickness = border / 2.0f;
+
+                var radiusMinusBorder = radius - halfBorderThickness;
+                var offset = halfBorderThickness + radiusMinusBorder;
+
+                var x = graphicCircle.PositionX + offset + this._padding;
+                var y = graphicCircle.PositionY + offset + this._padding;
+
+                if (graphicCircle.FieldTypeset != null)
+                {
+                    y -= graphicCircle.Diameter;
+                    if (y < radius)
+                    {
+                        y = radius;
+                    }
+                }
+
+                this._skCanvas.DrawCircle(x, y, radiusMinusBorder, this._skPaint);
             }
         }
     }
