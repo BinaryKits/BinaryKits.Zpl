@@ -215,6 +215,7 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 
 Console.WriteLine(output);
 ```
+Sample code: https://dotnetfiddle.net/ug84VY
 
 ## Printer manufacturers that support zpl
 
