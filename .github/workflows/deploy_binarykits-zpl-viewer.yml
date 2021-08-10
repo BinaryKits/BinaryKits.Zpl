@@ -11,6 +11,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: windows-latest
+    if: github.repository_owner == 'BinaryKits'
 
     steps:
     # checkout the repo
