@@ -37,6 +37,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var x = graphicBox.PositionX + offsetX + this._padding;
                 var y = graphicBox.PositionY + offsetY + this._padding;
+
+                if (graphicBox.FieldTypeset != null)
+                {
+                    y -= height1;
+                }
+
                 var width = width1 - border1;
                 var height = height1 - border1;
 
