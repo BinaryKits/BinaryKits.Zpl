@@ -7,11 +7,13 @@ The project helps you to describe a label and generates a preview from the ZPL d
 
 ## How can I use it?
 
-The package is available via [![NuGet](https://img.shields.io/nuget/v/BinaryKits.Zpl.Label.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Label)
+The packages are available via [![NuGet](https://img.shields.io/nuget/v/BinaryKits.Zpl.Label.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Label)
 
 | Package Manager | .NET CLI |
 | ------------- | ------------- |
 | ``` PM> install-package BinaryKits.Zpl.Label ``` | ``` > dotnet add package BinaryKits.Zpl.Label ``` |
+| ``` PM> install-package BinaryKits.Zpl.Labelary ``` | ``` > dotnet add package BinaryKits.Zpl.Labelary ``` |
+| ``` PM> install-package BinaryKits.Zpl.Viewer ``` | ``` > dotnet add package BinaryKits.Zpl.Viewer ``` |
 
 ## Supported Elements
 
