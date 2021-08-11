@@ -1,0 +1,27 @@
+﻿^XA
+
+^FX Box rectangular
+^FO50,150
+^GB200,50,1^FS
+
+^FX Box rectangular
+^FT50,150
+^GB200,50,1^FS
+
+^FX Filled box rectangular left top
+^FT50,350
+^GB200,50,50^FS
+
+^FX Filled box rectangular left bottom
+^FO50,360
+^GB200,50,50^FS
+
+^FX Filled box rectangular right top
+^FT260,350
+^GB200,50,55^FS
+
+^FX Filled box rectangular right bottom
+^FO260,360
+^GB200,50,55^FS
+
+^XZ
