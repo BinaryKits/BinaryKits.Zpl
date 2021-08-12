@@ -88,10 +88,12 @@ namespace BinaryKits.Zpl.Viewer
                     {
                         skBitmap.SetPixel(column, row, SKColors.White);
                     }
+                    //Is white in new graphic and white in the origin (invert)
                     else if (pixelInvert.Blue == 255 && pixel.Blue == 255)
                     {
                         skBitmap.SetPixel(column, row, SKColors.Black);
                     }
+                    //Is white in new graphic and black in the origin
                     else if (pixelInvert.Blue == 255 && pixel.Blue == 0)
                     {
                         skBitmap.SetPixel(column, row, SKColors.White);
