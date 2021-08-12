@@ -27,9 +27,9 @@ This library supports following elements:
 | Text | TextBlock, TextField, FieldBlock, SingleLineFieldBlock |
 | Drawing | GraphicBox, DiagonalLine, Circle, Ellipse |
 
-## :information_source: Update from 1.x to 2.x
-> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x to `BinaryKits.Zpl.Label.Elements` in version 3.
-> The documentation for the old version 1 is available [here](https://github.com/BinaryKits/BinaryKits.Zpl/tree/v1)
+## :information_source: Update from ZPLUtility
+> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x of ZPLUtility to `BinaryKits.Zpl.Label.Elements` in version 3.
+> The documentation for the old ZPLUtility version 1 is available [here](https://github.com/BinaryKits/BinaryKits.Zpl/tree/v1)
 
 ## Is there a way to generate a preview?
 
@@ -220,6 +220,22 @@ var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeE
 Console.WriteLine(output);
 ```
 Sample code: https://dotnetfiddle.net/ug84VY
+
+## Example to use the Viewer
+
+```cs
+IPrinterStorage printerStorage = new PrinterStorage();
+var drawer = new ZplElementDrawer(printerStorage);
+
+var analyzer = new ZplAnalyzer(printerStorage);
+var analyzeInfo = analyzer.Analyze("^XA^FT100,100^A0N,67,0^FDTestLabel^FS^XZ");
+
+foreach (var labelInfo in analyzeInfo.LabelInfos)
+{
+    var imageData = drawer.Draw(labelInfo.ZplElements);
+    File.WriteAllBytes("label.png", imageData);
+}
+```
 
 ## Printer manufacturers that support zpl
 
