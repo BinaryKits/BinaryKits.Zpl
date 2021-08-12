@@ -7,7 +7,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
     {
         void Prepare(
             IPrinterStorage printerStorage,
-            SKPaint skPaint,
             SKCanvas skCanvas,
             int padding);
 
@@ -17,6 +16,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// <param name="element"></param>
         /// <returns></returns>
         bool CanDraw(ZplElementBase element);
+
+        /// <summary>
+        /// Element require reverse draw
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        bool IsReverseDraw(ZplElementBase element);
 
         /// <summary>
         /// Draw the element

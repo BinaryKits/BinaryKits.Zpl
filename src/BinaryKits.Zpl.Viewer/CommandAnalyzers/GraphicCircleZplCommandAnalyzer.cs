@@ -30,7 +30,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             if (zplDataParts.Length > 2)
             {
                 var lineColorTemp = zplDataParts[2];
-                lineColor = lineColorTemp == "B" ? LineColor.Black : LineColor.White;
+                lineColor = lineColorTemp == "W" ? LineColor.White : LineColor.Black;
             }
 
             return new ZplGraphicCircle(x, y, circleDiameter, borderThickness, lineColor, bottomToTop);

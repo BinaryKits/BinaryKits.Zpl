@@ -1,4 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using SkiaSharp;
 using System;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -9,6 +10,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         public override bool CanDraw(ZplElementBase element)
         {
             return element is ZplGraphicBox;
+        }
+
+        public override bool IsReverseDraw(ZplElementBase element)
+        {
+            if (element is ZplGraphicBox graphicBox)
+            {
+                return graphicBox.ReversePrint;
+            }
+
+            return false;
         }
 
         ///<inheritdoc/>
@@ -30,8 +41,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     height1 = border1;
                 }
 
-                this._skPaint.StrokeWidth = border1;
-
                 var offsetX = border1 / 2.0f;
                 var offsetY = border1 / 2.0f;
 
@@ -46,15 +55,21 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var width = width1 - border1;
                 var height = height1 - border1;
 
-                if (graphicBox.ReversePrint)
+                using var skPaint = new SKPaint();
+                skPaint.Style = SKPaintStyle.Stroke;
+                skPaint.StrokeCap = SKStrokeCap.Square;
+                skPaint.Color = SKColors.Black;
+                skPaint.StrokeWidth = border1;
+
+                if (graphicBox.LineColor == Label.LineColor.White)
                 {
-                    this.ReversePrint();
+                    skPaint.Color = SKColors.White;
                 }
 
                 var cornerRadius = (graphicBox.CornerRounding / 8.0f) * (Math.Min(width1, height1) / 2.0f);
                 if (cornerRadius == 0)
                 {
-                    this._skCanvas.DrawRect(x, y, width, height, this._skPaint);
+                    this._skCanvas.DrawRect(x, y, width, height, skPaint);
                     return;
                 }
 
@@ -69,7 +84,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 //TODO:Some corner radius is too much
                 //^XA^FO50,50^GB100,100,120,B,1^FS^XZ
 
-                this._skCanvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, this._skPaint);
+                this._skCanvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, skPaint);
             }
         }
     }

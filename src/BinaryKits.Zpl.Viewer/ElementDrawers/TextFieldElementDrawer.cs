@@ -11,13 +11,21 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return element is ZplTextField;
         }
 
+        public override bool IsReverseDraw(ZplElementBase element)
+        {
+            if (element is ZplTextField textField)
+            {
+                return textField.ReversePrint;
+            }
+
+            return false;
+        }
+
         ///<inheritdoc/>
         public override void Draw(ZplElementBase element)
         {
             if (element is ZplTextField textField)
             {
-                this._skPaint.Style = SKPaintStyle.Fill;
-
                 float x = textField.PositionX + this._padding;
                 float y = textField.PositionY + this._padding;
 
@@ -39,12 +47,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
                 }
 
-                this._skPaint.Typeface = typeface;
-                this._skPaint.TextSize = fontSize;
-                this._skPaint.TextScaleX = scaleX;
+                using var skPaint = new SKPaint();
+                skPaint.Color = SKColors.Black;
+                skPaint.Typeface = typeface;
+                skPaint.TextSize = fontSize;
+                skPaint.TextScaleX = scaleX;
 
                 var textBounds = new SKRect();
-                this._skPaint.MeasureText(textField.Text, ref textBounds);
+                skPaint.MeasureText(textField.Text, ref textBounds);
 
                 if (textField.FieldTypeset != null)
                 {
@@ -105,12 +115,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         this._skCanvas.SetMatrix(matrix);
                     }
 
-                    if (textField.ReversePrint)
-                    {
-                        this.ReversePrint();
-                    }
-
-                    this._skCanvas.DrawText(textField.Text, x, y, new SKFont(typeface, fontSize, scaleX, 0), this._skPaint);
+                    this._skCanvas.DrawText(textField.Text, x, y, new SKFont(typeface, fontSize, scaleX, 0), skPaint);
                 }
             }
         }
