@@ -221,6 +221,22 @@ Console.WriteLine(output);
 ```
 Sample code: https://dotnetfiddle.net/ug84VY
 
+## Example to use the Viewer
+
+```cs
+IPrinterStorage printerStorage = new PrinterStorage();
+var drawer = new ZplElementDrawer(printerStorage);
+
+var analyzer = new ZplAnalyzer(printerStorage);
+var analyzeInfo = analyzer.Analyze("^XA^FT100,100^A0N,67,0^FDTestLabel^FS^XZ");
+
+foreach (var labelInfo in analyzeInfo.LabelInfos)
+{
+	var imageData = drawer.Draw(labelInfo.ZplElements);
+	File.WriteAllBytes("label.png", imageData);
+}
+```
+
 ## Printer manufacturers that support zpl
 
 | Manufacturer | Simulator |
