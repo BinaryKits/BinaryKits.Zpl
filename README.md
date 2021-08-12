@@ -232,8 +232,8 @@ var analyzeInfo = analyzer.Analyze("^XA^FT100,100^A0N,67,0^FDTestLabel^FS^XZ");
 
 foreach (var labelInfo in analyzeInfo.LabelInfos)
 {
-	var imageData = drawer.Draw(labelInfo.ZplElements);
-	File.WriteAllBytes("label.png", imageData);
+    var imageData = drawer.Draw(labelInfo.ZplElements);
+    File.WriteAllBytes("label.png", imageData);
 }
 ```
 
