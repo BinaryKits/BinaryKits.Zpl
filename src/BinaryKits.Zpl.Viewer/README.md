@@ -6,6 +6,7 @@
 - Optimize GraphicBox drawing special border (^XA^FO50,50^GB100,100,120,B,1^FS^XZ)
 - Add more elements (^GE Graphic Ellipse, ^GS Graphic Symbol, ...)
 - NetBarcode not support Interleaved2of5
+- Add config for LabelSize at ZplElementDrawer
 
 # Example code
 
