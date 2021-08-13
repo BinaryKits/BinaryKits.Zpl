@@ -3,9 +3,9 @@ using BinaryKits.Zpl.Viewer.Models;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
-    public class Code128BarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
+    public class Interleaved2of5BarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public Code128BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BC", virtualPrinter)
+        public Interleaved2of5BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^B2", virtualPrinter)
         { }
 
         public override ZplElementBase Analyze(string zplCommand)
@@ -16,8 +16,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var height = this.VirtualPrinter.BarcodeInfo.Height;
             var printInterpretationLine = true;
             var printInterpretationLineAboveCode = false;
-            var uccCheckDigit = false;
-            var mode = "N";
+            var calculateAndPrintMod10CheckDigit = false;
 
             if (zplDataParts.Length > 1)
             {
@@ -33,22 +32,17 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
             if (zplDataParts.Length > 4)
             {
-                uccCheckDigit = this.ConvertBoolean(zplDataParts[4]);
-            }
-            if (zplDataParts.Length > 5)
-            {
-                mode = zplDataParts[5];
+                calculateAndPrintMod10CheckDigit = this.ConvertBoolean(zplDataParts[4]);
             }
 
             //The field data are processing in the FieldDataZplCommandAnalyzer
-            this.VirtualPrinter.SetNextFieldDataElement(new Code128BarcodeFieldData
+            this.VirtualPrinter.SetNextFieldDataElement(new Interleaved2of5BarcodeFieldData
             {
                 FieldOrientation = fieldOrientation,
                 Height = height,
                 PrintInterpretationLine = printInterpretationLine,
                 PrintInterpretationLineAboveCode = printInterpretationLineAboveCode,
-                UccCheckDigit = uccCheckDigit,
-                Mode = mode
+                CalculateAndPrintMod10CheckDigit = calculateAndPrintMod10CheckDigit
             });
 
             return null;
