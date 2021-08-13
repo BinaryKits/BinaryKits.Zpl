@@ -1,6 +1,5 @@
 # Open Tasks
 
-- Field Reverse Print
 - Barcodes scaling
 - Calculate label size by the drawn elements
 - Optimize font drawing for different font names

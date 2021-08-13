@@ -1,4 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -23,7 +24,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     border = radius;
                 }
 
-                this._skPaint.StrokeWidth = border;
+                using var skPaint = new SKPaint();
+                skPaint.Style = SKPaintStyle.Stroke;
+                skPaint.Color = SKColors.Black;
+                skPaint.StrokeWidth = border;
 
                 var halfBorderThickness = border / 2.0f;
 
@@ -42,7 +46,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
                 }
 
-                this._skCanvas.DrawCircle(x, y, radiusMinusBorder, this._skPaint);
+                this._skCanvas.DrawCircle(x, y, radiusMinusBorder, skPaint);
             }
         }
     }

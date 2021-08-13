@@ -1,7 +1,5 @@
 ﻿^XA
 
-^PR1
-
 ^FO100,100
 ^GB70,70,70,,3^FS
 
@@ -16,6 +14,7 @@
 
 ^FO107,110
 ^CF0,70,93
-^FR^FDREVERSE^FS
+^FR
+^FDREVERSE^FS
 
 ^XZ

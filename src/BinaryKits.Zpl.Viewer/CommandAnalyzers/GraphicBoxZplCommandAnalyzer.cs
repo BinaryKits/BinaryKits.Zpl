@@ -37,7 +37,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             if (zplDataParts.Length > 3)
             {
                 var lineColorTemp = zplDataParts[3];
-                lineColor = lineColorTemp == "B" ? LineColor.Black : LineColor.White;
+                lineColor = lineColorTemp == "W" ? LineColor.White : LineColor.Black;
             }
 
             var cornerRounding = 0;
