@@ -20,8 +20,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var imageData = ByteHelper.HexToBytes(graphicField.Data);
                 var image = SKBitmap.Decode(imageData);
 
-                var x = graphicField.PositionX + this._padding;
-                var y = graphicField.PositionY + this._padding;
+                var x = graphicField.PositionX;
+                var y = graphicField.PositionY;
 
                 var useFieldTypeset = graphicField.FieldTypeset != null;
                 if (useFieldTypeset)

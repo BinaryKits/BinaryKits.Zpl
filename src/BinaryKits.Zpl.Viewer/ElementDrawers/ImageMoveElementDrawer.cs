@@ -23,8 +23,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     return;
                 }
 
-                var x = imageMove.PositionX + this._padding;
-                var y = imageMove.PositionY + this._padding;
+                var x = imageMove.PositionX;
+                var y = imageMove.PositionY;
 
                 this._skCanvas.DrawBitmap(SKBitmap.Decode(imageData), x, y);
             }

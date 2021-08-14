@@ -5,10 +5,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public interface IElementDrawer
     {
+        /// <summary>
+        /// Prepare the drawer
+        /// </summary>
+        /// <param name="printerStorage"></param>
+        /// <param name="skCanvas"></param>
         void Prepare(
             IPrinterStorage printerStorage,
-            SKCanvas skCanvas,
-            int padding);
+            SKCanvas skCanvas);
 
         /// <summary>
         /// Check the drawer can draw this element

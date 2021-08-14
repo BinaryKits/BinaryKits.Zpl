@@ -30,11 +30,12 @@ namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
             var labels = new List<LabelDto>();
             foreach (var labelInfo in analyzeInfo.LabelInfos)
             {
-                var imageData = drawer.Draw(labelInfo.ZplElements);
-                labels.Add(new LabelDto
+                var imageData = drawer.Draw(labelInfo.ZplElements, request.LabelWidth, request.LabelHeight, request.PrintDensityDpmm);
+                var label = new LabelDto
                 {
                     ImageBase64 = Convert.ToBase64String(imageData)
-                });
+                };
+                labels.Add(label);
             }
 
             var response = new RenderResponseDto

@@ -26,8 +26,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplTextField textField)
             {
-                float x = textField.PositionX + this._padding;
-                float y = textField.PositionY + this._padding;
+                float x = textField.PositionX;
+                float y = textField.PositionY;
 
                 var font = textField.Font;
 
