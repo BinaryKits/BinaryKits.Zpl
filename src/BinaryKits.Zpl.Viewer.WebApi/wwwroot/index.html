@@ -19,12 +19,16 @@
                 <div v-else>loading...</div>
             </div>
             <div class="col-4">
-                <textarea class="form-control" v-model="zplData" rows="20" cols="100"></textarea><br />
+                <textarea class="form-control" v-model="zplData" rows="20" cols="100"></textarea>
+                <div class="mt-1 mb-1">
+                    <input type="text" v-model.number="labelWidth" style="width: 50px" /> mm ({{labelWidthInch}} inches)
+                    <input type="text" v-model.number="labelHeight" style="width: 50px" /> mm ({{labelHeightInch}} inches)
+                    <input type="text" v-model.number="printDensityDpmm" style="width: 40px" /> dpmm ({{dpi}} dpi)<br />
+                </div>
                 <button type="button" class="btn btn-primary" @click="render">Render</button>
             </div>
             <div class="col-6">
                 <div v-if="renderResponse">
-
                     <div v-for="(labelInfo, index) in renderResponse.labels" :key="index">
                         <img :src="`data:image/png;base64,${labelInfo.imageBase64}`" class="img-fluid" style="border:1px solid #ccc" />
                     </div>
@@ -32,10 +36,11 @@
                         <h4>Unknown commands</h4>
                         <ul>
                             <li v-for="(unknownCommand, index) in renderResponse.unknownCommands" :key="index">
-                                {{unknownCommand}}
-                            </li>
-                        </ul>
-                    </div>
+                                {{unknownCommand
+                    }}
+                    </li>
+                    </ul>
+                </div>
                 </div>
             </div>
         </div>
@@ -54,7 +59,22 @@
                     loading: false,
                     zplData: null,
                     templateLabels: null,
-                    renderResponse: null
+                    renderResponse: null,
+                    printDensityDpmm: 8,
+                    labelWidth: 102,
+                    labelHeight: 152,
+                    inch2mm: 25.4 
+                }
+            },
+            computed: {
+                labelWidthInch() {
+                    return (Math.round(this.labelWidth / this.inch2mm * 10) / 10).toFixed(1)
+                },
+                labelHeightInch() {
+                    return (Math.round(this.labelHeight / this.inch2mm * 10) / 10).toFixed(1)
+                },
+                dpi() {
+                    return (Math.round(this.printDensityDpmm * this.inch2mm))
                 }
             },
             async created () {
@@ -76,7 +96,12 @@
                     await this.render()
                 },
                 async render() {
-                    const payload = { zplData: this.zplData }
+                    const payload = {
+                        zplData: this.zplData,
+                        printDensityDpmm: this.printDensityDpmm,
+                        labelWidth: this.labelWidth,
+                        labelHeight: this.labelHeight
+                    }
                     const response = await axios.post('api/v1/viewer', payload)
                     this.renderResponse = response.data
                 }
