@@ -35,6 +35,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 printInterpretationLineAboveCode = this.ConvertBoolean(zplDataParts[4]);
             }
 
+            //The field data are processing in the FieldDataZplCommandAnalyzer
             this.VirtualPrinter.SetNextFieldDataElement(new Code39BarcodeFieldData
             {
                 FieldOrientation = fieldOrientation,

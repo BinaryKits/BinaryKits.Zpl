@@ -23,6 +23,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
         /// <param name="mod10CheckDigit"></param>
+        /// <param name="bottomToTop"></param>
         public ZplBarcodeInterleaved2of5(
             string content,
             int positionX,
@@ -33,7 +34,8 @@ namespace BinaryKits.Zpl.Label.Elements
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
-            bool mod10CheckDigit = false)
+            bool mod10CheckDigit = false,
+            bool bottomToTop = false)
             : base(content,
                   positionX,
                   positionY,
@@ -42,7 +44,8 @@ namespace BinaryKits.Zpl.Label.Elements
                   wideBarToNarrowBarWidthRatio,
                   fieldOrientation,
                   printInterpretationLine,
-                  printInterpretationLineAboveCode)
+                  printInterpretationLineAboveCode,
+                  bottomToTop)
         {
             if (!IsDigitsOnly(content))
             {

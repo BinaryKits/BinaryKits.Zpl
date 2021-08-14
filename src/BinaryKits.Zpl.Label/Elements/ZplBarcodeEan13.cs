@@ -20,6 +20,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="fieldOrientation"></param>
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
+        /// <param name="bottomToTop"></param>
         public ZplBarcodeEan13(
             string content,
             int positionX,
@@ -29,7 +30,8 @@ namespace BinaryKits.Zpl.Label.Elements
             double wideBarToNarrowBarWidthRatio = 3,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
             bool printInterpretationLine = true,
-            bool printInterpretationLineAboveCode = false)
+            bool printInterpretationLineAboveCode = false,
+            bool bottomToTop = false)
             : base(content,
                   positionX,
                   positionY,
@@ -38,7 +40,8 @@ namespace BinaryKits.Zpl.Label.Elements
                   wideBarToNarrowBarWidthRatio,
                   fieldOrientation,
                   printInterpretationLine,
-                  printInterpretationLineAboveCode)
+                  printInterpretationLineAboveCode,
+                  bottomToTop)
         {
             if (!IsDigitsOnly(content))
             {

@@ -29,25 +29,26 @@ namespace BinaryKits.Zpl.Viewer
 
             var elementAnalyzers = new List<IZplCommandAnalyzer>
             {
-                new LabelHomeZplCommandAnalyzer(this._virtualPrinter),
-                new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
                 new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
-                new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter),
-                new FieldOriginZplCommandAnalzer(this._virtualPrinter),
-                new FieldTypesetZplCommandAnalyzer(this._virtualPrinter),
-                new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),
+                new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
+                new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new DownloadGraphicsZplCommandAnalyzer(this._virtualPrinter, this._printerStorage),
+                new DownloadObjectsZplCommandAnaylzer(this._virtualPrinter, this._printerStorage),
                 new FieldDataZplCommandAnalyzer(this._virtualPrinter),
+                new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),
+                new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter),
+                new FieldTypesetZplCommandAnalyzer(this._virtualPrinter),
+                new FieldOriginZplCommandAnalzer(this._virtualPrinter),
                 new GraphicBoxZplCommandAnalyzer(this._virtualPrinter),
                 new GraphicCircleZplCommandAnalyzer(this._virtualPrinter),
                 new GraphicFieldZplCommandAnalyzer(this._virtualPrinter),
-                new DownloadObjectsZplCommandAnaylzer(this._virtualPrinter, this._printerStorage),
-                new DownloadGraphicsZplCommandAnalyzer(this._virtualPrinter, this._printerStorage),
-                new RecallGraphicZplCommandAnalyzer(this._virtualPrinter),
+                new Interleaved2of5BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
-                new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new LabelHomeZplCommandAnalyzer(this._virtualPrinter),
                 new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter)
+                new RecallGraphicZplCommandAnalyzer(this._virtualPrinter),
+                new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter)
             };
 
             var labelInfos = new List<LabelInfo>();
