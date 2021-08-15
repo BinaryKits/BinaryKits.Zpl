@@ -44,8 +44,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var offsetX = border1 / 2.0f;
                 var offsetY = border1 / 2.0f;
 
-                var x = graphicBox.PositionX + offsetX + this._padding;
-                var y = graphicBox.PositionY + offsetY + this._padding;
+                var x = graphicBox.PositionX + offsetX;
+                var y = graphicBox.PositionY + offsetY;
 
                 if (graphicBox.FieldTypeset != null)
                 {

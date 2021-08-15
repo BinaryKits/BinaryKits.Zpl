@@ -15,8 +15,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplQrCode barcode)
             {
-                float x = barcode.PositionX + this._padding;
-                float y = barcode.PositionY + this._padding;
+                float x = barcode.PositionX;
+                float y = barcode.PositionY;
 
                 var writer = new ZXing.SkiaSharp.BarcodeWriter
                 {

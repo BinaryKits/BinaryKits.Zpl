@@ -10,7 +10,7 @@ namespace BinaryKits.Zpl.Label.ImageConverters
     public class ImageSharpImageConverter : IImageConverter
     {
         /// <summary>
-        /// Convert image to grf image
+        /// Convert image to bitonal image (grf)
         /// </summary>
         /// <param name="imageData"></param>
         /// <returns></returns>
@@ -78,7 +78,7 @@ namespace BinaryKits.Zpl.Label.ImageConverters
         }
 
         /// <summary>
-        /// Convert grf image to png image
+        /// Convert from bitonal image (grf) to png image
         /// </summary>
         /// <param name="imageData"></param>
         /// <param name="bytesPerRow"></param>

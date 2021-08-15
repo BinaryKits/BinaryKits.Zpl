@@ -7,16 +7,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
     {
         internal IPrinterStorage _printerStorage;
         internal SKCanvas _skCanvas;
-        internal int _padding;
 
+        ///<inheritdoc/>
         public void Prepare(
             IPrinterStorage printerStorage,
-            SKCanvas skCanvas,
-            int padding)
+            SKCanvas skCanvas)
         {
             this._printerStorage = printerStorage;
             this._skCanvas = skCanvas;
-            this._padding = padding;
         }
 
         ///<inheritdoc/>

@@ -34,8 +34,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var radiusMinusBorder = radius - halfBorderThickness;
                 var offset = halfBorderThickness + radiusMinusBorder;
 
-                var x = graphicCircle.PositionX + offset + this._padding;
-                var y = graphicCircle.PositionY + offset + this._padding;
+                var x = graphicCircle.PositionX + offset;
+                var y = graphicCircle.PositionY + offset;
 
                 if (graphicCircle.FieldTypeset != null)
                 {
