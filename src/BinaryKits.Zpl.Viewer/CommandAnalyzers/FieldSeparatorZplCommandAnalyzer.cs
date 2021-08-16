@@ -13,6 +13,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             this.VirtualPrinter.ClearNextFont();
             this.VirtualPrinter.ClearNextFieldDataElement();
             this.VirtualPrinter.ClearFieldReversePrint();
+            this.VirtualPrinter.ClearComments();
 
             return null;
         }

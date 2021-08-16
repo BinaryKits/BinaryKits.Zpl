@@ -25,6 +25,11 @@
             <div class="col-4">
                 <textarea class="form-control" v-model="zplData" rows="20" cols="100"></textarea>
                 <div class="mt-1 mb-1">
+                    Labelformat: 
+                    <select v-model="selectedLabelFormatIndex" @change="labelFormatChange">
+                        <option v-for="(labelFormat, index) in labelFormats" :key="index" :value="index">{{ labelFormat.width }} mm x {{ labelFormat.height }} mm</option>
+                    </select>
+                    <br />
                     <input type="text" v-model.number="labelWidth" style="width: 50px" /> mm ({{labelWidthInch}} inches)
                     <input type="text" v-model.number="labelHeight" style="width: 50px" /> mm ({{labelHeightInch}} inches)
                     <input type="text" v-model.number="printDensityDpmm" style="width: 40px" /> dpmm ({{dpi}} dpi)<br />
@@ -78,7 +83,18 @@
                     labelWidth: 102,
                     labelHeight: 152,
                     inch2mm: 25.4,
-                    printerIpAddress: null
+                    printerIpAddress: null,
+                    selectedLabelFormatIndex: null,
+                    labelFormats: [
+                        {
+                            width: 102,
+                            height: 152
+                        },
+                        {
+                            width: 54,
+                            height: 86
+                        }
+                    ]
                 }
             },
             computed: {
@@ -97,6 +113,11 @@
                 await this.changeZplData(this.templateLabels[0].content)
             },
             methods: {
+                async labelFormatChange() {
+                    this.labelWidth = this.labelFormats[this.selectedLabelFormatIndex].width
+                    this.labelHeight = this.labelFormats[this.selectedLabelFormatIndex].height
+                    this.render();
+                },
                 async loadTestData() {
                     try {
                         this.loadingTestData = true
