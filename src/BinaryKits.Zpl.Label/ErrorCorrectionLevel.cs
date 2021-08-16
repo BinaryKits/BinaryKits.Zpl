@@ -1,7 +1,7 @@
 ﻿namespace BinaryKits.Zpl.Label
 {
     /// <summary>
-    /// Error Correction Level 
+    /// QR-Code - Error Correction Level 
     /// </summary>
     public enum ErrorCorrectionLevel
     {

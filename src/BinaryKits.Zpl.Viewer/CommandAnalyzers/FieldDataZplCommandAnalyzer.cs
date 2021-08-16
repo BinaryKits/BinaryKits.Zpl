@@ -43,7 +43,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 }
                 if (this.VirtualPrinter.NextFieldDataElement is QrCodeBarcodeFieldData qrCode)
                 {
-                    return new ZplQrCode(text, x, y, 2, qrCode.MagnificationFactor, Label.ErrorCorrectionLevel.Standard, qrCode.MaskValue);
+                    return new ZplQrCode(text, x, y, qrCode.Model, qrCode.MagnificationFactor, qrCode.ErrorCorrection, qrCode.MaskValue);
                 }
             }
 
