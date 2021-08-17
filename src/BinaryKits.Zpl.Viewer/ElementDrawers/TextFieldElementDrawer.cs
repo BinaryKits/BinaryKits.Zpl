@@ -54,6 +54,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 skPaint.TextScaleX = scaleX;
 
                 var textBounds = new SKRect();
+                var textBoundBaseline = new SKRect();
+                skPaint.MeasureText(new string('A', textField.Text.Length), ref textBoundBaseline);
                 skPaint.MeasureText(textField.Text, ref textBounds);
 
                 if (textField.FieldTypeset != null)
@@ -71,20 +73,20 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         {
                             case Label.FieldOrientation.Rotated90:
                                 matrix = SKMatrix.CreateRotationDegrees(90, x, y);
-                                y -= font.FontHeight - textBounds.Height;
+                                y -= font.FontHeight - textBoundBaseline.Height;
                                 break;
                             case Label.FieldOrientation.Rotated180:
                                 matrix = SKMatrix.CreateRotationDegrees(180, x, y);
                                 x -= textBounds.Width;
-                                y -= font.FontHeight - textBounds.Height;
+                                y -= font.FontHeight - textBoundBaseline.Height;
                                 break;
                             case Label.FieldOrientation.Rotated270:
                                 matrix = SKMatrix.CreateRotationDegrees(270, x, y);
                                 x -= textBounds.Width;
-                                y += textBounds.Height;
+                                y += textBoundBaseline.Height;
                                 break;
                             case Label.FieldOrientation.Normal:
-                                y += textBounds.Height;
+                                y += textBoundBaseline.Height;
                                 break;
                         }
                     }
@@ -94,18 +96,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         {
                             case Label.FieldOrientation.Rotated90:
                                 matrix = SKMatrix.CreateRotationDegrees(90, x, y);
-                                x += textBounds.Height;
+                                x += textBoundBaseline.Height;
                                 break;
                             case Label.FieldOrientation.Rotated180:
                                 matrix = SKMatrix.CreateRotationDegrees(180, x, y);
-                                y -= textBounds.Height;
+                                y -= textBoundBaseline.Height;
                                 break;
                             case Label.FieldOrientation.Rotated270:
                                 matrix = SKMatrix.CreateRotationDegrees(270, x, y);
-                                x -= textBounds.Height;
+                                x -= textBoundBaseline.Height;
                                 break;
                             case Label.FieldOrientation.Normal:
-                                y += textBounds.Height;
+                                y += textBoundBaseline.Height;
                                 break;
                         }
                     }
