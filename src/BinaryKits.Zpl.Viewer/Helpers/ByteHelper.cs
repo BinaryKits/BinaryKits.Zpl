@@ -6,15 +6,15 @@ namespace BinaryKits.Zpl.Viewer.Helpers
     {
         public static byte[] HexToBytes(string hex)
         {
-            if (hex.Length % 2 == 1)
-            {
-                throw new Exception("The binary key cannot have an odd number of digits");
-            }
-
             if (hex.IndexOfAny(new[] {'\r', '\n'} ) != -1)
             {
                 hex = hex.Replace("\n", string.Empty);
                 hex = hex.Replace("\r", string.Empty);
+            }
+
+            if (hex.Length % 2 == 1)
+            {
+                throw new Exception("The binary key cannot have an odd number of digits");
             }
 
             var array = new byte[hex.Length >> 1];
