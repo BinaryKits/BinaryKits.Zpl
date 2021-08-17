@@ -40,6 +40,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 if (graphicCircle.FieldTypeset != null)
                 {
                     y -= graphicCircle.Diameter;
+
+                    //Fallback
                     if (y < radius)
                     {
                         y = radius;

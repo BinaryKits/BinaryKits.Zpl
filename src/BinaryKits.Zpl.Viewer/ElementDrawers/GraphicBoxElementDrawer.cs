@@ -50,6 +50,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 if (graphicBox.FieldTypeset != null)
                 {
                     y -= height1;
+
+                    //Fallback
+                    if (y < offsetY)
+                    {
+                        y = offsetY;
+                    }
                 }
 
                 var width = width1 - border1;
