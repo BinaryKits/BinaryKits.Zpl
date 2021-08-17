@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Viewer.Models;
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer
 {
@@ -11,6 +12,7 @@ namespace BinaryKits.Zpl.Viewer
         public int FontWidth { get; private set; } = 0;
         public int FontHeight { get; private set; } = 10;
         public string FontName { get; private set; } = "0";
+        public List<string> Comments { get; private set; }
 
         /// <summary>
         /// Override the default font, only for the next element
@@ -24,6 +26,7 @@ namespace BinaryKits.Zpl.Viewer
         public VirtualPrinter()
         {
             this.BarcodeInfo = new BarcodeInfo();
+            this.Comments = new List<string>();
         }
 
         public void SetNextElementPosition(int x, int y, bool calculateFromBottom = false)
@@ -103,6 +106,16 @@ namespace BinaryKits.Zpl.Viewer
         public void SetLabelHome(int x, int y)
         {
             this.LabelHomePosition = new LabelHome(x, y);
+        }
+
+        public void AddComment(string comment)
+        {
+            this.Comments.Add(comment);
+        }
+
+        public void ClearComments()
+        {
+            this.Comments.Clear();
         }
     }
 }
