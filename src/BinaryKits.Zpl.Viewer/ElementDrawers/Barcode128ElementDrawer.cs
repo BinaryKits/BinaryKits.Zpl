@@ -1,6 +1,7 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using NetBarcode;
 using System.Drawing;
+using System.IO;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -25,21 +26,34 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y -= barcode.Height;
                 }
 
-                var barcodeElement = new Barcode();
-                barcodeElement.Configure(new BarcodeSettings
+                var barcodeElement = new BarcodeLib.Barcode();
+                barcodeElement.BarWidth = barcode.ModuleWidth;
+                barcodeElement.BackColor = Color.Transparent;
+                barcodeElement.Height = barcode.Height;
+
+                byte[] barcodeImageData;
+                using var image = barcodeElement.Encode(BarcodeLib.TYPE.CODE128B, barcode.Content);
+                using (var memoryStream = new MemoryStream())
                 {
-                    BarcodeHeight = barcode.Height,
-                    //TODO: Choose barcodeType over the mode config of zpl barcode config
-                    BarcodeType = BarcodeType.Code128B,
-                    BarWidth = barcode.ModuleWidth,
-                    BackgroundColor = Color.Transparent,
-                    //ShowLabel = false
-                });
+                    image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+                    barcodeImageData = memoryStream.ToArray();
+                }
 
-                var barcodeWidth = barcodeElement.GetImage(barcode.Content).Width;
-                var barcodeImageData = barcodeElement.GetByteArray(barcode.Content);
+                //var barcodeElement = new Barcode();
+                //barcodeElement.Configure(new BarcodeSettings
+                //{
+                //    BarcodeHeight = barcode.Height,
+                //    //TODO: Choose barcodeType over the mode config of zpl barcode config
+                //    BarcodeType = BarcodeType.Code128B,
+                //    BarWidth = barcode.ModuleWidth,
+                //    BackgroundColor = Color.Transparent,
+                //    //ShowLabel = false
+                //});
 
-                this.DrawBarcode(barcodeImageData, barcode.Height, barcodeWidth, barcode.FieldOrigin != null, x, y, barcode.FieldOrientation);
+                //var barcodeWidth = barcodeElement.GetImage(barcode.Content).Width;
+                //var barcodeImageData = barcodeElement.GetByteArray(barcode.Content);
+
+                this.DrawBarcode(barcodeImageData, barcode.Height, image.Width, barcode.FieldOrigin != null, x, y, barcode.FieldOrientation);
             }
         }
     }
