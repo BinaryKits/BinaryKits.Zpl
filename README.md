@@ -5,6 +5,15 @@
 This project contains several modules for working with Zebra Programming Language. ZPL is a very common printer language that is supported by various manufacturers.
 The project helps you to describe a label and generates a preview from the ZPL data. We can convert different image formats to the Zebra image format. The image data is compressed to cause as little traffic as possible. More information about Zebra printer languages can be found in the [ZPL Documentation](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf).
 
+## What modules does the project offer
+
+- **BinaryKits.Zpl.Label**<br>
+This module provides the basic building blocks of the ZPL language and the logic for converting the images into the correct format.
+- **BinaryKits.Zpl.Labelary**<br>
+This module is a client for the Labelary project with which a preview can be generated from ZPL data.
+- **BinaryKits.Zpl.Viewer**<br>
+This module is our own implementation of a viewer. It converts the ZPL data into an image like Labelary but does it locally.
+
 ## How can I use it?
 
 The packages are available via [![NuGet](https://img.shields.io/nuget/v/BinaryKits.Zpl.Label.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Label)
