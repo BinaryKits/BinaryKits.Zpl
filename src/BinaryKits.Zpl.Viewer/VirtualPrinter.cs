@@ -8,7 +8,8 @@ namespace BinaryKits.Zpl.Viewer
     {
         public LabelHome LabelHomePosition { get; private set; }
         public LabelPosition NextElementPosition { get; private set; }
-        public FieldDataBase NextFieldDataElement { get; private set; }
+        public FieldDataBase NextElementFieldData { get; private set; }
+        public FieldBlock NextElementFieldBlock { get; private set; }
         public int FontWidth { get; private set; } = 0;
         public int FontHeight { get; private set; } = 10;
         public string FontName { get; private set; } = "0";
@@ -19,7 +20,7 @@ namespace BinaryKits.Zpl.Viewer
         /// </summary>
         public FontInfo NextFont { get; private set; }
 
-        public bool FieldReversePrintForNextElement { get; private set; }
+        public bool NextElementFieldReverse { get; private set; }
 
         public BarcodeInfo BarcodeInfo { get; private set; }
 
@@ -39,14 +40,24 @@ namespace BinaryKits.Zpl.Viewer
             this.NextElementPosition = new LabelPosition(0, 0, false);
         }
 
-        public void SetNextFieldDataElement(FieldDataBase fieldData)
+        public void SetNextElementFieldData(FieldDataBase fieldData)
         {
-            this.NextFieldDataElement = fieldData;
+            this.NextElementFieldData = fieldData;
         }
 
-        public void ClearNextFieldDataElement()
+        public void ClearNextElementFieldData()
         {
-            this.NextFieldDataElement = null;
+            this.NextElementFieldData = null;
+        }
+
+        public void SetNextElementFieldBlock(FieldBlock fieldBlock)
+        {
+            this.NextElementFieldBlock = fieldBlock;
+        }
+
+        public void ClearNextElementFieldBlock()
+        {
+            this.NextElementFieldBlock = null;
         }
 
         public void SetNextFont(
@@ -63,14 +74,14 @@ namespace BinaryKits.Zpl.Viewer
             this.NextFont = null;
         }
 
-        public void SetFieldReversePrint()
+        public void SetNextElementFieldReverse()
         {
-            this.FieldReversePrintForNextElement = true;
+            this.NextElementFieldReverse = true;
         }
 
-        public void ClearFieldReversePrint()
+        public void ClearNextElementFieldReverse()
         {
-            this.FieldReversePrintForNextElement = false;
+            this.NextElementFieldReverse = false;
         }
 
         public void SetFontWidth(int fontWidth)

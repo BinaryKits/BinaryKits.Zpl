@@ -46,7 +46,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 _ = int.TryParse(zplDataParts[4], out cornerRounding);
             }
 
-            var reversePrint = this.VirtualPrinter.FieldReversePrintForNextElement;
+            var reversePrint = this.VirtualPrinter.NextElementFieldReverse;
 
             return new ZplGraphicBox(x, y, widht, height, borderThickness, lineColor, cornerRounding, reversePrint, bottomToTop);
         }

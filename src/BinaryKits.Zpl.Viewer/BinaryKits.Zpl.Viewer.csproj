@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <Description>This package provides a rendering logic for ZPL data</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Zebra ZPL ZPL2 ZPLEmulator ZPLVirtualPrinter ZPLViewer ZPLParser</PackageTags>
@@ -23,7 +23,6 @@
   <ItemGroup>
     <PackageReference Include="BarcodeLib" Version="2.4.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="NetBarcode" Version="2.0.0-beta.1" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
     <PackageReference Include="SkiaSharp" Version="2.80.3" />
   </ItemGroup>

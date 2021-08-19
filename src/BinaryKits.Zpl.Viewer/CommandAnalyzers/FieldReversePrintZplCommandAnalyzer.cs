@@ -9,7 +9,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(string zplCommand)
         {
-            this.VirtualPrinter.SetFieldReversePrint();
+            this.VirtualPrinter.SetNextElementFieldReverse();
 
             return null;
         }

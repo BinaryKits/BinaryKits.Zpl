@@ -56,7 +56,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 _ = int.TryParse(zplDataParts[4], out maskValue);
             }
 
-            this.VirtualPrinter.SetNextFieldDataElement(new QrCodeBarcodeFieldData
+            this.VirtualPrinter.SetNextElementFieldData(new QrCodeBarcodeFieldData
             {
                 Model = model,
                 FieldOrientation = fieldOrientation,

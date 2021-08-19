@@ -36,6 +36,7 @@ namespace BinaryKits.Zpl.Viewer
                 new CommentZplCommandAnalyzer(this._virtualPrinter),
                 new DownloadGraphicsZplCommandAnalyzer(this._virtualPrinter, this._printerStorage),
                 new DownloadObjectsZplCommandAnaylzer(this._virtualPrinter, this._printerStorage),
+                new FieldBlockZplCommandAnalyzer(this._virtualPrinter),
                 new FieldDataZplCommandAnalyzer(this._virtualPrinter),
                 new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),
                 new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter),

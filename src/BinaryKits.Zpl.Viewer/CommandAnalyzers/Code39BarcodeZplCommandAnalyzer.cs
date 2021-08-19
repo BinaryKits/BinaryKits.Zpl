@@ -36,7 +36,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
 
             //The field data are processing in the FieldDataZplCommandAnalyzer
-            this.VirtualPrinter.SetNextFieldDataElement(new Code39BarcodeFieldData
+            this.VirtualPrinter.SetNextElementFieldData(new Code39BarcodeFieldData
             {
                 FieldOrientation = fieldOrientation,
                 Height = height,

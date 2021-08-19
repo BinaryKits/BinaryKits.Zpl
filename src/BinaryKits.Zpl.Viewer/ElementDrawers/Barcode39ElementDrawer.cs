@@ -1,7 +1,6 @@
-﻿using BinaryKits.Zpl.Label.Elements;
-using NetBarcode;
+﻿using BarcodeLib;
+using BinaryKits.Zpl.Label.Elements;
 using System.Drawing;
-using System.IO;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -26,32 +25,15 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y -= barcode.Height;
                 }
 
-                var barcodeElement = new BarcodeLib.Barcode();
-                barcodeElement.BarWidth = barcode.ModuleWidth;
-                barcodeElement.BackColor = Color.Transparent;
-                barcodeElement.Height = barcode.Height;
-
-                byte[] barcodeImageData;
-                using var image = barcodeElement.Encode(BarcodeLib.TYPE.CODE39, barcode.Content);
-                using (var memoryStream = new MemoryStream())
+                var barcodeElement = new Barcode
                 {
-                    image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
-                    barcodeImageData = memoryStream.ToArray();
-                }
+                    BarWidth = barcode.ModuleWidth,
+                    BackColor = Color.Transparent,
+                    Height = barcode.Height
+                };
 
-                //var barcodeElement = new Barcode();
-                //barcodeElement.Configure(new BarcodeSettings
-                //{
-                //    BarcodeHeight = barcode.Height,
-                //    BarcodeType = BarcodeType.Code39E,
-                //    BarWidth = barcode.ModuleWidth,
-                //    BackgroundColor = Color.Transparent
-                //});
-
-                //var barcodeWidth = barcodeElement.GetImage(barcode.Content).Width;
-                //var barcodeImageData = barcodeElement.GetByteArray(barcode.Content);
-
-                this.DrawBarcode(barcodeImageData, barcode.Height, barcodeElement.Width, barcode.FieldOrigin != null, x, y, barcode.FieldOrientation);
+                using var image = barcodeElement.Encode(TYPE.CODE39Extended, barcode.Content);
+                this.DrawBarcode(this.GetImageData(image), barcode.Height, barcodeElement.Width, barcode.FieldOrigin != null, x, y, barcode.FieldOrientation);
             }
         }
     }
