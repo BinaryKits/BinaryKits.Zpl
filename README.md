@@ -21,7 +21,7 @@ This library supports following elements:
 
 | Element | Informations |
 | ------------- | ------------- |
-| Barcode | ANSI Codabar, Code 30, Code 128, EAN-13, Interleaved 2 of 5 |
+| Barcode | ANSI Codabar, Code 39, Code 128, EAN-13, Interleaved 2 of 5 |
 | QR-Code | - |
 | Image | DownloadObjects, DownloadGraphics  |
 | Text | TextBlock, TextField, FieldBlock, SingleLineFieldBlock |
