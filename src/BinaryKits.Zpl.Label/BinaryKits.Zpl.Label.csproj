@@ -4,7 +4,7 @@
     <TargetFrameworks>net472;netstandard2.0;net5.0</TargetFrameworks>
     <Description>This package allows you to simple describe labels in Zebra Programming Language. It also supports you with image conversion.</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
-    <Version>3.0.1</Version>
+    <Version>3.0.2</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Zebra ZPL ZPL2 Printer Label</PackageTags>

@@ -91,6 +91,9 @@
     <None Update="ZplDatas\QrCode.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="ZplDatas\TextPosition2.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ZplDatas\TextRotation1.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

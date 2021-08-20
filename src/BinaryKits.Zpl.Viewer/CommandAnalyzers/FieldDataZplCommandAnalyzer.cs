@@ -24,24 +24,24 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             var text = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
-            if (this.VirtualPrinter.NextFieldDataElement != null)
+            if (this.VirtualPrinter.NextElementFieldData != null)
             {
                 var moduleWidth = this.VirtualPrinter.BarcodeInfo.ModuleWidth;
                 var wideBarToNarrowBarWidthRatio = this.VirtualPrinter.BarcodeInfo.WideBarToNarrowBarWidthRatio;
 
-                if (this.VirtualPrinter.NextFieldDataElement is Code39BarcodeFieldData code39)
+                if (this.VirtualPrinter.NextElementFieldData is Code39BarcodeFieldData code39)
                 {
                     return new ZplBarcode39(text, x, y, code39.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code39.FieldOrientation, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit, bottomToTop: bottomToTop);
                 }
-                if (this.VirtualPrinter.NextFieldDataElement is Code128BarcodeFieldData code128)
+                if (this.VirtualPrinter.NextElementFieldData is Code128BarcodeFieldData code128)
                 {
                     return new ZplBarcode128(text, x, y, code128.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code128.FieldOrientation, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode, bottomToTop);
                 }
-                if (this.VirtualPrinter.NextFieldDataElement is Interleaved2of5BarcodeFieldData interleaved2of5)
+                if (this.VirtualPrinter.NextElementFieldData is Interleaved2of5BarcodeFieldData interleaved2of5)
                 {
                     return new ZplBarcodeInterleaved2of5(text, x, y, interleaved2of5.Height, moduleWidth, wideBarToNarrowBarWidthRatio, interleaved2of5.FieldOrientation, interleaved2of5.PrintInterpretationLine, interleaved2of5.PrintInterpretationLineAboveCode, bottomToTop: bottomToTop);
                 }
-                if (this.VirtualPrinter.NextFieldDataElement is QrCodeBarcodeFieldData qrCode)
+                if (this.VirtualPrinter.NextElementFieldData is QrCodeBarcodeFieldData qrCode)
                 {
                     return new ZplQrCode(text, x, y, qrCode.Model, qrCode.MagnificationFactor, qrCode.ErrorCorrection, qrCode.MaskValue);
                 }
@@ -53,7 +53,17 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 font = this.GetNextFontFromVirtualPrinter();
             }
 
-            var reversePrint = this.VirtualPrinter.FieldReversePrintForNextElement;
+            var reversePrint = this.VirtualPrinter.NextElementFieldReverse;
+
+            if (this.VirtualPrinter.NextElementFieldBlock != null)
+            {
+                var width = this.VirtualPrinter.NextElementFieldBlock.WidthOfTextBlockLine;
+                var maxLineCount = this.VirtualPrinter.NextElementFieldBlock.MaximumNumberOfLinesInTextBlock;
+                var textJustification = this.VirtualPrinter.NextElementFieldBlock.TextJustification;
+                var lineSpace = this.VirtualPrinter.NextElementFieldBlock.AddOrDeleteSpaceBetweenLines;
+
+                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification);
+            }
 
             return new ZplTextField(text, x, y, font, reversePrint: reversePrint, bottomToTop: bottomToTop);
         }

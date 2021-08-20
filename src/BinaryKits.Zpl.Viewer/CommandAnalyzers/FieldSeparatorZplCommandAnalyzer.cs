@@ -10,9 +10,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public override ZplElementBase Analyze(string zplCommand)
         {
             this.VirtualPrinter.ClearNextElementPosition();
+            this.VirtualPrinter.ClearNextElementFieldBlock();
+            this.VirtualPrinter.ClearNextElementFieldData();
+            this.VirtualPrinter.ClearNextElementFieldReverse();
             this.VirtualPrinter.ClearNextFont();
-            this.VirtualPrinter.ClearNextFieldDataElement();
-            this.VirtualPrinter.ClearFieldReversePrint();
             this.VirtualPrinter.ClearComments();
 
             return null;

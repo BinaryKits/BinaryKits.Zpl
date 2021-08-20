@@ -8,7 +8,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
-            return element is ZplTextField;
+            return element.GetType() == typeof(ZplTextField);
         }
 
         public override bool IsReverseDraw(ZplElementBase element)

@@ -1,9 +1,20 @@
 ﻿using SkiaSharp;
+using System.Drawing;
+using System.IO;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public abstract class BarcodeDrawerBase : ElementDrawerBase
     {
+        public byte[] GetImageData(Image image)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+                return memoryStream.ToArray();
+            }
+        }
+
         public void DrawBarcode(
             byte[] barcodeImageData,
             int barcodeHeight,
