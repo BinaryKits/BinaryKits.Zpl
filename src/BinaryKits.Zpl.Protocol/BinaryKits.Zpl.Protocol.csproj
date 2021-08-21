@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net472;netstandard2.0;net5.0</TargetFrameworks>
+    <Description>This package contains the basic commands of the Zebra Programming Language. It also supports you with image conversion.</Description>
+    <Company>Binary Kits Pte. Ltd.</Company>
+    <Version>3.0.2</Version>
+    <Authors>Binary Kits Pte. Ltd.</Authors>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>Zebra ZPL ZPL2 Printer Label</PackageTags>
+    <PackageProjectUrl>https://github.com/BinaryKits/BinaryKits.Zpl</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/BinaryKits/BinaryKits.Zpl</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageId>BinaryKits.Zpl.Protocol</PackageId>
+    <PackageIcon>logo_128.png</PackageIcon>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>BinaryKits.Zpl.Protocol</AssemblyName>
+    <RootNamespace>BinaryKits.Zpl.Protocol</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp">
+      <Version>1.0.3</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\doc\logo_128.png">
+      <Pack>true</Pack>
+      <Visible>false</Visible>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
