@@ -25,13 +25,13 @@
         public int Y { get; private set; } = 0;
 
         /// <summary>
-        /// Field Origin
+        /// Label Home
         /// </summary>
         public LabelHomeCommand() : base("^LH")
         { }
 
         /// <summary>
-        /// Field Origin
+        /// Label Home
         /// </summary>
         /// <param name="x">x-axis position (0 to 32000)</param>
         /// <param name="y">y-axis position (0 to 32000)</param>
