@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace BinaryKits.Zpl.Protocol.Commands
+﻿namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
-    /// Field Origin
+    /// Field Origin<br/>
     /// The ^FO command sets a field origin, relative to the label home (^LH) position. ^FO sets the upper-left 
     /// corner of the field area by defining points along the x-axis and y-axis independent of the rotation.
     /// </summary>
@@ -30,25 +28,18 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="x">x-axis location (0 to 32000)</param>
         /// <param name="y">y-axis location (0 to 32000)</param>
-        public FieldOriginCommand(int? x = null, int? y = null) : this()
+        public FieldOriginCommand(
+            int? x = null,
+            int? y = null)
+            : this()
         {
-            if (x.HasValue)
+            if (this.ValidateIntParameter(nameof(x), x, 0, 32000))
             {
-                if (x < 0 || x > 32000)
-                {
-                    throw new ArgumentException("Must be between 0 and 32000", nameof(x));
-                }
-
                 this.X = x.Value;
             }
 
-            if (y.HasValue)
+            if (this.ValidateIntParameter(nameof(y), y, 0, 32000))
             {
-                if (y < 0 || y > 32000)
-                {
-                    throw new ArgumentException("Must be between 0 and 32000", nameof(y));
-                }
-
                 this.Y = y.Value;
             }
         }

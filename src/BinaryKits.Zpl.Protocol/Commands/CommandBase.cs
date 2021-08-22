@@ -54,5 +54,46 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="zplCommand"></param>
         public abstract void ParseCommand(string zplCommand);
+
+        /// <summary>
+        /// Validate integer paramter
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="number"></param>
+        /// <param name="minimumValue"></param>
+        /// <param name="maximumValue"></param>
+        /// <returns></returns>
+        protected bool ValidateIntParameter(string parameterName, int? number, int minimumValue, int maximumValue)
+        {
+            if (number.HasValue)
+            {
+                if (number.Value < minimumValue || number.Value > maximumValue)
+                {
+                    throw new ArgumentException($"Must be between {minimumValue} and {maximumValue}", parameterName);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Get Zpl Line color
+        /// </summary>
+        /// <param name="lineColor"></param>
+        /// <returns></returns>
+        protected string RenderLineColor(LineColor lineColor)
+        {
+            switch (lineColor)
+            {
+                case LineColor.Black:
+                    return "B";
+                case LineColor.White:
+                    return "W";
+            }
+
+            throw new NotImplementedException("Unknown Line Color");
+        }
     }
 }
