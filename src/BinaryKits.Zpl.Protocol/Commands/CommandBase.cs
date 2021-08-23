@@ -79,7 +79,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         }
 
         /// <summary>
-        /// Get Zpl Line color
+        /// Get Zpl char for line color
         /// </summary>
         /// <param name="lineColor"></param>
         /// <returns></returns>
@@ -94,6 +94,50 @@ namespace BinaryKits.Zpl.Protocol.Commands
             }
 
             throw new NotImplementedException("Unknown Line Color");
+        }
+
+        /// <summary>
+        /// Get Zpl char for field orientation
+        /// </summary>
+        /// <param name="fieldOrientation"></param>
+        /// <returns></returns>
+        protected string RenderFieldOrientation(FieldOrientation fieldOrientation)
+        {
+            switch (fieldOrientation)
+            {
+                case FieldOrientation.Normal:
+                    return "N";
+                case FieldOrientation.Rotated90:
+                    return "R";
+                case FieldOrientation.Rotated180:
+                    return "I";
+                case FieldOrientation.Rotated270:
+                    return "B";
+            }
+
+            throw new NotImplementedException("Unknown Field Orientation");
+        }
+
+        /// <summary>
+        /// Get Field orientation from Zpl char
+        /// </summary>
+        /// <param name="fieldOrientation"></param>
+        /// <returns></returns>
+        protected FieldOrientation ConvertFieldOrientation(string fieldOrientation)
+        {
+            switch (fieldOrientation)
+            {
+                case "N":
+                    return FieldOrientation.Normal;
+                case "R":
+                    return FieldOrientation.Rotated90;
+                case "I":
+                    return FieldOrientation.Rotated180;
+                case "B":
+                    return FieldOrientation.Rotated270;
+            }
+
+            return FieldOrientation.Normal;
         }
     }
 }
