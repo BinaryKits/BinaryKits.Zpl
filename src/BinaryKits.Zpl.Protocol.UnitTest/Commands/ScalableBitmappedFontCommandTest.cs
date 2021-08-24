@@ -33,7 +33,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void ToZpl_Font0Rotated180_Successful()
         {
-            var command = new ScalableBitmappedFontCommand('0', FieldOrientation.Rotated180);
+            var command = new ScalableBitmappedFontCommand('0', Orientation.Rotated180);
             var zplCommand = command.ToZpl();
             Assert.AreEqual("^A0I,10,10", zplCommand);
         }
@@ -42,14 +42,14 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [ExpectedException(typeof(ArgumentException), "Must be between 10 and 32000")]
         public void Constructor_InvalidCharacterHeight_Exception()
         {
-            new ScalableBitmappedFontCommand('A', FieldOrientation.Normal, characterHeight: 0);
+            new ScalableBitmappedFontCommand('A', Orientation.Normal, characterHeight: 0);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Must be between 10 and 32000")]
         public void Constructor_InvalidWidth_Exception()
         {
-            new ScalableBitmappedFontCommand('A', FieldOrientation.Normal, width: 0);
+            new ScalableBitmappedFontCommand('A', Orientation.Normal, width: 0);
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new ScalableBitmappedFontCommand();
             command.ParseCommand("^AA");
             Assert.AreEqual(command.FontName, 'A');
-            Assert.AreEqual(command.FieldOrientation, FieldOrientation.Normal);
+            Assert.AreEqual(command.Orientation, Orientation.Normal);
         }
 
         [TestMethod]
@@ -83,7 +83,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new ScalableBitmappedFontCommand();
             command.ParseCommand("^A0");
             Assert.AreEqual(command.FontName, '0');
-            Assert.AreEqual(command.FieldOrientation, FieldOrientation.Normal);
+            Assert.AreEqual(command.Orientation, Orientation.Normal);
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new ScalableBitmappedFontCommand();
             command.ParseCommand("^A0N");
             Assert.AreEqual(command.FontName, '0');
-            Assert.AreEqual(command.FieldOrientation, FieldOrientation.Normal);
+            Assert.AreEqual(command.Orientation, Orientation.Normal);
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new ScalableBitmappedFontCommand();
             command.ParseCommand("^A0I");
             Assert.AreEqual(command.FontName, '0');
-            Assert.AreEqual(command.FieldOrientation, FieldOrientation.Rotated180);
+            Assert.AreEqual(command.Orientation, Orientation.Rotated180);
         }
 
         [TestMethod]
@@ -110,7 +110,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new ScalableBitmappedFontCommand();
             command.ParseCommand("^A0R");
             Assert.AreEqual(command.FontName, '0');
-            Assert.AreEqual(command.FieldOrientation, FieldOrientation.Rotated90);
+            Assert.AreEqual(command.Orientation, Orientation.Rotated90);
         }
 
         [TestMethod]
@@ -119,7 +119,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new ScalableBitmappedFontCommand();
             command.ParseCommand("^A0X");
             Assert.AreEqual(command.FontName, '0');
-            Assert.AreEqual(command.FieldOrientation, FieldOrientation.Normal);
+            Assert.AreEqual(command.Orientation, Orientation.Normal);
             Assert.IsNull(command.CharacterHeight);
             Assert.IsNull(command.Width);
         }
@@ -130,7 +130,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new ScalableBitmappedFontCommand();
             command.ParseCommand("^A0B,10");
             Assert.AreEqual(command.FontName, '0');
-            Assert.AreEqual(command.FieldOrientation, FieldOrientation.Rotated270);
+            Assert.AreEqual(command.Orientation, Orientation.Rotated270);
             Assert.AreEqual(command.CharacterHeight, 10);
             Assert.IsNull(command.Width);
         }
@@ -141,7 +141,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new ScalableBitmappedFontCommand();
             command.ParseCommand("^A0I,20");
             Assert.AreEqual(command.FontName, '0');
-            Assert.AreEqual(command.FieldOrientation, FieldOrientation.Rotated180);
+            Assert.AreEqual(command.Orientation, Orientation.Rotated180);
             Assert.AreEqual(command.CharacterHeight, 20);
             Assert.IsNull(command.Width);
         }
@@ -152,7 +152,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new ScalableBitmappedFontCommand();
             command.ParseCommand("^A0I,,20");
             Assert.AreEqual(command.FontName, '0');
-            Assert.AreEqual(command.FieldOrientation, FieldOrientation.Rotated180);
+            Assert.AreEqual(command.Orientation, Orientation.Rotated180);
             Assert.IsNull(command.CharacterHeight);
             Assert.AreEqual(command.Width, 20);
         }
@@ -163,7 +163,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new ScalableBitmappedFontCommand();
             command.ParseCommand("^A0I,100,50");
             Assert.AreEqual(command.FontName, '0');
-            Assert.AreEqual(command.FieldOrientation, FieldOrientation.Rotated180);
+            Assert.AreEqual(command.Orientation, Orientation.Rotated180);
             Assert.AreEqual(command.CharacterHeight, 100);
             Assert.AreEqual(command.Width, 50);
         }

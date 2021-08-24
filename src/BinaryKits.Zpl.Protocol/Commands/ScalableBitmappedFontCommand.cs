@@ -14,9 +14,9 @@
         public char FontName { get; private set; }
 
         /// <summary>
-        /// Field orientation
+        /// Orientation
         /// </summary>
-        public FieldOrientation FieldOrientation { get; private set; }
+        public Orientation Orientation { get; private set; }
 
         /// <summary>
         /// Character Height
@@ -38,18 +38,18 @@
         /// Scalable/Bitmapped Font
         /// </summary>
         /// <param name="fontName">Font name, A through Z, and 0 to 9</param>
-        /// <param name="fieldOrientation">Field orientation</param>
+        /// <param name="orientation">Orientation</param>
         /// <param name="characterHeight">Character Height (10 to 32000)</param>
         /// <param name="width">width (10 to 32000)</param>
         public ScalableBitmappedFontCommand(
             char fontName,
-            FieldOrientation fieldOrientation = FieldOrientation.Normal,
+            Orientation orientation = Orientation.Normal,
             int? characterHeight = 10,
             int? width = 10)
             : this()
         {
             this.FontName = fontName;
-            this.FieldOrientation = fieldOrientation;
+            this.Orientation = orientation;
 
             if (this.ValidateIntParameter(nameof(characterHeight), characterHeight, 10, 32000))
             {
@@ -65,7 +65,7 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.FontName}{this.RenderFieldOrientation(this.FieldOrientation)},{this.CharacterHeight},{this.Width}";
+            return $"{this.CommandPrefix}{this.FontName}{this.RenderOrientation(this.Orientation)},{this.CharacterHeight},{this.Width}";
         }
 
         ///<inheritdoc/>
@@ -77,7 +77,7 @@
 
             if (zplDataParts.Length > 0)
             {
-                this.FieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+                this.Orientation = this.ConvertOrientation(zplDataParts[0]);
             }
 
             if (zplDataParts.Length > 1)

@@ -1,9 +1,9 @@
 ﻿namespace BinaryKits.Zpl.Protocol
 {
     /// <summary>
-    /// Field Orientation
+    /// Orientation
     /// </summary>
-    public enum FieldOrientation
+    public enum Orientation
     {
         /// <summary>
         /// Normal

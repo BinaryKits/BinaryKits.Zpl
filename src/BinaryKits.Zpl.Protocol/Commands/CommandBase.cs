@@ -97,47 +97,79 @@ namespace BinaryKits.Zpl.Protocol.Commands
         }
 
         /// <summary>
-        /// Get Zpl char for field orientation
+        /// Render Zpl char for boolean
         /// </summary>
-        /// <param name="fieldOrientation"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        protected string RenderFieldOrientation(FieldOrientation fieldOrientation)
+        public string RenderBoolean(bool value)
         {
-            switch (fieldOrientation)
-            {
-                case FieldOrientation.Normal:
-                    return "N";
-                case FieldOrientation.Rotated90:
-                    return "R";
-                case FieldOrientation.Rotated180:
-                    return "I";
-                case FieldOrientation.Rotated270:
-                    return "B";
-            }
-
-            throw new NotImplementedException("Unknown Field Orientation");
+            return value ? "Y" : "N";
         }
 
         /// <summary>
-        /// Get Field orientation from Zpl char
+        /// Get Zpl char for orientation
         /// </summary>
-        /// <param name="fieldOrientation"></param>
+        /// <param name="orientation"></param>
         /// <returns></returns>
-        protected FieldOrientation ConvertFieldOrientation(string fieldOrientation)
+        protected string RenderOrientation(Orientation orientation)
         {
-            switch (fieldOrientation)
+            switch (orientation)
             {
-                case "N":
-                    return FieldOrientation.Normal;
-                case "R":
-                    return FieldOrientation.Rotated90;
-                case "I":
-                    return FieldOrientation.Rotated180;
-                case "B":
-                    return FieldOrientation.Rotated270;
+                case Orientation.Normal:
+                    return "N";
+                case Orientation.Rotated90:
+                    return "R";
+                case Orientation.Rotated180:
+                    return "I";
+                case Orientation.Rotated270:
+                    return "B";
             }
 
-            return FieldOrientation.Normal;
+            throw new NotImplementedException("Unknown Orientation");
+        }
+
+        /// <summary>
+        /// Get boolean from ZPL Char
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool ConvertBoolean(string value)
+        {
+            if (value == "Y")
+            {
+                return true;
+            }
+
+            if (value == "N")
+            {
+                return false;
+            }
+
+            //Fallback
+            return false;
+        }
+
+        /// <summary>
+        /// Get orientation from Zpl char
+        /// </summary>
+        /// <param name="orientation"></param>
+        /// <returns></returns>
+        protected Orientation ConvertOrientation(string orientation)
+        {
+            switch (orientation)
+            {
+                case "N":
+                    return Orientation.Normal;
+                case "R":
+                    return Orientation.Rotated90;
+                case "I":
+                    return Orientation.Rotated180;
+                case "B":
+                    return Orientation.Rotated270;
+            }
+
+            //Fallback
+            return Orientation.Normal;
         }
     }
 }
