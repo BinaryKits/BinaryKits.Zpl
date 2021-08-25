@@ -2,22 +2,22 @@
 
 ^FO10,10
 ^BQN,2,1,L,0
-^FDBinaryKits.Zpl.Viewer^FS
+^FDMA,BinaryKits.Zpl.Viewer^FS
 
 ^FO10,50
 ^BQN,2,2,L,0
-^FDBinaryKits.Zpl.Viewer^FS
+^FDMA,BinaryKits.Zpl.Viewer^FS
 
 ^FO10,120
 ^BQN,2,3,L,0
-^FDBinaryKits.Zpl.Viewer^FS
+^FDMA,BinaryKits.Zpl.Viewer^FS
 
 ^FO10,220
 ^BQN,2,4,L,0
-^FDBinaryKits.Zpl.Viewer^FS
+^FDMA,BinaryKits.Zpl.Viewer^FS
 
 ^FO10,360
 ^BQN,2,8,L,0
-^FDBinaryKits.Zpl.Viewer^FS
+^FDMA,BinaryKits.Zpl.Viewer^FS
 
 ^XZ
