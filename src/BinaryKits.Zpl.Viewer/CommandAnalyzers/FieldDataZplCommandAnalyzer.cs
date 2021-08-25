@@ -46,7 +46,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                     var indexOfComma = text.IndexOf(',');
                     if (indexOfComma != -1)
                     {
-                        text = text.Substring(indexOfComma);
+                        text = text.Substring(indexOfComma + 1);
                     }
 
                     return new ZplQrCode(text, x, y, qrCode.Model, qrCode.MagnificationFactor, qrCode.ErrorCorrection, qrCode.MaskValue);
