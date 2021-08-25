@@ -43,6 +43,12 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 }
                 if (this.VirtualPrinter.NextElementFieldData is QrCodeBarcodeFieldData qrCode)
                 {
+                    var indexOfComma = text.IndexOf(',');
+                    if (indexOfComma != -1)
+                    {
+                        text = text.Substring(indexOfComma);
+                    }
+
                     return new ZplQrCode(text, x, y, qrCode.Model, qrCode.MagnificationFactor, qrCode.ErrorCorrection, qrCode.MaskValue);
                 }
             }
