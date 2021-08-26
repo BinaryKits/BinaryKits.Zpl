@@ -129,6 +129,28 @@ namespace BinaryKits.Zpl.Protocol.Commands
         }
 
         /// <summary>
+        /// Get Zpl char for error correction level
+        /// </summary>
+        /// <param name="errorCorrectionLevel"></param>
+        /// <returns></returns>
+        public string RenderErrorCorrectionLevel(ErrorCorrectionLevel errorCorrectionLevel)
+        {
+            switch (errorCorrectionLevel)
+            {
+                case ErrorCorrectionLevel.UltraHighReliability:
+                    return "H";
+                case ErrorCorrectionLevel.HighReliability:
+                    return "Q";
+                case ErrorCorrectionLevel.Standard:
+                    return "M";
+                case ErrorCorrectionLevel.HighDensity:
+                    return "L";
+            }
+
+            throw new NotImplementedException("Unknown Error Correction Level");
+        }
+
+        /// <summary>
         /// Get boolean from ZPL Char
         /// </summary>
         /// <param name="value"></param>
@@ -170,6 +192,29 @@ namespace BinaryKits.Zpl.Protocol.Commands
 
             //Fallback
             return Orientation.Normal;
+        }
+
+        /// <summary>
+        /// Get error correction level from Zpl char
+        /// </summary>
+        /// <param name="errorCorrectionLevel"></param>
+        /// <returns></returns>
+        protected ErrorCorrectionLevel ConvertErrorCorrectionLevel(string errorCorrectionLevel)
+        {
+            switch (errorCorrectionLevel)
+            {
+                case "H":
+                    return ErrorCorrectionLevel.UltraHighReliability;
+                case "Q":
+                    return ErrorCorrectionLevel.HighReliability;
+                case "M":
+                    return ErrorCorrectionLevel.Standard;
+                case "L":
+                    return ErrorCorrectionLevel.HighDensity;
+            }
+
+            //Fallback
+            return ErrorCorrectionLevel.HighReliability;
         }
     }
 }
