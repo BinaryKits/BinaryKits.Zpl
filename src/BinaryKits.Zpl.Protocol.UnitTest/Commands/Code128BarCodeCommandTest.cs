@@ -110,7 +110,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new Code128BarCodeCommand();
             command.ParseCommand("^BCR,20,N,N,N");
             Assert.AreEqual(Orientation.Rotated90, command.Orientation);
-            Assert.AreEqual(command.BarCodeHeight, 20);
+            Assert.AreEqual(20, command.BarCodeHeight);
             Assert.IsFalse(command.PrintInterpretationLine);
             Assert.IsFalse(command.PrintInterpretationLineAboveCode);
             Assert.IsFalse(command.UccCheckDigit);
@@ -122,7 +122,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new Code128BarCodeCommand();
             command.ParseCommand("^BCB,55");
             Assert.AreEqual(Orientation.Rotated270, command.Orientation);
-            Assert.AreEqual(command.BarCodeHeight, 55);
+            Assert.AreEqual(55, command.BarCodeHeight);
             Assert.IsTrue(command.PrintInterpretationLine);
             Assert.IsFalse(command.PrintInterpretationLineAboveCode);
             Assert.IsFalse(command.UccCheckDigit);

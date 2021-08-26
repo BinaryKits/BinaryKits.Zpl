@@ -81,8 +81,8 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new GraphicBoxCommand();
             command.ParseCommand("^GB10,10");
-            Assert.AreEqual(command.BoxWidth, 10);
-            Assert.AreEqual(command.BoxHeight, 10);
+            Assert.AreEqual(10, command.BoxWidth);
+            Assert.AreEqual(10, command.BoxHeight);
         }
 
         [TestMethod]
@@ -90,11 +90,11 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new GraphicBoxCommand();
             command.ParseCommand("^GB10,10,2,W,1");
-            Assert.AreEqual(command.BoxWidth, 10);
-            Assert.AreEqual(command.BoxHeight, 10);
-            Assert.AreEqual(command.BorderThickness, 2);
-            Assert.AreEqual(command.LineColor, LineColor.White);
-            Assert.AreEqual(command.DegreeOfCornerrounding, 1);
+            Assert.AreEqual(10, command.BoxWidth);
+            Assert.AreEqual(10, command.BoxHeight);
+            Assert.AreEqual(2, command.BorderThickness);
+            Assert.AreEqual(LineColor.White, command.LineColor);
+            Assert.AreEqual(1, command.DegreeOfCornerrounding);
         }
 
         [TestMethod]
@@ -102,11 +102,11 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new GraphicBoxCommand();
             command.ParseCommand("^GB10,10,2,,2");
-            Assert.AreEqual(command.BoxWidth, 10);
-            Assert.AreEqual(command.BoxHeight, 10);
-            Assert.AreEqual(command.BorderThickness, 2);
-            Assert.AreEqual(command.LineColor, LineColor.Black);
-            Assert.AreEqual(command.DegreeOfCornerrounding, 2);
+            Assert.AreEqual(10, command.BoxWidth);
+            Assert.AreEqual(10, command.BoxHeight);
+            Assert.AreEqual(2, command.BorderThickness);
+            Assert.AreEqual(LineColor.Black, command.LineColor);
+            Assert.AreEqual(2, command.DegreeOfCornerrounding);
         }
 
         [TestMethod]
@@ -114,9 +114,9 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new GraphicBoxCommand();
             command.ParseCommand("^GB10,10,20");
-            Assert.AreEqual(command.BoxWidth, 20);
-            Assert.AreEqual(command.BoxHeight, 20);
-            Assert.AreEqual(command.BorderThickness, 20);
+            Assert.AreEqual(20, command.BoxWidth);
+            Assert.AreEqual(20, command.BoxHeight);
+            Assert.AreEqual(20, command.BorderThickness);
         }
     }
 }

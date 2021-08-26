@@ -111,7 +111,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             command.ParseCommand("^B3R,N,20,N,N");
             Assert.AreEqual(Orientation.Rotated90, command.Orientation);
             Assert.IsFalse(command.Mod43CheckDigit);
-            Assert.AreEqual(command.BarCodeHeight, 20);
+            Assert.AreEqual(20, command.BarCodeHeight);
             Assert.IsFalse(command.PrintInterpretationLine);
             Assert.IsFalse(command.PrintInterpretationLineAboveCode);
         }
@@ -123,7 +123,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             command.ParseCommand("^B3B,,55");
             Assert.AreEqual(Orientation.Rotated270, command.Orientation);
             Assert.IsFalse(command.Mod43CheckDigit);
-            Assert.AreEqual(command.BarCodeHeight, 55);
+            Assert.AreEqual(55, command.BarCodeHeight);
             Assert.IsTrue(command.PrintInterpretationLine);
             Assert.IsFalse(command.PrintInterpretationLineAboveCode);
         }

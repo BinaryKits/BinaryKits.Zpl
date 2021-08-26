@@ -73,8 +73,8 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new GraphicCircleCommand();
             command.ParseCommand("^GC10,5");
-            Assert.AreEqual(command.CircleDiameter, 10);
-            Assert.AreEqual(command.BorderThickness, 5);
+            Assert.AreEqual(10, command.CircleDiameter);
+            Assert.AreEqual(5, command.BorderThickness);
         }
 
         [TestMethod]
@@ -82,9 +82,9 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new GraphicCircleCommand();
             command.ParseCommand("^GC,2,W");
-            Assert.AreEqual(command.CircleDiameter, 3);
-            Assert.AreEqual(command.BorderThickness, 2);
-            Assert.AreEqual(command.LineColor, LineColor.White);
+            Assert.AreEqual(3, command.CircleDiameter);
+            Assert.AreEqual(2, command.BorderThickness);
+            Assert.AreEqual(LineColor.White, command.LineColor);
         }
 
         [TestMethod]
@@ -92,9 +92,9 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new GraphicCircleCommand();
             command.ParseCommand("^GC,,W");
-            Assert.AreEqual(command.CircleDiameter, 3);
-            Assert.AreEqual(command.BorderThickness, 1);
-            Assert.AreEqual(command.LineColor, LineColor.White);
+            Assert.AreEqual(3, command.CircleDiameter);
+            Assert.AreEqual(1, command.BorderThickness);
+            Assert.AreEqual(LineColor.White, command.LineColor);
         }
     }
 }

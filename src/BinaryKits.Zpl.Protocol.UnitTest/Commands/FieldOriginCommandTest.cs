@@ -73,8 +73,8 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new FieldOriginCommand();
             command.ParseCommand("^FO10,10");
-            Assert.AreEqual(command.X, 10);
-            Assert.AreEqual(command.Y, 10);
+            Assert.AreEqual(10, command.X);
+            Assert.AreEqual(10, command.Y);
         }
 
         [TestMethod]
@@ -82,8 +82,8 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new FieldOriginCommand();
             command.ParseCommand("^FO0,20");
-            Assert.AreEqual(command.X, 0);
-            Assert.AreEqual(command.Y, 20);
+            Assert.AreEqual(0, command.X);
+            Assert.AreEqual(20, command.Y);
         }
 
         [TestMethod]
@@ -91,8 +91,8 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new FieldOriginCommand();
             command.ParseCommand("^FO,10");
-            Assert.AreEqual(command.X, 0);
-            Assert.AreEqual(command.Y, 10);
+            Assert.AreEqual(0, command.X);
+            Assert.AreEqual(10, command.Y);
         }
     }
 }
