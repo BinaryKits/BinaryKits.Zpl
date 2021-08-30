@@ -216,5 +216,28 @@ namespace BinaryKits.Zpl.Protocol.Commands
             //Fallback
             return ErrorCorrectionLevel.HighReliability;
         }
+
+        /// <summary>
+        /// Get the index of the specified character on the specified occurrence
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="occurranceToFind"></param>
+        /// <param name="charToFind"></param>
+        /// <returns></returns>
+        protected int IndexOfNthCharacter(string input, int occurranceToFind, char charToFind)
+        {
+            var index = -1;
+            for (var i = 0; i < occurranceToFind; i++)
+            {
+                index = input.IndexOf(charToFind, index + 1);
+
+                if (index == -1)
+                {
+                    break;
+                }
+            }
+
+            return index;
+        }
     }
 }
