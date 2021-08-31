@@ -39,14 +39,14 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 1 and 32000")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidBarCodeHeight1_Exception()
         {
             new Code39BarCodeCommand(barCodeHeight: 0);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 1 and 32000")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidBarCodeHeight2_Exception()
         {
             new Code39BarCodeCommand(barCodeHeight: 33000);

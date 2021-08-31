@@ -47,14 +47,14 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 3 and 4095")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidCircleDiameter_Exception()
         {
             new GraphicCircleCommand(1);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 1 and 4095")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidBorderThickness_Exception()
         {
             new GraphicCircleCommand(3, 5000);

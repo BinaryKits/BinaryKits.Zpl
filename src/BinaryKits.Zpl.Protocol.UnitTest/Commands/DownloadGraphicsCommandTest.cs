@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
 {
@@ -11,6 +12,50 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             var command = new DownloadGraphicsCommand("R:", "TEST.GRF", 10, 5, "0000FFFFFFFFFFFFFF00");
             var zplCommand = command.ToZpl();
             Assert.AreEqual("~DGR:TEST.GRF,10,5,0000FFFFFFFFFFFFFF00", zplCommand);
+        }
+
+        [TestMethod]
+        public void ToZpl_Default2_Successful()
+        {
+            var command = new DownloadGraphicsCommand("R:", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
+            var zplCommand = command.ToZpl();
+            Assert.AreEqual("~DGR:TEST,10,5,0000FFFFFFFFFFFFFF00", zplCommand);
+        }
+
+        [TestMethod]
+        public void ToZpl_Default3_Successful()
+        {
+            var command = new DownloadGraphicsCommand("R:", "TEST", 0, 0, "0000FFFFFFFFFFFFFF00");
+            var zplCommand = command.ToZpl();
+            Assert.AreEqual("~DGR:TEST,0,0,0000FFFFFFFFFFFFFF00", zplCommand);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Constructor_InvalidDeviceToStoreImage1_Exception()
+        {
+            new DownloadGraphicsCommand("R", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Constructor_InvalidDeviceToStoreImage2_Exception()
+        {
+            new DownloadGraphicsCommand("R2", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Constructor_InvalidDeviceToStoreImage3_Exception()
+        {
+            new DownloadGraphicsCommand("R2", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Constructor_InvalidDeviceToStoreImage4_Exception()
+        {
+            new DownloadGraphicsCommand("Z:", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
         }
 
         [TestMethod]

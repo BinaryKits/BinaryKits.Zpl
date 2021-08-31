@@ -39,14 +39,14 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 10 and 32000")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidCharacterHeight_Exception()
         {
             new ScalableBitmappedFontCommand('A', Orientation.Normal, characterHeight: 0);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 10 and 32000")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidWidth_Exception()
         {
             new ScalableBitmappedFontCommand('A', Orientation.Normal, width: 0);

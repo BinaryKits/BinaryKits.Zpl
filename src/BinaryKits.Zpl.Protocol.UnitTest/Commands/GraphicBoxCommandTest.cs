@@ -39,14 +39,14 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 1 and 32000")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_WidthMinus10Height1_Exception()
         {
             new GraphicBoxCommand(-10, 1);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 1 and 32000")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_Widht1HeightMinus10_Exception()
         {
             new GraphicBoxCommand(1, -10);

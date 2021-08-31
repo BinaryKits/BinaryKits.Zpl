@@ -23,14 +23,14 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 1 and 10")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidModuleWidth1_Exception()
         {
             new BarCodeFieldDefaultCommand(0, 3, 10);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 1 and 10")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidModuleWidth2_Exception()
         {
             new BarCodeFieldDefaultCommand(11, 3, 10);
