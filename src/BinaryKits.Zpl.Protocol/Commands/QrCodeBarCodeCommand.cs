@@ -34,7 +34,9 @@
         public ErrorCorrectionLevel ErrorCorrection { get; private set; } = ErrorCorrectionLevel.HighReliability;
 
         /// <summary>
-        /// Mask value
+        /// Mask value<br/>
+        /// Before QR code is finally generated, the data bits must be XOR-ed with mask pattern.
+        /// This process have a purpose of making QR code more readable by QR scanner.
         /// </summary>
         public int MaskValue { get; private set; } = 7;
 
