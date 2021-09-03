@@ -8,9 +8,9 @@
     public class ImageMoveCommand : CommandBase
     {
         /// <summary>
-        /// Location of stored object
+        /// Storage device
         /// </summary>
-        public string LocationOfStoredObject { get; private set; }
+        public string StorageDevice { get; private set; } = "R:";
 
         /// <summary>
         /// Image name
@@ -26,21 +26,21 @@
         /// <summary>
         /// Image Move
         /// </summary>
-        /// <param name="locationOfStoredObject">Location of stored object</param>
+        /// <param name="storageDevice">Storage device</param>
         /// <param name="imageName">Image name</param>
         public ImageMoveCommand(
-            string locationOfStoredObject,
+            string storageDevice,
             string imageName)
             : this()
         {
-            this.LocationOfStoredObject = locationOfStoredObject;
+            this.StorageDevice = storageDevice;
             this.ImageName = imageName;
         }
 
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.LocationOfStoredObject}{this.ImageName}";
+            return $"{this.CommandPrefix}{this.StorageDevice}{this.ImageName}";
         }
 
         ///<inheritdoc/>
@@ -50,7 +50,7 @@
 
             if (zplData.Length >= 2)
             {
-                this.LocationOfStoredObject = zplData.Substring(0, 2);
+                this.StorageDevice = zplData.Substring(0, 2);
             }
 
             if (zplData.Length > 2)

@@ -79,7 +79,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new DownloadGraphicsCommand();
             command.ParseCommand("~DGR:TEST.GRF,10,5,0000FFFFFFFFFFFFFF00");
-            Assert.AreEqual("R:", command.DeviceToStoreImage);
+            Assert.AreEqual("R:", command.StorageDevice);
             Assert.AreEqual("TEST.GRF", command.ImageName);
             Assert.AreEqual(10, command.TotalNumberOfBytesInGraphic);
             Assert.AreEqual(5, command.NumberOfBytesPerRow);
@@ -91,7 +91,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new DownloadGraphicsCommand();
             command.ParseCommand("~DGR:,10,5,0000FFFFFFFFFFFFFF00");
-            Assert.AreEqual("R:", command.DeviceToStoreImage);
+            Assert.AreEqual("R:", command.StorageDevice);
             Assert.AreEqual("UNKNOWN.GRF", command.ImageName);
             Assert.AreEqual(10, command.TotalNumberOfBytesInGraphic);
             Assert.AreEqual(5, command.NumberOfBytesPerRow);
@@ -103,7 +103,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new DownloadGraphicsCommand();
             command.ParseCommand("~DGR:TEST.GRF");
-            Assert.AreEqual("R:", command.DeviceToStoreImage);
+            Assert.AreEqual("R:", command.StorageDevice);
             Assert.AreEqual("TEST.GRF", command.ImageName);
             Assert.AreEqual(0, command.TotalNumberOfBytesInGraphic);
             Assert.AreEqual(0, command.NumberOfBytesPerRow);

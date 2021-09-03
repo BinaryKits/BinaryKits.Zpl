@@ -11,9 +11,9 @@ namespace BinaryKits.Zpl.Protocol.Commands
     public class DownloadGraphicsCommand : CommandBase
     {
         /// <summary>
-        /// Device to store image
+        /// Storage device
         /// </summary>
-        public string DeviceToStoreImage { get; private set; } = "R:";
+        public string StorageDevice { get; private set; } = "R:";
 
         /// <summary>
         /// Image name
@@ -44,22 +44,22 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// <summary>
         /// Download Graphics
         /// </summary>
-        /// <param name="deviceToStoreImage">Device to store image</param>
+        /// <param name="storageDevice">Storage device</param>
         /// <param name="imageName">Image name</param>
         /// <param name="totalNumberOfBytesInGraphic">Total number of bytes in graphic</param>
         /// <param name="numberOfBytesPerRow">Number of bytes per row</param>
         /// <param name="data">ASCII hexadecimal string defining image</param>
         public DownloadGraphicsCommand(
-            string deviceToStoreImage,
+            string storageDevice,
             string imageName,
             int totalNumberOfBytesInGraphic,
             int numberOfBytesPerRow,
             string data)
             : this()
         {
-            this.ValidateDeviceToStoreImage(deviceToStoreImage);
+            this.ValidateDeviceToStoreImage(storageDevice);
 
-            this.DeviceToStoreImage = deviceToStoreImage;
+            this.StorageDevice = storageDevice;
             this.ImageName = imageName;
             this.TotalNumberOfBytesInGraphic = totalNumberOfBytesInGraphic;
             this.NumberOfBytesPerRow = numberOfBytesPerRow;
@@ -89,7 +89,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.DeviceToStoreImage}{this.ImageName},{this.TotalNumberOfBytesInGraphic},{this.NumberOfBytesPerRow},{this.Data}";
+            return $"{this.CommandPrefix}{this.StorageDevice}{this.ImageName},{this.TotalNumberOfBytesInGraphic},{this.NumberOfBytesPerRow},{this.Data}";
         }
 
         ///<inheritdoc/>
@@ -99,7 +99,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
 
             if (zplDataParts.Length > 0)
             {
-                this.DeviceToStoreImage = zplDataParts[0].Substring(0, 2);
+                this.StorageDevice = zplDataParts[0].Substring(0, 2);
                 var imageName = zplDataParts[0].Substring(2);
 
                 if (!string.IsNullOrEmpty(imageName))

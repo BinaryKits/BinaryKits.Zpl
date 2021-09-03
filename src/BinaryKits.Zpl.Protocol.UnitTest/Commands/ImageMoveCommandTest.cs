@@ -43,7 +43,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new ImageMoveCommand();
             command.ParseCommand("^IMR:TEST.PNG");
-            Assert.AreEqual("R:", command.LocationOfStoredObject);
+            Assert.AreEqual("R:", command.StorageDevice);
             Assert.AreEqual("TEST.PNG", command.ImageName);
         }
 
@@ -52,7 +52,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new ImageMoveCommand();
             command.ParseCommand("^IMR:IMAGE.GRF");
-            Assert.AreEqual("R:", command.LocationOfStoredObject);
+            Assert.AreEqual("R:", command.StorageDevice);
             Assert.AreEqual("IMAGE.GRF", command.ImageName);
         }
 
@@ -61,7 +61,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         {
             var command = new ImageMoveCommand();
             command.ParseCommand("^IMR:");
-            Assert.AreEqual("R:", command.LocationOfStoredObject);
+            Assert.AreEqual("R:", command.StorageDevice);
             Assert.AreEqual("UNKNOWN.GRF", command.ImageName);
         }
     }
