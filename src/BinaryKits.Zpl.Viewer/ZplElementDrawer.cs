@@ -82,40 +82,31 @@ namespace BinaryKits.Zpl.Viewer
 
         private void InvertDraw(SKBitmap skBitmap, SKBitmap skBitmapInvert)
         {
-            byte invertBlue, originalBlue;
+            // Fast local copy
             var originalBytes = new Span<byte>(skBitmap.Bytes);
             var invertBytes = new Span<byte>(skBitmapInvert.Bytes);
 
-            int total = skBitmapInvert.Pixels.Length;
+            int total = skBitmap.Pixels.Length;
             for (int i = 0; i < total; i++)
             {
                 // RGBA8888
-                int alphaByte = i * 4 + 3;
+                int alphaByte = (i << 2) + 3;
                 if (invertBytes[alphaByte] == 0)
                 {
                     continue;
                 }
-                
+
+                // Set color
                 var targetColor = SKColors.White;
-                invertBlue = invertBytes[alphaByte - 1];
-                originalBlue = originalBytes[alphaByte - 1];
-
-                if (invertBlue == originalBlue)
+                if (originalBytes[alphaByte - 1] == 255)
                 {
-                    if (invertBlue == 255)
-                    {
-                        targetColor = SKColors.Black;
-                    }
-                }
-                else
-                {
-                    if (invertBlue == 0)
-                    { 
-                        targetColor = SKColors.Black;
-                    }
+                    targetColor = SKColors.Black;
                 }
 
-                skBitmap.SetPixel(i % skBitmapInvert.Width, i / skBitmapInvert.Width, targetColor);
+                int x, y;
+                y = Math.DivRem(i, skBitmapInvert.Width, out x);
+
+                skBitmap.SetPixel(x, y, targetColor);
             }
         }
     }
