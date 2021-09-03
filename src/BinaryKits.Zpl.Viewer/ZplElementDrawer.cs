@@ -82,39 +82,40 @@ namespace BinaryKits.Zpl.Viewer
 
         private void InvertDraw(SKBitmap skBitmap, SKBitmap skBitmapInvert)
         {
-            for (var row = 0; row < skBitmapInvert.Height; row++)
+            byte invertBlue, originalBlue;
+            var originalBytes = new Span<byte>(skBitmap.Bytes);
+            var invertBytes = new Span<byte>(skBitmapInvert.Bytes);
+
+            int total = skBitmapInvert.Pixels.Length;
+            for (int i = 0; i < total; i++)
             {
-                for (var column = 0; column < skBitmapInvert.Width; column++)
+                // RGBA8888
+                int alphaByte = i * 4 + 3;
+                if (invertBytes[alphaByte] == 0)
                 {
-                    var pixelInvert = skBitmapInvert.GetPixel(column, row);
-                    if (pixelInvert.Alpha == 0)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
+                
+                var targetColor = SKColors.White;
+                invertBlue = invertBytes[alphaByte - 1];
+                originalBlue = originalBytes[alphaByte - 1];
 
-                    var pixel = skBitmap.GetPixel(column, row);
-
-                    //Is black in new graphic and white in the origin
-                    if (pixelInvert.Blue == 0 && pixel.Blue == 255)
+                if (invertBlue == originalBlue)
+                {
+                    if (invertBlue == 255)
                     {
-                        skBitmap.SetPixel(column, row, SKColors.Black);
-                    }
-                    //Is black in new graphic and black in the origin (invert)
-                    else if (pixelInvert.Blue == 0 && pixel.Blue == 0)
-                    {
-                        skBitmap.SetPixel(column, row, SKColors.White);
-                    }
-                    //Is white in new graphic and white in the origin (invert)
-                    else if (pixelInvert.Blue == 255 && pixel.Blue == 255)
-                    {
-                        skBitmap.SetPixel(column, row, SKColors.Black);
-                    }
-                    //Is white in new graphic and black in the origin
-                    else if (pixelInvert.Blue == 255 && pixel.Blue == 0)
-                    {
-                        skBitmap.SetPixel(column, row, SKColors.White);
+                        targetColor = SKColors.Black;
                     }
                 }
+                else
+                {
+                    if (invertBlue == 0)
+                    { 
+                        targetColor = SKColors.Black;
+                    }
+                }
+
+                skBitmap.SetPixel(i % skBitmapInvert.Width, i / skBitmapInvert.Width, targetColor);
             }
         }
     }
