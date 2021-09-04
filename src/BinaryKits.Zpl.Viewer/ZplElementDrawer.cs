@@ -83,10 +83,10 @@ namespace BinaryKits.Zpl.Viewer
         private void InvertDraw(SKBitmap skBitmap, SKBitmap skBitmapInvert)
         {
             // Fast local copy
-            var originalBytes = new Span<byte>(skBitmap.Bytes);
-            var invertBytes = new Span<byte>(skBitmapInvert.Bytes);
+            var originalBytes = skBitmap.GetPixelSpan();
+            var invertBytes = skBitmapInvert.GetPixelSpan();
 
-            int total = skBitmap.Pixels.Length;
+            int total = originalBytes.Length / 4;
             for (int i = 0; i < total; i++)
             {
                 // RGBA8888
