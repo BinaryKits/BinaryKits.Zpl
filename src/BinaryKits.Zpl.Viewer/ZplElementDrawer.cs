@@ -82,39 +82,31 @@ namespace BinaryKits.Zpl.Viewer
 
         private void InvertDraw(SKBitmap skBitmap, SKBitmap skBitmapInvert)
         {
-            for (var row = 0; row < skBitmapInvert.Height; row++)
+            // Fast local copy
+            var originalBytes = skBitmap.GetPixelSpan();
+            var invertBytes = skBitmapInvert.GetPixelSpan();
+
+            int total = originalBytes.Length / 4;
+            for (int i = 0; i < total; i++)
             {
-                for (var column = 0; column < skBitmapInvert.Width; column++)
+                // RGBA8888
+                int alphaByte = (i << 2) + 3;
+                if (invertBytes[alphaByte] == 0)
                 {
-                    var pixelInvert = skBitmapInvert.GetPixel(column, row);
-                    if (pixelInvert.Alpha == 0)
-                    {
-                        continue;
-                    }
-
-                    var pixel = skBitmap.GetPixel(column, row);
-
-                    //Is black in new graphic and white in the origin
-                    if (pixelInvert.Blue == 0 && pixel.Blue == 255)
-                    {
-                        skBitmap.SetPixel(column, row, SKColors.Black);
-                    }
-                    //Is black in new graphic and black in the origin (invert)
-                    else if (pixelInvert.Blue == 0 && pixel.Blue == 0)
-                    {
-                        skBitmap.SetPixel(column, row, SKColors.White);
-                    }
-                    //Is white in new graphic and white in the origin (invert)
-                    else if (pixelInvert.Blue == 255 && pixel.Blue == 255)
-                    {
-                        skBitmap.SetPixel(column, row, SKColors.Black);
-                    }
-                    //Is white in new graphic and black in the origin
-                    else if (pixelInvert.Blue == 255 && pixel.Blue == 0)
-                    {
-                        skBitmap.SetPixel(column, row, SKColors.White);
-                    }
+                    continue;
                 }
+
+                // Set color
+                var targetColor = SKColors.White;
+                if (originalBytes[alphaByte - 1] == 255)
+                {
+                    targetColor = SKColors.Black;
+                }
+
+                int x, y;
+                y = Math.DivRem(i, skBitmapInvert.Width, out x);
+
+                skBitmap.SetPixel(x, y, targetColor);
             }
         }
     }
