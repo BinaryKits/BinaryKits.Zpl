@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <Description>This package provides a rendering logic for ZPL data</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Zebra ZPL ZPL2 ZPLEmulator ZPLVirtualPrinter ZPLViewer ZPLParser</PackageTags>
