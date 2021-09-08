@@ -12,7 +12,7 @@ This module provides the basic building blocks of the ZPL language and the logic
 - **BinaryKits.Zpl.Labelary**<br>
 This module is a client for the Labelary project with which a preview can be generated from ZPL data.
 - **BinaryKits.Zpl.Viewer**<br>
-This module is our own implementation of a viewer. It converts the ZPL data into an image like Labelary but does it locally. [Demo](https://binarykits-zpl-viewer.azurewebsites.net)
+This module is our own implementation of a viewer. It converts the ZPL data into an image like Labelary but does it locally.<br>[Try our viewer](https://binarykits-zpl-viewer.azurewebsites.net)
 
 ## How can I use it?
 
