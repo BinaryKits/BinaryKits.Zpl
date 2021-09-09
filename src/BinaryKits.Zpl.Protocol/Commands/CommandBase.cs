@@ -151,6 +151,28 @@ namespace BinaryKits.Zpl.Protocol.Commands
         }
 
         /// <summary>
+        /// Get Zpl char for text justification
+        /// </summary>
+        /// <param name="textJustification"></param>
+        /// <returns></returns>
+        public string RenderTextJustification(TextJustification textJustification)
+        {
+            switch (textJustification)
+            {
+                case TextJustification.Left:
+                    return "L";
+                case TextJustification.Center:
+                    return "C";
+                case TextJustification.Right:
+                    return "R";
+                case TextJustification.Justified:
+                    return "J";
+            }
+
+            throw new NotImplementedException("Unknown Text Justification");
+        }
+
+        /// <summary>
         /// Get boolean from ZPL Char
         /// </summary>
         /// <param name="value"></param>

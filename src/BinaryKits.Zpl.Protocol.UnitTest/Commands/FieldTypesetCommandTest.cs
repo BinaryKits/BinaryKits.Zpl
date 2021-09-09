@@ -39,14 +39,14 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 0 and 32000")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_XMinus10Y0_Exception()
         {
             new FieldTypesetCommand(-10, 0);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Must be between 0 and 32000")]
+        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_X0YMinus10_Exception()
         {
             new FieldTypesetCommand(0, -10);
