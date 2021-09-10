@@ -39,6 +39,7 @@ namespace BinaryKits.Zpl.Viewer
                 new FieldBlockZplCommandAnalyzer(this._virtualPrinter),
                 new FieldDataZplCommandAnalyzer(this._virtualPrinter),
                 new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),
+                new LabelReversePrintZplCommandAnalyzer(this._virtualPrinter),
                 new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter),
                 new FieldTypesetZplCommandAnalyzer(this._virtualPrinter),
                 new FieldOriginZplCommandAnalzer(this._virtualPrinter),

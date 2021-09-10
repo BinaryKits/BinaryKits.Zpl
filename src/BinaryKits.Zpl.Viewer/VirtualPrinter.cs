@@ -21,7 +21,7 @@ namespace BinaryKits.Zpl.Viewer
         public FontInfo NextFont { get; private set; }
 
         public bool NextElementFieldReverse { get; private set; }
-
+        public bool LabelReverse { get; private set; }
         public BarcodeInfo BarcodeInfo { get; private set; }
 
         public VirtualPrinter()
@@ -77,6 +77,11 @@ namespace BinaryKits.Zpl.Viewer
         public void SetNextElementFieldReverse()
         {
             this.NextElementFieldReverse = true;
+        }
+
+        public void SetLabelReverse(bool reverse)
+        {
+            this.LabelReverse = reverse;
         }
 
         public void ClearNextElementFieldReverse()
