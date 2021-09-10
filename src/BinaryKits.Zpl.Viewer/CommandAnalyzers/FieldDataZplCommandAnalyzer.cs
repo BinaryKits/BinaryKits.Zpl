@@ -59,7 +59,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 font = this.GetNextFontFromVirtualPrinter();
             }
 
-            var reversePrint = this.VirtualPrinter.NextElementFieldReverse;
+            var reversePrint = this.VirtualPrinter.NextElementFieldReverse || this.VirtualPrinter.LabelReverse;
 
             if (this.VirtualPrinter.NextElementFieldBlock != null)
             {
