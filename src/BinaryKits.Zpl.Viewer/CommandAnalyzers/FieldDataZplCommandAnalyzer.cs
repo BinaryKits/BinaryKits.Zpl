@@ -90,6 +90,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var fontName = this.VirtualPrinter.NextFont.FontName;
             var fieldOrientation = this.VirtualPrinter.NextFont.FieldOrientation;
 
+            if (fontWidth == 0) fontWidth = this.VirtualPrinter.FontWidth;
+            if (fontHeight == 0) fontHeight = this.VirtualPrinter.FontHeight;
+
             return new ZplFont(fontWidth, fontHeight, fontName, fieldOrientation);
         }
     }
