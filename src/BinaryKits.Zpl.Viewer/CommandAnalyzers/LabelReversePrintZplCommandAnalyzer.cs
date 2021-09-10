@@ -9,7 +9,11 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(string zplCommand)
         {
-            this.VirtualPrinter.SetLabelReverse(zplCommand[3] == 'Y' || zplCommand[3] == 'y');
+            if (zplCommand.Length > 3)
+            {
+                var reverse = char.ToUpperInvariant(zplCommand[3]) == 'Y';
+                this.VirtualPrinter.SetLabelReverse(reverse);
+            }
             return null;
         }
     }
