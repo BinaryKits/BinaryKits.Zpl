@@ -49,7 +49,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
                 }
 
-                var textLines = fieldBlock.Text.Split("\\&", StringSplitOptions.RemoveEmptyEntries);
+                var textLines = fieldBlock.Text.Split(new[] { "\\&" }, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var textLine in textLines)
                 {
