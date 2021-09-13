@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <Description>This package provides a client for the Labelary API for rendering ZPL data</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
     <Version>1.0.1</Version>
