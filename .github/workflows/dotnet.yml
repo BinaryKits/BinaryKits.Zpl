@@ -51,6 +51,7 @@ jobs:
         dotnet pack --configuration Release --output $GITHUB_WORKSPACE/out src/BinaryKits.Zpl.Label/BinaryKits.Zpl.Label.csproj
         dotnet pack --configuration Release --output $GITHUB_WORKSPACE/out src/BinaryKits.Zpl.Labelary/BinaryKits.Zpl.Labelary.csproj
         dotnet pack --configuration Release --output $GITHUB_WORKSPACE/out src/BinaryKits.Zpl.Viewer/BinaryKits.Zpl.Viewer.csproj
+        dotnet pack --configuration Release --output $GITHUB_WORKSPACE/out src/BinaryKits.Zpl.Protocol/BinaryKits.Zpl.Protocol.csproj
     - name: Push NuGet package
       if: github.event_name != 'pull_request' && github.repository_owner == 'BinaryKits'
       run: |
