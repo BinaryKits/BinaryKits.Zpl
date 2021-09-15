@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.0;net5.0</TargetFrameworks>
-    <Description>This package provides a rendering logic for ZPL data</Description>
+    <Description>This package provides a rendering logic for ZPL data, as an alternative to labelary.com.</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
     <Version>1.0.4</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
