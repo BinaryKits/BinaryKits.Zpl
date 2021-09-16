@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.0;net5.0</TargetFrameworks>
-    <Description>This package allows you to simple describe labels in Zebra Programming Language. It also supports you with image conversion.</Description>
+    <Description>This package allows you to simply and reliably prepare labels complying with the Zebra programming language, using predefined class/typing. It also supports you with image conversion.</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
     <Version>3.0.2</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
