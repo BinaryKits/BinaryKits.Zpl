@@ -2,7 +2,7 @@
 {
     public class RenderResponseDto
     {
-        public string[] UnknownCommands { get; set; }
-        public LabelDto[] Labels { get; set; }
+        public string[] NonSupportedCommands { get; set; }
+        public RenderLabelDto[] Labels { get; set; }
     }
 }
