@@ -11,6 +11,8 @@ The project helps you to describe a label and generates a preview from the ZPL d
 This module provides the basic building blocks of the ZPL language and the logic for converting the images into the correct format.
 - **BinaryKits.Zpl.Labelary**<br>
 This module is a client for the Labelary project with which a preview can be generated from ZPL data.
+- **BinaryKits.Zpl.Protocol**<br>
+This module contains the raw commands of the Zebra protocol.
 - **BinaryKits.Zpl.Viewer**<br>
 This module is our own implementation of a viewer. It converts the ZPL data into an image like Labelary but does it locally.<br>[Try our viewer](https://binarykits-zpl-viewer.azurewebsites.net)
 
@@ -23,6 +25,7 @@ The packages are available via [![NuGet](https://img.shields.io/nuget/v/BinaryKi
 | ``` PM> install-package BinaryKits.Zpl.Label ``` | ``` > dotnet add package BinaryKits.Zpl.Label ``` |
 | ``` PM> install-package BinaryKits.Zpl.Labelary ``` | ``` > dotnet add package BinaryKits.Zpl.Labelary ``` |
 | ``` PM> install-package BinaryKits.Zpl.Viewer ``` | ``` > dotnet add package BinaryKits.Zpl.Viewer ``` |
+| ``` PM> install-package BinaryKits.Zpl.Protocol ``` | ``` > dotnet add package BinaryKits.Zpl.Protocol ``` |
 
 ## Supported Elements
 
