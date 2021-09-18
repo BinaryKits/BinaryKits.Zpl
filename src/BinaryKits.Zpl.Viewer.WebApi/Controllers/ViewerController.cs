@@ -27,11 +27,11 @@ namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
             var analyzer = new ZplAnalyzer(printerStorage);
             var analyzeInfo = analyzer.Analyze(request.ZplData);
 
-            var labels = new List<LabelDto>();
+            var labels = new List<RenderLabelDto>();
             foreach (var labelInfo in analyzeInfo.LabelInfos)
             {
                 var imageData = drawer.Draw(labelInfo.ZplElements, request.LabelWidth, request.LabelHeight, request.PrintDensityDpmm);
-                var label = new LabelDto
+                var label = new RenderLabelDto
                 {
                     ImageBase64 = Convert.ToBase64String(imageData)
                 };
@@ -41,7 +41,7 @@ namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
             var response = new RenderResponseDto
             {
                 Labels = labels.ToArray(),
-                UnknownCommands = analyzeInfo.UnknownCommands
+                NonSupportedCommands = analyzeInfo.UnknownCommands
             };
 
             return this.StatusCode(StatusCodes.Status200OK, response);

@@ -17,8 +17,12 @@
                     </div>
                 </div>
                 <div v-else class="list-group">
-                    <div v-for="templateLabel in templateLabels" :key="templateLabel.name" class="list-group-item list-group-item-action" style="cursor:pointer; overflow:hidden" @click="changeZplData(templateLabel.content)">
-                        {{ templateLabel.name }}
+                    <div v-for="label in labels"
+                         :key="label.name"
+                         :class="[ 'list-group-item', 'list-group-item-action', label.category === 'test' ? 'bg-light' : '' ]"
+                         style="cursor:pointer; overflow:hidden"
+                         @click="changeZplData(label.content)">
+                        {{ label.name }} <span class="badge bg-info text-white">{{ label.format }}</span>
                     </div>
                 </div>
             </div>
@@ -50,10 +54,10 @@
                         <div v-for="(labelInfo, index) in renderResponse.labels" :key="index">
                             <img :src="`data:image/png;base64,${labelInfo.imageBase64}`" class="img-fluid" style="border:1px solid #ccc" />
                         </div>
-                        <div v-if="renderResponse.unknownCommands.length > 0" class="alert alert-warning mt-1" role="alert">
-                            <h4>Unknown commands</h4>
+                        <div v-if="renderResponse.nonSupportedCommands.length > 0" class="alert alert-warning mt-1" role="alert">
+                            <h4>Non-supported commands</h4>
                             <ul>
-                                <li v-for="(unknownCommand, index) in renderResponse.unknownCommands" :key="index">
+                                <li v-for="(unknownCommand, index) in renderResponse.nonSupportedCommands" :key="index">
                                     {{unknownCommand}}
                                 </li>
                             </ul>
@@ -77,7 +81,7 @@
                     loadingTestData: false,
                     loadingPreview: false,
                     zplData: null,
-                    templateLabels: null,
+                    labels: null,
                     renderResponse: null,
                     printDensityDpmm: 8,
                     labelWidth: 102,
@@ -109,7 +113,7 @@
                 }
             },
             async created () {
-                await this.loadTestData()
+                await this.loadLabelData()
                 await this.changeZplData(this.templateLabels[0].content)
             },
             methods: {
@@ -118,11 +122,11 @@
                     this.labelHeight = this.labelFormats[this.selectedLabelFormatIndex].height
                     this.render();
                 },
-                async loadTestData() {
+                async loadLabelData() {
                     try {
                         this.loadingTestData = true
-                        const response = await axios.get('api/v1/testdata')
-                        this.templateLabels = response.data.items
+                        const response = await axios.get('api/v1/label')
+                        this.labels = response.data.items
                     } finally {
                         this.loadingTestData = false
                     }

@@ -13,97 +13,103 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ZplDatas\Barcode128.zpl2">
+    <None Update="Labels\Example\Example1-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\BarcodeOrientation2.zpl2">
+    <None Update="Labels\Example\Example3-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\BarcodeOrientation1.zpl2">
+    <None Update="Labels\Test\Barcode128-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\Barcode39.zpl2">
+    <None Update="Labels\Test\BarcodeOrientation2-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\DownloadGraphicsCompressed.zpl2">
+    <None Update="Labels\Test\BarcodeOrientation1-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\DownloadGraphicsUncompressed.zpl2">
+    <None Update="Labels\Test\Barcode39-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\DownloadObject.zpl2">
+    <None Update="Labels\Test\DownloadGraphicsCompressed-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FieldDataText1.zpl2">
+    <None Update="Labels\Test\DownloadGraphicsUncompressed-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FieldDataText2.zpl2">
+    <None Update="Labels\Test\DownloadObject-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FieldReversePrint1.zpl2">
+    <None Update="Labels\Test\FieldDataText1-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FieldReversePrint2.zpl2">
+    <None Update="Labels\Test\FieldDataText2-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FullLabel2.zpl2">
+    <None Update="Labels\Test\FieldReversePrint1-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FullLabel8.zpl2">
+    <None Update="Labels\Test\FieldReversePrint2-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FullLabel7.zpl2">
+    <None Update="Labels\Example\Example1-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FullLabel6.zpl2">
+    <None Update="Labels\Example\Example4-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FullLabel5.zpl2">
+    <None Update="Labels\Example\Example7-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FullLabel4.zpl2">
+    <None Update="Labels\Example\Example6-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FullLabel3.zpl2">
+    <None Update="Labels\Example\Example5-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\FullLabel1.zpl2">
+    <None Update="Labels\Example\Example8-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\GraphicBox3.zpl2">
+    <None Update="Labels\Example\Example2-102x170.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\GraphicBox2.zpl2">
+    <None Update="Labels\Example\Example9-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\GraphicBox1.zpl2">
+    <None Update="Labels\Test\GraphicBox3-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\GraphicCircle3.zpl2">
+    <None Update="Labels\Test\GraphicBox2-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\GraphicCircle2.zpl2">
+    <None Update="Labels\Test\GraphicBox1-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\GraphicCircle1.zpl2">
+    <None Update="Labels\Test\GraphicCircle3-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\QrCode.zpl2">
+    <None Update="Labels\Test\GraphicCircle2-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\TextPosition2.zpl2">
+    <None Update="Labels\Test\GraphicCircle1-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\TextRotation1.zpl2">
+    <None Update="Labels\Test\QrCode-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\TextPosition1.zpl2">
+    <None Update="Labels\Test\TextPosition2-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\TextRotation3.zpl2">
+    <None Update="Labels\Test\TextRotation1-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ZplDatas\TextRotation2.zpl2">
+    <None Update="Labels\Test\TextPosition1-54x86.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Labels\Test\TextRotation3-102x152.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Labels\Test\TextRotation2-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

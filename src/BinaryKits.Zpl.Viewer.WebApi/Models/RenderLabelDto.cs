@@ -1,6 +1,6 @@
 ﻿namespace BinaryKits.Zpl.Viewer.WebApi.Models
 {
-    public class LabelDto
+    public class RenderLabelDto
     {
         public string ImageBase64 { get; set; }
     }
