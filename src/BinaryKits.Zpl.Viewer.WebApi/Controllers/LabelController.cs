@@ -15,8 +15,8 @@ namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
         {
             var items = new List<LabelItemDto>();
 
-            items.AddRange(this.GetLabelsFromFolder("example"));
-            items.AddRange(this.GetLabelsFromFolder("test"));
+            items.AddRange(this.GetLabelsFromFolder("Example"));
+            items.AddRange(this.GetLabelsFromFolder("Test"));
 
             var response = new LabelResponseDto
             {
@@ -28,7 +28,7 @@ namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
 
         private LabelItemDto[] GetLabelsFromFolder(string folder)
         {
-            var path = Path.Combine("labels", folder);
+            var path = Path.Combine("Labels", folder);
 
             var items = new List<LabelItemDto>();
 
