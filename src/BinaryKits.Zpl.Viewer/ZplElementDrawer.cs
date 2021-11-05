@@ -54,7 +54,12 @@ namespace BinaryKits.Zpl.Viewer
             foreach (var element in elements)
             {
                 var drawer = this._elementDrawers.SingleOrDefault(o => o.CanDraw(element));
-                if (drawer != null)
+                if (drawer == null)
+                {
+                    continue;
+                }
+
+                try
                 {
                     if (drawer.IsReverseDraw(element))
                     {
@@ -73,6 +78,10 @@ namespace BinaryKits.Zpl.Viewer
                     drawer.Draw(element);
 
                     continue;
+                }
+                catch (Exception exception)
+                {
+                    //log error
                 }
             }
 
