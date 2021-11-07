@@ -21,6 +21,18 @@ namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
         [HttpPost]
         public ActionResult<RenderResponseDto> Render(RenderRequestDto request)
         {
+            try
+            {
+                return RenderZpl(request);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        private ActionResult<RenderResponseDto> RenderZpl(RenderRequestDto request)
+        {
             IPrinterStorage printerStorage = new PrinterStorage();
             var drawer = new ZplElementDrawer(printerStorage);
 

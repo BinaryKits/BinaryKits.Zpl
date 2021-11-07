@@ -63,6 +63,10 @@
                             </ul>
                         </div>
                     </div>
+                    <div v-if="renderError" class="alert alert-warning mt-1" role="alert">
+                        <h4>Label rendering error</h4>
+                        <pre>{{ renderError }}</pre>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,6 +87,7 @@
                     zplData: null,
                     labels: null,
                     renderResponse: null,
+                    renderError: null,
                     printDensityDpmm: 8,
                     labelWidth: 102,
                     labelHeight: 152,
@@ -136,6 +141,7 @@
                     await this.render()
                 },
                 async render() {
+                    this.renderError = null
                     try {
                         this.loadingPreview = true
                         const payload = {
@@ -146,7 +152,12 @@
                         }
                         const response = await axios.post('api/v1/viewer', payload)
                         this.renderResponse = response.data
-                    } finally {
+                    } catch (err) {
+                        this.renderError = err.response.data
+                        this.renderResponse = null
+                        console.error(this.renderError)
+                    }
+                    finally {
                         this.loadingPreview = false
                     }
                 },
