@@ -154,6 +154,7 @@
                         this.renderResponse = response.data
                     } catch (err) {
                         this.renderError = err.response.data
+                        this.renderResponse = null
                         console.error(this.renderError)
                     }
                     finally {
