@@ -79,9 +79,16 @@ namespace BinaryKits.Zpl.Viewer
 
                     continue;
                 }
-                catch (Exception exception)
+                catch (Exception ex)
                 {
-                    //log error
+                    if (element is ZplBarcode)
+                    {
+                        throw new Exception($"Error on zpl element \"{(element as ZplBarcode).Content}\": {ex.Message}");
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
                 }
             }
 
