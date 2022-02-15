@@ -39,10 +39,6 @@ This library supports following elements:
 | Text | TextBlock, TextField, FieldBlock, SingleLineFieldBlock |
 | Drawing | GraphicBox, DiagonalLine, Circle, Ellipse |
 
-## :information_source: Update from ZPLUtility
-> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x of ZPLUtility to `BinaryKits.Zpl.Label.Elements` in version 3.
-> The documentation for the old ZPLUtility version 1 is available [here](https://github.com/BinaryKits/BinaryKits.Zpl/tree/v1)
-
 ## Is there a way to generate a preview?
 
 There are several ways to view the result from the ZPL data.
