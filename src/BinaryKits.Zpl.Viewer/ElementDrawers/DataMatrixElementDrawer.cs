@@ -32,7 +32,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var result = writer.encode(dataMatrix.Content, BarcodeFormat.DATA_MATRIX, 0, 0);
 
                 int size = dataMatrix.Height;
-                var image = new SKBitmap(result.Width + size - 1, result.Height + size - 1);
+                using var image = new SKBitmap(result.Width + size - 1, result.Height + size - 1);
 
                 for (int row = 0; row < result.Height; row++)
                 {
@@ -43,9 +43,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
                 }
 
-                image = image.Resize(new SKSizeI(image.Width * size, image.Height * size), SKFilterQuality.None);
+                using var resizedImage = image.Resize(new SKSizeI(image.Width * size, image.Height * size), SKFilterQuality.None);
 
-                var png = image.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, dataMatrix.Height, dataMatrix.Height, dataMatrix.FieldOrigin != null, x, y, dataMatrix.FieldOrientation);
             }
         }

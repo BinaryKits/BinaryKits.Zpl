@@ -8,7 +8,7 @@ namespace BinaryKits.Zpl.Label.Elements
     public class ZplDataMatrix : ZplPositionedElementBase
     {
         /// <summary>
-        /// Code 39 Barcode
+        /// Data Matrix Bar Code
         /// </summary>
         /// <param name="content"></param>
         /// <param name="positionX"></param>
