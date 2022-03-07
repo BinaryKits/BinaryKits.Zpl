@@ -26,7 +26,9 @@ namespace BinaryKits.Zpl.Label.Elements
            )
             : base(positionX, positionY, bottomToTop)
         {
+            Content = content;
             FieldOrientation = fieldOrientation;
+            Height = height;
         }
 
         public int Height { get; protected set; }

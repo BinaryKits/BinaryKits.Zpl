@@ -12,10 +12,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         {
             var zplDataParts = this.SplitCommand(zplCommand);
 
-            var mod43CheckDigit = false;
+            //var mod43CheckDigit = false;
             var height = this.VirtualPrinter.BarcodeInfo.Height;
-            var printInterpretationLine = true;
-            var printInterpretationLineAboveCode = false;
+            //var printInterpretationLine = true;
+            //var printInterpretationLineAboveCode = false;
 
             var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
             //if (zplDataParts.Length > 1)
