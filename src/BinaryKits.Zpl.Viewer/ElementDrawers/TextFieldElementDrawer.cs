@@ -1,4 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -55,8 +56,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var textBounds = new SKRect();
                 var textBoundBaseline = new SKRect();
-                skPaint.MeasureText(new string('A', textField.Text.Length), ref textBoundBaseline);
-                skPaint.MeasureText(textField.Text, ref textBounds);
+                string DisplayText = textField.Text.ReplaceSpecialChars();
+                skPaint.MeasureText(new string('A', DisplayText.Length), ref textBoundBaseline);
+                skPaint.MeasureText(DisplayText, ref textBounds);
 
                 if (textField.FieldTypeset != null)
                 {
@@ -117,7 +119,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         this._skCanvas.SetMatrix(matrix);
                     }
 
-                    this._skCanvas.DrawText(textField.Text, x, y, new SKFont(typeface, fontSize, scaleX, 0), skPaint);
+                    this._skCanvas.DrawText(DisplayText, x, y, new SKFont(typeface, fontSize, scaleX, 0), skPaint);
                 }
             }
         }
