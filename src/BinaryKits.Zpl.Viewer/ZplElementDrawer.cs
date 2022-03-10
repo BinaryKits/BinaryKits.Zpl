@@ -8,11 +8,17 @@ namespace BinaryKits.Zpl.Viewer
 {
     public class ZplElementDrawer
     {
+        private readonly DrawerOptions _drawerOptions;
         private readonly IPrinterStorage _printerStorage;
         private readonly IElementDrawer[] _elementDrawers;
 
-        public ZplElementDrawer(IPrinterStorage printerStorage)
+        public ZplElementDrawer(IPrinterStorage printerStorage, DrawerOptions drawerOptions = null)
         {
+            if (drawerOptions == null)
+            {
+                drawerOptions = new DrawerOptions();
+            }
+            this._drawerOptions = drawerOptions;
             this._printerStorage = printerStorage;
             this._elementDrawers = new IElementDrawer[]
             {
@@ -38,6 +44,7 @@ namespace BinaryKits.Zpl.Viewer
         /// <param name="labelWidth">Label width in millimeter</param>
         /// <param name="labelHeight">Label height in millimeter</param>
         /// <param name="printDensityDpmm">Dots per millimeter</param>
+        /// <param name="context"></param>
         /// <returns></returns>
         public byte[] Draw(
             ZplElementBase[] elements,
@@ -69,14 +76,14 @@ namespace BinaryKits.Zpl.Viewer
 
                         drawer.Prepare(this._printerStorage, skCanvasInvert);
 
-                        drawer.Draw(element);
+                        drawer.Draw(element, _drawerOptions);
 
                         this.InvertDraw(skBitmap, skBitmapInvert);
                         continue;
                     }
 
                     drawer.Prepare(this._printerStorage, skCanvas);
-                    drawer.Draw(element);
+                    drawer.Draw(element, _drawerOptions);
 
                     continue;
                 }
