@@ -18,7 +18,7 @@ namespace BinaryKits.Zpl.Viewer.UnitTest
             string zplString = @"
 ^XA
 ^FO20, 20
-^A1N,40, 30 ^FDÎ÷¹Ï^FS
+^A1N,40, 30 ^FDè¥¿ç“œ^FS
 ^FO20, 50
 ^A0N,40, 30 ^FDABCDEFG^FS
 ^XZ";
