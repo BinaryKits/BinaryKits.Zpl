@@ -28,5 +28,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
         ///<inheritdoc/>
         public abstract void Draw(ZplElementBase element);
+
+        ///<inheritdoc/>
+        public virtual void Draw(ZplElementBase element, DrawerOptions options = null)
+        {
+            Draw(element);  // Most element just ignore the context
+        }
     }
 }
