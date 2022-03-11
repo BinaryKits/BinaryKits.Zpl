@@ -245,6 +245,47 @@ foreach (var labelInfo in analyzeInfo.LabelInfos)
 }
 ```
 
+### Font mapping
+
+ZPL font download commands are not supported. You can provide a font mapping logic to the viewer if:
+
+- You are hosting or using the `BinaryKits.Zpl.Viewer`
+- The font is properly installed on the system
+
+```cs
+using SkiaSharp;
+
+string zplString = @"^XA^FO20, 20^A1N,40, 30 ^FD西瓜^FS^FO20, 50^A0N,40, 30 ^FDABCDEFG^FS^XZ";
+
+var drawOptions = new DrawerOptions()
+{
+    FontLoader = fontName =>
+    {
+        if (fontName == "0")
+        {
+            return SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        }
+        else if (fontName == "1")
+        {
+            return SKTypeface.FromFamilyName("SIMSUN");
+        }
+
+        return SKTypeface.Default;
+    }
+};
+
+IPrinterStorage printerStorage = new PrinterStorage();
+var drawer = new ZplElementDrawer(printerStorage, drawOptions);
+var analyzer = new ZplAnalyzer(printerStorage);
+var analyzeInfo = analyzer.Analyze(zplString);
+
+foreach (var labelInfo in analyzeInfo.LabelInfos)
+{
+    var imageData = drawer.Draw(labelInfo.ZplElements, 300, 300, 8);
+    File.WriteAllBytes("test.png", imageData);
+}
+```
+
 ## Printer manufacturers that support zpl
 
 | Manufacturer | Simulator |
