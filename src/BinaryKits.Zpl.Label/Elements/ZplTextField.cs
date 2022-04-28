@@ -5,7 +5,7 @@ using System.Text;
 namespace BinaryKits.Zpl.Label.Elements
 {
     //^FD – Field Data
-    public class ZplTextField : ZplPositionedElementBase
+    public class ZplTextField : ZplPositionedElementBase, IFormatElement
     {
         //^A
         public ZplFont Font { get; protected set; }
@@ -70,21 +70,27 @@ namespace BinaryKits.Zpl.Label.Elements
             {
                 sb.Append("^FR");
             }
-            
-            sb.Append("^FD");
-            foreach (var c in Text)
-            {
-                sb.Append(SanitizeCharacter(c));
-            }
 
-            sb.Append("^FS");
+            if (Text != null)
+            {
+                sb.Append("^FD");
+                foreach (var c in Text)
+                {
+                    sb.Append(SanitizeCharacter(c, NewLineConversion, UseHexadecimalIndicator));
+                }
+
+                sb.Append("^FS");
+            }
 
             return sb.ToString();
         }
 
-        private string SanitizeCharacter(char input)
+        internal static string SanitizeCharacter(
+            char input,
+            NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace,
+            bool useHexadecimalIndicator = true)
         {
-            if (UseHexadecimalIndicator)
+            if (useHexadecimalIndicator)
             {
                 //Convert to hex
                 switch (input)
@@ -112,7 +118,7 @@ namespace BinaryKits.Zpl.Label.Elements
 
             if (input == '\n')
             {
-                switch (NewLineConversion)
+                switch (newLineConversion)
                 {
                     case NewLineConversionMethod.ToEmpty:
                         return "";
@@ -124,6 +130,12 @@ namespace BinaryKits.Zpl.Label.Elements
             }
 
             return input.ToString();
+        }
+
+        /// <inheritdoc />
+        public void SetTemplateContent(string content)
+        {
+            Text = content;
         }
     }
 }

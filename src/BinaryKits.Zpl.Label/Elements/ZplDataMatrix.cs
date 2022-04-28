@@ -5,7 +5,7 @@ namespace BinaryKits.Zpl.Label.Elements
     /// <summary>
     /// Data Matrix Bar Code, ^BXo,h,s,c,r,f,g,a
     /// </summary>
-    public class ZplDataMatrix : ZplPositionedElementBase
+    public class ZplDataMatrix : ZplPositionedElementBase, IFormatElement
     {
         /// <summary>
         /// Data Matrix Bar Code
@@ -54,6 +54,12 @@ namespace BinaryKits.Zpl.Label.Elements
             result.Add($"^FD{Content}^FS");
 
             return result;
+        }
+
+        /// <inheritdoc />
+        public void SetTemplateContent(string content)
+        {
+            Content = content;
         }
     }
 }
