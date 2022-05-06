@@ -71,14 +71,14 @@ namespace BinaryKits.Zpl.Viewer
             {
                 var currentCommand = zplCommands[i];
 
-                if (this._labelStartCommand.Equals(currentCommand, StringComparison.OrdinalIgnoreCase))
+                if (this._labelStartCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     elements.Clear();
                     _virtualPrinter.ClearNextDownloadFormatName();
                     continue;
                 }
 
-                if (this._labelEndCommand.Equals(currentCommand, StringComparison.OrdinalIgnoreCase))
+                if (this._labelEndCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     labelInfos.Add(new LabelInfo
                     {
