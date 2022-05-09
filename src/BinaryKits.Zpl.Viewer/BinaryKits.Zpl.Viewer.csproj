@@ -4,7 +4,7 @@
     <TargetFrameworks>net472;netstandard2.0;net5.0</TargetFrameworks>
     <Description>This package provides a rendering logic for ZPL data, as an alternative to labelary.com.</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
-    <Version>1.0.5</Version>
+    <Version>1.0.9</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Zebra ZPL ZPL2 ZPLEmulator ZPLVirtualPrinter ZPLViewer ZPLParser</PackageTags>
@@ -26,6 +26,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
     <PackageReference Include="SkiaSharp" Version="2.80.3" />
+    <PackageReference Include="ZXing.Net" Version="0.16.8" />
   </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">

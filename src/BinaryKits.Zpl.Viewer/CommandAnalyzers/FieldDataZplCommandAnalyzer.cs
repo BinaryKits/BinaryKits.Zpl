@@ -10,6 +10,16 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         public override ZplElementBase Analyze(string zplCommand)
         {
+            var text = zplCommand.Substring(this.PrinterCommandPrefix.Length);
+
+            // If field data follows a field number, a ZplRecallFieldNumber element has to be returned
+            int? fieldNumber = this.VirtualPrinter.NextFieldNumber;
+            if (fieldNumber != null)
+            {
+                this.VirtualPrinter.ClearNextFieldNumber(); // Prevents consumption by field separator analyzer
+                return new ZplRecallFieldNumber(fieldNumber.Value, text);
+            }
+
             var x = 0;
             var y = 0;
             var bottomToTop = false;
@@ -21,8 +31,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
                 bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
             }
-
-            var text = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             if (this.VirtualPrinter.NextElementFieldData != null)
             {
@@ -36,6 +44,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 if (this.VirtualPrinter.NextElementFieldData is Code128BarcodeFieldData code128)
                 {
                     return new ZplBarcode128(text, x, y, code128.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code128.FieldOrientation, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode, bottomToTop);
+                }
+                if (this.VirtualPrinter.NextElementFieldData is DataMatrixFieldData dataMatrixFieldData)
+                {
+                    return new ZplDataMatrix(text, x, y, dataMatrixFieldData.Height, dataMatrixFieldData.FieldOrientation, bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is Interleaved2of5BarcodeFieldData interleaved2of5)
                 {
