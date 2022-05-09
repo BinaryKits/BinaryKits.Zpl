@@ -38,8 +38,8 @@ namespace BinaryKits.Zpl.Viewer
         }
 
         private static List<ZplElementBase> GetMergedElements(
-            LabelInfo rawLabelInfo, Dictionary<string, LabelInfo> templateFormats
-        )
+            LabelInfo rawLabelInfo,
+            Dictionary<string, LabelInfo> templateFormats)
         {
             var elements = new List<ZplElementBase>();
 
@@ -60,7 +60,8 @@ namespace BinaryKits.Zpl.Viewer
         }
 
         private static LabelInfo GetFormatLabelInfo(
-            ZplRecallFormat recallFormat, Dictionary<string, LabelInfo> templateFormats)
+            ZplRecallFormat recallFormat,
+            Dictionary<string, LabelInfo> templateFormats)
         {
             string formatName = Path.GetFileNameWithoutExtension(recallFormat.FormatName);
             if (!templateFormats.ContainsKey(formatName))
