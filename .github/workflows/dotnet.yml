@@ -56,7 +56,7 @@ jobs:
       if: github.event_name != 'pull_request' && github.repository_owner == 'BinaryKits'
       run: |
         cd $GITHUB_WORKSPACE/out
-        dotnet nuget push *.nupkg --source https://www.nuget.org/api/v2/package --api-key ${{secrets.NUGET_TOKEN}} --skip-duplicate --no-symbols true
+        dotnet nuget push *.nupkg --source https://www.nuget.org/api/v2/package --api-key ${{secrets.NUGET_TOKEN}} --skip-duplicate --no-symbols
 
 
 
