@@ -15,9 +15,9 @@ namespace BinaryKits.Zpl.Viewer
         /// <inheritdoc />
         public List<LabelInfo> MergeFormats(List<LabelInfo> rawLabelInfos)
         {
-            List<LabelInfo> mergedLabelInfos = new List<LabelInfo>();
+            var mergedLabelInfos = new List<LabelInfo>();
             // Format label infos indexed by download format name
-            Dictionary<string, LabelInfo> templateFormats = new Dictionary<string, LabelInfo>();
+            var templateFormats = new Dictionary<string, LabelInfo>();
 
             foreach (var rawLabelInfo in rawLabelInfos)
             {

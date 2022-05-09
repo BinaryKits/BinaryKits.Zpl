@@ -20,7 +20,7 @@ namespace BinaryKits.Zpl.Viewer
         public ZplAnalyzer(IPrinterStorage printerStorage, IFormatMerger formatMerger = null)
         {
             this._printerStorage = printerStorage;
-            _formatMerger = formatMerger ?? new FormatMerger();
+            this._formatMerger = formatMerger ?? new FormatMerger();
             this._virtualPrinter = new VirtualPrinter();
         }
 
