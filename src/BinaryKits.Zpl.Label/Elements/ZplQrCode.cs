@@ -2,7 +2,7 @@
 
 namespace BinaryKits.Zpl.Label.Elements
 {
-    public class ZplQrCode : ZplPositionedElementBase
+    public class ZplQrCode : ZplPositionedElementBase, IFormatElement
     {
         public string Content { get; protected set; }
 
@@ -52,6 +52,12 @@ namespace BinaryKits.Zpl.Label.Elements
             result.Add($"^FD{RenderErrorCorrectionLevel(ErrorCorrectionLevel)}A,{Content}^FS");
 
             return result;
+        }
+
+        /// <inheritdoc />
+        public void SetTemplateContent(string content)
+        {
+            Content = content;
         }
     }
 }

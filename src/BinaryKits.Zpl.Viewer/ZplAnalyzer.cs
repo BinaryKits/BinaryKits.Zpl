@@ -5,19 +5,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Application.UseCase.ZplToPdf;
 
 namespace BinaryKits.Zpl.Viewer
 {
-    public class ZplAnalyzer
+    public class ZplAnalyzer : IZplAnalyzer
     {
         private readonly VirtualPrinter _virtualPrinter;
         private readonly IPrinterStorage _printerStorage;
+        private readonly IFormatMerger _formatMerger;
         private readonly string _labelStartCommand = "^XA";
         private readonly string _labelEndCommand = "^XZ";
 
-        public ZplAnalyzer(IPrinterStorage printerStorage)
+        public ZplAnalyzer(IPrinterStorage printerStorage, IFormatMerger formatMerger = null)
         {
             this._printerStorage = printerStorage;
+            this._formatMerger = formatMerger ?? new FormatMerger();
             this._virtualPrinter = new VirtualPrinter();
         }
 
@@ -27,22 +30,25 @@ namespace BinaryKits.Zpl.Viewer
             var unknownCommands = new List<string>();
             var errors = new List<string>();
 
+            var fieldDataAnalyzer = new FieldDataZplCommandAnalyzer(this._virtualPrinter);
             var elementAnalyzers = new List<IZplCommandAnalyzer>
             {
+                fieldDataAnalyzer,
                 new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
                 new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
                 new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new CommentZplCommandAnalyzer(this._virtualPrinter),
                 new DataMatrixZplCommandAnalyzer(this._virtualPrinter),
+                new DownloadFormatCommandAnalyzer(this._virtualPrinter),
                 new DownloadGraphicsZplCommandAnalyzer(this._virtualPrinter, this._printerStorage),
                 new DownloadObjectsZplCommandAnaylzer(this._virtualPrinter, this._printerStorage),
                 new FieldBlockZplCommandAnalyzer(this._virtualPrinter),
-                new FieldDataZplCommandAnalyzer(this._virtualPrinter),
                 new FieldHexadecimalZplCommandAnalyzer(this._virtualPrinter),
+                new FieldNumberCommandAnalyzer(this._virtualPrinter),
                 new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),
                 new LabelReversePrintZplCommandAnalyzer(this._virtualPrinter),
-                new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter),
+                new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter, fieldDataAnalyzer),
                 new FieldTypesetZplCommandAnalyzer(this._virtualPrinter),
                 new FieldOriginZplCommandAnalzer(this._virtualPrinter),
                 new GraphicBoxZplCommandAnalyzer(this._virtualPrinter),
@@ -52,8 +58,10 @@ namespace BinaryKits.Zpl.Viewer
                 new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
                 new LabelHomeZplCommandAnalyzer(this._virtualPrinter),
                 new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new RecallFormatCommandAnalyzer(this._virtualPrinter),
                 new RecallGraphicZplCommandAnalyzer(this._virtualPrinter),
-                new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter)
+                new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter),
+
             };
 
             var labelInfos = new List<LabelInfo>();
@@ -63,16 +71,18 @@ namespace BinaryKits.Zpl.Viewer
             {
                 var currentCommand = zplCommands[i];
 
-                if (this._labelStartCommand.Equals(currentCommand, StringComparison.OrdinalIgnoreCase))
+                if (this._labelStartCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     elements.Clear();
+                    _virtualPrinter.ClearNextDownloadFormatName();
                     continue;
                 }
 
-                if (this._labelEndCommand.Equals(currentCommand, StringComparison.OrdinalIgnoreCase))
+                if (this._labelEndCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     labelInfos.Add(new LabelInfo
                     {
+                        DownloadFormatName = _virtualPrinter.NextDownloadFormatName,
                         ZplElements = elements.ToArray()
                     });
                     continue;
@@ -95,6 +105,8 @@ namespace BinaryKits.Zpl.Viewer
                     errors.Add($"Cannot analyze command {currentCommand} {exception}");
                 }
             }
+
+            labelInfos = _formatMerger.MergeFormats(labelInfos);
 
             var analyzeInfo = new AnalyzeInfo
             {
