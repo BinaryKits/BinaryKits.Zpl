@@ -24,6 +24,9 @@ namespace BinaryKits.Zpl.Viewer
         public bool LabelReverse { get; private set; }
         public BarcodeInfo BarcodeInfo { get; private set; }
 
+        public string NextDownloadFormatName { get; private set; }
+        public int? NextFieldNumber { get; private set; }
+
         public VirtualPrinter()
         {
             this.BarcodeInfo = new BarcodeInfo();
@@ -132,6 +135,26 @@ namespace BinaryKits.Zpl.Viewer
         public void ClearComments()
         {
             this.Comments.Clear();
+        }
+
+        public void SetNextDownloadFormatName(string name)
+        {
+            this.NextDownloadFormatName = name;
+        }
+
+        public void ClearNextDownloadFormatName()
+        {
+            this.NextDownloadFormatName = null;
+        }
+
+        public void SetNextFieldNumber(int number)
+        {
+            this.NextFieldNumber = number;
+        }
+
+        public void ClearNextFieldNumber()
+        {
+            this.NextFieldNumber = null;
         }
     }
 }

@@ -39,10 +39,6 @@ This library supports following elements:
 | Text | TextBlock, TextField, FieldBlock, SingleLineFieldBlock |
 | Drawing | GraphicBox, DiagonalLine, Circle, Ellipse |
 
-## :information_source: Update from ZPLUtility
-> :warning: Note we are changing the class name prefix, from `ZPLElement` in version 1.x of ZPLUtility to `BinaryKits.Zpl.Label.Elements` in version 3.
-> The documentation for the old ZPLUtility version 1 is available [here](https://github.com/BinaryKits/BinaryKits.Zpl/tree/v1)
-
 ## Is there a way to generate a preview?
 
 There are several ways to view the result from the ZPL data.
@@ -246,6 +242,47 @@ foreach (var labelInfo in analyzeInfo.LabelInfos)
 {
     var imageData = drawer.Draw(labelInfo.ZplElements);
     File.WriteAllBytes("label.png", imageData);
+}
+```
+
+### Font mapping
+
+ZPL font download commands are not supported. You can provide a font mapping logic to the viewer if:
+
+- You are hosting or using the `BinaryKits.Zpl.Viewer`
+- The font is properly installed on the system
+
+```cs
+using SkiaSharp;
+
+string zplString = @"^XA^FO20, 20^A1N,40, 30 ^FD西瓜^FS^FO20, 50^A0N,40, 30 ^FDABCDEFG^FS^XZ";
+
+var drawOptions = new DrawerOptions()
+{
+    FontLoader = fontName =>
+    {
+        if (fontName == "0")
+        {
+            return SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+        }
+        else if (fontName == "1")
+        {
+            return SKTypeface.FromFamilyName("SIMSUN");
+        }
+
+        return SKTypeface.Default;
+    }
+};
+
+IPrinterStorage printerStorage = new PrinterStorage();
+var drawer = new ZplElementDrawer(printerStorage, drawOptions);
+var analyzer = new ZplAnalyzer(printerStorage);
+var analyzeInfo = analyzer.Analyze(zplString);
+
+foreach (var labelInfo in analyzeInfo.LabelInfos)
+{
+    var imageData = drawer.Draw(labelInfo.ZplElements, 300, 300, 8);
+    File.WriteAllBytes("test.png", imageData);
 }
 ```
 

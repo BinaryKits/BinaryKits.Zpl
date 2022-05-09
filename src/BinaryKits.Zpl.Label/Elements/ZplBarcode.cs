@@ -1,6 +1,6 @@
 ﻿namespace BinaryKits.Zpl.Label.Elements
 {
-    public abstract class ZplBarcode : ZplPositionedElementBase
+    public abstract class ZplBarcode : ZplPositionedElementBase, IFormatElement
     {
         public ZplBarcode(
             string content,
@@ -12,7 +12,7 @@
             FieldOrientation fieldOrientation,
             bool printInterpretationLine,
             bool printInterpretationLineAboveCode,
-            bool bottomToTop = false) 
+            bool bottomToTop = false)
             : base(positionX, positionY, bottomToTop)
         {
             Content = content;
@@ -64,6 +64,12 @@
             }
 
             return true;
+        }
+
+        /// <inheritdoc />
+        public void SetTemplateContent(string content)
+        {
+            Content = content;
         }
     }
 }

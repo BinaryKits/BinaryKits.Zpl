@@ -1,5 +1,7 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
+using System;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -24,6 +26,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         ///<inheritdoc/>
         public override void Draw(ZplElementBase element)
         {
+            Draw(element, new DrawerOptions());
+        }
+
+        ///<inheritdoc/>
+        public override void Draw(ZplElementBase element, DrawerOptions options)
+        {
             if (element is ZplTextField textField)
             {
                 float x = textField.PositionX;
@@ -40,12 +48,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 fontSize *= 0.95f;
 
-                var typeface = SKTypeface.Default;
-                if (font.FontName == "0")
-                {
-                    //typeface = SKTypeface.FromFile(@"swiss-721-black-bt.ttf");
-                    typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
-                }
+                var typeface = options.FontLoader(font.FontName);
 
                 using var skPaint = new SKPaint();
                 skPaint.Color = SKColors.Black;
@@ -55,8 +58,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var textBounds = new SKRect();
                 var textBoundBaseline = new SKRect();
-                skPaint.MeasureText(new string('A', textField.Text.Length), ref textBoundBaseline);
-                skPaint.MeasureText(textField.Text, ref textBounds);
+                string DisplayText = textField.Text.ReplaceSpecialChars();
+                skPaint.MeasureText(new string('A', DisplayText.Length), ref textBoundBaseline);
+                skPaint.MeasureText(DisplayText, ref textBounds);
 
                 if (textField.FieldTypeset != null)
                 {
@@ -117,7 +121,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         this._skCanvas.SetMatrix(matrix);
                     }
 
-                    this._skCanvas.DrawText(textField.Text, x, y, new SKFont(typeface, fontSize, scaleX, 0), skPaint);
+                    this._skCanvas.DrawText(DisplayText, x, y, new SKFont(typeface, fontSize, scaleX, 0), skPaint);
                 }
             }
         }

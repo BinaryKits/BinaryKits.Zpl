@@ -33,5 +33,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// </summary>
         /// <param name="element"></param>
         void Draw(ZplElementBase element);
+
+        /// <summary>
+        /// Draw the element with extra context information
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="options"></param>
+        void Draw(ZplElementBase element, DrawerOptions options);
     }
 }
