@@ -85,7 +85,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 var textJustification = this.VirtualPrinter.NextElementFieldBlock.TextJustification;
                 var lineSpace = this.VirtualPrinter.NextElementFieldBlock.AddOrDeleteSpaceBetweenLines;
 
-                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification);
+                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, reversePrint : reversePrint);
             }
 
             return new ZplTextField(text, x, y, font, reversePrint: reversePrint, bottomToTop: bottomToTop);
