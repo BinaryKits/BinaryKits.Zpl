@@ -35,7 +35,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var font = fieldBlock.Font;
 
                 float fontSize = font.FontHeight > 0 ? font.FontHeight : font.FontWidth;
-                var scaleX = 1.0f;
+                var scaleX = 0.95f;
                 if (font.FontWidth != 0 && font.FontWidth != fontSize)
                 {
                     scaleX = (float)font.FontWidth / fontSize;
