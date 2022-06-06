@@ -3,6 +3,7 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 using System;
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -50,7 +51,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     typeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
                 }
 
-                var textLines = fieldBlock.Text.ReplaceSpecialChars().Split(new[] { "\\&" }, StringSplitOptions.RemoveEmptyEntries);
+                var textLines = getLines(fieldBlock, typeface, fontSize, scaleX);
 
                 foreach (var textLine in textLines)
                 {
@@ -64,6 +65,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     var textBoundBaseline = new SKRect();
                     skPaint.MeasureText(new string('A', fieldBlock.Text.Length), ref textBoundBaseline);
                     skPaint.MeasureText(textLine, ref textBounds);
+                    textBoundBaseline.Bottom = 1;
 
                     switch (fieldBlock.TextJustification)
                     {
@@ -144,6 +146,36 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
                 }
             }
+        }
+        
+        private List<String> getLines(ZplFieldBlock fieldBlock , SKTypeface? typeface, float fontSize, float scaleX){
+            var tempPaint = new SKPaint();
+            tempPaint.Typeface = typeface;
+            tempPaint.TextSize = fontSize;
+            tempPaint.TextScaleX = scaleX;
+            
+            var textLines = new List<String>();
+            var totalLines = (int)Math.Ceiling(tempPaint.MeasureText(fieldBlock.Text) / fieldBlock.Width);
+
+            if(totalLines > 1 ){
+                var totalWidth = (int)tempPaint.MeasureText(fieldBlock.Text);
+                var charactersPerLine = tempPaint.BreakText(fieldBlock.Text, 600);
+                var totalChars = 0;
+
+                for( int i = 0; i < totalLines; i++){
+                    if( i == totalLines - 1){
+                        textLines.Add(fieldBlock.Text.Substring(i * (int)charactersPerLine, fieldBlock.Text.Length - totalChars).ReplaceSpecialChars());
+                    } else { 
+                        textLines.Add(fieldBlock.Text.Substring(i * (int)charactersPerLine, (int)charactersPerLine).ReplaceSpecialChars());
+                    }
+                    totalChars = totalChars + (int)charactersPerLine;
+                }
+
+            } else { 
+                textLines.Add(fieldBlock.Text.ReplaceSpecialChars());
+            }
+
+            return textLines;
         }
     }
 }
