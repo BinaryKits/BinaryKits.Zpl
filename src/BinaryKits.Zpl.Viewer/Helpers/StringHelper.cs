@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer.Helpers
 {
