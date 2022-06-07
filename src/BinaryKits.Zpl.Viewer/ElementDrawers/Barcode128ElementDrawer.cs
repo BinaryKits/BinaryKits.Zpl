@@ -33,7 +33,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 };
 
                 Image? image;
-                if( content.Length < 12 ){
+                if( barcode.Content.Length < 12 ){
                     image = barcodeElement.Encode(TYPE.CODE128B, barcode.Content);
                 } else {
                     image = barcodeElement.Encode(TYPE.CODE128, barcode.Content);
