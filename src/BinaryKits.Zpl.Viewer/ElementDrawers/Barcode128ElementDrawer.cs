@@ -32,7 +32,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     Height = barcode.Height
                 };
 
-                using var image = barcodeElement.Encode(TYPE.CODE128B, barcode.Content);
+                Image? image;
+                if( content.Length < 12 ){
+                    image = barcodeElement.Encode(TYPE.CODE128B, barcode.Content);
+                } else {
+                    image = barcodeElement.Encode(TYPE.CODE128, barcode.Content);
+                }
+                
                 this.DrawBarcode(this.GetImageData(image), barcode.Height, image.Width, barcode.FieldOrigin != null, x, y, barcode.FieldOrientation);
             }
         }
