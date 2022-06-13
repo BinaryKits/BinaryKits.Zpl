@@ -17,6 +17,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplBarcode128 barcode)
             {
+                var barcodeType = TYPE.CODE128B;
                 float x = barcode.PositionX;
                 float y = barcode.PositionY;
 
@@ -33,12 +34,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 };
 
                 Image? image;
-                if( barcode.Content.Length < 12 ){
-                    image = barcodeElement.Encode(TYPE.CODE128B, barcode.Content);
-                } else {
-                    image = barcodeElement.Encode(TYPE.CODE128, barcode.Content);
+         
+                if( barcode.Content.Length >= 12 ){
+                    barcodeType = TYPE.CODE128;
                 }
                 
+                image = barcodeElement.Encode(barcodeType, barcode.Content);
                 this.DrawBarcode(this.GetImageData(image), barcode.Height, image.Width, barcode.FieldOrigin != null, x, y, barcode.FieldOrientation);
             }
         }
