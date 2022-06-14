@@ -59,6 +59,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     skPaint.Typeface = typeface;
                     skPaint.TextSize = fontSize;
                     skPaint.TextScaleX = scaleX;
+                    //Reset the X point for the next row
+                    x = fieldBlock.PositionX;
 
                     var textBounds = new SKRect();
                     var textBoundBaseline = new SKRect();
