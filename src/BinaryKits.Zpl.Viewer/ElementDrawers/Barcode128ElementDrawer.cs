@@ -37,7 +37,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var labelTypeface = options.FontLoader("1");
                 var labelFont = new SKFont(labelTypeface, labelFontSize);
                 labelFont.GetFontMetrics(out var labelFontMetrics);
-                int labelHeight = (int)Math.Ceiling((labelFontMetrics.Bottom - labelFontMetrics.Top) + labelFontMetrics.Descent);
+                int labelHeight = barcode.PrintInterpretationLine ? (int)Math.Ceiling((labelFontMetrics.Bottom - labelFontMetrics.Top) + labelFontMetrics.Descent) : 0;
 
                 var barcodeElement = new Barcode {
                     BarWidth = barcode.ModuleWidth,
