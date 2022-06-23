@@ -1,5 +1,8 @@
-﻿using BarcodeLib;
+using BarcodeLib;
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
+using SkiaSharp;
+using System;
 using System.Drawing;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -13,7 +16,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override void Draw(ZplElementBase element) {
+            Draw(element, new DrawerOptions());
+        }
+
+        ///<inheritdoc/>
+        public override void Draw(ZplElementBase element, DrawerOptions options)
         {
             if (element is ZplBarcode128 barcode)
             {
@@ -25,15 +33,23 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y -= barcode.Height;
                 }
 
-                var barcodeElement = new Barcode
-                {
+                float labelFontSize = barcode.ModuleWidth * 7.25f;
+                var labelTypeface = options.FontLoader("1");
+                var labelFont = new SKFont(labelTypeface, labelFontSize);
+                labelFont.GetFontMetrics(out var labelFontMetrics);
+                int labelHeight = (int)Math.Ceiling((labelFontMetrics.Bottom - labelFontMetrics.Top) + labelFontMetrics.Descent);
+
+                var barcodeElement = new Barcode {
                     BarWidth = barcode.ModuleWidth,
                     BackColor = Color.Transparent,
-                    Height = barcode.Height
+                    Height = barcode.Height + labelHeight,
+                    IncludeLabel = barcode.PrintInterpretationLine,
+                    LabelPosition = barcode.PrintInterpretationLineAboveCode ? LabelPositions.TOPCENTER : LabelPositions.BOTTOMCENTER,
+                    LabelFont = labelFont.ToSystemDrawingFont()
                 };
 
                 using var image = barcodeElement.Encode(TYPE.CODE128B, barcode.Content);
-                this.DrawBarcode(this.GetImageData(image), barcode.Height, image.Width, barcode.FieldOrigin != null, x, y, barcode.FieldOrientation);
+                this.DrawBarcode(this.GetImageData(image), barcode.Height + labelHeight, image.Width, barcode.FieldOrigin != null, x, y, barcode.FieldOrientation);
             }
         }
     }
