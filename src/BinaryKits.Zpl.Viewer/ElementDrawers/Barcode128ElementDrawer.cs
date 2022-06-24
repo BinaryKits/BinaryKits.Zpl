@@ -2,7 +2,6 @@ using BarcodeLib;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
-using System;
 using System.Drawing;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -35,9 +34,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 float labelFontSize = barcode.ModuleWidth * 7.25f;
                 var labelTypeface = options.FontLoader("1");
-                var labelFont = new SKFont(labelTypeface, labelFontSize);
-                labelFont.GetFontMetrics(out var labelFontMetrics);
-                int labelHeight = barcode.PrintInterpretationLine ? (int)Math.Ceiling((labelFontMetrics.Bottom - labelFontMetrics.Top) + labelFontMetrics.Descent) : 0;
+                var labelFont = new SKFont(labelTypeface, labelFontSize).ToSystemDrawingFont();
+                int labelHeight = barcode.PrintInterpretationLine ? labelFont.Height : 0;
 
                 var barcodeElement = new Barcode {
                     BarWidth = barcode.ModuleWidth,
@@ -45,7 +43,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     Height = barcode.Height + labelHeight,
                     IncludeLabel = barcode.PrintInterpretationLine,
                     LabelPosition = barcode.PrintInterpretationLineAboveCode ? LabelPositions.TOPCENTER : LabelPositions.BOTTOMCENTER,
-                    LabelFont = labelFont.ToSystemDrawingFont()
+                    LabelFont = labelFont
                 };
 
                 using var image = barcodeElement.Encode(TYPE.CODE128B, barcode.Content);
