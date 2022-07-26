@@ -1,4 +1,4 @@
-﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
@@ -44,14 +44,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             return FieldOrientation.Normal;
         }
 
-        protected bool ConvertBoolean(string yesOrNo)
+        protected bool ConvertBoolean(string yesOrNo, string defaultValue = "N")
         {
-            if (yesOrNo == "Y")
-            {
-                return true;
-            }
-
-            return false;
+            return (!string.IsNullOrEmpty(yesOrNo) ? yesOrNo : defaultValue) == "Y";
         }
 
         protected int IndexOfNthCharacter(string input, int occurranceToFind, char charToFind)
