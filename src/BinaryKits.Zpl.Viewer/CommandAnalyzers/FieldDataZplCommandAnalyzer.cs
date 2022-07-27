@@ -1,4 +1,4 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
@@ -43,7 +43,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 }
                 if (this.VirtualPrinter.NextElementFieldData is Code128BarcodeFieldData code128)
                 {
-                    return new ZplBarcode128(text, x, y, code128.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code128.FieldOrientation, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode, bottomToTop);
+                    return new ZplBarcode128(text, x, y, code128.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code128.FieldOrientation, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode, bottomToTop, code128.Mode);
                 }
 
                 if (this.VirtualPrinter.NextElementFieldData is CodeEAN13BarcodeFieldData codeEAN13)
