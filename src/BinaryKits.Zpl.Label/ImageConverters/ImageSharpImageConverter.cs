@@ -1,4 +1,4 @@
-﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Collections;
 using System.IO;
@@ -18,7 +18,7 @@ namespace BinaryKits.Zpl.Label.ImageConverters
         {
             var zplBuilder = new StringBuilder();
 
-            using (Image<Rgba32> image = Image.Load(imageData))
+            using (Image<Rgba32> image = (Image<Rgba32>)Image.Load(imageData))
             {
                 var bytesPerRow = image.Width % 8 > 0
                     ? image.Width / 8 + 1
@@ -31,11 +31,9 @@ namespace BinaryKits.Zpl.Label.ImageConverters
 
                 for (var y = 0; y < image.Height; y++)
                 {
-                    var row = image.GetPixelRowSpan(y);
-
                     for (var x = 0; x < image.Width; x++)
                     {
-                        var pixel = row[x];
+                        var pixel = image[x, y];
 
                         var isBlackPixel = ((pixel.R + pixel.G + pixel.B) / 3) < 128;
                         if (isBlackPixel)
@@ -94,14 +92,13 @@ namespace BinaryKits.Zpl.Label.ImageConverters
             {
                 for (var y = 0; y < image.Height; y++)
                 {
-                    var row = image.GetPixelRowSpan(y);
                     var bits = new BitArray(imageData.Skip(bytesPerRow * y).Take(bytesPerRow).ToArray());
 
                     for (var x = 0 ; x < image.Width; x++)
                     {
                         if (bits[x])
                         {
-                            row[x].A = 255;
+                            image[x, y] = new Rgba32(0, 0, 0, 255);
                         }
                     }
                 }
