@@ -2,6 +2,7 @@ using BarcodeLib;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
@@ -23,6 +24,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         };
 
         private static readonly Regex startCodeRegex = new Regex(@"^(>[9:;])(.+)$", RegexOptions.Compiled);
+        private static readonly Regex invalidInvocationRegex = new Regex(@"(?<!^)>[9:;]", RegexOptions.Compiled);
+
+        // As defined in BarcodeLib.Symbologies.Code128
+        private static readonly string FNC1 = Convert.ToChar(200).ToString();
 
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
@@ -42,24 +47,48 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             if (element is ZplBarcode128 barcode)
             {
                 var barcodeType = TYPE.CODE128B;
-                string content = barcode.Content;
-                if(string.IsNullOrEmpty(barcode.Mode) || barcode.Mode == "N")
+                // remove any start sequences not at the start of the content (invalid invocation)
+                string content = invalidInvocationRegex.Replace(barcode.Content, "");
+                string interpretation = content;
+                if (string.IsNullOrEmpty(barcode.Mode) || barcode.Mode == "N")
                 {
                     Match startCodeMatch = startCodeRegex.Match(content);
-                    if(startCodeMatch.Success)
+                    if (startCodeMatch.Success)
                     {
                         barcodeType = startCodeMap[startCodeMatch.Groups[1].Value];
                         content = startCodeMatch.Groups[2].Value;
+                        interpretation = content;
                     }
-                    // TODO: support escapes within a barcode, not only start sequences
+                    // support hand-rolled GS1
+                    content = content.Replace(">8", FNC1);
+                    interpretation = interpretation.Replace(">8", "");
+                    // TODO: support remaining escapes within a barcode
                 }
-                else if(barcode.Mode == "A")
+                else if (barcode.Mode == "A")
                 {
                     barcodeType = TYPE.CODE128; // dynamic
                 }
-                else
+                else if (barcode.Mode == "D")
                 {
-                    // TODO: support for mode D/U
+                    barcodeType = TYPE.CODE128C;
+                    content = content.Replace(">8", FNC1);
+                    interpretation = interpretation.Replace(">8", "");
+                    if (!content.StartsWith(FNC1))
+                    {
+                        content = FNC1 + content;
+                    }
+                }
+                else if (barcode.Mode == "U")
+                {
+                    barcodeType = TYPE.CODE128C;
+                    content = content.Substring(0, 19).PadLeft(19, '0');
+                    int checksum = 0;
+                    for (int i = 0; i < 19; i++)
+                    {
+                        checksum += (content[i] - 48) * (i % 2 * 2 + 7);
+                    }
+                    interpretation = string.Format("{0}{1}", interpretation, checksum % 10);
+                    content = string.Format("{0}{1}{2}", FNC1, content, checksum % 10);
                 }
 
                 float x = barcode.PositionX;
@@ -82,10 +111,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     Height = barcode.Height + labelHeight,
                     IncludeLabel = barcode.PrintInterpretationLine,
                     LabelPosition = barcode.PrintInterpretationLineAboveCode ? LabelPositions.TOPCENTER : LabelPositions.BOTTOMCENTER,
-                    LabelFont = labelFont
+                    LabelFont = labelFont,
+                    AlternateLabel = interpretation
                 };
 
-                if(barcode.PrintInterpretationLineAboveCode)
+                if (barcode.PrintInterpretationLineAboveCode)
                 {
                     y -= labelHeight;
                 }
