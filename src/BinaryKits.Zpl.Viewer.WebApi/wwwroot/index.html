@@ -29,7 +29,7 @@
             <div class="col-4">
                 <textarea class="form-control" v-model="zplData" rows="20" cols="100"></textarea>
                 <div class="mt-1 mb-1">
-                    Labelformat: 
+                    Labelformat:
                     <select v-model="selectedLabelFormatIndex" @change="labelFormatChange">
                         <option v-for="(labelFormat, index) in labelFormats" :key="index" :value="index">{{ labelFormat.width }} mm x {{ labelFormat.height }} mm</option>
                     </select>
@@ -37,6 +37,7 @@
                     <input type="text" v-model.number="labelWidth" style="width: 50px" /> mm ({{labelWidthInch}} inches)
                     <input type="text" v-model.number="labelHeight" style="width: 50px" /> mm ({{labelHeightInch}} inches)
                     <input type="text" v-model.number="printDensityDpmm" style="width: 40px" /> dpmm ({{dpi}} dpi)<br />
+                    <input type="checkbox" v-model="showLabelaryOverlay" /> Labelary Overlay<br />
                 </div>
                 <button type="button" class="btn btn-primary" @click="render">Render</button>
                 <hr />
@@ -103,7 +104,8 @@
                             width: 54,
                             height: 86
                         }
-                    ]
+                    ],
+                    showLabelaryOverlay: false
                 }
             },
             computed: {
@@ -148,7 +150,8 @@
                             zplData: this.zplData,
                             printDensityDpmm: this.printDensityDpmm,
                             labelWidth: this.labelWidth,
-                            labelHeight: this.labelHeight
+                            labelHeight: this.labelHeight,
+                            showLabelaryOverlay: this.showLabelaryOverlay
                         }
                         const response = await axios.post('api/v1/viewer', payload)
                         this.renderResponse = response.data

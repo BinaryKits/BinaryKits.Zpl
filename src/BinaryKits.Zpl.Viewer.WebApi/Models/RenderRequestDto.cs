@@ -18,5 +18,10 @@
         /// Dots per Millimeter
         /// </summary>
         public int PrintDensityDpmm { get; set; } = 8;
+
+        /// <summary>
+        /// Red Labelary overlay
+        /// </summary>
+        public bool ShowLabelaryOverlay { get; set; } = false;
     }
 }
