@@ -14,7 +14,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
         /// <summary>
         /// Start sequence lookups.
-        /// <see cref="https://supportcommunity.zebra.com/s/article/Creating-GS1-Barcodes-with-Zebra-Printers-for-Data-Matrix-and-Code-128-using-ZPL"/>
+        /// <see href="https://supportcommunity.zebra.com/s/article/Creating-GS1-Barcodes-with-Zebra-Printers-for-Data-Matrix-and-Code-128-using-ZPL"/>
         /// </summary>
         private static readonly Dictionary<string, TYPE> startCodeMap = new Dictionary<string, TYPE>()
         {
@@ -100,7 +100,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 float labelFontSize = barcode.ModuleWidth * 7.25f;
-                var labelTypeFace = options.FontLoader("1");
+                var labelTypeFace = options.FontLoader("A");
                 var labelFont = new SKFont(labelTypeFace, labelFontSize).ToSystemDrawingFont();
                 int labelHeight = barcode.PrintInterpretationLine ? labelFont.Height : 0;
 
