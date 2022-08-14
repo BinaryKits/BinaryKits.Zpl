@@ -84,8 +84,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 var maxLineCount = this.VirtualPrinter.NextElementFieldBlock.MaximumNumberOfLinesInTextBlock;
                 var textJustification = this.VirtualPrinter.NextElementFieldBlock.TextJustification;
                 var lineSpace = this.VirtualPrinter.NextElementFieldBlock.AddOrDeleteSpaceBetweenLines;
+                var hangingIndent = this.VirtualPrinter.NextElementFieldBlock.HangingIndentOfTheSecondAndRemainingLines;
 
-                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, reversePrint : reversePrint);
+                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, hangingIndent, reversePrint : reversePrint, bottomToTop: bottomToTop);
             }
 
             return new ZplTextField(text, x, y, font, reversePrint: reversePrint, bottomToTop: bottomToTop);

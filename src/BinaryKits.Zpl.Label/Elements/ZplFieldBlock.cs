@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
@@ -29,8 +29,9 @@ namespace BinaryKits.Zpl.Label.Elements
             int hangingIndent = 0,
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToZplNewLine,
             bool useHexadecimalIndicator = true,
-            bool reversePrint = false)
-            : base(text, positionX, positionY, font, newLineConversion, useHexadecimalIndicator, reversePrint)
+            bool reversePrint = false,
+            bool bottomToTop = false)
+            : base(text, positionX, positionY, font, newLineConversion, useHexadecimalIndicator, reversePrint, bottomToTop)
         {
             TextJustification = textJustification;
             Width = width;

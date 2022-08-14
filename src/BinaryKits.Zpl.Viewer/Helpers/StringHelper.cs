@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BinaryKits.Zpl.Viewer.Helpers
 {
@@ -13,31 +12,14 @@ namespace BinaryKits.Zpl.Viewer.Helpers
         public static char ReplaceChar { get; set; } = '_';
 
         /// <summary>
-        /// Search for the Hexadecimal indicator and replaces it with the HEX char
+        /// Replaces hex escapes within a text.
         /// </summary>
-        /// <param name="text">String to search in</param>
-        /// <returns>Output string</returns>
-        public static string ReplaceSpecialChars(this string text)
+        /// <param name="text">Topic variable</param>
+        /// <returns>Text with hex escapes replaced with their char equivalents.</returns>
+        public static string ReplaceHexEscapes(this string text)
         {
-            if (!text.Contains(ReplaceChar))
-                return text;
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < text.Length; i++)
-            {
-                if (text[i] == ReplaceChar)
-                {
-                    string temp = text.Substring(i + 1, 2);
-                    sb.Append((char)Int16.Parse(temp, NumberStyles.AllowHexSpecifier));
-                    i = i + 2;
-                }
-                else
-                {
-                    sb.Append(text[i]);
-                }
-
-            }
-            return sb.ToString();
+            Regex hexEscapeRegex = new Regex(Regex.Escape(ReplaceChar.ToString()) + @"([0-9A-Fa-f]{2})");
+            return hexEscapeRegex.Replace(text, match => Convert.ToChar(int.Parse(match.Groups[1].Value, NumberStyles.HexNumber)).ToString());
         }
     }
 }
