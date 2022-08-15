@@ -1,4 +1,4 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
@@ -15,16 +15,18 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
             var height = this.VirtualPrinter.BarcodeInfo.Height;
             var printInterpretationLine = true;
-            var printInterpretationLineAboveCode = false;           
-           
+            var printInterpretationLineAboveCode = false;
 
             if (zplDataParts.Length > 1)
             {
-                _ = int.TryParse(zplDataParts[1], out height);
+                if (!string.IsNullOrEmpty(zplDataParts[1]))
+                {
+                    _ = int.TryParse(zplDataParts[1], out height);
+                }
             }
             if (zplDataParts.Length > 2)
             {
-                printInterpretationLine = this.ConvertBoolean(zplDataParts[2]);
+                printInterpretationLine = this.ConvertBoolean(zplDataParts[2], "Y");
             }
             if (zplDataParts.Length > 3)
             {
@@ -38,8 +40,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 FieldOrientation = fieldOrientation,
                 Height = height,
                 PrintInterpretationLine = printInterpretationLine,
-                PrintInterpretationLineAboveCode = printInterpretationLineAboveCode              
-               
+                PrintInterpretationLineAboveCode = printInterpretationLineAboveCode
             });
 
             return null;
