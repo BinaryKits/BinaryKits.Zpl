@@ -81,7 +81,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 else if (barcode.Mode == "U")
                 {
                     barcodeType = TYPE.CODE128C;
-                    content = content.Substring(0, 19).PadLeft(19, '0');
+                    content = content.PadLeft(19, '0').Substring(0, 19);
                     int checksum = 0;
                     for (int i = 0; i < 19; i++)
                     {
@@ -94,15 +94,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = barcode.PositionX;
                 float y = barcode.PositionY;
 
-                if (barcode.FieldTypeset != null)
-                {
-                    y -= barcode.Height;
-                }
-
-                float labelFontSize = barcode.ModuleWidth * 7.25f;
+                float labelFontSize = Math.Min(barcode.ModuleWidth * 7.2f, 72f);
                 var labelTypeFace = options.FontLoader("A");
                 var labelFont = new SKFont(labelTypeFace, labelFontSize).ToSystemDrawingFont();
                 int labelHeight = barcode.PrintInterpretationLine ? labelFont.Height : 0;
+                int labelHeightOffset = barcode.PrintInterpretationLineAboveCode ? labelHeight : 0;
 
                 var barcodeElement = new Barcode
                 {
@@ -115,13 +111,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     AlternateLabel = interpretation
                 };
 
-                if (barcode.PrintInterpretationLineAboveCode)
-                {
-                    y -= labelHeight;
-                }
-
-                Image image = barcodeElement.Encode(barcodeType, content);
-                this.DrawBarcode(this.GetImageData(image), barcode.Height + labelHeight, image.Width, barcode.FieldOrigin != null, x, y, barcode.FieldOrientation);
+                using var image = barcodeElement.Encode(barcodeType, content);
+                this.DrawBarcode(this.GetImageData(image), barcode.Height, image.Width, barcode.FieldOrigin != null, x, y, labelHeightOffset, barcode.FieldOrientation);
             }
         }
     }
