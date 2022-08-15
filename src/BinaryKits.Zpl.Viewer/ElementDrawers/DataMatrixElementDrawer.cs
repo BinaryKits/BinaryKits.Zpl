@@ -23,11 +23,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = dataMatrix.PositionX;
                 float y = dataMatrix.PositionY;
 
-                if (dataMatrix.FieldTypeset != null)
-                {
-                    y -= dataMatrix.Height;
-                }
-
                 var writer = new DataMatrixWriter();
                 var hints = new Dictionary<EncodeHintType, object> {
                     { EncodeHintType.DATA_MATRIX_SHAPE, SymbolShapeHint.FORCE_SQUARE }
@@ -35,7 +30,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var result = writer.encode(dataMatrix.Content, BarcodeFormat.DATA_MATRIX, 0, 0, hints);
 
                 int size = dataMatrix.Height;
-                using var image = new SKBitmap(result.Width + size - 1, result.Height + size - 1);
+                using var image = new SKBitmap(result.Width, result.Height);
 
                 for (int row = 0; row < result.Height; row++)
                 {
@@ -49,7 +44,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 using var resizedImage = image.Resize(new SKSizeI(image.Width * size, image.Height * size), SKFilterQuality.None);
 
                 var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                this.DrawBarcode(png, dataMatrix.Height, dataMatrix.Height, dataMatrix.FieldOrigin != null, x, y, dataMatrix.FieldOrientation);
+                this.DrawBarcode(png, resizedImage.Height, resizedImage.Width, dataMatrix.FieldOrigin != null, x, y, 0, dataMatrix.FieldOrientation);
             }
         }
     }
