@@ -1,4 +1,4 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
@@ -12,11 +12,22 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         {
             var zplDataParts = this.SplitCommand(zplCommand);
 
+            var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            var height = this.VirtualPrinter.BarcodeInfo.Height;
+
+            if (zplDataParts.Length > 1)
+            {
+                if (!string.IsNullOrEmpty(zplDataParts[1]))
+                {
+                    _ = int.TryParse(zplDataParts[1], out height);
+                }
+            }
+
             //The field data are processing in the FieldDataZplCommandAnalyzer
             this.VirtualPrinter.SetNextElementFieldData(new DataMatrixFieldData
             {
-                FieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]),
-                Height = this.VirtualPrinter.BarcodeInfo.Height,
+                FieldOrientation = fieldOrientation,
+                Height = height
             });
 
             return null;

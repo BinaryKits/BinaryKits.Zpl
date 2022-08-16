@@ -48,7 +48,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
                 if (this.VirtualPrinter.NextElementFieldData is CodeEAN13BarcodeFieldData codeEAN13)
                 {
-                    return new ZplBarcodeEan13(text, x, y, codeEAN13.Height, moduleWidth, wideBarToNarrowBarWidthRatio, codeEAN13.FieldOrientation, codeEAN13.PrintInterpretationLine, codeEAN13.PrintInterpretationLineAboveCode);
+                    return new ZplBarcodeEan13(text, x, y, codeEAN13.Height, moduleWidth, wideBarToNarrowBarWidthRatio, codeEAN13.FieldOrientation, codeEAN13.PrintInterpretationLine, codeEAN13.PrintInterpretationLineAboveCode, bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is DataMatrixFieldData dataMatrixFieldData)
                 {
