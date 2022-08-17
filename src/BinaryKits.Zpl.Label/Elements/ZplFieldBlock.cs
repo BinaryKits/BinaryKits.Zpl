@@ -69,7 +69,7 @@ namespace BinaryKits.Zpl.Label.Elements
             // ^ XZ
             var result = new List<string>();
             result.AddRange(Font.Render(context));
-            result.AddRange(FieldOrigin.Render(context));
+            result.AddRange(RenderPosition(context));
             result.Add($"^FB{context.Scale(Width)},{MaxLineCount},{context.Scale(LineSpace)},{RenderTextJustification()},{context.Scale(HangingIndent)}");
             result.Add(RenderFieldDataSection());
 
