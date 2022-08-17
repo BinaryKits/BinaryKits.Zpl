@@ -1,4 +1,4 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.ElementDrawers;
 using SkiaSharp;
 using System;
@@ -45,7 +45,6 @@ namespace BinaryKits.Zpl.Viewer
         /// <param name="labelWidth">Label width in millimeter</param>
         /// <param name="labelHeight">Label height in millimeter</param>
         /// <param name="printDensityDpmm">Dots per millimeter</param>
-        /// <param name="context"></param>
         /// <returns></returns>
         public byte[] Draw(
             ZplElementBase[] elements,

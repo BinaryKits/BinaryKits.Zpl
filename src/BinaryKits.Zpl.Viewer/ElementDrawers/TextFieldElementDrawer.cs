@@ -40,13 +40,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var font = textField.Font;
 
                 float fontSize = font.FontHeight > 0 ? font.FontHeight : font.FontWidth;
-                var scaleX = 0.95f;
+                var scaleX = 1.00f;
                 if (font.FontWidth != 0 && font.FontWidth != fontSize)
                 {
                     scaleX *= (float)font.FontWidth / fontSize;
                 }
-
-                fontSize *= 0.95f;
 
                 var typeface = options.FontLoader(font.FontName);
 
