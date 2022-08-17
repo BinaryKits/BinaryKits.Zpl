@@ -1,4 +1,4 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -25,8 +25,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var x = recallGraphic.PositionX;
                 var y = recallGraphic.PositionY;
+                var bitmap = SKBitmap.Decode(imageData);
+                if (recallGraphic.FieldTypeset != null)
+                {
+                    y -= bitmap.Height;
+                }
 
-                this._skCanvas.DrawBitmap(SKBitmap.Decode(imageData), x, y);
+                this._skCanvas.DrawBitmap(bitmap, x, y);
             }
         }
     }
