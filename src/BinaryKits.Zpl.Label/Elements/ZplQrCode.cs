@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
@@ -47,7 +47,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^ BQN,2,10
             //^ FDMM,AAC - 42 ^ FS
             var result = new List<string>();
-            result.AddRange(FieldOrigin.Render(context));
+            result.AddRange(RenderPosition(context));
             result.Add($"^BQN,{Model},{context.Scale(MagnificationFactor)},{RenderErrorCorrectionLevel(ErrorCorrectionLevel)},{MaskValue}");
             result.Add($"^FD{RenderErrorCorrectionLevel(ErrorCorrectionLevel)}A,{Content}^FS");
 

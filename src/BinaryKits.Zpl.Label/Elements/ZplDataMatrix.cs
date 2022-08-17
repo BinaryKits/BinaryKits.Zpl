@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
@@ -49,7 +49,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^BXN,10,200
             //^FDZEBRA TECHNOLOGIES CORPORATION ^ FS
             var result = new List<string>();
-            result.AddRange(FieldOrigin.Render(context));
+            result.AddRange(RenderPosition(context));
             result.Add($"^BX{RenderFieldOrientation()},{context.Scale(Height)}");
             result.Add($"^FD{Content}^FS");
 

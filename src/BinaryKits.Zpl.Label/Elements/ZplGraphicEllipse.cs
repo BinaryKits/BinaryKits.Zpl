@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
@@ -20,7 +20,7 @@ namespace BinaryKits.Zpl.Label.Elements
         {
             //^ GE300,100,10,B ^ FS
             var result = new List<string>();
-            result.AddRange(FieldOrigin.Render(context));
+            result.AddRange(RenderPosition(context));
             result.Add($"^GE{context.Scale(Width)},{context.Scale(Height)},{context.Scale(BorderThickness)},{RenderLineColor(LineColor)}^FS");
 
             return result;
