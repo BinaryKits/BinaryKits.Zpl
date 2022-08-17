@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
@@ -20,8 +20,9 @@ namespace BinaryKits.Zpl.Label.Elements
             char storageDevice,
             string imageName,
             int magnificationFactorX = 1,
-            int magnificationFactorY = 1)
-            : base(positionX, positionY)
+            int magnificationFactorY = 1,
+            bool bottomToTop = false)
+            : base(positionX, positionY, bottomToTop)
         {
             if (imageName.Length > 8)
             {
