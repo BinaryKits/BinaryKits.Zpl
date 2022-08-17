@@ -1,9 +1,12 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.Elements;
+using System.Text.RegularExpressions;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class RecallGraphicZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
+        private static readonly Regex commandRegex = new Regex(@"^\^XG(\w:)?(.*?\..+?)(?:,(\d*))?(?:,(\d*))?$", RegexOptions.Compiled);
+
         public RecallGraphicZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^XG", virtualPrinter)
         { }
 
@@ -11,30 +14,28 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         {
             var x = 0;
             var y = 0;
+            var bottomToTop = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
                 x = this.VirtualPrinter.NextElementPosition.X;
                 y = this.VirtualPrinter.NextElementPosition.Y;
+                bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
             }
 
-            var storageDevice = zplCommand[this.PrinterCommandPrefix.Length];
+            var commandMatch = commandRegex.Match(zplCommand);
 
-            var zplDataParts = this.SplitCommand(zplCommand, 2);
-
-            var imageName = zplDataParts[0];
-            var magnificationFactorX = 1;
-            var magnificationFactorY = 1;
-            if (zplDataParts.Length > 1)
+            if (commandMatch.Success)
             {
-                _ = int.TryParse(zplDataParts[1], out magnificationFactorX);
-            }
-            if (zplDataParts.Length > 2)
-            {
-                _ = int.TryParse(zplDataParts[2], out magnificationFactorY);
+                var storageDevice = commandMatch.Groups[1].Success ? commandMatch.Groups[1].Value[0] : 'R';
+                var imageName = commandMatch.Groups[2].Value;
+                var magnificationFactorX = commandMatch.Groups[3].Success ? int.Parse(commandMatch.Groups[3].Value) : 1;
+                var magnificationFactorY = commandMatch.Groups[4].Success ? int.Parse(commandMatch.Groups[4].Value) : 1;
+
+                return new ZplRecallGraphic(x, y, storageDevice, imageName, magnificationFactorX, magnificationFactorY, bottomToTop);
             }
 
-            return new ZplRecallGraphic(x, y, storageDevice, imageName, magnificationFactorX, magnificationFactorY);
+            return null;
         }
     }
 }
