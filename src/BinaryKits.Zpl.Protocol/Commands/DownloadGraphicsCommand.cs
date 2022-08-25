@@ -10,6 +10,9 @@ namespace BinaryKits.Zpl.Protocol.Commands
     /// </summary>
     public class DownloadGraphicsCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "~DG";
+
         /// <summary>
         /// Storage device
         /// </summary>
@@ -38,7 +41,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// <summary>
         /// Download Graphics
         /// </summary>
-        public DownloadGraphicsCommand() : base("~DG")
+        public DownloadGraphicsCommand()
         { }
 
         /// <summary>
@@ -89,22 +92,31 @@ namespace BinaryKits.Zpl.Protocol.Commands
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.StorageDevice}{this.ImageName},{this.TotalNumberOfBytesInGraphic},{this.NumberOfBytesPerRow},{this.Data}";
+            return $"{CommandPrefix}{this.StorageDevice}{this.ImageName},{this.TotalNumberOfBytesInGraphic},{this.NumberOfBytesPerRow},{this.Data}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new DownloadGraphicsCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(new char[] { ',' }, 4);
 
             if (zplDataParts.Length > 0)
             {
-                this.StorageDevice = zplDataParts[0].Substring(0, 2);
-                var imageName = zplDataParts[0].Substring(2);
-
-                if (!string.IsNullOrEmpty(imageName))
+                var StorageFileNameMatch = StorageFileNameRegex.Match(zplDataParts[0]);
+                if (StorageFileNameMatch.Success)
                 {
-                    this.ImageName = imageName;
+                    if (StorageFileNameMatch.Groups[1].Success)
+                    {
+                        command.StorageDevice = StorageFileNameMatch.Groups[1].Value;
+                    }
+                    command.ImageName = StorageFileNameMatch.Groups[2].Value;
                 }
             }
 
@@ -112,7 +124,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
             {
                 if (int.TryParse(zplDataParts[1], out var totalNumberOfBytesInGraphic))
                 {
-                    this.TotalNumberOfBytesInGraphic = totalNumberOfBytesInGraphic;
+                    command.TotalNumberOfBytesInGraphic = totalNumberOfBytesInGraphic;
                 }
             }
 
@@ -120,16 +132,17 @@ namespace BinaryKits.Zpl.Protocol.Commands
             {
                 if (int.TryParse(zplDataParts[2], out var numberOfBytesPerRow))
                 {
-                    this.NumberOfBytesPerRow = numberOfBytesPerRow;
+                    command.NumberOfBytesPerRow = numberOfBytesPerRow;
                 }
             }
 
-            //Third comma is the start of the image data
-            var indexOfThirdComma = this.IndexOfNthCharacter(zplCommand, 3, ',');
-            if (indexOfThirdComma != -1)
+            if (zplDataParts.Length > 3)
             {
-                this.Data = zplCommand.Substring(indexOfThirdComma + 1);
+                command.Data = zplDataParts[3];
             }
+
+            return command;
         }
+
     }
 }

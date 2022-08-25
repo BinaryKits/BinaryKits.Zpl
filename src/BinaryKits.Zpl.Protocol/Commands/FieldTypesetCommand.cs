@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Field Typeset<br/>
@@ -8,6 +10,9 @@
     /// </summary>
     public class FieldTypesetCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^FT";
+
         /// <summary>
         /// X-axis location
         /// </summary>
@@ -21,7 +26,7 @@
         /// <summary>
         /// Field Typeset
         /// </summary>
-        public FieldTypesetCommand() : base("^FT")
+        public FieldTypesetCommand()
         { }
 
         /// <summary>
@@ -34,12 +39,12 @@
             int? y = null)
             : this()
         {
-            if (this.ValidateIntParameter(nameof(x), x, 0, 32000))
+            if (ValidateIntParameter(nameof(x), x, 0, 32000))
             {
                 this.X = x.Value;
             }
 
-            if (this.ValidateIntParameter(nameof(y), y, 0, 32000))
+            if (ValidateIntParameter(nameof(y), y, 0, 32000))
             {
                 this.Y = y.Value;
             }
@@ -48,19 +53,26 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.X},{this.Y}";
+            return $"{CommandPrefix}{this.X},{this.Y}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new FieldTypesetCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
             {
                 if (int.TryParse(zplDataParts[0], out var x))
                 {
-                    this.X = x;
+                    command.X = x;
                 }
             }
 
@@ -68,9 +80,12 @@
             {
                 if (int.TryParse(zplDataParts[1], out var y))
                 {
-                    this.Y = y;
+                    command.Y = y;
                 }
             }
+
+            return command;
         }
+
     }
 }

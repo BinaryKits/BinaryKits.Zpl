@@ -61,40 +61,56 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
+        public void IsCommandParsable_ValidCommand_True()
+        {
+            var isParsable = GraphicCircleCommand.CanParseCommand("^GC10,1,B");
+            Assert.IsTrue(isParsable);
+        }
+
+        [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new GraphicCircleCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = GraphicCircleCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new GraphicCircleCommand();
-            command.ParseCommand("^GC10,5");
-            Assert.AreEqual(10, command.CircleDiameter);
-            Assert.AreEqual(5, command.BorderThickness);
+            var command = CommandBase.ParseCommand("^GC10,5");
+            Assert.IsTrue(command is GraphicCircleCommand);
+            if (command is GraphicCircleCommand circleCommand)
+            {
+                Assert.AreEqual(10, circleCommand.CircleDiameter);
+                Assert.AreEqual(5, circleCommand.BorderThickness);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new GraphicCircleCommand();
-            command.ParseCommand("^GC,2,W");
-            Assert.AreEqual(3, command.CircleDiameter);
-            Assert.AreEqual(2, command.BorderThickness);
-            Assert.AreEqual(LineColor.White, command.LineColor);
+            var command = CommandBase.ParseCommand("^GC,2,W");
+            Assert.IsTrue(command is GraphicCircleCommand);
+            if (command is GraphicCircleCommand circleCommand)
+            {
+                Assert.AreEqual(3, circleCommand.CircleDiameter);
+                Assert.AreEqual(2, circleCommand.BorderThickness);
+                Assert.AreEqual(LineColor.White, circleCommand.LineColor);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand3_Successful()
         {
-            var command = new GraphicCircleCommand();
-            command.ParseCommand("^GC,,W");
-            Assert.AreEqual(3, command.CircleDiameter);
-            Assert.AreEqual(1, command.BorderThickness);
-            Assert.AreEqual(LineColor.White, command.LineColor);
+            var command = CommandBase.ParseCommand("^GC,,W");
+            Assert.IsTrue(command is GraphicCircleCommand);
+            if (command is GraphicCircleCommand circleCommand)
+            {
+                Assert.AreEqual(3, circleCommand.CircleDiameter);
+                Assert.AreEqual(1, circleCommand.BorderThickness);
+                Assert.AreEqual(LineColor.White, circleCommand.LineColor);
+            }
         }
+
     }
 }

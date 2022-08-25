@@ -16,73 +16,84 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new DownloadObjectsCommand();
-            var isParsable = command.IsCommandParsable("~DYR:TEST.PNG,P,P,4,2,ABCDEF00");
+            var isParsable = DownloadObjectsCommand.CanParseCommand("~DYR:TEST.PNG,P,P,4,2,ABCDEF00");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new DownloadObjectsCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = DownloadObjectsCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new DownloadObjectsCommand();
-            command.ParseCommand("~DYR:TEST.PNG,P,P,4,2,ABCDEF00");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("TEST.PNG", command.FileName);
-            Assert.AreEqual('P', command.FormatDownloadedInDataField);
-            Assert.AreEqual("P", command.ExtensionOfStoredFile);
-            Assert.AreEqual(4, command.TotalNumberOfBytesInFile);
-            Assert.AreEqual(2, command.TotalNumberOfBytesPerRow);
-            Assert.AreEqual("ABCDEF00", command.Data);
+            var command = CommandBase.ParseCommand("~DYR:TEST.PNG,P,P,4,2,ABCDEF00");
+            Assert.IsTrue(command is DownloadObjectsCommand);
+            if (command is DownloadObjectsCommand objectsCommand)
+            {
+                Assert.AreEqual("R:", objectsCommand.StorageDevice);
+                Assert.AreEqual("TEST.PNG", objectsCommand.FileName);
+                Assert.AreEqual('P', objectsCommand.FormatDownloadedInDataField);
+                Assert.AreEqual("P", objectsCommand.ExtensionOfStoredFile);
+                Assert.AreEqual(4, objectsCommand.TotalNumberOfBytesInFile);
+                Assert.AreEqual(2, objectsCommand.TotalNumberOfBytesPerRow);
+                Assert.AreEqual("ABCDEF00", objectsCommand.Data);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new DownloadObjectsCommand();
-            command.ParseCommand("~DYR:,P,P,4,2,ABCDEF00");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("UNKNOWN", command.FileName);
-            Assert.AreEqual('P', command.FormatDownloadedInDataField);
-            Assert.AreEqual("P", command.ExtensionOfStoredFile);
-            Assert.AreEqual(4, command.TotalNumberOfBytesInFile);
-            Assert.AreEqual(2, command.TotalNumberOfBytesPerRow);
-            Assert.AreEqual("ABCDEF00", command.Data);
+            var command = CommandBase.ParseCommand("~DYR:,P,P,4,2,ABCDEF00");
+            Assert.IsTrue(command is DownloadObjectsCommand);
+            if (command is DownloadObjectsCommand objectsCommand)
+            {
+                Assert.AreEqual("R:", objectsCommand.StorageDevice);
+                Assert.AreEqual("UNKNOWN", objectsCommand.FileName);
+                Assert.AreEqual('P', objectsCommand.FormatDownloadedInDataField);
+                Assert.AreEqual("P", objectsCommand.ExtensionOfStoredFile);
+                Assert.AreEqual(4, objectsCommand.TotalNumberOfBytesInFile);
+                Assert.AreEqual(2, objectsCommand.TotalNumberOfBytesPerRow);
+                Assert.AreEqual("ABCDEF00", objectsCommand.Data);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_InvalidCommand1_Successful()
         {
-            var command = new DownloadObjectsCommand();
-            command.ParseCommand("~DYR:IMAGE2.PNG,P,P,4,2");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("IMAGE2.PNG", command.FileName);
-            Assert.AreEqual('P', command.FormatDownloadedInDataField);
-            Assert.AreEqual("P", command.ExtensionOfStoredFile);
-            Assert.AreEqual(4, command.TotalNumberOfBytesInFile);
-            Assert.AreEqual(2, command.TotalNumberOfBytesPerRow);
-            Assert.AreEqual(null, command.Data);
+            var command = CommandBase.ParseCommand("~DYIMAGE2.PNG,P,P,4,2");
+            Assert.IsTrue(command is DownloadObjectsCommand);
+            if (command is DownloadObjectsCommand objectsCommand)
+            {
+                Assert.AreEqual("R:", objectsCommand.StorageDevice);
+                Assert.AreEqual("IMAGE2.PNG", objectsCommand.FileName);
+                Assert.AreEqual('P', objectsCommand.FormatDownloadedInDataField);
+                Assert.AreEqual("P", objectsCommand.ExtensionOfStoredFile);
+                Assert.AreEqual(4, objectsCommand.TotalNumberOfBytesInFile);
+                Assert.AreEqual(2, objectsCommand.TotalNumberOfBytesPerRow);
+                Assert.AreEqual(null, objectsCommand.Data);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_InvalidCommand2_Successful()
         {
-            var command = new DownloadObjectsCommand();
-            command.ParseCommand("~DYR:");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("UNKNOWN", command.FileName);
-            Assert.AreEqual(char.MinValue, command.FormatDownloadedInDataField);
-            Assert.AreEqual(null, command.ExtensionOfStoredFile);
-            Assert.AreEqual(0, command.TotalNumberOfBytesInFile);
-            Assert.AreEqual(0, command.TotalNumberOfBytesPerRow);
-            Assert.AreEqual(null, command.Data);
+            var command = CommandBase.ParseCommand("~DYR:");
+            Assert.IsTrue(command is DownloadObjectsCommand);
+            if (command is DownloadObjectsCommand objectsCommand)
+            {
+                Assert.AreEqual("R:", objectsCommand.StorageDevice);
+                Assert.AreEqual("UNKNOWN", objectsCommand.FileName);
+                Assert.AreEqual(char.MinValue, objectsCommand.FormatDownloadedInDataField);
+                Assert.AreEqual(null, objectsCommand.ExtensionOfStoredFile);
+                Assert.AreEqual(0, objectsCommand.TotalNumberOfBytesInFile);
+                Assert.AreEqual(0, objectsCommand.TotalNumberOfBytesPerRow);
+                Assert.AreEqual(null, objectsCommand.Data);
+            }
         }
+
     }
 }

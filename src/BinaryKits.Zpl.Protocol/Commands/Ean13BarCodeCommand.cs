@@ -3,17 +3,19 @@
 namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
-    /// Code 128 Bar Code (Subsets A, B, and C)<br/>
-    /// The ^BC command creates the Code 128 bar code, a high-density, variable length, continuous,
-    /// alphanumeric symbology.It was designed for complexly encoded product identification.
-    /// Code 128 has three subsets of characters.There are 106 encoded printing characters in each set, and
-    /// each character can have up to three different meanings, depending on the character subset being used.
-    /// Each Code 128 character consists of six elements: three bars and three spaces.
+    /// EAN-13 Bar Code <br/>
+    /// The ^BE command is similar to the UPC-A bar code. It is widely used
+    /// throughout Europe and Japan in the retail marketplace.
+    /// 
+    /// The EAN-13 bar code has 12 data characters, one more data character than the UPC-A code.
+    /// An EAN-13 symbol contains the same number of bars as the UPC-A, but encodes a 13th digit
+    /// into a parity pattern of the left-hand six digits. This 13th digit, in combination with the 12th
+    /// digit, represents a country code.
     /// </summary>
-    public class Code128BarCodeCommand : CommandBase
+    public class Ean13BarCodeCommand : CommandBase
     {
         ///<inheritdoc/>
-        protected static new readonly string CommandPrefix = "^BC";
+        protected static new readonly string CommandPrefix = "^BE";
 
         /// <summary>
         /// Orientation
@@ -36,30 +38,24 @@ namespace BinaryKits.Zpl.Protocol.Commands
         public bool PrintInterpretationLineAboveCode { get; private set; } = false;
 
         /// <summary>
-        /// UCC check digit
+        /// Code 39 Bar Code
         /// </summary>
-        public bool UccCheckDigit { get; private set; } = false;
-
-        /// <summary>
-        /// Code 128 Bar Code (Subsets A, B, and C)
-        /// </summary>
-        public Code128BarCodeCommand()
+        public Ean13BarCodeCommand()
         { }
 
         /// <summary>
-        /// Code 128 Bar Code (Subsets A, B, and C)
+        /// EAN-13 Bar Code
         /// </summary>
         /// <param name="orientation">Orientation</param>
         /// <param name="barCodeHeight">Bar code height (1 to 32000)</param>
         /// <param name="printInterpretationLine">Print interpretation line</param>
         /// <param name="printInterpretationLineAboveCode">Print interpretation line above code</param>
-        /// <param name="uccCheckDigit">UCC check digit</param>
-        public Code128BarCodeCommand(
+        public Ean13BarCodeCommand(
             Orientation orientation = Orientation.Normal,
             int? barCodeHeight = null,
             bool printInterpretationLine = true,
-            bool printInterpretationLineAboveCode = false,
-            bool uccCheckDigit = false)
+            bool printInterpretationLineAboveCode = false
+            )
             : this()
         {
             this.Orientation = orientation;
@@ -71,13 +67,12 @@ namespace BinaryKits.Zpl.Protocol.Commands
 
             this.PrintInterpretationLine = printInterpretationLine;
             this.PrintInterpretationLineAboveCode = printInterpretationLineAboveCode;
-            this.UccCheckDigit = uccCheckDigit;
         }
 
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{CommandPrefix}{RenderOrientation(this.Orientation)},{this.BarCodeHeight},{RenderBoolean(this.PrintInterpretationLine)},{RenderBoolean(this.PrintInterpretationLineAboveCode)},{RenderBoolean(this.UccCheckDigit)}";
+            return $"{CommandPrefix}{RenderOrientation(this.Orientation)},{this.BarCodeHeight},{RenderBoolean(this.PrintInterpretationLine)},{RenderBoolean(this.PrintInterpretationLineAboveCode)}";
         }
 
         ///<inheritdoc/>
@@ -89,7 +84,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         ///<inheritdoc/>
         public static new CommandBase ParseCommand(string zplCommand)
         {
-            var command = new Code128BarCodeCommand();
+            var command = new Ean13BarCodeCommand();
             var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
@@ -115,13 +110,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
                 command.PrintInterpretationLineAboveCode = ConvertBoolean(zplDataParts[3]);
             }
 
-            if (zplDataParts.Length > 4)
-            {
-                command.UccCheckDigit = ConvertBoolean(zplDataParts[4]);
-            }
-
             return command;
         }
-
     }
 }

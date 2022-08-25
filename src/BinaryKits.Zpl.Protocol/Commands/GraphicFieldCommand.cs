@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Graphic Field<br/>
@@ -8,6 +10,9 @@
     /// </summary>
     public class GraphicFieldCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^GF";
+
         /// <summary>
         /// Compression type
         /// </summary>
@@ -36,7 +41,7 @@
         /// <summary>
         /// Graphic Field
         /// </summary>
-        public GraphicFieldCommand() : base("^GF")
+        public GraphicFieldCommand()
         { }
 
         /// <summary>
@@ -57,17 +62,17 @@
         {
             this.CompressionType = compressionType;
 
-            if (this.ValidateIntParameter(nameof(binaryByteCount), binaryByteCount, 1, 99999))
+            if (ValidateIntParameter(nameof(binaryByteCount), binaryByteCount, 1, 99999))
             {
                 this.BinaryByteCount = binaryByteCount;
             }
 
-            if (this.ValidateIntParameter(nameof(graphicFieldCount), graphicFieldCount, 1, 99999))
+            if (ValidateIntParameter(nameof(graphicFieldCount), graphicFieldCount, 1, 99999))
             {
                 this.GraphicFieldCount = graphicFieldCount;
             }
 
-            if (this.ValidateIntParameter(nameof(bytesPerRow), bytesPerRow, 1, 99999))
+            if (ValidateIntParameter(nameof(bytesPerRow), bytesPerRow, 1, 99999))
             {
                 this.BytesPerRow = bytesPerRow;
             }
@@ -78,43 +83,56 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.CompressionType},{this.BinaryByteCount},{this.GraphicFieldCount},{this.BytesPerRow},{this.Data}";
+            return $"{CommandPrefix}{this.CompressionType},{this.BinaryByteCount},{this.GraphicFieldCount},{this.BytesPerRow},{this.Data}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new GraphicFieldCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(new char[] { ',' }, 5);
 
             if (zplDataParts.Length > 0)
             {
-                this.CompressionType = zplDataParts[0][0];
+                command.CompressionType = zplDataParts[0][0];
             }
+
             if (zplDataParts.Length > 1)
             {
                 if (int.TryParse(zplDataParts[1], out var binaryByteCount))
                 {
-                    this.BinaryByteCount = binaryByteCount;
+                    command.BinaryByteCount = binaryByteCount;
                 }
             }
+
             if (zplDataParts.Length > 2)
             {
                 if (int.TryParse(zplDataParts[2], out var graphicFieldCount))
                 {
-                    this.GraphicFieldCount = graphicFieldCount;
+                    command.GraphicFieldCount = graphicFieldCount;
                 }
             }
+
             if (zplDataParts.Length > 3)
             {
                 if (int.TryParse(zplDataParts[3], out var bytesPerRow))
                 {
-                    this.BytesPerRow = bytesPerRow;
+                    command.BytesPerRow = bytesPerRow;
                 }
             }
+
             if (zplDataParts.Length > 4)
             {
-                this.Data = zplDataParts[4];
+                command.Data = zplDataParts[4];
             }
+
+            return command;
         }
     }
 }

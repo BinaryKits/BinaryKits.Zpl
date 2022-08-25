@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Image Move<br/>
@@ -7,6 +9,9 @@
     /// </summary>
     public class ImageMoveCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^IM";
+
         /// <summary>
         /// Storage device
         /// </summary>
@@ -20,7 +25,7 @@
         /// <summary>
         /// Image Move
         /// </summary>
-        public ImageMoveCommand() : base("^IM")
+        public ImageMoveCommand()
         { }
 
         /// <summary>
@@ -40,23 +45,33 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.StorageDevice}{this.ImageName}";
+            return $"{CommandPrefix}{this.StorageDevice}{this.ImageName}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplData = zplCommand.Substring(this.CommandPrefix.Length);
-
-            if (zplData.Length >= 2)
-            {
-                this.StorageDevice = zplData.Substring(0, 2);
-            }
-
-            if (zplData.Length > 2)
-            {
-                this.ImageName = zplData.Substring(2);
-            }
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
         }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new ImageMoveCommand();
+            var zplCommandData = zplCommand.Substring(CommandPrefix.Length);
+
+            var storageFileNameMatch = StorageFileNameRegex.Match(zplCommandData);
+            if (storageFileNameMatch.Success)
+            {
+                if (storageFileNameMatch.Groups[1].Success)
+                {
+                    command.StorageDevice = storageFileNameMatch.Groups[1].Value;
+                }
+                command.ImageName = storageFileNameMatch.Groups[2].Value;
+            }
+
+            return command;
+        }
+
     }
 }

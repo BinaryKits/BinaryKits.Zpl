@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Graphic Circle<br/>
@@ -7,6 +9,9 @@
     /// </summary>
     public class GraphicCircleCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^GC";
+
         /// <summary>
         /// Circle diameter
         /// </summary>
@@ -25,7 +30,7 @@
         /// <summary>
         /// Graphic Circle
         /// </summary>
-        public GraphicCircleCommand() : base("^GC")
+        public GraphicCircleCommand()
         { }
 
         /// <summary>
@@ -40,12 +45,12 @@
             LineColor lineColor = LineColor.Black)
             : this()
         {
-            if (this.ValidateIntParameter(nameof(circleDiameter), circleDiameter, 3, 4095))
+            if (ValidateIntParameter(nameof(circleDiameter), circleDiameter, 3, 4095))
             {
                 this.CircleDiameter = circleDiameter.Value;
             }
 
-            if (this.ValidateIntParameter(nameof(borderThickness), borderThickness, 1, 4095))
+            if (ValidateIntParameter(nameof(borderThickness), borderThickness, 1, 4095))
             {
                 this.BorderThickness = borderThickness.Value;
             }
@@ -56,19 +61,26 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.CircleDiameter},{this.BorderThickness},{this.RenderLineColor(this.LineColor)}";
+            return $"{CommandPrefix}{this.CircleDiameter},{this.BorderThickness},{RenderLineColor(this.LineColor)}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new GraphicCircleCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
             {
                 if (int.TryParse(zplDataParts[0], out var circleDiameter))
                 {
-                    this.CircleDiameter = circleDiameter;
+                    command.CircleDiameter = circleDiameter;
                 }
             }
 
@@ -76,15 +88,18 @@
             {
                 if (int.TryParse(zplDataParts[1], out var borderThickness))
                 {
-                    this.BorderThickness = borderThickness;
+                    command.BorderThickness = borderThickness;
                 }
             }
 
             if (zplDataParts.Length > 2)
             {
                 var lineColorTemp = zplDataParts[2];
-                this.LineColor = lineColorTemp == "W" ? LineColor.White : LineColor.Black;
+                command.LineColor = lineColorTemp == "W" ? LineColor.White : LineColor.Black;
             }
+
+            return command;
         }
+
     }
 }

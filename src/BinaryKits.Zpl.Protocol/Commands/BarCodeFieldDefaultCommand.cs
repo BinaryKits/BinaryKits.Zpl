@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using static System.FormattableString;
 
 namespace BinaryKits.Zpl.Protocol.Commands
@@ -10,6 +11,9 @@ namespace BinaryKits.Zpl.Protocol.Commands
     /// </summary>
     public class BarCodeFieldDefaultCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^BY";
+
         /// <summary>
         /// Module width
         /// </summary>
@@ -28,7 +32,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// <summary>
         /// Bar Code Field Default
         /// </summary>
-        public BarCodeFieldDefaultCommand() : base("^BY")
+        public BarCodeFieldDefaultCommand()
         { }
 
         /// <summary>
@@ -43,7 +47,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int barCodeHeight)
             : this()
         {
-            if (this.ValidateIntParameter(nameof(moduleWidth), moduleWidth, 1, 10))
+            if (ValidateIntParameter(nameof(moduleWidth), moduleWidth, 1, 10))
             {
                 this.ModuleWidth = moduleWidth;
             }
@@ -55,19 +59,26 @@ namespace BinaryKits.Zpl.Protocol.Commands
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return Invariant($"{this.CommandPrefix}{this.ModuleWidth},{this.WideBarToNarrowBarWidthRatio:0.0},{this.BarCodeHeight}");
+            return Invariant($"{CommandPrefix}{this.ModuleWidth},{this.WideBarToNarrowBarWidthRatio:0.0},{this.BarCodeHeight}");
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new BarCodeFieldDefaultCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
             {
                 if (int.TryParse(zplDataParts[0], out var moduleWidth))
                 {
-                    this.ModuleWidth = moduleWidth;
+                    command.ModuleWidth = moduleWidth;
                 }
             }
 
@@ -75,7 +86,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
             {
                 if (double.TryParse(zplDataParts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out var wideBarToNarrowBarWidthRatio))
                 {
-                    this.WideBarToNarrowBarWidthRatio = wideBarToNarrowBarWidthRatio;
+                    command.WideBarToNarrowBarWidthRatio = wideBarToNarrowBarWidthRatio;
                 }
             }
 
@@ -83,9 +94,12 @@ namespace BinaryKits.Zpl.Protocol.Commands
             {
                 if (int.TryParse(zplDataParts[2], out var barCodeHeight))
                 {
-                    this.BarCodeHeight = barCodeHeight;
+                    command.BarCodeHeight = barCodeHeight;
                 }
             }
+
+            return command;
         }
+
     }
 }

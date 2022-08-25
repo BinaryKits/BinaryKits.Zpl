@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Graphic Box<br/>
@@ -8,6 +10,9 @@
     /// </summary>
     public class GraphicBoxCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^GB";
+
         /// <summary>
         /// Box width
         /// </summary>
@@ -36,7 +41,7 @@
         /// <summary>
         /// Graphic Box
         /// </summary>
-        public GraphicBoxCommand() : base("^GB")
+        public GraphicBoxCommand()
         { }
 
         /// <summary>
@@ -55,26 +60,26 @@
             int? degreeOfCornerrounding = null)
             : this()
         {
-            if (this.ValidateIntParameter(nameof(borderThickness), borderThickness, 1, 32000))
+            if (ValidateIntParameter(nameof(borderThickness), borderThickness, 1, 32000))
             {
                 this.BorderThickness = borderThickness.Value;
                 this.BoxWidth = this.BorderThickness;
                 this.BoxHeight = this.BorderThickness;
             }
 
-            if (this.ValidateIntParameter(nameof(boxWidth), boxWidth, this.BorderThickness, 32000))
+            if (ValidateIntParameter(nameof(boxWidth), boxWidth, this.BorderThickness, 32000))
             {
                 this.BoxWidth = boxWidth.Value;
             }
 
-            if (this.ValidateIntParameter(nameof(boxHeight), boxHeight, this.BorderThickness, 32000))
+            if (ValidateIntParameter(nameof(boxHeight), boxHeight, this.BorderThickness, 32000))
             {
                 this.BoxHeight = boxHeight.Value;
             }
 
             this.LineColor = lineColor;
 
-            if (this.ValidateIntParameter(nameof(degreeOfCornerrounding), degreeOfCornerrounding, 0, 8))
+            if (ValidateIntParameter(nameof(degreeOfCornerrounding), degreeOfCornerrounding, 0, 8))
             {
                 this.DegreeOfCornerrounding = degreeOfCornerrounding.Value;
             }
@@ -83,19 +88,26 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.BoxWidth},{this.BoxHeight},{this.BorderThickness},{this.RenderLineColor(this.LineColor)},{this.DegreeOfCornerrounding}";
+            return $"{CommandPrefix}{this.BoxWidth},{this.BoxHeight},{this.BorderThickness},{RenderLineColor(this.LineColor)},{this.DegreeOfCornerrounding}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new GraphicBoxCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
             {
                 if (int.TryParse(zplDataParts[0], out var boxWidth))
                 {
-                    this.BoxWidth = boxWidth;
+                    command.BoxWidth = boxWidth;
                 }
             }
 
@@ -103,7 +115,7 @@
             {
                 if (int.TryParse(zplDataParts[1], out var boxHeight))
                 {
-                    this.BoxHeight = boxHeight;
+                    command.BoxHeight = boxHeight;
                 }
             }
 
@@ -111,14 +123,14 @@
             {
                 if (int.TryParse(zplDataParts[2], out var borderThickness))
                 {
-                    this.BorderThickness = borderThickness;
-                    if (this.BoxWidth < borderThickness)
+                    command.BorderThickness = borderThickness;
+                    if (command.BoxWidth < borderThickness)
                     {
-                        this.BoxWidth = borderThickness;
+                        command.BoxWidth = borderThickness;
                     }
-                    if (this.BoxHeight < borderThickness)
+                    if (command.BoxHeight < borderThickness)
                     {
-                        this.BoxHeight = borderThickness;
+                        command.BoxHeight = borderThickness;
                     }
                 }
             }
@@ -126,16 +138,19 @@
             if (zplDataParts.Length > 3)
             {
                 var lineColorTemp = zplDataParts[3];
-                this.LineColor = lineColorTemp == "W" ? LineColor.White : LineColor.Black;
+                command.LineColor = lineColorTemp == "W" ? LineColor.White : LineColor.Black;
             }
 
             if (zplDataParts.Length > 4)
             {
                 if (int.TryParse(zplDataParts[4], out var degreeOfCornerrounding))
                 {
-                    this.DegreeOfCornerrounding = degreeOfCornerrounding;
+                    command.DegreeOfCornerrounding = degreeOfCornerrounding;
                 }
             }
+
+            return command;
         }
+
     }
 }

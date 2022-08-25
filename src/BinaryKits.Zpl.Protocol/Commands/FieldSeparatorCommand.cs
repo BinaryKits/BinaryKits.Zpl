@@ -3,19 +3,19 @@
 namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
-    /// Field Reverse Print<br/>
-    /// The ^FR command allows a field to appear as white over black or black over white. When printing a field
-    /// and the ^FR command has been used, the color of the output is the reverse of its background.
+    /// Field Separator<br/>
+    /// The ^FS command denotes the end of the field definition. Alternatively, ^FS command can also be issued
+    /// as a single ASCII control code SI(Control-O, hexadecimal 0F).
     /// </summary>
-    public class FieldReversePrintCommand : CommandBase
+    public class FieldSeparatorCommand : CommandBase
     {
         ///<inheritdoc/>
-        protected static new readonly string CommandPrefix = "^FR";
+        protected static new readonly string CommandPrefix = "^FS";
 
         /// <summary>
-        /// Field Reverse Print
+        /// Field Separator
         /// </summary>
-        public FieldReversePrintCommand()
+        public FieldSeparatorCommand()
         { }
 
         ///<inheritdoc/>
@@ -33,7 +33,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         ///<inheritdoc/>
         public static new CommandBase ParseCommand(string zplCommand)
         {
-            return new FieldReversePrintCommand();
+            return new FieldSeparatorCommand();
         }
     }
 }

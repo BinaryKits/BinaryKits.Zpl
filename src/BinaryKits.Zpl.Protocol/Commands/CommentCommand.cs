@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Comment<br/>
@@ -9,6 +11,9 @@
     /// </summary>
     public class CommentCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^FX";
+
         /// <summary>
         /// Non printing comment
         /// </summary>
@@ -17,7 +22,7 @@
         /// <summary>
         /// Comment
         /// </summary>
-        public CommentCommand() : base("^FX")
+        public CommentCommand()
         { }
 
         /// <summary>
@@ -33,13 +38,25 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.NonPrintingComment}";
+            return $"{CommandPrefix}{this.NonPrintingComment}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            this.NonPrintingComment = zplCommand.Substring(this.CommandPrefix.Length);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
         }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new CommentCommand();
+            var zplCommandData = zplCommand.Substring(CommandPrefix.Length);
+
+            command.NonPrintingComment = zplCommandData;
+
+            return command;
+        }
+
     }
 }

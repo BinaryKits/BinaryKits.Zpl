@@ -24,33 +24,38 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new CommentCommand();
-            var isParsable = command.IsCommandParsable("^FXTest");
+            var isParsable = CommentCommand.CanParseCommand("^FXTest");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new CommentCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = CommentCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new CommentCommand();
-            command.ParseCommand("^FX");
-            Assert.AreEqual(string.Empty, command.NonPrintingComment);
+            var command = CommandBase.ParseCommand("^FX");
+            Assert.IsTrue(command is CommentCommand);
+            if (command is CommentCommand commentCommand)
+            {
+                Assert.AreEqual(string.Empty, commentCommand.NonPrintingComment);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new CommentCommand();
-            command.ParseCommand("^FXtest");
-            Assert.AreEqual("test", command.NonPrintingComment);
+            var command = CommandBase.ParseCommand("^FXtest");
+            Assert.IsTrue(command is CommentCommand);
+            if (command is CommentCommand commentCommand)
+            {
+                Assert.AreEqual("test", commentCommand.NonPrintingComment);
+            }
         }
+
     }
 }

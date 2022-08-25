@@ -3,19 +3,19 @@
 namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
-    /// Field Reverse Print<br/>
-    /// The ^FR command allows a field to appear as white over black or black over white. When printing a field
-    /// and the ^FR command has been used, the color of the output is the reverse of its background.
+    /// End Format<br/>
+    /// The ^XZ command is the ending(closing) bracket. It indicates the end of a
+    /// label format. When this command is received, a label prints.
     /// </summary>
-    public class FieldReversePrintCommand : CommandBase
+    public class EndFormatCommand : CommandBase
     {
         ///<inheritdoc/>
-        protected static new readonly string CommandPrefix = "^FR";
+        protected static new readonly string CommandPrefix = "^XZ";
 
         /// <summary>
-        /// Field Reverse Print
+        /// End Format
         /// </summary>
-        public FieldReversePrintCommand()
+        public EndFormatCommand()
         { }
 
         ///<inheritdoc/>
@@ -33,7 +33,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         ///<inheritdoc/>
         public static new CommandBase ParseCommand(string zplCommand)
         {
-            return new FieldReversePrintCommand();
+            return new EndFormatCommand();
         }
     }
 }

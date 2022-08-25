@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Recall Graphic<br/>
@@ -8,6 +10,9 @@
     /// </summary>
     public class RecallGraphicCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^XG";
+
         /// <summary>
         /// Storage device
         /// </summary>
@@ -31,7 +36,7 @@
         /// <summary>
         /// Recall Graphic
         /// </summary>
-        public RecallGraphicCommand() : base("^XG")
+        public RecallGraphicCommand()
         { }
 
         /// <summary>
@@ -51,12 +56,12 @@
             this.StorageDevice = storageDevice;
             this.ImageName = imageName;
 
-            if (this.ValidateIntParameter(nameof(magnificationFactorX), magnificationFactorX, 1, 10))
+            if (ValidateIntParameter(nameof(magnificationFactorX), magnificationFactorX, 1, 10))
             {
                 this.MagnificationFactorX = magnificationFactorX;
             }
 
-            if (this.ValidateIntParameter(nameof(magnificationFactorY), magnificationFactorY, 1, 10))
+            if (ValidateIntParameter(nameof(magnificationFactorY), magnificationFactorY, 1, 10))
             {
                 this.MagnificationFactorY = magnificationFactorY;
             }
@@ -65,27 +70,31 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.StorageDevice}{this.ImageName},{this.MagnificationFactorX},{this.MagnificationFactorY}";
+            return $"{CommandPrefix}{this.StorageDevice}{this.ImageName},{this.MagnificationFactorX},{this.MagnificationFactorY}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplData = zplCommand.Substring(this.CommandPrefix.Length);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
 
-            if (zplData.Length >= 2)
-            {
-                this.StorageDevice = zplData.Substring(0, 2);
-            }
-
-            var zplDataParts = this.SplitCommand(zplCommand, 2);
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new RecallGraphicCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
             {
-                var imageName = zplDataParts[0];
-                if (!string.IsNullOrEmpty(imageName))
+                var storageFileNameMatch = StorageFileNameRegex.Match(zplDataParts[0]);
+                if (storageFileNameMatch.Success)
                 {
-                    this.ImageName = imageName;
+                    if (storageFileNameMatch.Groups[1].Success)
+                    {
+                        command.StorageDevice = storageFileNameMatch.Groups[1].Value;
+                    }
+                    command.ImageName = storageFileNameMatch.Groups[2].Value;
                 }
             }
 
@@ -93,7 +102,7 @@
             {
                 if (int.TryParse(zplDataParts[1], out var magnificationFactorY))
                 {
-                    this.MagnificationFactorX = magnificationFactorY;
+                    command.MagnificationFactorX = magnificationFactorY;
                 }
             }
 
@@ -101,9 +110,11 @@
             {
                 if (int.TryParse(zplDataParts[2], out var magnificationFactorX))
                 {
-                    this.MagnificationFactorY = magnificationFactorX;
+                    command.MagnificationFactorY = magnificationFactorX;
                 }
             }
+
+            return command;
         }
     }
 }

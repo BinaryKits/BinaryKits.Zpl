@@ -55,117 +55,145 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new ScalableBitmappedFontCommand();
-            var isParsable = command.IsCommandParsable("^AAN10,10");
+            var isParsable = ScalableBitmappedFontCommand.CanParseCommand("^AAN10,10");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new ScalableBitmappedFontCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = ScalableBitmappedFontCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new ScalableBitmappedFontCommand();
-            command.ParseCommand("^AA");
-            Assert.AreEqual('A', command.FontName);
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
+            var command = CommandBase.ParseCommand("^AA");
+            Assert.IsTrue(command is ScalableBitmappedFontCommand);
+            if (command is ScalableBitmappedFontCommand fontCommand)
+            {
+                Assert.AreEqual('A', fontCommand.FontName);
+                Assert.AreEqual(Orientation.Normal, fontCommand.Orientation);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new ScalableBitmappedFontCommand();
-            command.ParseCommand("^A0");
-            Assert.AreEqual('0', command.FontName);
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
+            var command = CommandBase.ParseCommand("^A0");
+            Assert.IsTrue(command is ScalableBitmappedFontCommand);
+            if (command is ScalableBitmappedFontCommand fontCommand)
+            {
+                Assert.AreEqual('0', fontCommand.FontName);
+                Assert.AreEqual(Orientation.Normal, fontCommand.Orientation);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand3_Successful()
         {
-            var command = new ScalableBitmappedFontCommand();
-            command.ParseCommand("^A0N");
-            Assert.AreEqual('0', command.FontName);
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
+            var command = CommandBase.ParseCommand("^A0N");
+            Assert.IsTrue(command is ScalableBitmappedFontCommand);
+            if (command is ScalableBitmappedFontCommand fontCommand)
+            {
+                Assert.AreEqual('0', fontCommand.FontName);
+                Assert.AreEqual(Orientation.Normal, fontCommand.Orientation);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand4_Successful()
         {
-            var command = new ScalableBitmappedFontCommand();
-            command.ParseCommand("^A0I");
-            Assert.AreEqual('0', command.FontName);
-            Assert.AreEqual(Orientation.Rotated180, command.Orientation);
+            var command = CommandBase.ParseCommand("^A0I");
+            Assert.IsTrue(command is ScalableBitmappedFontCommand);
+            if (command is ScalableBitmappedFontCommand fontCommand)
+            {
+                Assert.AreEqual('0', fontCommand.FontName);
+                Assert.AreEqual(Orientation.Rotated180, fontCommand.Orientation);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand5_Successful()
         {
-            var command = new ScalableBitmappedFontCommand();
-            command.ParseCommand("^A0R");
-            Assert.AreEqual('0', command.FontName);
-            Assert.AreEqual(Orientation.Rotated90, command.Orientation);
+            var command = CommandBase.ParseCommand("^A0R");
+            Assert.IsTrue(command is ScalableBitmappedFontCommand);
+            if (command is ScalableBitmappedFontCommand fontCommand)
+            {
+                Assert.AreEqual('0', fontCommand.FontName);
+                Assert.AreEqual(Orientation.Rotated90, fontCommand.Orientation);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_InvalidFieldOrientationCommand_Successful()
         {
-            var command = new ScalableBitmappedFontCommand();
-            command.ParseCommand("^A0X");
-            Assert.AreEqual('0', command.FontName);
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.IsNull(command.CharacterHeight);
-            Assert.IsNull(command.Width);
+            var command = CommandBase.ParseCommand("^A0X");
+            Assert.IsTrue(command is ScalableBitmappedFontCommand);
+            if (command is ScalableBitmappedFontCommand fontCommand)
+            {
+                Assert.AreEqual('0', fontCommand.FontName);
+                Assert.AreEqual(Orientation.Normal, fontCommand.Orientation);
+                Assert.IsNull(fontCommand.CharacterHeight);
+                Assert.IsNull(fontCommand.Width);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand6_Successful()
         {
-            var command = new ScalableBitmappedFontCommand();
-            command.ParseCommand("^A0B,10");
-            Assert.AreEqual('0', command.FontName);
-            Assert.AreEqual(Orientation.Rotated270, command.Orientation);
-            Assert.AreEqual(10, command.CharacterHeight);
-            Assert.IsNull(command.Width);
+            var command = CommandBase.ParseCommand("^A0B,10");
+            Assert.IsTrue(command is ScalableBitmappedFontCommand);
+            if (command is ScalableBitmappedFontCommand fontCommand)
+            {
+                Assert.AreEqual('0', fontCommand.FontName);
+                Assert.AreEqual(Orientation.Rotated270, fontCommand.Orientation);
+                Assert.AreEqual(10, fontCommand.CharacterHeight);
+                Assert.IsNull(fontCommand.Width);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand7_Successful()
         {
-            var command = new ScalableBitmappedFontCommand();
-            command.ParseCommand("^A0I,20");
-            Assert.AreEqual('0', command.FontName);
-            Assert.AreEqual(Orientation.Rotated180, command.Orientation);
-            Assert.AreEqual(20, command.CharacterHeight);
-            Assert.IsNull(command.Width);
+            var command = CommandBase.ParseCommand("^A0I,20");
+            Assert.IsTrue(command is ScalableBitmappedFontCommand);
+            if (command is ScalableBitmappedFontCommand fontCommand)
+            {
+                Assert.AreEqual('0', fontCommand.FontName);
+                Assert.AreEqual(Orientation.Rotated180, fontCommand.Orientation);
+                Assert.AreEqual(20, fontCommand.CharacterHeight);
+                Assert.IsNull(fontCommand.Width);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand8_Successful()
         {
-            var command = new ScalableBitmappedFontCommand();
-            command.ParseCommand("^A0I,,20");
-            Assert.AreEqual('0', command.FontName);
-            Assert.AreEqual(Orientation.Rotated180, command.Orientation);
-            Assert.IsNull(command.CharacterHeight);
-            Assert.AreEqual(20, command.Width);
+            var command = CommandBase.ParseCommand("^A0I,,20");
+            Assert.IsTrue(command is ScalableBitmappedFontCommand);
+            if (command is ScalableBitmappedFontCommand fontCommand)
+            {
+                Assert.AreEqual('0', fontCommand.FontName);
+                Assert.AreEqual(Orientation.Rotated180, fontCommand.Orientation);
+                Assert.IsNull(fontCommand.CharacterHeight);
+                Assert.AreEqual(20, fontCommand.Width);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand9_Successful()
         {
-            var command = new ScalableBitmappedFontCommand();
-            command.ParseCommand("^A0I,100,50");
-            Assert.AreEqual('0', command.FontName);
-            Assert.AreEqual(Orientation.Rotated180, command.Orientation);
-            Assert.AreEqual(100, command.CharacterHeight);
-            Assert.AreEqual(50, command.Width);
+            var command = CommandBase.ParseCommand("^A0I,100,50");
+            Assert.IsTrue(command is ScalableBitmappedFontCommand);
+            if (command is ScalableBitmappedFontCommand fontCommand)
+            {
+                Assert.AreEqual('0', fontCommand.FontName);
+                Assert.AreEqual(Orientation.Rotated180, fontCommand.Orientation);
+                Assert.AreEqual(100, fontCommand.CharacterHeight);
+                Assert.AreEqual(50, fontCommand.Width);
+            }
         }
     }
 }

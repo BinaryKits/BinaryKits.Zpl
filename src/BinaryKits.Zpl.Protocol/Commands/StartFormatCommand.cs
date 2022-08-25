@@ -3,19 +3,19 @@
 namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
-    /// Field Reverse Print<br/>
-    /// The ^FR command allows a field to appear as white over black or black over white. When printing a field
-    /// and the ^FR command has been used, the color of the output is the reverse of its background.
+    /// Start Format<br/>
+    /// The ^XA command is used at the beginning of ZPL II code. It is the opening
+    /// bracket and indicates the start of a new label format.
     /// </summary>
-    public class FieldReversePrintCommand : CommandBase
+    public class StartFormatCommand : CommandBase
     {
         ///<inheritdoc/>
-        protected static new readonly string CommandPrefix = "^FR";
+        protected static new readonly string CommandPrefix = "^XA";
 
         /// <summary>
-        /// Field Reverse Print
+        /// Start Format
         /// </summary>
-        public FieldReversePrintCommand()
+        public StartFormatCommand()
         { }
 
         ///<inheritdoc/>
@@ -33,7 +33,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         ///<inheritdoc/>
         public static new CommandBase ParseCommand(string zplCommand)
         {
-            return new FieldReversePrintCommand();
+            return new StartFormatCommand();
         }
     }
 }

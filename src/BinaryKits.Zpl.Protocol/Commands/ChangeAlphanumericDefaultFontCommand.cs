@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Change Alphanumeric Default Font<br/>
@@ -7,6 +9,9 @@
     /// </summary>
     public class ChangeAlphanumericDefaultFontCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^CF";
+
         /// <summary>
         /// Specified default font
         /// </summary>
@@ -25,7 +30,7 @@
         /// <summary>
         /// Change Alphanumeric Default Font
         /// </summary>
-        public ChangeAlphanumericDefaultFontCommand() : base("^CF")
+        public ChangeAlphanumericDefaultFontCommand()
         { }
 
         /// <summary>
@@ -42,12 +47,12 @@
         {
             this.SpecifiedDefaultFont = specifiedDefaultFont;
 
-            if (this.ValidateIntParameter(nameof(individualCharacterHeight), individualCharacterHeight, 0, 32000))
+            if (ValidateIntParameter(nameof(individualCharacterHeight), individualCharacterHeight, 0, 32000))
             {
                 this.IndividualCharacterHeight = individualCharacterHeight.Value;
             }
 
-            if (this.ValidateIntParameter(nameof(individualCharacterWidth), individualCharacterWidth, 0, 32000))
+            if (ValidateIntParameter(nameof(individualCharacterWidth), individualCharacterWidth, 0, 32000))
             {
                 this.IndividualCharacterWidth = individualCharacterWidth.Value;
             }
@@ -56,24 +61,31 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.SpecifiedDefaultFont},{this.IndividualCharacterHeight},{this.IndividualCharacterWidth}";
+            return $"{CommandPrefix}{this.SpecifiedDefaultFont},{this.IndividualCharacterHeight},{this.IndividualCharacterWidth}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new ChangeAlphanumericDefaultFontCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
             {
-                this.SpecifiedDefaultFont = zplDataParts[0][0];
+                command.SpecifiedDefaultFont = zplDataParts[0][0];
             }
 
             if (zplDataParts.Length > 1)
             {
                 if (int.TryParse(zplDataParts[1], out var individualCharacterHeight))
                 {
-                    this.IndividualCharacterHeight = individualCharacterHeight;
+                    command.IndividualCharacterHeight = individualCharacterHeight;
                 }
             }
 
@@ -81,9 +93,12 @@
             {
                 if (int.TryParse(zplDataParts[2], out var individualCharacterWidth))
                 {
-                    this.IndividualCharacterWidth = individualCharacterWidth;
+                    command.IndividualCharacterWidth = individualCharacterWidth;
                 }
             }
+
+            return command;
         }
+
     }
 }

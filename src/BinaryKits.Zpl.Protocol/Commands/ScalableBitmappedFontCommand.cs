@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Scalable/Bitmapped Font<br/>
@@ -8,6 +10,9 @@
     /// </summary>
     public class ScalableBitmappedFontCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^A";
+
         /// <summary>
         /// Font name
         /// </summary>
@@ -31,7 +36,7 @@
         /// <summary>
         /// Scalable/Bitmapped Font
         /// </summary>
-        public ScalableBitmappedFontCommand() : base("^A")
+        public ScalableBitmappedFontCommand()
         { }
 
         /// <summary>
@@ -51,12 +56,12 @@
             this.FontName = fontName;
             this.Orientation = orientation;
 
-            if (this.ValidateIntParameter(nameof(characterHeight), characterHeight, 10, 32000))
+            if (ValidateIntParameter(nameof(characterHeight), characterHeight, 10, 32000))
             {
                 this.CharacterHeight = characterHeight.Value;
             }
 
-            if (this.ValidateIntParameter(nameof(width), width, 10, 32000))
+            if (ValidateIntParameter(nameof(width), width, 10, 32000))
             {
                 this.Width = width.Value;
             }
@@ -65,26 +70,35 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.FontName}{this.RenderOrientation(this.Orientation)},{this.CharacterHeight},{this.Width}";
+            return $"{CommandPrefix}{this.FontName}{RenderOrientation(this.Orientation)},{this.CharacterHeight},{this.Width}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            this.FontName = zplCommand[this.CommandPrefix.Length];
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
 
-            var zplDataParts = this.SplitCommand(zplCommand, 1);
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new ScalableBitmappedFontCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
             {
-                this.Orientation = this.ConvertOrientation(zplDataParts[0]);
+                if (zplDataParts[0].Length > 0)
+                {
+                    command.FontName = zplDataParts[0][0];
+                    command.Orientation = ConvertOrientation(zplDataParts[0].Substring(1));
+                }
             }
 
             if (zplDataParts.Length > 1)
             {
                 if (int.TryParse(zplDataParts[1], out var characterHeight))
                 {
-                    this.CharacterHeight = characterHeight;
+                    command.CharacterHeight = characterHeight;
                 }
             }
 
@@ -92,9 +106,12 @@
             {
                 if (int.TryParse(zplDataParts[2], out var width))
                 {
-                    this.Width = width;
+                    command.Width = width;
                 }
             }
+
+            return command;
         }
+
     }
 }

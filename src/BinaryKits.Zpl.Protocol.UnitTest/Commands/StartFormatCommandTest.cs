@@ -3,37 +3,36 @@
 namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
 {
     [TestClass]
-    public class FieldSeperatorCommandTest
+    public class StartFormatCommandTest
     {
         [TestMethod]
         public void ToZpl_Default_Successful()
         {
-            var command = new FieldSeperatorCommand();
+            var command = new StartFormatCommand();
             var zplCommand = command.ToZpl();
-            Assert.AreEqual("^FS", zplCommand);
+            Assert.AreEqual("^XA", zplCommand);
         }
 
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new FieldSeperatorCommand();
-            var isParsable = command.IsCommandParsable("^FS");
+            var isParsable = StartFormatCommand.CanParseCommand("^XA");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new FieldSeperatorCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = StartFormatCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new FieldSeperatorCommand();
-            command.ParseCommand("^FS");
+            var command = CommandBase.ParseCommand("^XA");
+            Assert.IsTrue(command is StartFormatCommand);
         }
+
     }
 }

@@ -53,53 +53,61 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new FieldBlockCommand();
-            var isParsable = command.IsCommandParsable("^FB0,1,0,L,0");
+            var isParsable = FieldBlockCommand.CanParseCommand("^FB0,1,0,L,0");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new FieldBlockCommand();
-            var isParsable = command.IsCommandParsable("^FO10,10");
+            var isParsable = FieldBlockCommand.CanParseCommand("^FO10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new FieldBlockCommand();
-            command.ParseCommand("^FB400,3,-2,C,4");
-            Assert.AreEqual(400, command.WidthOfTextBlockLine);
-            Assert.AreEqual(3, command.MaximumNumberOfLinesInTextBlock);
-            Assert.AreEqual(-2, command.AddOrDeleteSpaceBetweenLines);
-            Assert.AreEqual(TextJustification.Center, command.TextJustification);
-            Assert.AreEqual(4, command.HangingIndentOfTheSecondAndRemainingLines);
+            var command = CommandBase.ParseCommand("^FB400,3,-2,C,4");
+            Assert.IsTrue(command is FieldBlockCommand);
+            if (command is FieldBlockCommand blockCommand)
+            {
+                Assert.AreEqual(400, blockCommand.WidthOfTextBlockLine);
+                Assert.AreEqual(3, blockCommand.MaximumNumberOfLinesInTextBlock);
+                Assert.AreEqual(-2, blockCommand.AddOrDeleteSpaceBetweenLines);
+                Assert.AreEqual(TextJustification.Center, blockCommand.TextJustification);
+                Assert.AreEqual(4, blockCommand.HangingIndentOfTheSecondAndRemainingLines);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new FieldBlockCommand();
-            command.ParseCommand("^FB500");
-            Assert.AreEqual(500, command.WidthOfTextBlockLine);
-            Assert.AreEqual(1, command.MaximumNumberOfLinesInTextBlock);
-            Assert.AreEqual(0, command.AddOrDeleteSpaceBetweenLines);
-            Assert.AreEqual(TextJustification.Left, command.TextJustification);
-            Assert.AreEqual(0, command.HangingIndentOfTheSecondAndRemainingLines);
+            var command = CommandBase.ParseCommand("^FB500");
+            Assert.IsTrue(command is FieldBlockCommand);
+            if (command is FieldBlockCommand blockCommand)
+            {
+                Assert.AreEqual(500, blockCommand.WidthOfTextBlockLine);
+                Assert.AreEqual(1, blockCommand.MaximumNumberOfLinesInTextBlock);
+                Assert.AreEqual(0, blockCommand.AddOrDeleteSpaceBetweenLines);
+                Assert.AreEqual(TextJustification.Left, blockCommand.TextJustification);
+                Assert.AreEqual(0, blockCommand.HangingIndentOfTheSecondAndRemainingLines);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand3_Successful()
         {
-            var command = new FieldBlockCommand();
-            command.ParseCommand("^FB0,3,33");
-            Assert.AreEqual(0, command.WidthOfTextBlockLine);
-            Assert.AreEqual(3, command.MaximumNumberOfLinesInTextBlock);
-            Assert.AreEqual(33, command.AddOrDeleteSpaceBetweenLines);
-            Assert.AreEqual(TextJustification.Left, command.TextJustification);
-            Assert.AreEqual(0, command.HangingIndentOfTheSecondAndRemainingLines);
+            var command = CommandBase.ParseCommand("^FB0,3,33");
+            Assert.IsTrue(command is FieldBlockCommand);
+            if (command is FieldBlockCommand blockCommand)
+            {
+                Assert.AreEqual(0, blockCommand.WidthOfTextBlockLine);
+                Assert.AreEqual(3, blockCommand.MaximumNumberOfLinesInTextBlock);
+                Assert.AreEqual(33, blockCommand.AddOrDeleteSpaceBetweenLines);
+                Assert.AreEqual(TextJustification.Left, blockCommand.TextJustification);
+                Assert.AreEqual(0, blockCommand.HangingIndentOfTheSecondAndRemainingLines);
+            }
         }
+
     }
 }

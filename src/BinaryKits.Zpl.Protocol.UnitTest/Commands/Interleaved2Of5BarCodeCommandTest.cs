@@ -55,89 +55,106 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new Interleaved2Of5BarCodeCommand();
-            var isParsable = command.IsCommandParsable("^B2N,,N,N,Y");
+            var isParsable = Interleaved2Of5BarCodeCommand.CanParseCommand("^B2N,,N,N,Y");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new Interleaved2Of5BarCodeCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = Interleaved2Of5BarCodeCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new Interleaved2Of5BarCodeCommand();
-            command.ParseCommand("^B2N,,N,N,Y");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.IsNull(command.BarCodeHeight);
-            Assert.IsFalse(command.PrintInterpretationLine);
-            Assert.IsFalse(command.PrintInterpretationLineAboveCode);
-            Assert.IsTrue(command.CalculateAndPrintMod10CheckDigit);
+            var command = CommandBase.ParseCommand("^B2N,,N,N,Y");
+            Assert.IsTrue(command is Interleaved2Of5BarCodeCommand);
+            if (command is Interleaved2Of5BarCodeCommand barCodeCommand)
+            {
+                Assert.AreEqual(Orientation.Normal, barCodeCommand.Orientation);
+                Assert.IsNull(barCodeCommand.BarCodeHeight);
+                Assert.IsFalse(barCodeCommand.PrintInterpretationLine);
+                Assert.IsFalse(barCodeCommand.PrintInterpretationLineAboveCode);
+                Assert.IsTrue(barCodeCommand.CalculateAndPrintMod10CheckDigit);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new Interleaved2Of5BarCodeCommand();
-            command.ParseCommand("^B2N,,Y,Y,Y");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.IsNull(command.BarCodeHeight);
-            Assert.IsTrue(command.PrintInterpretationLine);
-            Assert.IsTrue(command.PrintInterpretationLineAboveCode);
-            Assert.IsTrue(command.CalculateAndPrintMod10CheckDigit);
+            var command = CommandBase.ParseCommand("^B2N,,Y,Y,Y");
+            Assert.IsTrue(command is Interleaved2Of5BarCodeCommand);
+            if (command is Interleaved2Of5BarCodeCommand barCodeCommand)
+            {
+                Assert.AreEqual(Orientation.Normal, barCodeCommand.Orientation);
+                Assert.IsNull(barCodeCommand.BarCodeHeight);
+                Assert.IsTrue(barCodeCommand.PrintInterpretationLine);
+                Assert.IsTrue(barCodeCommand.PrintInterpretationLineAboveCode);
+                Assert.IsTrue(barCodeCommand.CalculateAndPrintMod10CheckDigit);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand3_Successful()
         {
-            var command = new Interleaved2Of5BarCodeCommand();
-            command.ParseCommand("^B2N,,N,N,N");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.IsNull(command.BarCodeHeight);
-            Assert.IsFalse(command.PrintInterpretationLine);
-            Assert.IsFalse(command.PrintInterpretationLineAboveCode);
-            Assert.IsFalse(command.CalculateAndPrintMod10CheckDigit);
+            var command = CommandBase.ParseCommand("^B2N,,N,N,N");
+            Assert.IsTrue(command is Interleaved2Of5BarCodeCommand);
+            if (command is Interleaved2Of5BarCodeCommand barCodeCommand)
+            {
+                Assert.AreEqual(Orientation.Normal, barCodeCommand.Orientation);
+                Assert.IsNull(barCodeCommand.BarCodeHeight);
+                Assert.IsFalse(barCodeCommand.PrintInterpretationLine);
+                Assert.IsFalse(barCodeCommand.PrintInterpretationLineAboveCode);
+                Assert.IsFalse(barCodeCommand.CalculateAndPrintMod10CheckDigit);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand4_Successful()
         {
-            var command = new Interleaved2Of5BarCodeCommand();
-            command.ParseCommand("^B2R,20,N,N,N");
-            Assert.AreEqual(Orientation.Rotated90, command.Orientation);
-            Assert.AreEqual(20, command.BarCodeHeight);
-            Assert.IsFalse(command.PrintInterpretationLine);
-            Assert.IsFalse(command.PrintInterpretationLineAboveCode);
-            Assert.IsFalse(command.CalculateAndPrintMod10CheckDigit);
+            var command = CommandBase.ParseCommand("^B2R,20,N,N,N");
+            Assert.IsTrue(command is Interleaved2Of5BarCodeCommand);
+            if (command is Interleaved2Of5BarCodeCommand barCodeCommand)
+            {
+                Assert.AreEqual(Orientation.Rotated90, barCodeCommand.Orientation);
+                Assert.AreEqual(20, barCodeCommand.BarCodeHeight);
+                Assert.IsFalse(barCodeCommand.PrintInterpretationLine);
+                Assert.IsFalse(barCodeCommand.PrintInterpretationLineAboveCode);
+                Assert.IsFalse(barCodeCommand.CalculateAndPrintMod10CheckDigit);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand5_Successful()
         {
-            var command = new Interleaved2Of5BarCodeCommand();
-            command.ParseCommand("^B2B,55");
-            Assert.AreEqual(Orientation.Rotated270, command.Orientation);
-            Assert.AreEqual(55, command.BarCodeHeight);
-            Assert.IsTrue(command.PrintInterpretationLine);
-            Assert.IsFalse(command.PrintInterpretationLineAboveCode);
-            Assert.IsFalse(command.CalculateAndPrintMod10CheckDigit);
+            var command = CommandBase.ParseCommand("^B2B,55");
+            Assert.IsTrue(command is Interleaved2Of5BarCodeCommand);
+            if (command is Interleaved2Of5BarCodeCommand barCodeCommand)
+            {
+                Assert.AreEqual(Orientation.Rotated270, barCodeCommand.Orientation);
+                Assert.AreEqual(55, barCodeCommand.BarCodeHeight);
+                Assert.IsTrue(barCodeCommand.PrintInterpretationLine);
+                Assert.IsFalse(barCodeCommand.PrintInterpretationLineAboveCode);
+                Assert.IsFalse(barCodeCommand.CalculateAndPrintMod10CheckDigit);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand6_Successful()
         {
-            var command = new Interleaved2Of5BarCodeCommand();
-            command.ParseCommand("^B2");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.IsNull(command.BarCodeHeight);
-            Assert.IsTrue(command.PrintInterpretationLine);
-            Assert.IsFalse(command.PrintInterpretationLineAboveCode);
-            Assert.IsFalse(command.CalculateAndPrintMod10CheckDigit);
+            var command = CommandBase.ParseCommand("^B2");
+            Assert.IsTrue(command is Interleaved2Of5BarCodeCommand);
+            if (command is Interleaved2Of5BarCodeCommand barCodeCommand)
+            {
+                Assert.AreEqual(Orientation.Normal, barCodeCommand.Orientation);
+                Assert.IsNull(barCodeCommand.BarCodeHeight);
+                Assert.IsTrue(barCodeCommand.PrintInterpretationLine);
+                Assert.IsFalse(barCodeCommand.PrintInterpretationLineAboveCode);
+                Assert.IsFalse(barCodeCommand.CalculateAndPrintMod10CheckDigit);
+            }
         }
+
     }
 }

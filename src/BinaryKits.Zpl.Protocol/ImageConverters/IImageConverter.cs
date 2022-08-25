@@ -19,5 +19,6 @@
         /// <param name="bytesPerRow"></param>
         /// <returns></returns>
         byte[] ConvertImage(byte[] imageData, int bytesPerRow);
+
     }
 }

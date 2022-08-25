@@ -24,33 +24,38 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new FieldDataCommand();
-            var isParsable = command.IsCommandParsable("^FDTest");
+            var isParsable = FieldDataCommand.CanParseCommand("^FDTest");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new FieldDataCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = FieldDataCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new FieldDataCommand();
-            command.ParseCommand("^FD");
-            Assert.AreEqual(string.Empty, command.Data);
+            var command = CommandBase.ParseCommand("^FD");
+            Assert.IsTrue(command is FieldDataCommand);
+            if (command is FieldDataCommand dataCommand)
+            {
+                Assert.AreEqual(string.Empty, dataCommand.Data);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new FieldDataCommand();
-            command.ParseCommand("^FDtest");
-            Assert.AreEqual("test", command.Data);
+            var command = CommandBase.ParseCommand("^FDtest");
+            Assert.IsTrue(command is FieldDataCommand);
+            if (command is FieldDataCommand dataCommand)
+            {
+                Assert.AreEqual("test", dataCommand.Data);
+            }
         }
+
     }
 }

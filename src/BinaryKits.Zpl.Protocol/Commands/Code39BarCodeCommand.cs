@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Code 39 Bar Code<br/>
@@ -8,6 +10,9 @@
     /// </summary>
     public class Code39BarCodeCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^B3";
+
         /// <summary>
         /// Orientation
         /// </summary>
@@ -36,7 +41,7 @@
         /// <summary>
         /// Code 39 Bar Code
         /// </summary>
-        public Code39BarCodeCommand() : base("^B3")
+        public Code39BarCodeCommand()
         { }
 
         /// <summary>
@@ -60,7 +65,7 @@
 
             this.Mod43CheckDigit = mod43CheckDigit;
 
-            if (this.ValidateIntParameter(nameof(barCodeHeight), barCodeHeight, 1, 32000))
+            if (ValidateIntParameter(nameof(barCodeHeight), barCodeHeight, 1, 32000))
             {
                 this.BarCodeHeight = barCodeHeight.Value;
             }
@@ -72,41 +77,51 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.RenderOrientation(this.Orientation)},{this.RenderBoolean(this.Mod43CheckDigit)},{this.BarCodeHeight},{this.RenderBoolean(this.PrintInterpretationLine)},{this.RenderBoolean(this.PrintInterpretationLineAboveCode)}";
+            return $"{CommandPrefix}{RenderOrientation(this.Orientation)},{RenderBoolean(this.Mod43CheckDigit)},{this.BarCodeHeight},{RenderBoolean(this.PrintInterpretationLine)},{RenderBoolean(this.PrintInterpretationLineAboveCode)}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new Code39BarCodeCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
             {
-                this.Orientation = this.ConvertOrientation(zplDataParts[0]);
+                command.Orientation = ConvertOrientation(zplDataParts[0]);
             }
 
             if (zplDataParts.Length > 1)
             {
-                this.Mod43CheckDigit = this.ConvertBoolean(zplDataParts[1]);
+                command.Mod43CheckDigit = ConvertBoolean(zplDataParts[1]);
             }
 
             if (zplDataParts.Length > 2)
             {
                 if (int.TryParse(zplDataParts[2], out var barCodeHeight))
                 {
-                    this.BarCodeHeight = barCodeHeight;
+                    command.BarCodeHeight = barCodeHeight;
                 }
             }
 
             if (zplDataParts.Length > 3)
             {
-                this.PrintInterpretationLine = this.ConvertBoolean(zplDataParts[3]);
+                command.PrintInterpretationLine = ConvertBoolean(zplDataParts[3]);
             }
 
             if (zplDataParts.Length > 4)
             {
-                this.PrintInterpretationLineAboveCode = this.ConvertBoolean(zplDataParts[4]);
+                command.PrintInterpretationLineAboveCode = ConvertBoolean(zplDataParts[4]);
             }
+
+            return command;
         }
+
     }
 }

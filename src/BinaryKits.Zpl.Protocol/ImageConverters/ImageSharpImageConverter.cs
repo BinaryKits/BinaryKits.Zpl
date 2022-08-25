@@ -88,7 +88,7 @@ namespace BinaryKits.Zpl.Protocol.ImageConverters
                 {
                     var bits = new BitArray(imageData.Skip(bytesPerRow * y).Take(bytesPerRow).ToArray());
 
-                    for (var x = 0 ; x < image.Width; x++)
+                    for (var x = 0; x < image.Width; x++)
                     {
                         if (bits[x])
                         {
@@ -104,5 +104,6 @@ namespace BinaryKits.Zpl.Protocol.ImageConverters
                 }
             }
         }
+
     }
 }

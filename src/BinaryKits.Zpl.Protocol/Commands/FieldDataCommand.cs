@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Field Data<br/>
@@ -7,6 +9,9 @@
     /// </summary>
     public class FieldDataCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^FD";
+
         /// <summary>
         /// Data to be printed
         /// </summary>
@@ -15,7 +20,7 @@
         /// <summary>
         /// Field Data
         /// </summary>
-        public FieldDataCommand() : base("^FD")
+        public FieldDataCommand()
         { }
 
         /// <summary>
@@ -31,13 +36,25 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.Data}";
+            return $"{CommandPrefix}{this.Data}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            this.Data = zplCommand.Substring(this.CommandPrefix.Length);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
         }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new FieldDataCommand();
+            var zplCommandData = zplCommand.Substring(CommandPrefix.Length);
+
+            command.Data = zplCommandData;
+
+            return command;
+        }
+
     }
 }

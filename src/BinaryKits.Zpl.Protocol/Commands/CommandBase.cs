@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace BinaryKits.Zpl.Protocol.Commands
 {
@@ -7,31 +11,22 @@ namespace BinaryKits.Zpl.Protocol.Commands
     /// </summary>
     public abstract class CommandBase
     {
+        private static readonly IEnumerable<(Func<string, bool> canParse, Func<string, CommandBase> parse)> Parsers =
+            typeof(CommandBase).Assembly.GetTypes()
+            .Where(type => type.IsSubclassOf(typeof(CommandBase)))
+            .Select(type => (
+                (Func<string, bool>)Delegate.CreateDelegate(typeof(Func<string, bool>), type.GetMethod("CanParseCommand", BindingFlags.Public | BindingFlags.Static)),
+                (Func<string, CommandBase>)Delegate.CreateDelegate(typeof(Func<string, CommandBase>), type.GetMethod("ParseCommand", BindingFlags.Public | BindingFlags.Static))));
+
+        /// <summary>
+        /// A regex that matches an optional storage location with filename
+        /// </summary>
+        protected static readonly Regex StorageFileNameRegex = new Regex(@"^(\w:)?(.+\..+)$", RegexOptions.Compiled);
+
         /// <summary>
         /// The Command Prefix
         /// </summary>
-        protected string CommandPrefix { get; private set; }
-
-        /// <summary>
-        /// Command Base
-        /// </summary>
-        /// <param name="commandPrefix"></param>
-        public CommandBase(string commandPrefix)
-        {
-            this.CommandPrefix = commandPrefix;
-        }
-
-        /// <summary>
-        /// Split a zpl command in data parts
-        /// </summary>
-        /// <param name="zplCommand"></param>
-        /// <param name="dataStartIndex"></param>
-        /// <returns></returns>
-        protected string[] SplitCommand(string zplCommand, int dataStartIndex = 0)
-        {
-            var zplCommandData = zplCommand.Substring(this.CommandPrefix.Length + dataStartIndex);
-            return zplCommandData.Split(',');
-        }
+        protected static readonly string CommandPrefix;
 
         /// <summary>
         /// Get the Zpl Command
@@ -44,16 +39,26 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="zplCommand"></param>
         /// <returns></returns>
-        public bool IsCommandParsable(string zplCommand)
+        public static bool CanParseCommand(string zplCommand)
         {
-            return zplCommand.StartsWith(this.CommandPrefix, StringComparison.OrdinalIgnoreCase);
+            return Parsers.Any(parser => parser.canParse(zplCommand));
         }
 
         /// <summary>
         /// Parse the Zpl Command
         /// </summary>
         /// <param name="zplCommand"></param>
-        public abstract void ParseCommand(string zplCommand);
+        public static CommandBase ParseCommand(string zplCommand)
+        {
+            var validParser = Parsers.Where(parser => parser.canParse(zplCommand)).SingleOrDefault();
+
+            if (!validParser.Equals(default))
+            {
+                return validParser.parse(zplCommand);
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Validate integer paramter
@@ -63,7 +68,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// <param name="minimumValue"></param>
         /// <param name="maximumValue"></param>
         /// <returns></returns>
-        protected bool ValidateIntParameter(string parameterName, int? number, int minimumValue, int maximumValue)
+        protected static bool ValidateIntParameter(string parameterName, int? number, int minimumValue, int maximumValue)
         {
             if (number.HasValue)
             {
@@ -83,7 +88,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="lineColor"></param>
         /// <returns></returns>
-        protected string RenderLineColor(LineColor lineColor)
+        protected static string RenderLineColor(LineColor lineColor)
         {
             switch (lineColor)
             {
@@ -93,7 +98,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
                     return "W";
             }
 
-            throw new NotImplementedException("Unknown Line Color");
+            throw new ArgumentException("Unknown Line Color");
         }
 
         /// <summary>
@@ -101,7 +106,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public string RenderBoolean(bool value)
+        public static string RenderBoolean(bool value)
         {
             return value ? "Y" : "N";
         }
@@ -111,7 +116,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="orientation"></param>
         /// <returns></returns>
-        protected string RenderOrientation(Orientation orientation)
+        protected static string RenderOrientation(Orientation orientation)
         {
             switch (orientation)
             {
@@ -125,7 +130,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
                     return "B";
             }
 
-            throw new NotImplementedException("Unknown Orientation");
+            throw new ArgumentException("Unknown Orientation");
         }
 
         /// <summary>
@@ -133,7 +138,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="errorCorrectionLevel"></param>
         /// <returns></returns>
-        public string RenderErrorCorrectionLevel(ErrorCorrectionLevel errorCorrectionLevel)
+        public static string RenderErrorCorrectionLevel(ErrorCorrectionLevel errorCorrectionLevel)
         {
             switch (errorCorrectionLevel)
             {
@@ -147,7 +152,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
                     return "L";
             }
 
-            throw new NotImplementedException("Unknown Error Correction Level");
+            throw new ArgumentException("Unknown Error Correction Level");
         }
 
         /// <summary>
@@ -155,7 +160,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="textJustification"></param>
         /// <returns></returns>
-        public string RenderTextJustification(TextJustification textJustification)
+        public static string RenderTextJustification(TextJustification textJustification)
         {
             switch (textJustification)
             {
@@ -169,7 +174,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
                     return "J";
             }
 
-            throw new NotImplementedException("Unknown Text Justification");
+            throw new ArgumentException("Unknown Text Justification");
         }
 
         /// <summary>
@@ -177,7 +182,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool ConvertBoolean(string value)
+        public static bool ConvertBoolean(string value)
         {
             if (value == "Y")
             {
@@ -198,7 +203,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="orientation"></param>
         /// <returns></returns>
-        protected Orientation ConvertOrientation(string orientation)
+        protected static Orientation ConvertOrientation(string orientation)
         {
             switch (orientation)
             {
@@ -221,7 +226,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="errorCorrectionLevel"></param>
         /// <returns></returns>
-        protected ErrorCorrectionLevel ConvertErrorCorrectionLevel(string errorCorrectionLevel)
+        protected static ErrorCorrectionLevel ConvertErrorCorrectionLevel(string errorCorrectionLevel)
         {
             switch (errorCorrectionLevel)
             {
@@ -239,27 +244,5 @@ namespace BinaryKits.Zpl.Protocol.Commands
             return ErrorCorrectionLevel.HighReliability;
         }
 
-        /// <summary>
-        /// Get the index of the specified character on the specified occurrence
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="occurranceToFind"></param>
-        /// <param name="charToFind"></param>
-        /// <returns></returns>
-        protected int IndexOfNthCharacter(string input, int occurranceToFind, char charToFind)
-        {
-            var index = -1;
-            for (var i = 0; i < occurranceToFind; i++)
-            {
-                index = input.IndexOf(charToFind, index + 1);
-
-                if (index == -1)
-                {
-                    break;
-                }
-            }
-
-            return index;
-        }
     }
 }

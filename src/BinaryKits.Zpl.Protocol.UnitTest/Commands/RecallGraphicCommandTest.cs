@@ -32,61 +32,72 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new RecallGraphicCommand();
-            var isParsable = command.IsCommandParsable("^XGR:TEST.PNG");
+            var isParsable = RecallGraphicCommand.CanParseCommand("^XGR:TEST.PNG");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new RecallGraphicCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = RecallGraphicCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new RecallGraphicCommand();
-            command.ParseCommand("^XGR:TEST.PNG");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("TEST.PNG", command.ImageName);
-            Assert.AreEqual(1, command.MagnificationFactorX);
-            Assert.AreEqual(1, command.MagnificationFactorY);
+            var command = CommandBase.ParseCommand("^XGR:TEST.PNG");
+            Assert.IsTrue(command is RecallGraphicCommand);
+            if (command is RecallGraphicCommand recallCommand)
+            {
+                Assert.AreEqual("R:", recallCommand.StorageDevice);
+                Assert.AreEqual("TEST.PNG", recallCommand.ImageName);
+                Assert.AreEqual(1, recallCommand.MagnificationFactorX);
+                Assert.AreEqual(1, recallCommand.MagnificationFactorY);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new RecallGraphicCommand();
-            command.ParseCommand("^XGR:IMAGE.GRF,2");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("IMAGE.GRF", command.ImageName);
-            Assert.AreEqual(2, command.MagnificationFactorX);
-            Assert.AreEqual(1, command.MagnificationFactorY);
+            var command = CommandBase.ParseCommand("^XGIMAGE.GRF,2");
+            Assert.IsTrue(command is RecallGraphicCommand);
+            if (command is RecallGraphicCommand recallCommand)
+            {
+                Assert.AreEqual("R:", recallCommand.StorageDevice);
+                Assert.AreEqual("IMAGE.GRF", recallCommand.ImageName);
+                Assert.AreEqual(2, recallCommand.MagnificationFactorX);
+                Assert.AreEqual(1, recallCommand.MagnificationFactorY);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand3_Successful()
         {
-            var command = new RecallGraphicCommand();
-            command.ParseCommand("^XGR:");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("UNKNOWN.GRF", command.ImageName);
-            Assert.AreEqual(1, command.MagnificationFactorX);
-            Assert.AreEqual(1, command.MagnificationFactorY);
+            var command = CommandBase.ParseCommand("^XGR:");
+            Assert.IsTrue(command is RecallGraphicCommand);
+            if (command is RecallGraphicCommand recallCommand)
+            {
+                Assert.AreEqual("R:", recallCommand.StorageDevice);
+                Assert.AreEqual("UNKNOWN.GRF", recallCommand.ImageName);
+                Assert.AreEqual(1, recallCommand.MagnificationFactorX);
+                Assert.AreEqual(1, recallCommand.MagnificationFactorY);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand4_Successful()
         {
-            var command = new RecallGraphicCommand();
-            command.ParseCommand("^XGR:IMAGE.GRF,3,3");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("IMAGE.GRF", command.ImageName);
-            Assert.AreEqual(3, command.MagnificationFactorX);
-            Assert.AreEqual(3, command.MagnificationFactorY);
+            var command = CommandBase.ParseCommand("^XGR:IMAGE.GRF,3,3");
+            Assert.IsTrue(command is RecallGraphicCommand);
+            if (command is RecallGraphicCommand recallCommand)
+            {
+                Assert.AreEqual("R:", recallCommand.StorageDevice);
+                Assert.AreEqual("IMAGE.GRF", recallCommand.ImageName);
+                Assert.AreEqual(3, recallCommand.MagnificationFactorX);
+                Assert.AreEqual(3, recallCommand.MagnificationFactorY);
+            }
         }
+
     }
 }

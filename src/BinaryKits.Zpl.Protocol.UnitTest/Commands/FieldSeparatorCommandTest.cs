@@ -3,35 +3,35 @@
 namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
 {
     [TestClass]
-    public class FieldReversePrintCommandTest
+    public class FieldSeparatorCommandTest
     {
         [TestMethod]
         public void ToZpl_Default_Successful()
         {
-            var command = new FieldReversePrintCommand();
+            var command = new FieldSeparatorCommand();
             var zplCommand = command.ToZpl();
-            Assert.AreEqual("^FR", zplCommand);
+            Assert.AreEqual("^FS", zplCommand);
         }
 
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var isParsable = FieldReversePrintCommand.CanParseCommand("^FR");
+            var isParsable = FieldSeparatorCommand.CanParseCommand("^FS");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var isParsable = FieldReversePrintCommand.CanParseCommand("^FT10,10");
+            var isParsable = FieldSeparatorCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = CommandBase.ParseCommand("^FR");
-            Assert.IsTrue(command is FieldReversePrintCommand);
+            var command = CommandBase.ParseCommand("^FS");
+            Assert.IsTrue(command is FieldSeparatorCommand);
         }
 
     }

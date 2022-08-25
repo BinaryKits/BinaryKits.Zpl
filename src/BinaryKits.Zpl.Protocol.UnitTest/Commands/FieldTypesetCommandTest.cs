@@ -55,44 +55,52 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new FieldTypesetCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = FieldTypesetCommand.CanParseCommand("^FT10,10");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new FieldTypesetCommand();
-            var isParsable = command.IsCommandParsable("^FO10,10");
+            var isParsable = FieldTypesetCommand.CanParseCommand("^FO10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new FieldTypesetCommand();
-            command.ParseCommand("^FT10,10");
-            Assert.AreEqual(10, command.X);
-            Assert.AreEqual(10, command.Y);
+            var command = CommandBase.ParseCommand("^FT10,10");
+            Assert.IsTrue(command is FieldTypesetCommand);
+            if (command is FieldTypesetCommand typesetCommand)
+            {
+                Assert.AreEqual(10, typesetCommand.X);
+                Assert.AreEqual(10, typesetCommand.Y);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new FieldTypesetCommand();
-            command.ParseCommand("^FT0,20");
-            Assert.AreEqual(0, command.X);
-            Assert.AreEqual(20, command.Y);
+            var command = CommandBase.ParseCommand("^FT0,20");
+            Assert.IsTrue(command is FieldTypesetCommand);
+            if (command is FieldTypesetCommand typesetCommand)
+            {
+                Assert.AreEqual(0, typesetCommand.X);
+                Assert.AreEqual(20, typesetCommand.Y);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommandXisEmpty_Successful()
         {
-            var command = new FieldTypesetCommand();
-            command.ParseCommand("^FT,10");
-            Assert.AreEqual(0, command.X);
-            Assert.AreEqual(10, command.Y);
+            var command = CommandBase.ParseCommand("^FT,10");
+            Assert.IsTrue(command is FieldTypesetCommand);
+            if (command is FieldTypesetCommand typesetCommand)
+            {
+                Assert.AreEqual(0, typesetCommand.X);
+                Assert.AreEqual(10, typesetCommand.Y);
+            }
         }
+
     }
 }

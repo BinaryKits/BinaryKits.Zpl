@@ -9,13 +9,16 @@
         /// Zpl Image Data
         /// </summary>
         public string ZplData { get; set; }
+
         /// <summary>
         /// Binary byte count
         /// </summary>
         public int BinaryByteCount { get; set; }
+
         /// <summary>
         /// Bytes per row
         /// </summary>
         public int BytesPerRow { get; set; }
+
     }
 }

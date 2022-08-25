@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// FieldBlock<br/>
@@ -8,6 +10,9 @@
     /// </summary>
     public class FieldBlockCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^FB";
+
         /// <summary>
         /// Width of text block line
         /// </summary>
@@ -36,7 +41,7 @@
         /// <summary>
         /// Field Block
         /// </summary>
-        public FieldBlockCommand() : base("^FB")
+        public FieldBlockCommand()
         { }
 
         /// <summary>
@@ -57,19 +62,19 @@
         {
             this.WidthOfTextBlockLine = widthOfTextBlockLine;
 
-            if (this.ValidateIntParameter(nameof(maximumNumberOfLinesInTextBlock), maximumNumberOfLinesInTextBlock, 1, 9999))
+            if (ValidateIntParameter(nameof(maximumNumberOfLinesInTextBlock), maximumNumberOfLinesInTextBlock, 1, 9999))
             {
                 this.MaximumNumberOfLinesInTextBlock = maximumNumberOfLinesInTextBlock;
             }
 
-            if (this.ValidateIntParameter(nameof(addOrDeleteSpaceBetweenLines), addOrDeleteSpaceBetweenLines, -9999, 9999))
+            if (ValidateIntParameter(nameof(addOrDeleteSpaceBetweenLines), addOrDeleteSpaceBetweenLines, -9999, 9999))
             {
                 this.AddOrDeleteSpaceBetweenLines = addOrDeleteSpaceBetweenLines;
             }
 
             this.TextJustification = textJustification;
 
-            if (this.ValidateIntParameter(nameof(hangingIndentOfTheSecondAndRemainingLines), hangingIndentOfTheSecondAndRemainingLines, 0, 9999))
+            if (ValidateIntParameter(nameof(hangingIndentOfTheSecondAndRemainingLines), hangingIndentOfTheSecondAndRemainingLines, 0, 9999))
             {
                 this.HangingIndentOfTheSecondAndRemainingLines = hangingIndentOfTheSecondAndRemainingLines;
             }
@@ -78,57 +83,71 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.WidthOfTextBlockLine},{this.MaximumNumberOfLinesInTextBlock},{this.AddOrDeleteSpaceBetweenLines},{this.RenderTextJustification(this.TextJustification)},{this.HangingIndentOfTheSecondAndRemainingLines}";
+            return $"{CommandPrefix}{this.WidthOfTextBlockLine},{this.MaximumNumberOfLinesInTextBlock},{this.AddOrDeleteSpaceBetweenLines},{RenderTextJustification(this.TextJustification)},{this.HangingIndentOfTheSecondAndRemainingLines}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new FieldBlockCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
             {
                 if (int.TryParse(zplDataParts[0], out var widthOfTextBlockLine))
                 {
-                    this.WidthOfTextBlockLine = widthOfTextBlockLine;
+                    command.WidthOfTextBlockLine = widthOfTextBlockLine;
                 }
             }
+
             if (zplDataParts.Length > 1)
             {
                 if (int.TryParse(zplDataParts[1], out var maximumNumberOfLinesInTextBlock))
                 {
-                    this.MaximumNumberOfLinesInTextBlock = maximumNumberOfLinesInTextBlock;
+                    command.MaximumNumberOfLinesInTextBlock = maximumNumberOfLinesInTextBlock;
                 }
             }
+
             if (zplDataParts.Length > 2)
             {
                 if (int.TryParse(zplDataParts[2], out var addOrDeleteSpaceBetweenLines))
                 {
-                    this.AddOrDeleteSpaceBetweenLines = addOrDeleteSpaceBetweenLines;
+                    command.AddOrDeleteSpaceBetweenLines = addOrDeleteSpaceBetweenLines;
                 }
             }
+
             if (zplDataParts.Length > 3)
             {
                 switch (zplDataParts[3])
                 {
                     case "C":
-                        this.TextJustification = TextJustification.Center;
+                        command.TextJustification = TextJustification.Center;
                         break;
                     case "R":
-                        this.TextJustification = TextJustification.Right;
+                        command.TextJustification = TextJustification.Right;
                         break;
                     case "J":
-                        this.TextJustification = TextJustification.Justified;
+                        command.TextJustification = TextJustification.Justified;
                         break;
                 }
             }
+
             if (zplDataParts.Length > 4)
             {
                 if (int.TryParse(zplDataParts[4], out var hangingIndentOfTheSecondAndRemainingLines))
                 {
-                    this.HangingIndentOfTheSecondAndRemainingLines = hangingIndentOfTheSecondAndRemainingLines;
+                    command.HangingIndentOfTheSecondAndRemainingLines = hangingIndentOfTheSecondAndRemainingLines;
                 }
             }
+
+            return command;
         }
+
     }
 }

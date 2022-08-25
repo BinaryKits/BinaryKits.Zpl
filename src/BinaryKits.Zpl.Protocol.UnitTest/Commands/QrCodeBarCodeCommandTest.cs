@@ -17,65 +17,75 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new QrCodeBarCodeCommand();
-            var isParsable = command.IsCommandParsable("^BQN,2,1,Q,7");
+            var isParsable = QrCodeBarCodeCommand.CanParseCommand("^BQN,2,1,Q,7");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new QrCodeBarCodeCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = QrCodeBarCodeCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new QrCodeBarCodeCommand();
-            command.ParseCommand("^BQN");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.AreEqual(2, command.Model);
-            Assert.AreEqual(1, command.MagnificationFactor);
-            Assert.AreEqual(ErrorCorrectionLevel.HighReliability, command.ErrorCorrection);
-            Assert.AreEqual(7, command.MaskValue);
+            var command = CommandBase.ParseCommand("^BQN");
+            Assert.IsTrue(command is QrCodeBarCodeCommand);
+            if (command is QrCodeBarCodeCommand barCodeCommand)
+            {
+                Assert.AreEqual(Orientation.Normal, barCodeCommand.Orientation);
+                Assert.AreEqual(2, barCodeCommand.Model);
+                Assert.AreEqual(1, barCodeCommand.MagnificationFactor);
+                Assert.AreEqual(ErrorCorrectionLevel.HighReliability, barCodeCommand.ErrorCorrection);
+                Assert.AreEqual(7, barCodeCommand.MaskValue);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new QrCodeBarCodeCommand();
-            command.ParseCommand("^BQN,2,1,Q,7");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.AreEqual(2, command.Model);
-            Assert.AreEqual(1, command.MagnificationFactor);
-            Assert.AreEqual(ErrorCorrectionLevel.HighReliability, command.ErrorCorrection);
-            Assert.AreEqual(7, command.MaskValue);
+            var command = CommandBase.ParseCommand("^BQN,2,1,Q,7");
+            Assert.IsTrue(command is QrCodeBarCodeCommand);
+            if (command is QrCodeBarCodeCommand barCodeCommand)
+            {
+                Assert.AreEqual(Orientation.Normal, barCodeCommand.Orientation);
+                Assert.AreEqual(2, barCodeCommand.Model);
+                Assert.AreEqual(1, barCodeCommand.MagnificationFactor);
+                Assert.AreEqual(ErrorCorrectionLevel.HighReliability, barCodeCommand.ErrorCorrection);
+                Assert.AreEqual(7, barCodeCommand.MaskValue);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand3_Successful()
         {
-            var command = new QrCodeBarCodeCommand();
-            command.ParseCommand("^BQN,1,2,M,1");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.AreEqual(1, command.Model);
-            Assert.AreEqual(2, command.MagnificationFactor);
-            Assert.AreEqual(ErrorCorrectionLevel.Standard, command.ErrorCorrection);
-            Assert.AreEqual(1, command.MaskValue);
+            var command = CommandBase.ParseCommand("^BQN,1,2,M,1");
+            Assert.IsTrue(command is QrCodeBarCodeCommand);
+            if (command is QrCodeBarCodeCommand barCodeCommand)
+            {
+                Assert.AreEqual(Orientation.Normal, barCodeCommand.Orientation);
+                Assert.AreEqual(1, barCodeCommand.Model);
+                Assert.AreEqual(2, barCodeCommand.MagnificationFactor);
+                Assert.AreEqual(ErrorCorrectionLevel.Standard, barCodeCommand.ErrorCorrection);
+                Assert.AreEqual(1, barCodeCommand.MaskValue);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_InvalidCommandSetDefaults_Successful()
         {
-            var command = new QrCodeBarCodeCommand();
-            command.ParseCommand("^BQX,1,2,X,1");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.AreEqual(1, command.Model);
-            Assert.AreEqual(2, command.MagnificationFactor);
-            Assert.AreEqual(ErrorCorrectionLevel.HighReliability, command.ErrorCorrection);
-            Assert.AreEqual(1, command.MaskValue);
+            var command = CommandBase.ParseCommand("^BQX,1,2,X,1");
+            Assert.IsTrue(command is QrCodeBarCodeCommand);
+            if (command is QrCodeBarCodeCommand barCodeCommand)
+            {
+                Assert.AreEqual(Orientation.Normal, barCodeCommand.Orientation);
+                Assert.AreEqual(1, barCodeCommand.Model);
+                Assert.AreEqual(2, barCodeCommand.MagnificationFactor);
+                Assert.AreEqual(ErrorCorrectionLevel.HighReliability, barCodeCommand.ErrorCorrection);
+                Assert.AreEqual(1, barCodeCommand.MaskValue);
+            }
         }
     }
 }

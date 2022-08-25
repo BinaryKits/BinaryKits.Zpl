@@ -55,89 +55,106 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new Code39BarCodeCommand();
-            var isParsable = command.IsCommandParsable("^B3N,N,,Y,N");
+            var isParsable = Code39BarCodeCommand.CanParseCommand("^B3N,N,,Y,N");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new Code39BarCodeCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = Code39BarCodeCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new Code39BarCodeCommand();
-            command.ParseCommand("^B3N,N,,Y,N");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.IsFalse(command.Mod43CheckDigit);
-            Assert.IsNull(command.BarCodeHeight);
-            Assert.IsTrue(command.PrintInterpretationLine);
-            Assert.IsFalse(command.PrintInterpretationLineAboveCode);
+            var command = CommandBase.ParseCommand("^B3N,N,,Y,N");
+            Assert.IsTrue(command is Code39BarCodeCommand);
+            if (command is Code39BarCodeCommand code39Command)
+            {
+                Assert.AreEqual(Orientation.Normal, code39Command.Orientation);
+                Assert.IsFalse(code39Command.Mod43CheckDigit);
+                Assert.IsNull(code39Command.BarCodeHeight);
+                Assert.IsTrue(code39Command.PrintInterpretationLine);
+                Assert.IsFalse(code39Command.PrintInterpretationLineAboveCode);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new Code39BarCodeCommand();
-            command.ParseCommand("^B3N,N,,Y,Y");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.IsFalse(command.Mod43CheckDigit);
-            Assert.IsNull(command.BarCodeHeight);
-            Assert.IsTrue(command.PrintInterpretationLine);
-            Assert.IsTrue(command.PrintInterpretationLineAboveCode);
+            var command = CommandBase.ParseCommand("^B3N,N,,Y,Y");
+            Assert.IsTrue(command is Code39BarCodeCommand);
+            if (command is Code39BarCodeCommand code39Command)
+            {
+                Assert.AreEqual(Orientation.Normal, code39Command.Orientation);
+                Assert.IsFalse(code39Command.Mod43CheckDigit);
+                Assert.IsNull(code39Command.BarCodeHeight);
+                Assert.IsTrue(code39Command.PrintInterpretationLine);
+                Assert.IsTrue(code39Command.PrintInterpretationLineAboveCode);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand3_Successful()
         {
-            var command = new Code39BarCodeCommand();
-            command.ParseCommand("^B3N,N,,N,N");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.IsFalse(command.Mod43CheckDigit);
-            Assert.IsNull(command.BarCodeHeight);
-            Assert.IsFalse(command.PrintInterpretationLine);
-            Assert.IsFalse(command.PrintInterpretationLineAboveCode);
+            var command = CommandBase.ParseCommand("^B3N,N,,N,N");
+            Assert.IsTrue(command is Code39BarCodeCommand);
+            if (command is Code39BarCodeCommand code39Command)
+            {
+                Assert.AreEqual(Orientation.Normal, code39Command.Orientation);
+                Assert.IsFalse(code39Command.Mod43CheckDigit);
+                Assert.IsNull(code39Command.BarCodeHeight);
+                Assert.IsFalse(code39Command.PrintInterpretationLine);
+                Assert.IsFalse(code39Command.PrintInterpretationLineAboveCode);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand4_Successful()
         {
-            var command = new Code39BarCodeCommand();
-            command.ParseCommand("^B3R,N,20,N,N");
-            Assert.AreEqual(Orientation.Rotated90, command.Orientation);
-            Assert.IsFalse(command.Mod43CheckDigit);
-            Assert.AreEqual(20, command.BarCodeHeight);
-            Assert.IsFalse(command.PrintInterpretationLine);
-            Assert.IsFalse(command.PrintInterpretationLineAboveCode);
+            var command = CommandBase.ParseCommand("^B3R,N,20,N,N");
+            Assert.IsTrue(command is Code39BarCodeCommand);
+            if (command is Code39BarCodeCommand code39Command)
+            {
+                Assert.AreEqual(Orientation.Rotated90, code39Command.Orientation);
+                Assert.IsFalse(code39Command.Mod43CheckDigit);
+                Assert.AreEqual(20, code39Command.BarCodeHeight);
+                Assert.IsFalse(code39Command.PrintInterpretationLine);
+                Assert.IsFalse(code39Command.PrintInterpretationLineAboveCode);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand5_Successful()
         {
-            var command = new Code39BarCodeCommand();
-            command.ParseCommand("^B3B,,55");
-            Assert.AreEqual(Orientation.Rotated270, command.Orientation);
-            Assert.IsFalse(command.Mod43CheckDigit);
-            Assert.AreEqual(55, command.BarCodeHeight);
-            Assert.IsTrue(command.PrintInterpretationLine);
-            Assert.IsFalse(command.PrintInterpretationLineAboveCode);
+            var command = CommandBase.ParseCommand("^B3B,,55");
+            Assert.IsTrue(command is Code39BarCodeCommand);
+            if (command is Code39BarCodeCommand code39Command)
+            {
+                Assert.AreEqual(Orientation.Rotated270, code39Command.Orientation);
+                Assert.IsFalse(code39Command.Mod43CheckDigit);
+                Assert.AreEqual(55, code39Command.BarCodeHeight);
+                Assert.IsTrue(code39Command.PrintInterpretationLine);
+                Assert.IsFalse(code39Command.PrintInterpretationLineAboveCode);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand6_Successful()
         {
-            var command = new Code39BarCodeCommand();
-            command.ParseCommand("^B3");
-            Assert.AreEqual(Orientation.Normal, command.Orientation);
-            Assert.IsFalse(command.Mod43CheckDigit);
-            Assert.IsNull(command.BarCodeHeight);
-            Assert.IsTrue(command.PrintInterpretationLine);
-            Assert.IsFalse(command.PrintInterpretationLineAboveCode);
+            var command = CommandBase.ParseCommand("^B3");
+            Assert.IsTrue(command is Code39BarCodeCommand);
+            if (command is Code39BarCodeCommand code39Command)
+            {
+                Assert.AreEqual(Orientation.Normal, code39Command.Orientation);
+                Assert.IsFalse(code39Command.Mod43CheckDigit);
+                Assert.IsNull(code39Command.BarCodeHeight);
+                Assert.IsTrue(code39Command.PrintInterpretationLine);
+                Assert.IsFalse(code39Command.PrintInterpretationLineAboveCode);
+            }
         }
+
     }
 }

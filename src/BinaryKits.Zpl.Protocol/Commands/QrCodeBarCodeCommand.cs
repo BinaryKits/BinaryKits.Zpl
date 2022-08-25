@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// QR Code Bar Code<br/>
@@ -13,6 +15,9 @@
     /// </summary>
     public class QrCodeBarCodeCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "^BQ";
+
         /// <summary>
         /// Orientation
         /// </summary>
@@ -43,7 +48,7 @@
         /// <summary>
         /// QR Code Bar Code
         /// </summary>
-        public QrCodeBarCodeCommand() : base("^BQ")
+        public QrCodeBarCodeCommand()
         { }
 
         /// <summary>
@@ -64,19 +69,19 @@
         {
             this.Orientation = orientation;
 
-            if (this.ValidateIntParameter(nameof(model), model, 1, 2))
+            if (ValidateIntParameter(nameof(model), model, 1, 2))
             {
                 this.Model = model;
             }
 
-            if (this.ValidateIntParameter(nameof(magnificationFactor), magnificationFactor, 1, 10))
+            if (ValidateIntParameter(nameof(magnificationFactor), magnificationFactor, 1, 10))
             {
                 this.MagnificationFactor = magnificationFactor;
             }
 
             this.ErrorCorrection = errorCorrection;
 
-            if (this.ValidateIntParameter(nameof(maskValue), maskValue, 0, 7))
+            if (ValidateIntParameter(nameof(maskValue), maskValue, 0, 7))
             {
                 this.MaskValue = maskValue;
             }
@@ -85,24 +90,31 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.RenderOrientation(this.Orientation)},{this.Model},{this.MagnificationFactor},{this.RenderErrorCorrectionLevel(this.ErrorCorrection)},{this.MaskValue}";
+            return $"{CommandPrefix}{RenderOrientation(this.Orientation)},{this.Model},{this.MagnificationFactor},{RenderErrorCorrectionLevel(this.ErrorCorrection)},{this.MaskValue}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new QrCodeBarCodeCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(',');
 
             if (zplDataParts.Length > 0)
             {
-                this.Orientation = this.ConvertOrientation(zplDataParts[0]);
+                command.Orientation = ConvertOrientation(zplDataParts[0]);
             }
 
             if (zplDataParts.Length > 1)
             {
                 if (int.TryParse(zplDataParts[1], out var model))
                 {
-                    this.Model = model;
+                    command.Model = model;
                 }
             }
 
@@ -110,22 +122,25 @@
             {
                 if (int.TryParse(zplDataParts[2], out var magnificationFactor))
                 {
-                    this.MagnificationFactor = magnificationFactor;
+                    command.MagnificationFactor = magnificationFactor;
                 }
             }
 
             if (zplDataParts.Length > 3)
             {
-                this.ErrorCorrection = this.ConvertErrorCorrectionLevel(zplDataParts[3]);
+                command.ErrorCorrection = ConvertErrorCorrectionLevel(zplDataParts[3]);
             }
 
             if (zplDataParts.Length > 4)
             {
                 if (int.TryParse(zplDataParts[4], out var maskValue))
                 {
-                    this.MaskValue = maskValue;
+                    command.MaskValue = maskValue;
                 }
             }
+
+            return command;
         }
+
     }
 }

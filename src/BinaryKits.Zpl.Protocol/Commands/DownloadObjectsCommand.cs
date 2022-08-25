@@ -1,4 +1,6 @@
-﻿namespace BinaryKits.Zpl.Protocol.Commands
+﻿using System;
+
+namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
     /// Download Objects<br/>
@@ -9,6 +11,9 @@
     /// </summary>
     public class DownloadObjectsCommand : CommandBase
     {
+        ///<inheritdoc/>
+        protected static new readonly string CommandPrefix = "~DY";
+
         /// <summary>
         /// Storage device (file location)
         /// </summary>
@@ -47,7 +52,7 @@
         /// <summary>
         /// Download Objects
         /// </summary>
-        public DownloadObjectsCommand() : base("~DY")
+        public DownloadObjectsCommand()
         { }
 
         /// <summary>
@@ -82,46 +87,49 @@
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return $"{this.CommandPrefix}{this.StorageDevice}{this.FileName},{this.FormatDownloadedInDataField},{this.ExtensionOfStoredFile},{this.TotalNumberOfBytesInFile},{this.TotalNumberOfBytesPerRow},{this.Data}";
+            return $"{CommandPrefix}{this.StorageDevice}{this.FileName},{this.FormatDownloadedInDataField},{this.ExtensionOfStoredFile},{this.TotalNumberOfBytesInFile},{this.TotalNumberOfBytesPerRow},{this.Data}";
         }
 
         ///<inheritdoc/>
-        public override void ParseCommand(string zplCommand)
+        public static new bool CanParseCommand(string zplCommand)
         {
-            if (zplCommand.Length <= 4)
-            {
-                return;
-            }
+            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+        }
 
-            this.StorageDevice = zplCommand.Substring(this.CommandPrefix.Length, 2);
-
-            var zplDataParts = this.SplitCommand(zplCommand, 2);
+        ///<inheritdoc/>
+        public static new CommandBase ParseCommand(string zplCommand)
+        {
+            var command = new DownloadObjectsCommand();
+            var zplDataParts = zplCommand.Substring(CommandPrefix.Length).Split(new char[] { ',' }, 6);
 
             if (zplDataParts.Length > 0)
             {
-                var fileName = zplDataParts[0];
-
-                if (!string.IsNullOrEmpty(fileName))
+                var storageFileNameMatch = StorageFileNameRegex.Match(zplDataParts[0]);
+                if (storageFileNameMatch.Success)
                 {
-                    this.FileName = zplDataParts[0];
+                    if (storageFileNameMatch.Groups[1].Success)
+                    {
+                        command.StorageDevice = storageFileNameMatch.Groups[1].Value;
+                    }
+                    command.FileName = storageFileNameMatch.Groups[2].Value;
                 }
             }
 
             if (zplDataParts.Length > 1)
             {
-                this.FormatDownloadedInDataField = zplDataParts[1][0];
+                command.FormatDownloadedInDataField = zplDataParts[1][0];
             }
 
             if (zplDataParts.Length > 2)
             {
-                this.ExtensionOfStoredFile = zplDataParts[2];
+                command.ExtensionOfStoredFile = zplDataParts[2];
             }
 
             if (zplDataParts.Length > 3)
             {
                 if (int.TryParse(zplDataParts[3], out var totalNumberOfBytesInFile))
                 {
-                    this.TotalNumberOfBytesInFile = totalNumberOfBytesInFile;
+                    command.TotalNumberOfBytesInFile = totalNumberOfBytesInFile;
                 }
             }
 
@@ -129,14 +137,17 @@
             {
                 if (int.TryParse(zplDataParts[4], out var totalNumberOfBytesPerRow))
                 {
-                    this.TotalNumberOfBytesPerRow = totalNumberOfBytesPerRow;
+                    command.TotalNumberOfBytesPerRow = totalNumberOfBytesPerRow;
                 }
             }
 
             if (zplDataParts.Length > 5)
             {
-                this.Data = zplDataParts[5];
+                command.Data = zplDataParts[5];
             }
+
+            return command;
         }
+
     }
 }

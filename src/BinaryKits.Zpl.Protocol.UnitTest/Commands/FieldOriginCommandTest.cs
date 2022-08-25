@@ -55,44 +55,52 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new FieldOriginCommand();
-            var isParsable = command.IsCommandParsable("^FO10,10");
+            var isParsable = FieldOriginCommand.CanParseCommand("^FO10,10");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new FieldOriginCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = FieldOriginCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new FieldOriginCommand();
-            command.ParseCommand("^FO10,10");
-            Assert.AreEqual(10, command.X);
-            Assert.AreEqual(10, command.Y);
+            var command = CommandBase.ParseCommand("^FO10,10");
+            Assert.IsTrue(command is FieldOriginCommand);
+            if (command is FieldOriginCommand originCommand)
+            {
+                Assert.AreEqual(10, originCommand.X);
+                Assert.AreEqual(10, originCommand.Y);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new FieldOriginCommand();
-            command.ParseCommand("^FO0,20");
-            Assert.AreEqual(0, command.X);
-            Assert.AreEqual(20, command.Y);
+            var command = CommandBase.ParseCommand("^FO0,20");
+            Assert.IsTrue(command is FieldOriginCommand);
+            if (command is FieldOriginCommand originCommand)
+            {
+                Assert.AreEqual(0, originCommand.X);
+                Assert.AreEqual(20, originCommand.Y);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommandXisEmpty_Successful()
         {
-            var command = new FieldOriginCommand();
-            command.ParseCommand("^FO,10");
-            Assert.AreEqual(0, command.X);
-            Assert.AreEqual(10, command.Y);
+            var command = CommandBase.ParseCommand("^FO,10");
+            Assert.IsTrue(command is FieldOriginCommand);
+            if (command is FieldOriginCommand originCommand)
+            {
+                Assert.AreEqual(0, originCommand.X);
+                Assert.AreEqual(10, originCommand.Y);
+            }
         }
+
     }
 }

@@ -47,57 +47,68 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new ChangeAlphanumericDefaultFontCommand();
-            var isParsable = command.IsCommandParsable("^CFA,9,5");
+            var isParsable = ChangeAlphanumericDefaultFontCommand.CanParseCommand("^CFA,9,5");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new ChangeAlphanumericDefaultFontCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = ChangeAlphanumericDefaultFontCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new ChangeAlphanumericDefaultFontCommand();
-            command.ParseCommand("^CFA,,");
-            Assert.AreEqual('A', command.SpecifiedDefaultFont);
-            Assert.IsNull(command.IndividualCharacterHeight);
-            Assert.IsNull(command.IndividualCharacterWidth);
+            var command = CommandBase.ParseCommand("^CFA,,");
+            Assert.IsTrue(command is ChangeAlphanumericDefaultFontCommand);
+            if (command is ChangeAlphanumericDefaultFontCommand changeAlphaCommand)
+            {
+                Assert.AreEqual('A', changeAlphaCommand.SpecifiedDefaultFont);
+                Assert.IsNull(changeAlphaCommand.IndividualCharacterHeight);
+                Assert.IsNull(changeAlphaCommand.IndividualCharacterWidth);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new ChangeAlphanumericDefaultFontCommand();
-            command.ParseCommand("^CFB,10,20");
-            Assert.AreEqual('B', command.SpecifiedDefaultFont);
-            Assert.AreEqual(10, command.IndividualCharacterHeight);
-            Assert.AreEqual(20, command.IndividualCharacterWidth);
+            var command = CommandBase.ParseCommand("^CFB,10,20");
+            Assert.IsTrue(command is ChangeAlphanumericDefaultFontCommand);
+            if (command is ChangeAlphanumericDefaultFontCommand changeAlphaCommand)
+            {
+                Assert.AreEqual('B', changeAlphaCommand.SpecifiedDefaultFont);
+                Assert.AreEqual(10, changeAlphaCommand.IndividualCharacterHeight);
+                Assert.AreEqual(20, changeAlphaCommand.IndividualCharacterWidth);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand3_Successful()
         {
-            var command = new ChangeAlphanumericDefaultFontCommand();
-            command.ParseCommand("^CFB,,20");
-            Assert.AreEqual('B', command.SpecifiedDefaultFont);
-            Assert.IsNull(command.IndividualCharacterHeight);
-            Assert.AreEqual(20, command.IndividualCharacterWidth);
+            var command = CommandBase.ParseCommand("^CFB,,20");
+            Assert.IsTrue(command is ChangeAlphanumericDefaultFontCommand);
+            if (command is ChangeAlphanumericDefaultFontCommand changeAlphaCommand)
+            {
+                Assert.AreEqual('B', changeAlphaCommand.SpecifiedDefaultFont);
+                Assert.IsNull(changeAlphaCommand.IndividualCharacterHeight);
+                Assert.AreEqual(20, changeAlphaCommand.IndividualCharacterWidth);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand4_Successful()
         {
-            var command = new ChangeAlphanumericDefaultFontCommand();
-            command.ParseCommand("^CFB,500,");
-            Assert.AreEqual('B', command.SpecifiedDefaultFont);
-            Assert.AreEqual(500, command.IndividualCharacterHeight);
-            Assert.IsNull(command.IndividualCharacterWidth);
+            var command = CommandBase.ParseCommand("^CFB,500,");
+            Assert.IsTrue(command is ChangeAlphanumericDefaultFontCommand);
+            if (command is ChangeAlphanumericDefaultFontCommand changeAlphaCommand)
+            {
+                Assert.AreEqual('B', changeAlphaCommand.SpecifiedDefaultFont);
+                Assert.AreEqual(500, changeAlphaCommand.IndividualCharacterHeight);
+                Assert.IsNull(changeAlphaCommand.IndividualCharacterWidth);
+            }
         }
+
     }
 }

@@ -61,53 +61,61 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new DownloadGraphicsCommand();
-            var isParsable = command.IsCommandParsable("~DGR:TEST.GRF,10,5,0000FFFFFFFFFFFFFF00");
+            var isParsable = DownloadGraphicsCommand.CanParseCommand("~DGR:TEST.GRF,10,5,0000FFFFFFFFFFFFFF00");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new DownloadGraphicsCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = DownloadGraphicsCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new DownloadGraphicsCommand();
-            command.ParseCommand("~DGR:TEST.GRF,10,5,0000FFFFFFFFFFFFFF00");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("TEST.GRF", command.ImageName);
-            Assert.AreEqual(10, command.TotalNumberOfBytesInGraphic);
-            Assert.AreEqual(5, command.NumberOfBytesPerRow);
-            Assert.AreEqual("0000FFFFFFFFFFFFFF00", command.Data);
+            var command = CommandBase.ParseCommand("~DGR:TEST.GRF,10,5,0000FFFFFFFFFFFFFF00");
+            Assert.IsTrue(command is DownloadGraphicsCommand);
+            if (command is DownloadGraphicsCommand graphicsCommand)
+            {
+                Assert.AreEqual("R:", graphicsCommand.StorageDevice);
+                Assert.AreEqual("TEST.GRF", graphicsCommand.ImageName);
+                Assert.AreEqual(10, graphicsCommand.TotalNumberOfBytesInGraphic);
+                Assert.AreEqual(5, graphicsCommand.NumberOfBytesPerRow);
+                Assert.AreEqual("0000FFFFFFFFFFFFFF00", graphicsCommand.Data);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new DownloadGraphicsCommand();
-            command.ParseCommand("~DGR:,10,5,0000FFFFFFFFFFFFFF00");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("UNKNOWN.GRF", command.ImageName);
-            Assert.AreEqual(10, command.TotalNumberOfBytesInGraphic);
-            Assert.AreEqual(5, command.NumberOfBytesPerRow);
-            Assert.AreEqual("0000FFFFFFFFFFFFFF00", command.Data);
+            var command = CommandBase.ParseCommand("~DGR:,10,5,0000FFFFFFFFFFFFFF00");
+            Assert.IsTrue(command is DownloadGraphicsCommand);
+            if (command is DownloadGraphicsCommand graphicsCommand)
+            {
+                Assert.AreEqual("R:", graphicsCommand.StorageDevice);
+                Assert.AreEqual("UNKNOWN.GRF", graphicsCommand.ImageName);
+                Assert.AreEqual(10, graphicsCommand.TotalNumberOfBytesInGraphic);
+                Assert.AreEqual(5, graphicsCommand.NumberOfBytesPerRow);
+                Assert.AreEqual("0000FFFFFFFFFFFFFF00", graphicsCommand.Data);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_NoData_Successful()
         {
-            var command = new DownloadGraphicsCommand();
-            command.ParseCommand("~DGR:TEST.GRF");
-            Assert.AreEqual("R:", command.StorageDevice);
-            Assert.AreEqual("TEST.GRF", command.ImageName);
-            Assert.AreEqual(0, command.TotalNumberOfBytesInGraphic);
-            Assert.AreEqual(0, command.NumberOfBytesPerRow);
-            Assert.IsNull(command.Data);
+            var command = CommandBase.ParseCommand("~DGTEST.GRF");
+            Assert.IsTrue(command is DownloadGraphicsCommand);
+            if (command is DownloadGraphicsCommand graphicsCommand)
+            {
+                Assert.AreEqual("R:", graphicsCommand.StorageDevice);
+                Assert.AreEqual("TEST.GRF", graphicsCommand.ImageName);
+                Assert.AreEqual(0, graphicsCommand.TotalNumberOfBytesInGraphic);
+                Assert.AreEqual(0, graphicsCommand.NumberOfBytesPerRow);
+                Assert.IsNull(graphicsCommand.Data);
+            }
         }
+
     }
 }

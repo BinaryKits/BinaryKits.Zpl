@@ -39,47 +39,55 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new BarCodeFieldDefaultCommand();
-            var isParsable = command.IsCommandParsable("^BY2,2.9,10");
+            var isParsable = BarCodeFieldDefaultCommand.CanParseCommand("^BY2,2.9,10");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new BarCodeFieldDefaultCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = BarCodeFieldDefaultCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new BarCodeFieldDefaultCommand();
-            command.ParseCommand("^BY2,2.9,10");
-            Assert.AreEqual(2, command.ModuleWidth);
-            Assert.AreEqual(2.9, command.WideBarToNarrowBarWidthRatio);
-            Assert.AreEqual(10, command.BarCodeHeight);
+            var command = CommandBase.ParseCommand("^BY2,2.9,10");
+            Assert.IsTrue(command is BarCodeFieldDefaultCommand);
+            if (command is BarCodeFieldDefaultCommand barcodeCommand)
+            {
+                Assert.AreEqual(2, barcodeCommand.ModuleWidth);
+                Assert.AreEqual(2.9, barcodeCommand.WideBarToNarrowBarWidthRatio);
+                Assert.AreEqual(10, barcodeCommand.BarCodeHeight);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new BarCodeFieldDefaultCommand();
-            command.ParseCommand("^BY5,2.0,50");
-            Assert.AreEqual(5, command.ModuleWidth);
-            Assert.AreEqual(2.0, command.WideBarToNarrowBarWidthRatio);
-            Assert.AreEqual(50, command.BarCodeHeight);
+            var command = CommandBase.ParseCommand("^BY5,2.0,50");
+            Assert.IsTrue(command is BarCodeFieldDefaultCommand);
+            if (command is BarCodeFieldDefaultCommand barcodeCommand)
+            {
+                Assert.AreEqual(5, barcodeCommand.ModuleWidth);
+                Assert.AreEqual(2.0, barcodeCommand.WideBarToNarrowBarWidthRatio);
+                Assert.AreEqual(50, barcodeCommand.BarCodeHeight);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommandXisEmpty_Successful()
         {
-            var command = new BarCodeFieldDefaultCommand();
-            command.ParseCommand("^BY2,2.9,100");
-            Assert.AreEqual(2, command.ModuleWidth);
-            Assert.AreEqual(2.9, command.WideBarToNarrowBarWidthRatio);
-            Assert.AreEqual(100, command.BarCodeHeight);
+            var command = CommandBase.ParseCommand("^BY2,2.9,100");
+            Assert.IsTrue(command is BarCodeFieldDefaultCommand);
+            if (command is BarCodeFieldDefaultCommand barcodeCommand)
+            {
+                Assert.AreEqual(2, barcodeCommand.ModuleWidth);
+                Assert.AreEqual(2.9, barcodeCommand.WideBarToNarrowBarWidthRatio);
+                Assert.AreEqual(100, barcodeCommand.BarCodeHeight);
+            }
         }
+
     }
 }

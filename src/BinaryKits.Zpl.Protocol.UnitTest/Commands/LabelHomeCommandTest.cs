@@ -55,44 +55,52 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [TestMethod]
         public void IsCommandParsable_ValidCommand_True()
         {
-            var command = new LabelHomeCommand();
-            var isParsable = command.IsCommandParsable("^LH10,10");
+            var isParsable = LabelHomeCommand.CanParseCommand("^LH10,10");
             Assert.IsTrue(isParsable);
         }
 
         [TestMethod]
         public void IsCommandParsable_InvalidCommand_False()
         {
-            var command = new LabelHomeCommand();
-            var isParsable = command.IsCommandParsable("^FT10,10");
+            var isParsable = LabelHomeCommand.CanParseCommand("^FT10,10");
             Assert.IsFalse(isParsable);
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand1_Successful()
         {
-            var command = new LabelHomeCommand();
-            command.ParseCommand("^LH10,10");
-            Assert.AreEqual(10, command.X);
-            Assert.AreEqual(10, command.Y);
+            var command = CommandBase.ParseCommand("^LH10,10");
+            Assert.IsTrue(command is LabelHomeCommand);
+            if (command is LabelHomeCommand homeCommand)
+            {
+                Assert.AreEqual(10, homeCommand.X);
+                Assert.AreEqual(10, homeCommand.Y);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommand2_Successful()
         {
-            var command = new LabelHomeCommand();
-            command.ParseCommand("^LH0,20");
-            Assert.AreEqual(0, command.X);
-            Assert.AreEqual(20, command.Y);
+            var command = CommandBase.ParseCommand("^LH0,20");
+            Assert.IsTrue(command is LabelHomeCommand);
+            if (command is LabelHomeCommand homeCommand)
+            {
+                Assert.AreEqual(0, homeCommand.X);
+                Assert.AreEqual(20, homeCommand.Y);
+            }
         }
 
         [TestMethod]
         public void ParseCommand_ValidCommandXisEmpty_Successful()
         {
-            var command = new LabelHomeCommand();
-            command.ParseCommand("^LH,10");
-            Assert.AreEqual(0, command.X);
-            Assert.AreEqual(10, command.Y);
+            var command = CommandBase.ParseCommand("^LH,10");
+            Assert.IsTrue(command is LabelHomeCommand);
+            if (command is LabelHomeCommand homeCommand)
+            {
+                Assert.AreEqual(0, homeCommand.X);
+                Assert.AreEqual(10, homeCommand.Y);
+            }
         }
+
     }
 }
