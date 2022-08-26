@@ -43,7 +43,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
         public LabelHomeCommand(
             int? x = null,
             int? y = null)
-            : this()
         {
             if (ValidateIntParameter(nameof(x), x, 0, 32000))
             {

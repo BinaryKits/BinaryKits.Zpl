@@ -58,7 +58,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int? borderThickness = null,
             LineColor lineColor = LineColor.Black,
             int? degreeOfCornerrounding = null)
-            : this()
         {
             if (ValidateIntParameter(nameof(borderThickness), borderThickness, 1, 32000))
             {

@@ -28,7 +28,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="data">Data to be printed</param>
         public FieldDataCommand(string data = null)
-            : this()
         {
             this.Data = data;
         }

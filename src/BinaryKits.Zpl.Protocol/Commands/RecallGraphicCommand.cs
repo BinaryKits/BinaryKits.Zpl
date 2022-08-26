@@ -51,7 +51,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             string imageName,
             int magnificationFactorX = 1,
             int magnificationFactorY = 1)
-            : this()
         {
             this.StorageDevice = storageDevice;
             this.ImageName = imageName;

@@ -65,7 +65,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int magnificationFactor = 1,
             ErrorCorrectionLevel errorCorrection = ErrorCorrectionLevel.HighReliability,
             int maskValue = 7)
-            : this()
         {
             this.Orientation = orientation;
 

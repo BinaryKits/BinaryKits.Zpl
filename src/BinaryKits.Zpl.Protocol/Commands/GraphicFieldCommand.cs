@@ -58,7 +58,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int graphicFieldCount = 1,
             int bytesPerRow = 1,
             string data = null)
-            : this()
         {
             this.CompressionType = compressionType;
 

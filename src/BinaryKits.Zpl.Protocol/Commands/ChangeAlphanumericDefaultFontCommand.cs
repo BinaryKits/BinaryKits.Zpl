@@ -43,7 +43,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             char specifiedDefaultFont,
             int? individualCharacterHeight = null,
             int? individualCharacterWidth = null)
-            : this()
         {
             this.SpecifiedDefaultFont = specifiedDefaultFont;
 

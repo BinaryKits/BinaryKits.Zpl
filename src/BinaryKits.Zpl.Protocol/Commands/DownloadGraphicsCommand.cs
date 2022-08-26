@@ -58,7 +58,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int totalNumberOfBytesInGraphic,
             int numberOfBytesPerRow,
             string data)
-            : this()
         {
             this.ValidateDeviceToStoreImage(storageDevice);
 

@@ -45,7 +45,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int moduleWidth,
             double wideBarToNarrowBarWidthRatio,
             int barCodeHeight)
-            : this()
         {
             if (ValidateIntParameter(nameof(moduleWidth), moduleWidth, 1, 10))
             {

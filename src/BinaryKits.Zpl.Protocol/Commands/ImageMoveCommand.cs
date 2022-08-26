@@ -36,7 +36,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
         public ImageMoveCommand(
             string storageDevice,
             string imageName)
-            : this()
         {
             this.StorageDevice = storageDevice;
             this.ImageName = imageName;

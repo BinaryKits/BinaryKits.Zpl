@@ -43,7 +43,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int? circleDiameter = null,
             int? borderThickness = null,
             LineColor lineColor = LineColor.Black)
-            : this()
         {
             if (ValidateIntParameter(nameof(circleDiameter), circleDiameter, 3, 4095))
             {

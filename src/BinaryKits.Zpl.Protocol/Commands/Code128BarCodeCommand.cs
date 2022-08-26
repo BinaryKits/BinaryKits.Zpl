@@ -60,7 +60,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
             bool uccCheckDigit = false)
-            : this()
         {
             this.Orientation = orientation;
 

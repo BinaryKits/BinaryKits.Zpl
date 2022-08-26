@@ -30,7 +30,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         /// <param name="nonPrintingComment">non printing comment</param>
         public CommentCommand(string nonPrintingComment = null)
-            : this()
         {
             this.NonPrintingComment = nonPrintingComment;
         }

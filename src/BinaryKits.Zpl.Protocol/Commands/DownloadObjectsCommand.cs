@@ -73,7 +73,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int totalNumberOfBytesInFile,
             int totalNumberOfBytesPerRow,
             string data)
-            : this()
         {
             this.StorageDevice = storageDevice;
             this.FileName = fileName;

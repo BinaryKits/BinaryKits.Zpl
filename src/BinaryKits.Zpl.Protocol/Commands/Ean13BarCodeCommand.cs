@@ -56,7 +56,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false
             )
-            : this()
         {
             this.Orientation = orientation;
 

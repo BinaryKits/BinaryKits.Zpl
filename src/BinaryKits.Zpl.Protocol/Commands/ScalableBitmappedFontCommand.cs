@@ -51,7 +51,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             Orientation orientation = Orientation.Normal,
             int? characterHeight = 10,
             int? width = 10)
-            : this()
         {
             this.FontName = fontName;
             this.Orientation = orientation;

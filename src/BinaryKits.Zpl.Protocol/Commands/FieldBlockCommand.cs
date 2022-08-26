@@ -58,7 +58,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int addOrDeleteSpaceBetweenLines = 0,
             TextJustification textJustification = TextJustification.Left,
             int hangingIndentOfTheSecondAndRemainingLines = 0)
-            : this()
         {
             this.WidthOfTextBlockLine = widthOfTextBlockLine;
 
