@@ -35,5 +35,6 @@ namespace BinaryKits.Zpl.Protocol.Commands
         {
             return new EndFormatCommand();
         }
+
     }
 }
