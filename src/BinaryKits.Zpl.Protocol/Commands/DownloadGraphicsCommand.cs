@@ -59,33 +59,15 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int numberOfBytesPerRow,
             string data)
         {
-            this.ValidateDeviceToStoreImage(storageDevice);
+            if (ValidateStorageDevice(storageDevice))
+            {
+                this.StorageDevice = storageDevice;
+            }
 
-            this.StorageDevice = storageDevice;
             this.ImageName = imageName;
             this.TotalNumberOfBytesInGraphic = totalNumberOfBytesInGraphic;
             this.NumberOfBytesPerRow = numberOfBytesPerRow;
             this.Data = data;
-        }
-
-        private void ValidateDeviceToStoreImage(string deviceToStoreImage)
-        {
-            if (deviceToStoreImage.Length != 2)
-            {
-                throw new ArgumentException($"Invalid format requires 2 characters", deviceToStoreImage);
-            }
-
-            var allowedDevices = new char[] { 'R', 'E', 'B', 'A' };
-
-            if (!allowedDevices.Contains(deviceToStoreImage[0]))
-            {
-                throw new ArgumentException($"Invalid device letter", deviceToStoreImage);
-            }
-
-            if (deviceToStoreImage[1] != ':')
-            {
-                throw new ArgumentException($"The second character must be a colon", deviceToStoreImage);
-            }
         }
 
         ///<inheritdoc/>

@@ -74,7 +74,11 @@ namespace BinaryKits.Zpl.Protocol.Commands
             int totalNumberOfBytesPerRow,
             string data)
         {
-            this.StorageDevice = storageDevice;
+            if (ValidateStorageDevice(storageDevice))
+            {
+                this.StorageDevice = storageDevice;
+            }
+
             this.FileName = fileName;
             this.FormatDownloadedInDataField = formatDownloadedInDataField;
             this.ExtensionOfStoredFile = extensionOfStoredFile;

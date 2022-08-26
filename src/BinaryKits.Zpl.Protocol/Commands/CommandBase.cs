@@ -84,6 +84,34 @@ namespace BinaryKits.Zpl.Protocol.Commands
         }
 
         /// <summary>
+        /// Validate device to store image
+        /// </summary>
+        /// <param name="storageDevice"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        protected static bool ValidateStorageDevice(string storageDevice)
+        {
+            if (storageDevice.Length != 2)
+            {
+                throw new ArgumentException($"Invalid format requires 2 characters", storageDevice);
+            }
+
+            var allowedDevices = new char[] { 'R', 'E', 'B', 'A' };
+
+            if (!allowedDevices.Contains(storageDevice[0]))
+            {
+                throw new ArgumentException($"Invalid device letter", storageDevice);
+            }
+
+            if (storageDevice[1] != ':')
+            {
+                throw new ArgumentException($"The second character must be a colon", storageDevice);
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Get Zpl char for line color
         /// </summary>
         /// <param name="lineColor"></param>

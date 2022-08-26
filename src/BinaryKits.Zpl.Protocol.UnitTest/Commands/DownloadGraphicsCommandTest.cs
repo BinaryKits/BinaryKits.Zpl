@@ -48,13 +48,6 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidDeviceToStoreImage3_Exception()
         {
-            new DownloadGraphicsCommand("R2", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Constructor_InvalidDeviceToStoreImage4_Exception()
-        {
             new DownloadGraphicsCommand("Z:", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
         }
 
