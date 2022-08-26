@@ -66,6 +66,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
                 {
                     command.StorageDevice = storageFileNameMatch.Groups[1].Value;
                 }
+
                 command.ImageName = storageFileNameMatch.Groups[2].Value;
             }
 

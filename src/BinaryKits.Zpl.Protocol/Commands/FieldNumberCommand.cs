@@ -63,6 +63,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
                 {
                     command.AssignedNumber = int.Parse(fieldNumberDataMatch.Groups[1].Value);
                 }
+
                 if (fieldNumberDataMatch.Groups[2].Success)
                 {
                     command.PromptDisplay = fieldNumberDataMatch.Groups[2].Value;

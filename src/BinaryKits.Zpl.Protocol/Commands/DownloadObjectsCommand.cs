@@ -114,6 +114,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
                     {
                         command.StorageDevice = storageFileNameMatch.Groups[1].Value;
                     }
+
                     command.FileName = storageFileNameMatch.Groups[2].Value;
                 }
             }

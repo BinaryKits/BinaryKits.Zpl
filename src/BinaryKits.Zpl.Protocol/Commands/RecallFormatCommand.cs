@@ -3,15 +3,15 @@
 namespace BinaryKits.Zpl.Protocol.Commands
 {
     /// <summary>
-    /// Download Format<br/>
-    /// The ^DF command saves ZPL II format commands as text strings to be later
-    /// merged using ^XF with variable data.The format to be stored might contain field number
-    /// (^FN) commands to be referenced when recalled.
+    /// Recall Format<br/>
+    /// The ^XF command recalls a stored format to be merged with variable data.
+    /// There can be multiple ^XF commands in one format, and they can be located anywhere within
+    /// the code.
     /// </summary>
-    public class DownloadFormatCommand : CommandBase
+    public class RecallFormatCommand : CommandBase
     {
         ///<inheritdoc/>
-        protected static new readonly string CommandPrefix = "^DF";
+        protected static new readonly string CommandPrefix = "^XF";
 
         /// <summary>
         /// Storage device
@@ -24,17 +24,17 @@ namespace BinaryKits.Zpl.Protocol.Commands
         public string ImageName { get; private set; } = "UNKNOWN.ZPL";
 
         /// <summary>
-        /// Download Format
+        /// Recall Format
         /// </summary>
-        public DownloadFormatCommand()
+        public RecallFormatCommand()
         { }
 
         /// <summary>
-        /// Download Format
+        /// Recall Format
         /// </summary>
         /// <param name="storageDevice">Storage device</param>
         /// <param name="imageName">Image name</param>
-        public DownloadFormatCommand(
+        public RecallFormatCommand(
             string storageDevice,
             string imageName)
         {
@@ -61,7 +61,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
         ///<inheritdoc/>
         public static new CommandBase ParseCommand(string zplCommand)
         {
-            var command = new DownloadFormatCommand();
+            var command = new RecallFormatCommand();
             var zplCommandData = zplCommand.Substring(CommandPrefix.Length);
 
             var storageFileNameMatch = StorageFileNameRegex.Match(zplCommandData);

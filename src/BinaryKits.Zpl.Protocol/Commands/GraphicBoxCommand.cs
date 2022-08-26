@@ -123,10 +123,12 @@ namespace BinaryKits.Zpl.Protocol.Commands
                 if (int.TryParse(zplDataParts[2], out var borderThickness))
                 {
                     command.BorderThickness = borderThickness;
+
                     if (command.BoxWidth < borderThickness)
                     {
                         command.BoxWidth = borderThickness;
                     }
+
                     if (command.BoxHeight < borderThickness)
                     {
                         command.BoxHeight = borderThickness;
