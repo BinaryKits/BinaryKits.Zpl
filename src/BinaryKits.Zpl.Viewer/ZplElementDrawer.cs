@@ -91,7 +91,7 @@ namespace BinaryKits.Zpl.Viewer
                 {
                     if (element is ZplBarcode)
                     {
-                        throw new Exception($"Error on zpl element \"{(element as ZplBarcode).Content}\": {ex.Message}");
+                        throw new Exception($"Error on zpl element \"{(element as ZplBarcode).Content}\": {ex.Message}", ex);
                     }
                     else
                     {
