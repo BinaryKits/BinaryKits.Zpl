@@ -57,6 +57,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^FD123456 ^ FS
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
+            result.Add(RenderModuleWidth());
             result.Add($"^B3{RenderFieldOrientation()},{(Mod43CheckDigit ? "Y" : "N")},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()}");
             result.Add($"^FD{Content}^FS");
 

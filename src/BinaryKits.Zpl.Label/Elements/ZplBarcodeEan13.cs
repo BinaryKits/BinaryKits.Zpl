@@ -54,6 +54,7 @@ namespace BinaryKits.Zpl.Label.Elements
         {
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
+            result.Add(RenderModuleWidth());
             result.Add($"^BE{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()}");
             result.Add($"^FD{Content}^FS");
 
