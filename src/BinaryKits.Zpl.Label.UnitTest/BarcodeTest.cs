@@ -21,7 +21,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,100\n^B3N,N,100,Y,N\n^FD123ABC^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,100\n^BY2\n^B3N,N,100,Y,N\n^FD123ABC^FS\n^XZ", output);
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BCN,100,Y,N\n^FD123ABC^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BY2\n^BCN,100,Y,N\n^FD123ABC^FS\n^XZ", output);
         }
 
         [TestMethod]
@@ -53,7 +53,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BEN,100,Y,N\n^FD123456^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BY2\n^BEN,100,Y,N\n^FD123456^FS\n^XZ", output);
         }
     }
 }
