@@ -53,6 +53,11 @@
             return RenderFieldOrientation(FieldOrientation);
         }
 
+        protected string RenderModuleWidth()
+        {
+            return $"^BY{ModuleWidth}";
+        }
+
         protected bool IsDigitsOnly(string text)
         {
             foreach (char c in text)

@@ -60,6 +60,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^FD123456 ^ FS
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
+            result.Add(RenderModuleWidth());
             result.Add($"^BC{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()}");
             result.Add($"^FD{Content}^FS");
 

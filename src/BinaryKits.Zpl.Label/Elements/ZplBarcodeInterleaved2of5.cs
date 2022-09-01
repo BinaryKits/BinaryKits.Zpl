@@ -60,6 +60,7 @@ namespace BinaryKits.Zpl.Label.Elements
         {
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
+            result.Add(RenderModuleWidth());
             result.Add($"^B2{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{(Mod10CheckDigit ? "Y" : "N")}");
             result.Add($"^FD{Content}^FS");
 
