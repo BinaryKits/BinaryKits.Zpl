@@ -35,21 +35,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
             if (zplDataParts.Length > 3)
             {
-                switch (zplDataParts[3])
-                {
-                    case "H":
-                        errorCorrection = ErrorCorrectionLevel.UltraHighReliability;
-                        break;
-                    case "Q":
-                        errorCorrection = ErrorCorrectionLevel.HighReliability;
-                        break;
-                    case "M":
-                        errorCorrection = ErrorCorrectionLevel.Standard;
-                        break;
-                    case "L":
-                        errorCorrection = ErrorCorrectionLevel.HighDensity;
-                        break;
-                }
+                errorCorrection = this.ConvertErrorCorrectionLevel(zplDataParts[3]);
             }
             if (zplDataParts.Length > 4)
             {

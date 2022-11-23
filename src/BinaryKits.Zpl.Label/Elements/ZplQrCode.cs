@@ -11,7 +11,10 @@ namespace BinaryKits.Zpl.Label.Elements
         public int MagnificationFactor { get; private set; }
 
         public ErrorCorrectionLevel ErrorCorrectionLevel { get; private set; }
+
         public int MaskValue { get; private set; }
+
+        public FieldOrientation FieldOrientation { get; protected set; }
 
         /// <summary>
         /// Zpl QrCode
@@ -30,14 +33,22 @@ namespace BinaryKits.Zpl.Label.Elements
             int model = 2,
             int magnificationFactor = 2,
             ErrorCorrectionLevel errorCorrectionLevel = ErrorCorrectionLevel.HighReliability,
-            int maskValue = 7)
-            : base(positionX, positionY)
+            int maskValue = 7,
+            FieldOrientation fieldOrientation = FieldOrientation.Normal,
+            bool bottomToTop = false)
+            : base(positionX, positionY, bottomToTop)
         {
             Content = content;
             Model = model;
             MagnificationFactor = magnificationFactor;
             ErrorCorrectionLevel = errorCorrectionLevel;
             MaskValue = maskValue;
+            FieldOrientation = fieldOrientation;
+        }
+
+        protected string RenderFieldOrientation()
+        {
+            return RenderFieldOrientation(FieldOrientation);
         }
 
         ///<inheritdoc/>
@@ -48,7 +59,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^ FDMM,AAC - 42 ^ FS
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
-            result.Add($"^BQN,{Model},{context.Scale(MagnificationFactor)},{RenderErrorCorrectionLevel(ErrorCorrectionLevel)},{MaskValue}");
+            result.Add($"^BQ{RenderFieldOrientation()},{Model},{context.Scale(MagnificationFactor)},{RenderErrorCorrectionLevel(ErrorCorrectionLevel)},{MaskValue}");
             result.Add($"^FD{RenderErrorCorrectionLevel(ErrorCorrectionLevel)}A,{Content}^FS");
 
             return result;

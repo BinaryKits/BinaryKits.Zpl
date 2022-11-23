@@ -7,6 +7,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
     {
         public Func<string, SKTypeface> FontLoader { get; set; } = DefaultFontLoader;
 
+        public SKEncodedImageFormat RenderFormat { get; set; } = SKEncodedImageFormat.Png;
+
+        public int RenderQuality { get; set; } = 80;
+
         public static Func<string, SKTypeface> DefaultFontLoader = fontName => {
             var typeface = SKTypeface.Default;
             if (fontName == "0")

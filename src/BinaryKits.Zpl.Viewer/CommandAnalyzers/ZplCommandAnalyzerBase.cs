@@ -29,19 +29,26 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         protected FieldOrientation ConvertFieldOrientation(string fieldOrientation)
         {
-            switch (fieldOrientation)
+            return fieldOrientation switch
             {
-                case "N":
-                    return FieldOrientation.Normal;
-                case "R":
-                    return FieldOrientation.Rotated90;
-                case "I":
-                    return FieldOrientation.Rotated180;
-                case "B":
-                    return FieldOrientation.Rotated270;
-            }
+                "N" => FieldOrientation.Normal,
+                "R" => FieldOrientation.Rotated90,
+                "I" => FieldOrientation.Rotated180,
+                "B" => FieldOrientation.Rotated270,
+                 _  => FieldOrientation.Normal,
+            };
+        }
 
-            return FieldOrientation.Normal;
+        protected ErrorCorrectionLevel ConvertErrorCorrectionLevel(string errorCorrection)
+        {
+            return errorCorrection switch
+            {
+                "H" => ErrorCorrectionLevel.UltraHighReliability,
+                "Q" => ErrorCorrectionLevel.HighReliability,
+                "M" => ErrorCorrectionLevel.Standard,
+                "L" => ErrorCorrectionLevel.HighDensity,
+                 _  => ErrorCorrectionLevel.Standard,
+            };
         }
 
         protected bool ConvertBoolean(string yesOrNo, string defaultValue = "N")

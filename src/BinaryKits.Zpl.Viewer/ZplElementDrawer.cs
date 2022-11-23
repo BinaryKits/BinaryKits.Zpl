@@ -95,12 +95,12 @@ namespace BinaryKits.Zpl.Viewer
                     }
                     else
                     {
-                        throw ex;
+                        throw;
                     }
                 }
             }
 
-            using var data = skBitmap.Encode(SKEncodedImageFormat.Png, 80);
+            using var data = skBitmap.Encode(_drawerOptions.RenderFormat, _drawerOptions.RenderQuality);
             return data.ToArray();
         }
 
