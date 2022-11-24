@@ -1,9 +1,9 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
-using QRCoder;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
+using SkiaSharp;
+using System.Collections.Generic;
+using ZXing;
+using ZXing.QrCode;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -24,31 +24,33 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = qrcode.PositionX;
                 float y = qrcode.PositionY;
 
-                // Enulate ZPL printer: quiet zone is rendered vertically, is not rendered horizontally
-                int xOffset = 4 * qrcode.MagnificationFactor;
+                int verticalQuietZone = 10;
 
-                // TODO: qrcode.MaskValue is unused. The QRCoder library chooses the "best" mask by heuristic. see: QRCoder.QRCodeGenerator.ModulePlacer.Score
-                using var qrGenerator = new QRCodeGenerator();
-                using var qrCodeData = qrGenerator.CreateQrCode(qrcode.Content, this.CovertErrorCorrection(qrcode.ErrorCorrectionLevel));
-                using var qrCode = new QRCode(qrCodeData);
+                var writer = new QRCodeWriter();
+                var hints = new Dictionary<EncodeHintType, object> {
+                    { EncodeHintType.ERROR_CORRECTION, CovertErrorCorrection(qrcode.ErrorCorrectionLevel) },
+                    { EncodeHintType.QR_MASK_PATTERN, qrcode.MaskValue },
+                    { EncodeHintType.CHARACTER_SET, "UTF-8" },
+                    { EncodeHintType.MARGIN, 0 }
+                };
+                var result = writer.encode(qrcode.Content, BarcodeFormat.QR_CODE, 0, 0, hints);
 
-                using Bitmap qrCodeImage = qrCode.GetGraphic(qrcode.MagnificationFactor, Color.Black, Color.Transparent, drawQuietZones: true);
-                using var ms = new MemoryStream();
-                qrCodeImage.Save(ms, ImageFormat.Png);
+                using var resizedImage = this.BitMatrixToSKBitmap(result, qrcode.MagnificationFactor);
 
-                this.DrawBarcode(ms.ToArray(), qrCodeImage.Height, qrCodeImage.Width - 2 * xOffset, qrcode.FieldOrigin != null, x - xOffset, y, 0, qrcode.FieldOrientation);
+                var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                this.DrawBarcode(png, resizedImage.Height + 2 * verticalQuietZone, resizedImage.Width, qrcode.FieldOrigin != null, x, y + verticalQuietZone, 0, qrcode.FieldOrientation);
             }
         }
 
-        private QRCodeGenerator.ECCLevel CovertErrorCorrection(ErrorCorrectionLevel errorCorrectionLevel)
+        private ZXing.QrCode.Internal.ErrorCorrectionLevel CovertErrorCorrection(ErrorCorrectionLevel errorCorrectionLevel)
         {
             return errorCorrectionLevel switch
             {
-                ErrorCorrectionLevel.UltraHighReliability => QRCodeGenerator.ECCLevel.H,
-                ErrorCorrectionLevel.HighReliability => QRCodeGenerator.ECCLevel.Q,
-                ErrorCorrectionLevel.Standard => QRCodeGenerator.ECCLevel.M,
-                ErrorCorrectionLevel.HighDensity => QRCodeGenerator.ECCLevel.L,
-                _ => QRCodeGenerator.ECCLevel.M,
+                ErrorCorrectionLevel.UltraHighReliability => ZXing.QrCode.Internal.ErrorCorrectionLevel.H,
+                ErrorCorrectionLevel.HighReliability => ZXing.QrCode.Internal.ErrorCorrectionLevel.Q,
+                ErrorCorrectionLevel.Standard => ZXing.QrCode.Internal.ErrorCorrectionLevel.M,
+                ErrorCorrectionLevel.HighDensity => ZXing.QrCode.Internal.ErrorCorrectionLevel.L,
+                _ => ZXing.QrCode.Internal.ErrorCorrectionLevel.M
             };
         }
     }

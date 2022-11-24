@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <PackageReference Include="BarcodeLib" Version="2.4.0" />
-    <PackageReference Include="QRCoder" Version="1.4.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     <PackageReference Include="SkiaSharp" Version="2.80.3" />
     <PackageReference Include="ZXing.Net" Version="0.16.8" />
