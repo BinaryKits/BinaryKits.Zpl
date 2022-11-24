@@ -26,6 +26,8 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="magnificationFactor">Size of the QR code, 1 on 150 dpi printers, 2 on 200 dpi printers, 3 on 300 dpi printers, 6 on 600 dpi printers</param>
         /// <param name="errorCorrectionLevel"></param>
         /// <param name="maskValue">0-7, (default: 7)</param>
+        ///  <param name="fieldOrientation"></param>
+        /// <param name="bottomToTop"></param>
         public ZplQrCode(
             string content,
             int positionX,

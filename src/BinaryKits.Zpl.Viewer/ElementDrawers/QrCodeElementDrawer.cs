@@ -16,7 +16,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        ///<todo
         public override void Draw(ZplElementBase element)
         {
             if (element is ZplQrCode qrcode)
