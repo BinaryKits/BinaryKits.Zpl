@@ -1,14 +1,13 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
-using QRCoder;
 using SkiaSharp;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
+using System.Collections.Generic;
+using ZXing;
+using ZXing.QrCode;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
-    public class QrCodeElementDrawer : ElementDrawerBase
+    public class QrCodeElementDrawer : BarcodeDrawerBase
     {
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
@@ -24,35 +23,34 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = qrcode.PositionX;
                 float y = qrcode.PositionY;
 
-                using var qrGenerator = new QRCodeGenerator();
-                using var qrCodeData = qrGenerator.CreateQrCode(qrcode.Content, this.Convert(qrcode.ErrorCorrectionLevel));
-                using var qrCode = new QRCode(qrCodeData);
+                int verticalQuietZone = 10;
 
-                using Bitmap qrCodeImage = qrCode.GetGraphic(qrcode.MagnificationFactor, Color.Black, Color.Transparent, drawQuietZones: false);
-                using (var ms = new MemoryStream())
-                {
-                    qrCodeImage.Save(ms, ImageFormat.Png);
-                    var imageData = ms.ToArray();
-                    this._skCanvas.DrawBitmap(SKBitmap.Decode(imageData), x, y);
-                }
+                var writer = new QRCodeWriter();
+                var hints = new Dictionary<EncodeHintType, object> {
+                    { EncodeHintType.ERROR_CORRECTION, CovertErrorCorrection(qrcode.ErrorCorrectionLevel) },
+                    { EncodeHintType.QR_MASK_PATTERN, qrcode.MaskValue },
+                    { EncodeHintType.CHARACTER_SET, "UTF-8" },
+                    { EncodeHintType.MARGIN, 0 }
+                };
+                var result = writer.encode(qrcode.Content, BarcodeFormat.QR_CODE, 0, 0, hints);
+
+                using var resizedImage = this.BitMatrixToSKBitmap(result, qrcode.MagnificationFactor);
+
+                var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                this.DrawBarcode(png, resizedImage.Height + 2 * verticalQuietZone, resizedImage.Width, qrcode.FieldOrigin != null, x, y + verticalQuietZone, 0, qrcode.FieldOrientation);
             }
         }
 
-        private QRCodeGenerator.ECCLevel Convert(ErrorCorrectionLevel errorCorrectionLevel)
+        private ZXing.QrCode.Internal.ErrorCorrectionLevel CovertErrorCorrection(ErrorCorrectionLevel errorCorrectionLevel)
         {
-            switch (errorCorrectionLevel)
+            return errorCorrectionLevel switch
             {
-                case ErrorCorrectionLevel.UltraHighReliability:
-                    return QRCodeGenerator.ECCLevel.H;
-                case ErrorCorrectionLevel.HighReliability:
-                    return QRCodeGenerator.ECCLevel.Q;
-                case ErrorCorrectionLevel.Standard:
-                    return QRCodeGenerator.ECCLevel.M;
-                case ErrorCorrectionLevel.HighDensity:
-                    return QRCodeGenerator.ECCLevel.Q;
-            }
-
-            return QRCodeGenerator.ECCLevel.Q;
+                ErrorCorrectionLevel.UltraHighReliability => ZXing.QrCode.Internal.ErrorCorrectionLevel.H,
+                ErrorCorrectionLevel.HighReliability => ZXing.QrCode.Internal.ErrorCorrectionLevel.Q,
+                ErrorCorrectionLevel.Standard => ZXing.QrCode.Internal.ErrorCorrectionLevel.M,
+                ErrorCorrectionLevel.HighDensity => ZXing.QrCode.Internal.ErrorCorrectionLevel.L,
+                _ => ZXing.QrCode.Internal.ErrorCorrectionLevel.M
+            };
         }
     }
 }

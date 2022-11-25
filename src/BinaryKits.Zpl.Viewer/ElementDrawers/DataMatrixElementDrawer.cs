@@ -29,19 +29,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 };
                 var result = writer.encode(dataMatrix.Content, BarcodeFormat.DATA_MATRIX, 0, 0, hints);
 
-                int size = dataMatrix.Height;
-                using var image = new SKBitmap(result.Width, result.Height);
-
-                for (int row = 0; row < result.Height; row++)
-                {
-                    for (int col = 0; col < result.Width; col++)
-                    {
-                        var color = result[col, row] ? SKColors.Black : SKColors.White;
-                        image.SetPixel(col, row, color);
-                    }
-                }
-
-                using var resizedImage = image.Resize(new SKSizeI(image.Width * size, image.Height * size), SKFilterQuality.None);
+                using var resizedImage = this.BitMatrixToSKBitmap(result, dataMatrix.Height);
 
                 var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, resizedImage.Height, resizedImage.Width, dataMatrix.FieldOrigin != null, x, y, 0, dataMatrix.FieldOrientation);

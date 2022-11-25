@@ -1,6 +1,8 @@
 using SkiaSharp;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using ZXing.Common;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -10,7 +12,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             using (var memoryStream = new MemoryStream())
             {
-                image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+                image.Save(memoryStream, ImageFormat.Png);
                 return memoryStream.ToArray();
             }
         }
@@ -72,8 +74,24 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     this._skCanvas.SetMatrix(matrix);
                 }
 
-                this._skCanvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y );
+                this._skCanvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y);
             }
+        }
+
+        protected SKBitmap BitMatrixToSKBitmap(BitMatrix matrix, int pixelScale)
+        {
+            using var image = new SKBitmap(matrix.Width, matrix.Height);
+
+            for (int row = 0; row < matrix.Height; row++)
+            {
+                for (int col = 0; col < matrix.Width; col++)
+                {
+                    var color = matrix[col, row] ? SKColors.Black : SKColors.Transparent;
+                    image.SetPixel(col, row, color);
+                }
+            }
+
+            return image.Resize(new SKSizeI(image.Width * pixelScale, image.Height * pixelScale), SKFilterQuality.None);
         }
     }
 }
