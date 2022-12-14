@@ -18,7 +18,7 @@ namespace BinaryKits.Zpl.Label.ImageConverters
         {
             var zplBuilder = new StringBuilder();
 
-            using (Image<Rgba32> image = (Image<Rgba32>)Image.Load(imageData))
+            using (Image<Rgba32> image = Image.Load(imageData).CloneAs<Rgba32>())
             {
                 var bytesPerRow = image.Width % 8 > 0
                     ? image.Width / 8 + 1
@@ -94,7 +94,7 @@ namespace BinaryKits.Zpl.Label.ImageConverters
                 {
                     var bits = new BitArray(imageData.Skip(bytesPerRow * y).Take(bytesPerRow).ToArray());
 
-                    for (var x = 0 ; x < image.Width; x++)
+                    for (var x = 0; x < image.Width; x++)
                     {
                         if (bits[x])
                         {
