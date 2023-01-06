@@ -29,13 +29,13 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         protected FieldOrientation ConvertFieldOrientation(string fieldOrientation)
         {
-            return fieldOrientation switch
+            return fieldOrientation.Trim() switch
             {
                 "N" => FieldOrientation.Normal,
                 "R" => FieldOrientation.Rotated90,
                 "I" => FieldOrientation.Rotated180,
                 "B" => FieldOrientation.Rotated270,
-                 _  => FieldOrientation.Normal,
+                _ => FieldOrientation.Normal,
             };
         }
 
@@ -47,7 +47,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 "Q" => ErrorCorrectionLevel.HighReliability,
                 "M" => ErrorCorrectionLevel.Standard,
                 "L" => ErrorCorrectionLevel.HighDensity,
-                 _  => ErrorCorrectionLevel.Standard,
+                _ => ErrorCorrectionLevel.Standard,
             };
         }
 
