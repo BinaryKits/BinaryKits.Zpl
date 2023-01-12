@@ -24,7 +24,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         protected string[] SplitCommand(string zplCommand, int dataStartIndex = 0)
         {
             var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length + dataStartIndex);
-            return zplCommandData.Split(',');
+            return zplCommandData.TrimStart().Split(',');
         }
 
         protected FieldOrientation ConvertFieldOrientation(string fieldOrientation)
