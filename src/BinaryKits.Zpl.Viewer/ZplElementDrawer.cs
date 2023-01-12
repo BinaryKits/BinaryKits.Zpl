@@ -57,7 +57,7 @@ namespace BinaryKits.Zpl.Viewer
 
             using var skBitmap = new SKBitmap(labelImageWidth, labelImageHeight);
             using var skCanvas = new SKCanvas(skBitmap);
-            skCanvas.Clear(SKColors.White);
+            skCanvas.Clear(SKColors.Transparent);
 
             foreach (var element in elements)
             {
@@ -114,18 +114,22 @@ namespace BinaryKits.Zpl.Viewer
             for (int i = 0; i < total; i++)
             {
                 // RGBA8888
-                int alphaByte = (i << 2) + 3;
-                if (invertBytes[alphaByte] == 0)
+                int rLoc = (i << 2);
+                int gLoc = (i << 2) + 1;
+                int bLoc = (i << 2) + 2;
+                int aLoc = (i << 2) + 3;
+                if (invertBytes[aLoc] == 0)
                 {
                     continue;
                 }
 
                 // Set color
-                var targetColor = SKColors.White;
-                if (originalBytes[alphaByte - 1] == 255)
-                {
-                    targetColor = SKColors.Black;
-                }
+                byte rByte = (byte)(originalBytes[rLoc] ^ invertBytes[rLoc]);
+                byte gByte = (byte)(originalBytes[gLoc] ^ invertBytes[gLoc]);
+                byte bByte = (byte)(originalBytes[bLoc] ^ invertBytes[bLoc]);
+                byte aByte = (byte)(originalBytes[aLoc] ^ invertBytes[aLoc]);
+
+                var targetColor = new SKColor(rByte, gByte, bByte, aByte);
 
                 int x, y;
                 y = Math.DivRem(i, skBitmapInvert.Width, out x);
