@@ -11,7 +11,7 @@
 
 ^FX QR-Code
 ^FO30,120
-^BQN,2,8,L,0
+^BQN,2,8
 ^FDPackage 4 in the Storage Box 2B^FS
 
 ^FX Box Info
