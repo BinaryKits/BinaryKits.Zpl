@@ -29,7 +29,7 @@
             <div class="col-4">
                 <textarea class="form-control" v-model="zplData" rows="20" cols="100"></textarea>
                 <div class="mt-1 mb-1">
-                    Labelformat: 
+                    Labelformat:
                     <select v-model="selectedLabelFormatIndex" @change="labelFormatChange">
                         <option v-for="(labelFormat, index) in labelFormats" :key="index" :value="index">{{ labelFormat.width }} mm x {{ labelFormat.height }} mm</option>
                     </select>
@@ -39,6 +39,12 @@
                     <input type="text" v-model.number="printDensityDpmm" style="width: 40px" /> dpmm ({{dpi}} dpi)<br />
                 </div>
                 <button type="button" class="btn btn-primary" @click="render">Render</button>
+                <div>
+                    <hr />
+                    <input type="checkbox" id="overlayCheckbox" v-model="showLabelaryOverlay" @change="renderOverlay" /> <label for="overlayCheckbox">Show labelary.com Overlay*</label>
+                    <br />
+                    <span class="small">* labelary.com is a third-party service, which may or may not respect your privacy. It is recommended to avoid sending genuine data.</span>
+                </div>
                 <hr />
                 Printer IpAddress:<br /><input type="text" v-model="printerIpAddress" style="width: 300px" class="mr-1" />
                 <button type="button" class="btn btn-primary" @click="print">Print</button>
@@ -49,8 +55,8 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                 </div>
-                <div v-else>
-                    <div v-if="renderResponse">
+                <div v-else class="position-relative">
+                    <div v-if="renderResponse" class="position-absolute">
                         <div v-for="(labelInfo, index) in renderResponse.labels" :key="index">
                             <img :src="`data:image/png;base64,${labelInfo.imageBase64}`" class="img-fluid" style="border:1px solid #ccc" />
                         </div>
@@ -62,10 +68,15 @@
                                 </li>
                             </ul>
                         </div>
+                        <div v-if="renderError" class="alert alert-warning mt-1" role="alert">
+                            <h4>Label rendering error</h4>
+                            <pre>{{ renderError }}</pre>
+                        </div>
                     </div>
-                    <div v-if="renderError" class="alert alert-warning mt-1" role="alert">
-                        <h4>Label rendering error</h4>
-                        <pre>{{ renderError }}</pre>
+                    <div v-if="overlayResponse" class="position-absolute">
+                        <div v-for="(labelInfo, index) in overlayResponse.labels" :key="index">
+                            <img :src="`data:image/png;base64,${labelInfo.imageBase64}`" class="img-fluid" style="border:1px solid #ccc" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,7 +85,7 @@
 
     <style>
         .list-group-item {
-            padding:4px;
+            padding: 4px;
         }
     </style>
 
@@ -103,7 +114,9 @@
                             width: 54,
                             height: 86
                         }
-                    ]
+                    ],
+                    showLabelaryOverlay: false,
+                    overlayResponse: null
                 }
             },
             computed: {
@@ -117,7 +130,7 @@
                     return (Math.round(this.printDensityDpmm * this.inch2mm))
                 }
             },
-            async created () {
+            async created() {
                 await this.loadLabelData()
                 await this.changeZplData(this.templateLabels[0].content)
             },
@@ -144,6 +157,9 @@
                     this.renderError = null
                     try {
                         this.loadingPreview = true
+                        this.renderResponse = null
+                        this.overlayResponse = null
+                        this.renderOverlay()
                         const payload = {
                             zplData: this.zplData,
                             printDensityDpmm: this.printDensityDpmm,
@@ -152,13 +168,30 @@
                         }
                         const response = await axios.post('api/v1/viewer', payload)
                         this.renderResponse = response.data
-                    } catch (err) {
+                    } catch(err) {
                         this.renderError = err.response.data
-                        this.renderResponse = null
                         console.error(this.renderError)
                     }
                     finally {
                         this.loadingPreview = false
+                    }
+                },
+                async renderOverlay() {
+                    if(this.showLabelaryOverlay) {
+                        try {
+                            const payload = {
+                                zplData: this.zplData,
+                                printDensityDpmm: this.printDensityDpmm,
+                                labelWidth: this.labelWidth,
+                                labelHeight: this.labelHeight
+                            }
+                            const response = await axios.post('api/v1/overlay', payload)
+                            this.overlayResponse = response.data
+                        } catch(err) {
+                            console.error(err)
+                        }
+                    } else {
+                        this.overlayResponse = null
                     }
                 },
                 async print() {
@@ -167,7 +200,7 @@
                         printerIpAddress: this.printerIpAddress
                     }
                     const response = await axios.post('api/v1/print', payload)
-                    if (response.status !== 200) {
+                    if(response.status !== 200) {
                         alert('Cannot print')
                     }
                 }

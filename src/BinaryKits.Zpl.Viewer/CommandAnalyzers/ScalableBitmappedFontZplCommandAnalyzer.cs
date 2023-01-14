@@ -14,8 +14,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var zplDataParts = this.SplitCommand(zplCommand, 1);
 
             var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
-            var fontHeight = 0;
-            var fontWidth = 0;
+            var fontHeight = this.VirtualPrinter.FontHeight;
+            var fontWidth = this.VirtualPrinter.FontWidth;
             if (zplDataParts.Length > 1)
             {
                 _ = int.TryParse(zplDataParts[1], out fontHeight);

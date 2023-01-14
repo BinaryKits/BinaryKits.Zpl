@@ -53,7 +53,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 {
                     text = text.ReplaceHexEscapes();
                 }
-                text = text.Replace("-", " \u2013 ");
+
+                if (options.ReplaceDashWithEnDash)
+                {
+                    text = text.Replace("-", " \u2013 ");
+                }
 
                 var skFont = new SKFont(typeface, fontSize, scaleX);
                 using var skPaint = new SKPaint(skFont);

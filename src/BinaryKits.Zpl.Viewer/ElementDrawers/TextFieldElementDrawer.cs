@@ -56,7 +56,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 {
                     displayText = displayText.ReplaceHexEscapes();
                 }
-                displayText = displayText.Replace("-", " \u2013 ");
+
+                if (options.ReplaceDashWithEnDash)
+                {
+                    displayText = displayText.Replace("-", " \u2013 ");
+                }
+
                 var textBounds = new SKRect();
                 var textBoundBaseline = new SKRect();
                 skPaint.MeasureText("X", ref textBoundBaseline);
