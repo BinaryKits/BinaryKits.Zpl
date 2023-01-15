@@ -48,8 +48,8 @@ namespace BinaryKits.Zpl.Viewer
         /// <returns></returns>
         public byte[] Draw(
             ZplElementBase[] elements,
-            double labelWidth = 102,
-            double labelHeight = 152,
+            double labelWidth = 101.6,
+            double labelHeight = 152.4,
             int printDensityDpmm = 8)
         {
             var labelImageWidth = Convert.ToInt32(labelWidth * printDensityDpmm);

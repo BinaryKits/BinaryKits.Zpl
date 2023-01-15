@@ -9,11 +9,11 @@
         /// <summary>
         /// Label width in Millimeter
         /// </summary>
-        public double LabelWidth { get; set; } = 102;
+        public double LabelWidth { get; set; } = 101.6;
         /// <summary>
         /// Label height in Millimeter
         /// </summary>
-        public double LabelHeight { get; set; } = 152;
+        public double LabelHeight { get; set; } = 152.4;
         /// <summary>
         /// Dots per Millimeter
         /// </summary>
