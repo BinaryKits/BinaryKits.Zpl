@@ -89,10 +89,10 @@ namespace BinaryKits.Zpl.Viewer
                 }
                 catch (Exception ex)
                 {
-                    if (element is ZplBarcode)
-                    {
-                        throw new Exception($"Error on zpl element \"{(element as ZplBarcode).Content}\": {ex.Message}", ex);
-                    }
+                    if (element is ZplBarcode barcodeElement)
+                        throw new Exception($"Error on zpl element \"{barcodeElement.Content}\": {ex.Message}", ex);
+                    else if (element is ZplDataMatrix dataMatrixElement)
+                        throw new Exception($"Error on zpl element \"{dataMatrixElement.Content}\": {ex.Message}", ex);
                     else
                     {
                         throw;
