@@ -31,6 +31,7 @@
 
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.3" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="2.8.2.3" />
   </ItemGroup>
 
   <ItemGroup>
