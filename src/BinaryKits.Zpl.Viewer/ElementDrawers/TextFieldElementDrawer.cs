@@ -1,6 +1,7 @@
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
+using SkiaSharp.HarfBuzz;
 using System;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -116,7 +117,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         y += textBoundBaseline.Height;
                     }
 
-                    this._skCanvas.DrawText(displayText, x, y, skFont, skPaint);
+                    this._skCanvas.DrawShapedText(displayText, x, y, skPaint);
                 }
             }
         }

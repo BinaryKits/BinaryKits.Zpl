@@ -2,6 +2,7 @@ using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
+using SkiaSharp.HarfBuzz;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -150,7 +151,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                                 break;
                         }
 
-                        this._skCanvas.DrawText(textLine, x, y, skFont, skPaint);
+                        this._skCanvas.DrawShapedText(textLine, x, y, skPaint);
                         y += lineHeight;
                     }
                 }
