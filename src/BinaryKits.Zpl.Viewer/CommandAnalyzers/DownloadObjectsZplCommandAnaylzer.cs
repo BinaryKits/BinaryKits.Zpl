@@ -1,4 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Label.Helpers;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers

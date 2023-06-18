@@ -3,17 +3,17 @@ using System.Linq;
 
 namespace BinaryKits.Zpl.Label.Helpers
 {
-    internal static class ByteHelper
+    public static class ByteHelper
     {
-        internal static string ToHex(this byte[] bytes)
+        public static string ToHex(this byte[] bytes)
         {
             return BytesToHex(bytes);
         }
-        internal static byte[] ToBytes(this string hex)
+        public static byte[] ToBytes(this string hex)
         {
             return HexToBytes(hex);
         }
-        internal static byte[] HexToBytes(string hex)
+        public static byte[] HexToBytes(string hex)
         {
             if (hex.IndexOfAny(new[] { '\r', '\n' }) != -1)
             {
@@ -38,7 +38,7 @@ namespace BinaryKits.Zpl.Label.Helpers
 #endif
         }
 
-        internal static string BytesToHex(byte[] bytes)
+        public static string BytesToHex(byte[] bytes)
         {
             //Not Available on .NET standard and has much greater performance due to Vectorization. 
 #if NET5_0_OR_GREATER

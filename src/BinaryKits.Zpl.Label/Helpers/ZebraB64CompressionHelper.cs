@@ -3,6 +3,12 @@ using System.Text.RegularExpressions;
 
 namespace BinaryKits.Zpl.Label.Helpers
 {
+    /// <summary>
+    /// B64 Data Compression Scheme for ~DG and ~DB Commands
+    /// Raw data is encoded using Base64
+    /// A CRC is calculated across the Base64-encoded data. If the CRC-check fails or the download is aborted, the object can be invalidated by the printer.
+    /// This scheme is not very efficient and only added for compatibility reasons.
+    /// </summary>
     public static class ZebraB64CompressionHelper
     {
         private static Regex _B64Regex;
