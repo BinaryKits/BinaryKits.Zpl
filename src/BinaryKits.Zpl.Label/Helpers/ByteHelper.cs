@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Linq;
 
-namespace BinaryKits.Zpl.Viewer.Helpers
+namespace BinaryKits.Zpl.Label.Helpers
 {
     internal static class ByteHelper
     {

@@ -17,16 +17,19 @@ namespace BinaryKits.Zpl.TestConsole
                 RenderLabel1,
                 RenderLabel2,
                 RenderLabel3,
-                RenderLabel4,
+                RenderLabel4_ACS,
+                RenderLabel4_Z64,
+                RenderLabel4_B64,
                 RenderLabel5,
                 RenderLabel6,
             };
 
             foreach (var renderAction in renderActions)
             {
-                Console.WriteLine(renderAction.Method.Name);
+                var methodName = renderAction.Method.Name;
+                Console.WriteLine(methodName);
                 var zplData = renderAction.Invoke();
-                await RenderPreviewAsync(zplData);
+                await RenderPreviewAsync(zplData, methodName);
             }
         }
 
@@ -96,11 +99,43 @@ namespace BinaryKits.Zpl.TestConsole
             });
         }
 
-        static string RenderLabel4()
+        static string RenderLabel4_ACS()
         {
             var elements = new ZplElementBase[]
             {
                 new ZplDownloadGraphics('R', "TEST", File.ReadAllBytes("logo_sw.png")),
+                new ZplRecallGraphic(0, 0, 'R', "TEST")
+            };
+
+            var renderEngine = new ZplEngine(elements);
+            return renderEngine.ToZplString(new ZplRenderOptions
+            {
+                //AddEmptyLineBeforeElementStart = true,
+                SourcePrintDpi = 203,
+                TargetPrintDpi = 203
+            });
+        }
+        static string RenderLabel4_Z64()
+        {
+            var elements = new ZplElementBase[]
+            {
+                new ZplDownloadGraphics('R', "TEST", File.ReadAllBytes("logo_sw.png"),ZplCompressionScheme.Z64),
+                new ZplRecallGraphic(0, 0, 'R', "TEST")
+            };
+
+            var renderEngine = new ZplEngine(elements);
+            return renderEngine.ToZplString(new ZplRenderOptions
+            {
+                //AddEmptyLineBeforeElementStart = true,
+                SourcePrintDpi = 203,
+                TargetPrintDpi = 203
+            });
+        }
+        static string RenderLabel4_B64()
+        {
+            var elements = new ZplElementBase[]
+            {
+                new ZplDownloadGraphics('R', "TEST", File.ReadAllBytes("logo_sw.png"),ZplCompressionScheme.B64),
                 new ZplRecallGraphic(0, 0, 'R', "TEST")
             };
 
@@ -170,8 +205,20 @@ namespace BinaryKits.Zpl.TestConsole
             });
         }
 
-        static async Task RenderPreviewAsync(string zplData)
+
+        static async Task RenderPreviewAsync(string zplData, string methodName)
         {
+            var zplFilename = $"{methodName}-{Guid.NewGuid()}.txt";
+            await File.WriteAllTextAsync(zplFilename, zplData);
+            var zplStartInfo = new ProcessStartInfo
+            {
+                FileName = zplFilename,
+                UseShellExecute = true,
+                CreateNoWindow = true,
+                Verb = string.Empty
+            };
+
+            Process.Start(zplStartInfo);
             var client = new LabelaryClient();
             var previewData = await client.GetPreviewAsync(zplData, PrintDensity.PD8dpmm, new LabelSize(6, 8, Measure.Inch));
             if (previewData.Length == 0)
@@ -179,7 +226,7 @@ namespace BinaryKits.Zpl.TestConsole
                 return;
             }
 
-            var fileName = $"preview-{Guid.NewGuid()}.png";
+            var fileName = $"{methodName}-{Guid.NewGuid()}.png";
             await File.WriteAllBytesAsync(fileName, previewData);
 
             var processStartInfo = new ProcessStartInfo

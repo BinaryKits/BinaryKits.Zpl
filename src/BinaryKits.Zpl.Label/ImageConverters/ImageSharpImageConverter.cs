@@ -3,6 +3,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace BinaryKits.Zpl.Label.ImageConverters
@@ -16,50 +17,52 @@ namespace BinaryKits.Zpl.Label.ImageConverters
         /// <returns></returns>
         public ImageResult ConvertImage(byte[] imageData)
         {
-            var zplBuilder = new StringBuilder();
-
-            using (Image<Rgba32> image = Image.Load(imageData).CloneAs<Rgba32>())
+            using (var ms = new MemoryStream(imageData.Length))
             {
-                var bytesPerRow = image.Width % 8 > 0
-                    ? image.Width / 8 + 1
-                    : image.Width / 8;
-
-                var binaryByteCount = image.Height * bytesPerRow;
-
-                var colorBits = 0;
-                var j = 0;
-
-                for (var y = 0; y < image.Height; y++)
+                using (Image<Rgba32> image = Image.Load(imageData).CloneAs<Rgba32>())
                 {
-                    for (var x = 0; x < image.Width; x++)
+                    var bytesPerRow = image.Width % 8 > 0
+                        ? image.Width / 8 + 1
+                        : image.Width / 8;
+
+                    var binaryByteCount = image.Height * bytesPerRow;
+
+                    var colorBits = 0;
+                    var j = 0;
+
+                    for (var y = 0; y < image.Height; y++)
                     {
-                        var pixel = image[x, y];
-
-                        var isBlackPixel = ((pixel.R + pixel.G + pixel.B) / 3) < 128;
-                        if (isBlackPixel)
+                        for (var x = 0; x < image.Width; x++)
                         {
-                            colorBits |= 1 << (7 - j);
-                        }
+                            var pixel = image[x, y];
 
-                        j++;
+                            var isBlackPixel = ((pixel.R + pixel.G + pixel.B) / 3) < 128;
+                            if (isBlackPixel)
+                            {
+                                colorBits |= 1 << (7 - j);
+                            }
 
-                        if (j == 8 || x == (image.Width - 1))
-                        {
-                            zplBuilder.Append(colorBits.ToString("X2"));
-                            colorBits = 0;
-                            j = 0;
+                            j++;
+
+                            if (j == 8 || x == (image.Width - 1))
+                            {
+                                ms.WriteByte((byte)colorBits);
+                                colorBits = 0;
+                                j = 0;
+                            }
                         }
                     }
-                    zplBuilder.Append('\n');
-                }
 
-                return new ImageResult
-                {
-                    ZplData = zplBuilder.ToString(),
-                    BinaryByteCount = binaryByteCount,
-                    BytesPerRow = bytesPerRow
-                };
+                    return new ImageResult
+                    {
+                        RawData = ms.ToArray(),
+                        BinaryByteCount = binaryByteCount,
+                        BytesPerRow = bytesPerRow
+                    };
+                }
             }
+
+
         }
 
         private byte Reverse(byte b)

@@ -1,4 +1,5 @@
-﻿using SixLabors.ImageSharp;
+﻿using BinaryKits.Zpl.Label.Helpers;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
 using System;
@@ -58,18 +59,14 @@ namespace BinaryKits.Zpl.Label.Elements
                 }
             }
 
-            var sb = new StringBuilder();
-            foreach (byte b in objectData)
-            {
-                sb.Append(string.Format("{0:X}", b).PadLeft(2, '0'));
-            }
+            var hexString = ByteHelper.BytesToHex(objectData);
 
             var formatDownloadedInDataField = 'P'; //portable network graphic (.PNG) - ZB64 encoded 
             var extensionOfStoredFile = 'P'; //store as compressed (.PNG)
 
             var result = new List<string>
             {
-                $"~DY{StorageDevice}:{ObjectName},{formatDownloadedInDataField},{extensionOfStoredFile},{objectData.Length},,{sb}"
+                $"~DY{StorageDevice}:{ObjectName},{formatDownloadedInDataField},{extensionOfStoredFile},{objectData.Length},,{hexString}"
             };
 
             return result;

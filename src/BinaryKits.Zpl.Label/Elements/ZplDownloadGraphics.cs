@@ -29,8 +29,8 @@ namespace BinaryKits.Zpl.Label.Elements
         private string _extension { get; set; }
         public byte[] ImageData { get; private set; }
 
-        private readonly bool _isCompressionActive;
         private readonly IImageConverter _imageConverter;
+        readonly ZplCompressionScheme _compressionScheme;
 
         /// <summary>
         /// Zpl Download Graphics
@@ -38,13 +38,13 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="storageDevice"></param>
         /// <param name="imageName"></param>
         /// <param name="imageData"></param>
-        /// <param name="isCompressionActive"></param>
         /// <param name="imageConverter"></param>
+        /// <param name="compressionScheme"></param>
         public ZplDownloadGraphics(
             char storageDevice,
             string imageName,
             byte[] imageData,
-            bool isCompressionActive = true,
+            ZplCompressionScheme compressionScheme = ZplCompressionScheme.ACS,
             IImageConverter imageConverter = default)
             : base(storageDevice)
         {
@@ -62,9 +62,8 @@ namespace BinaryKits.Zpl.Label.Elements
             {
                 imageConverter = new ImageSharpImageConverter();
             }
-
-            _isCompressionActive = isCompressionActive;
             _imageConverter = imageConverter;
+            _compressionScheme = compressionScheme;
         }
 
         ///<inheritdoc/>
@@ -89,16 +88,31 @@ namespace BinaryKits.Zpl.Label.Elements
             }
 
             var imageResult = _imageConverter.ConvertImage(objectData);
+            string zplData = string.Empty;
 
-            if (_isCompressionActive)
+            switch (_compressionScheme)
             {
-                imageResult.ZplData = ZebraHexCompressionHelper.Compress(imageResult.ZplData, imageResult.BytesPerRow);
+                case ZplCompressionScheme.None:
+                    zplData = imageResult.RawData.ToHex();
+                    break;
+                case ZplCompressionScheme.ACS:
+                    zplData = ZebraACSCompressionHelper.Compress(imageResult.RawData.ToHex(), imageResult.BytesPerRow);
+                    break;
+                case ZplCompressionScheme.Z64:
+                    //TODO: Reduce multiple conversions of byte array to string. 
+                    zplData = ZebraZ64CompressionHelper.Compress(imageResult.RawData);
+                    break;
+                case ZplCompressionScheme.B64:
+                    //TODO: Implement this compression scheme.
+                    zplData = ZebraB64CompressionHelper.Compress(imageResult.RawData);
+                    break;
+                    //throw new NotSupportedException();
             }
 
             return new List<string>
             {
                 $"~DG{StorageDevice}:{ImageName}.{_extension},{imageResult.BinaryByteCount},{imageResult.BytesPerRow},",
-                imageResult.ZplData
+                zplData
             };
         }
     }
