@@ -29,5 +29,25 @@ namespace BinaryKits.Zpl.Label.UnitTest
             string uncompressed = Convert.ToHexString(ZebraZ64CompressionHelper.Uncompress(compressed));
             Assert.AreEqual(originalData, uncompressed);
         }
+        [TestMethod]
+        public void DeflateNetStandardSameAsNetCore_Successful()
+        {
+            var originalData = "FFFFFFFFFFFFFFFFFFFF8000FFFF0000FFFF00018000FFFF0000FFFF00018000FFFF0000FFFF0001FFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFFFFFF";
+
+            string compressed = ZebraZ64CompressionHelper.Deflate(originalData.ToBytes()).ToHex();
+            string compressedCore = ZebraZ64CompressionHelper.DeflateCore(originalData.ToBytes()).ToHex();
+            //string uncompressed = Convert.ToHexString(ZebraZ64CompressionHelper.Uncompress(compressed));
+            Assert.AreEqual(compressed, compressedCore);
+        }
+        [TestMethod]
+        public void InflateNetStandardSameAsNetCore_Successful()
+        {
+            var originalData = "eJz7/x8GGhj+/2cAYUZsLCgNxNhZMAAA4sMzUg==";
+
+            string compressed = ZebraZ64CompressionHelper.Inflate(originalData.FromBase64()).ToHex();
+            string compressedCore = ZebraZ64CompressionHelper.InflateCore(originalData.FromBase64()).ToHex();
+            //string uncompressed = Convert.ToHexString(ZebraZ64CompressionHelper.Uncompress(compressed));
+            Assert.AreEqual(compressed, compressedCore);
+        }
     }
 }

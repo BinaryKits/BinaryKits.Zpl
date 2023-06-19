@@ -5,6 +5,14 @@ namespace BinaryKits.Zpl.Label.Helpers
 {
     public static class ByteHelper
     {
+        public static string ToBase64(this byte[] bytes)
+        {
+            return Convert.ToBase64String(bytes);
+        }
+        public static byte[] FromBase64(this string base64)
+        {
+            return Convert.FromBase64String(base64);
+        }
         public static string ToHex(this byte[] bytes)
         {
             return BytesToHex(bytes);
