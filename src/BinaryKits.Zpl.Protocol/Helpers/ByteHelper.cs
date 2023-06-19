@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 namespace BinaryKits.Zpl.Protocol.Helpers
 {
-    internal static class ByteHelper
+    public static class ByteHelper
     {
-        internal static string ToHex(this byte[] bytes)
-        {
-            return BytesToHex(bytes);
-        }
-        internal static byte[] ToBytes(this string hex)
-        {
-            return HexToBytes(hex);
-        }
-        internal static byte[] HexToBytes(string hex)
+        public static string ToBase64(this byte[] bytes) { return Convert.ToBase64String(bytes); }
+
+        public static byte[] FromBase64(this string base64) { return Convert.FromBase64String(base64); }
+
+        public static string ToHexFromBytes(this byte[] bytes) { return BytesToHex(bytes); }
+
+        public static byte[] ToBytesFromHex(this string hex) { return HexToBytes(hex); }
+
+        public static byte[] EncodeBytes(this string hex) { return Encoding.ASCII.GetBytes(hex); }
+
+        public static byte[] HexToBytes(string hex)
         {
             if (hex.IndexOfAny(new[] { '\r', '\n' }) != -1)
             {
@@ -34,11 +37,12 @@ namespace BinaryKits.Zpl.Protocol.Helpers
             {
                 array[i] = (byte)((GetHexVal(hex[i << 1]) << 4) + GetHexVal(hex[(i << 1) + 1]));
             }
+
             return array;
 #endif
         }
 
-        internal static string BytesToHex(byte[] bytes)
+        public static string BytesToHex(byte[] bytes)
         {
             //Not Available on .NET standard and has much greater performance due to Vectorization. 
 #if NET5_0_OR_GREATER
@@ -46,7 +50,6 @@ namespace BinaryKits.Zpl.Protocol.Helpers
 #else
             var c = new char[bytes.Length * 2];
             int b;
-
             for (var i = 0; i < bytes.Length; i++)
             {
                 b = bytes[i] >> 4;

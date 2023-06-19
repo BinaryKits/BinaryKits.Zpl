@@ -1,14 +1,13 @@
 ﻿using BinaryKits.Zpl.Label.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO.Compression;
 
 namespace BinaryKits.Zpl.Label.UnitTest
 {
     [TestClass]
     public class ZebraZ64CompressionHelperTest
     {
-
-
         [TestMethod]
         public void Compress_ValidData1_Successful()
         {
@@ -30,13 +29,47 @@ namespace BinaryKits.Zpl.Label.UnitTest
             Assert.AreEqual(originalData, uncompressed);
         }
         [TestMethod]
-        public void DeflateNetStandardSameAsNetCore_Successful()
+        public void DeflateNetStandardSameAsNetCore_Optimal_Successful()
         {
             var originalData = "FFFFFFFFFFFFFFFFFFFF8000FFFF0000FFFF00018000FFFF0000FFFF00018000FFFF0000FFFF0001FFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFFFFFF";
 
-            string compressed = ZebraZ64CompressionHelper.Deflate(originalData.ToBytes()).ToHex();
-            string compressedCore = ZebraZ64CompressionHelper.DeflateCore(originalData.ToBytes()).ToHex();
-            //string uncompressed = Convert.ToHexString(ZebraZ64CompressionHelper.Uncompress(compressed));
+            var compressionLevel = CompressionLevel.Optimal;
+            string compressed = ZebraZ64CompressionHelper.Deflate(originalData.ToBytesFromHex(), compressionLevel).ToHexFromBytes();
+            string compressedCore = ZebraZ64CompressionHelper.DeflateCore(originalData.ToBytesFromHex(), compressionLevel).ToHexFromBytes();
+
+            Assert.AreEqual(compressed, compressedCore);
+        }
+        [TestMethod]
+        public void DeflateNetStandardSameAsNetCore_Fastest_Successful()
+        {
+            var originalData = "FFFFFFFFFFFFFFFFFFFF8000FFFF0000FFFF00018000FFFF0000FFFF00018000FFFF0000FFFF0001FFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFFFFFF";
+
+            var compressionLevel = CompressionLevel.Fastest;
+            string compressed = ZebraZ64CompressionHelper.Deflate(originalData.ToBytesFromHex(), compressionLevel).ToHexFromBytes();
+            string compressedCore = ZebraZ64CompressionHelper.DeflateCore(originalData.ToBytesFromHex(), compressionLevel).ToHexFromBytes();
+
+            Assert.AreEqual(compressed, compressedCore);
+        }
+        [TestMethod]
+        public void DeflateNetStandardSameAsNetCore_SmallestSize_Successful()
+        {
+            var originalData = "FFFFFFFFFFFFFFFFFFFF8000FFFF0000FFFF00018000FFFF0000FFFF00018000FFFF0000FFFF0001FFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFFFFFF";
+
+            var compressionLevel = CompressionLevel.SmallestSize;
+            string compressed = ZebraZ64CompressionHelper.Deflate(originalData.ToBytesFromHex(), compressionLevel).ToHexFromBytes();
+            string compressedCore = ZebraZ64CompressionHelper.DeflateCore(originalData.ToBytesFromHex(), compressionLevel).ToHexFromBytes();
+
+            Assert.AreEqual(compressed, compressedCore);
+        }
+        [TestMethod]
+        public void DeflateNetStandardSameAsNetCore_NoCompression_Successful()
+        {
+            var originalData = "FFFFFFFFFFFFFFFFFFFF8000FFFF0000FFFF00018000FFFF0000FFFF00018000FFFF0000FFFF0001FFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFFFFFF";
+            
+            var compressionLevel = CompressionLevel.NoCompression;
+            string compressed = ZebraZ64CompressionHelper.Deflate(originalData.ToBytesFromHex(), compressionLevel).ToHexFromBytes();
+            string compressedCore = ZebraZ64CompressionHelper.DeflateCore(originalData.ToBytesFromHex(), compressionLevel).ToHexFromBytes();
+            
             Assert.AreEqual(compressed, compressedCore);
         }
         [TestMethod]
@@ -44,9 +77,9 @@ namespace BinaryKits.Zpl.Label.UnitTest
         {
             var originalData = "eJz7/x8GGhj+/2cAYUZsLCgNxNhZMAAA4sMzUg==";
 
-            string compressed = ZebraZ64CompressionHelper.Inflate(originalData.FromBase64()).ToHex();
-            string compressedCore = ZebraZ64CompressionHelper.InflateCore(originalData.FromBase64()).ToHex();
-            //string uncompressed = Convert.ToHexString(ZebraZ64CompressionHelper.Uncompress(compressed));
+            string compressed = ZebraZ64CompressionHelper.Inflate(originalData.FromBase64()).ToHexFromBytes();
+            string compressedCore = ZebraZ64CompressionHelper.InflateCore(originalData.FromBase64()).ToHexFromBytes();
+            
             Assert.AreEqual(compressed, compressedCore);
         }
     }

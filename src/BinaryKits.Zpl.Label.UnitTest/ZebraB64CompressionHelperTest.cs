@@ -7,8 +7,6 @@ namespace BinaryKits.Zpl.Label.UnitTest
     [TestClass]
     public class ZebraB64CompressionHelperTest
     {
-
-
         [TestMethod]
         public void Compress_ValidData1_Successful()
         {

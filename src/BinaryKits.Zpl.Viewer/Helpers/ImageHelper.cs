@@ -9,9 +9,9 @@ namespace BinaryKits.Zpl.Viewer.Helpers
         private static readonly Regex hexDataRegex = new Regex("^[0-9A-Fa-f]+$", RegexOptions.Compiled);
         private static readonly Regex z64DataRegex = new Regex(":(Z64):(\\S+):([0-9a-fA-F]+)", RegexOptions.Compiled);
         private static readonly Regex b64DataRegex = new Regex(":(B64):(\\S+):([0-9a-fA-F]+)", RegexOptions.Compiled);
+
         public static byte[] GetImageBytes(string dataHex, int bytesPerRow)
         {
-
             if (z64DataRegex.IsMatch(dataHex))
             {
                 return ZebraZ64CompressionHelper.Uncompress(dataHex);
@@ -22,9 +22,9 @@ namespace BinaryKits.Zpl.Viewer.Helpers
             }
             if (hexDataRegex.IsMatch(dataHex))
             {
-                return dataHex.ToBytes();
+                return dataHex.ToBytesFromHex();
             }
-            return ZebraACSCompressionHelper.Uncompress(dataHex, bytesPerRow).ToBytes();
+            return ZebraACSCompressionHelper.Uncompress(dataHex, bytesPerRow).ToBytesFromHex();
         }
     }
 }

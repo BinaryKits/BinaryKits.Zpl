@@ -93,10 +93,10 @@ namespace BinaryKits.Zpl.Label.Elements
             switch (_compressionScheme)
             {
                 case ZplCompressionScheme.None:
-                    zplData = imageResult.RawData.ToHex();
+                    zplData = imageResult.RawData.ToHexFromBytes();
                     break;
                 case ZplCompressionScheme.ACS:
-                    zplData = ZebraACSCompressionHelper.Compress(imageResult.RawData.ToHex(), imageResult.BytesPerRow);
+                    zplData = ZebraACSCompressionHelper.Compress(imageResult.RawData.ToHexFromBytes(), imageResult.BytesPerRow);
                     break;
                 case ZplCompressionScheme.Z64:
                     //TODO: Reduce multiple conversions of byte array to string. 

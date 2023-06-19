@@ -9,22 +9,16 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class DownloadGraphicsZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        private static readonly Regex commandRegex = new Regex(@"^~DG(\w:)?(.*?\..+?),(\d+),(\d+),(.+)$", RegexOptions.Compiled);
-        private static readonly Regex hexDataRegex = new Regex("^[0-9A-Fa-f]+$", RegexOptions.Compiled);
-        private static readonly Regex z64DataRegex = new Regex(":(Z64):(\\S+):([0-9a-fA-F]+)", RegexOptions.Compiled);
-        private static readonly Regex b64DataRegex = new Regex(":(B64):(\\S+):([0-9a-fA-F]+)", RegexOptions.Compiled);
-
+        private static readonly Regex commandRegex = new Regex( @"^~DG(\w:)?(.*?\..+?),(\d+),(\d+),(.+)$",RegexOptions.Compiled);
         private readonly IPrinterStorage _printerStorage;
 
         public DownloadGraphicsZplCommandAnalyzer(
-            VirtualPrinter virtualPrinter,
-            IPrinterStorage printerStorage)
-            : base("~DG", virtualPrinter)
-        {
-            this._printerStorage = printerStorage;
+            VirtualPrinter virtualPrinter, 
+            IPrinterStorage printerStorage) 
+            : base("~DG",virtualPrinter)
+        { 
+            this._printerStorage = printerStorage; 
         }
-
-
 
         public override ZplElementBase Analyze(string zplCommand)
         {

@@ -12,7 +12,6 @@ namespace BinaryKits.Zpl.Protocol.Helpers
     /// bitmapped fonts with the ~DG and ~DB commands
     /// </summary>
     public static class ZebraACSCompressionHelper
-
     {
         /// <summary>
         /// MinCompressionBlockCount (CompressionCountMapping -> g)
