@@ -24,7 +24,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
             var originalData = "FFFFFFFFFFFFFFFFFFFF8000FFFF0000FFFF00018000FFFF0000FFFF00018000FFFF0000FFFF0001FFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFFFFFF";
 
             string compressed = ZebraB64CompressionHelper.Compress(originalData);
-            string uncompressed = Convert.ToHexString(ZebraB64CompressionHelper.Uncompress(compressed));
+            string uncompressed = ZebraB64CompressionHelper.Uncompress(compressed).ToHexFromBytes();
             Assert.AreEqual(originalData, uncompressed);
         }
     }

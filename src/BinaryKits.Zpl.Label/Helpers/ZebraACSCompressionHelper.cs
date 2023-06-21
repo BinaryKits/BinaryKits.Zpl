@@ -93,8 +93,8 @@ namespace BinaryKits.Zpl.Label.Helpers
                     compressedCurrentLine.Append(GetZebraCharCount(charRepeatCount));
                     compressedCurrentLine.Append(lastChar);
                 }
-
-                if (compressedCurrentLine.Equals(compressedPreviousLine))
+                //StringBuilder to string comparision will return false on .NET Framework.
+                if (compressedCurrentLine.ToString().Equals(compressedPreviousLine))
                 {
                     //previous line is repeated
                     compressedLines.Append(':');

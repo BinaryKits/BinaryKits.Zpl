@@ -25,9 +25,10 @@ namespace BinaryKits.Zpl.Label.UnitTest
             var originalData = "FFFFFFFFFFFFFFFFFFFF8000FFFF0000FFFF00018000FFFF0000FFFF00018000FFFF0000FFFF0001FFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFFFFFF";
 
             string compressed = ZebraZ64CompressionHelper.Compress(originalData);
-            string uncompressed = Convert.ToHexString(ZebraZ64CompressionHelper.Uncompress(compressed));
+            string uncompressed = ZebraZ64CompressionHelper.Uncompress(compressed).ToHexFromBytes();
             Assert.AreEqual(originalData, uncompressed);
         }
+#if NET5_0_OR_GREATER
         [TestMethod]
         public void DeflateNetStandardSameAsNetCore_Optimal_Successful()
         {
@@ -82,5 +83,6 @@ namespace BinaryKits.Zpl.Label.UnitTest
             
             Assert.AreEqual(compressed, compressedCore);
         }
+#endif
     }
 }
