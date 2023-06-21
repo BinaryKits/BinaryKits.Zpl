@@ -87,7 +87,7 @@ namespace BinaryKits.Zpl.Label.Helpers
         /// <param name="data"></param>
         /// <param name="compressionLevel"></param>
         /// <returns></returns>
-        internal static byte[] Deflate(byte[] data, CompressionLevel compressionLevel = CompressionLevel.Optimal)
+        internal static byte[] Deflate(byte[] data, CompressionLevel compressionLevel = (CompressionLevel)3)
         {
             using (var ms = new MemoryStream())
             {
@@ -174,7 +174,7 @@ namespace BinaryKits.Zpl.Label.Helpers
                     return 0xDA;
 #endif
             }
-            return 0x9C;
+            return 0xDA;
         }
     }
 }
