@@ -4,7 +4,7 @@ using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
-[assembly: InternalsVisibleTo("BinaryKits.Zpl.Label.UnitTest")]
+[assembly: InternalsVisibleTo("BinaryKits.Zpl.Protocol.UnitTest")]
 
 namespace BinaryKits.Zpl.Protocol.Helpers
 {
@@ -87,7 +87,7 @@ namespace BinaryKits.Zpl.Protocol.Helpers
         /// <param name="data"></param>
         /// <param name="compressionLevel"></param>
         /// <returns></returns>
-        internal static byte[] Deflate(byte[] data, CompressionLevel compressionLevel = CompressionLevel.Optimal)
+        internal static byte[] Deflate(byte[] data, CompressionLevel compressionLevel = (CompressionLevel)3)
         {
             using (var ms = new MemoryStream())
             {
@@ -127,7 +127,7 @@ namespace BinaryKits.Zpl.Protocol.Helpers
         /// <param name="data"></param>
         /// <param name="compressionLevel"></param>
         /// <returns></returns>
-        internal static byte[] DeflateCore(byte[] data, CompressionLevel compressionLevel = CompressionLevel.Optimal)
+        internal static byte[] DeflateCore(byte[] data, CompressionLevel compressionLevel = CompressionLevel.SmallestSize)
         {
             using (var ms = new MemoryStream())
             {
@@ -174,7 +174,7 @@ namespace BinaryKits.Zpl.Protocol.Helpers
                     return 0xDA;
 #endif
             }
-            return 0x9C;
+            return 0xDA;
         }
     }
 }

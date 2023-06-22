@@ -94,7 +94,7 @@ namespace BinaryKits.Zpl.Protocol.Helpers
                     compressedCurrentLine.Append(lastChar);
                 }
 
-                if (compressedCurrentLine.Equals(compressedPreviousLine))
+                if (compressedCurrentLine.ToString().Equals(compressedPreviousLine))
                 {
                     //previous line is repeated
                     compressedLines.Append(':');
