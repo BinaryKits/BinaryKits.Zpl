@@ -1,13 +1,13 @@
-﻿using BinaryKits.Zpl.Protocol.Helpers;
+﻿using BinaryKits.Zpl.Label.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BinaryKits.Zpl.Protocol.UnitTest
+namespace BinaryKits.Zpl.Label.UnitTest
 {
     [TestClass]
-    public class ZebraHexCompressionHelperTest
+    public class ZebraACSCompressionHelperTest
     {
         [TestMethod]
-        [DataRow(1, "G")]
+        //[DataRow(1, "G")]
         [DataRow(2, "H")]
         [DataRow(3, "I")]
         [DataRow(4, "J")]
@@ -48,7 +48,7 @@ namespace BinaryKits.Zpl.Protocol.UnitTest
         [DataRow(400, "z")]
         public void GetZebraCharCount_Simple_Successful(int charRepeatCount, string compressed)
         {
-            var zebraCharCount = ZebraHexCompressionHelper.GetZebraCharCount(charRepeatCount);
+            var zebraCharCount = ZebraACSCompressionHelper.GetZebraCharCount(charRepeatCount);
             Assert.AreEqual(compressed, zebraCharCount);
         }
 
@@ -70,15 +70,15 @@ namespace BinaryKits.Zpl.Protocol.UnitTest
         [DataRow(842, "zzhH")]
         public void GetZebraCharCount_Complex_Successful(int charRepeatCount, string compressed)
         {
-            var zebraCharCount = ZebraHexCompressionHelper.GetZebraCharCount(charRepeatCount);
+            var zebraCharCount = ZebraACSCompressionHelper.GetZebraCharCount(charRepeatCount);
             Assert.AreEqual(compressed, zebraCharCount);
         }
 
         [TestMethod]
         public void Compress_ValidData1_Successful()
         {
-            var compressed = ZebraHexCompressionHelper.Compress("FFFF\nF00F\nFFFF\n", 2);
-            Assert.AreEqual("JFGFH0GFJF", compressed);
+            var compressed = ZebraACSCompressionHelper.Compress("FFFF\nF00F\nFFFF\n", 2);
+            Assert.AreEqual("JFFH0FJF", compressed);
             //^XA
             //~DGR:SAMPLE.GRF,00006,02,JFGFH0GFJF
             //^FO20,20
@@ -89,8 +89,8 @@ namespace BinaryKits.Zpl.Protocol.UnitTest
         [TestMethod]
         public void Compress_ValidData2_Successful()
         {
-            var compressed = ZebraHexCompressionHelper.Compress("FFFFF00FFFFF", 2);
-            Assert.AreEqual("JFGFH0GFJF", compressed);
+            var compressed = ZebraACSCompressionHelper.Compress("FFFFF00FFFFF", 2);
+            Assert.AreEqual("JFFH0FJF", compressed);
             //^XA
             //~DGR:SAMPLE.GRF,00006,02,JFGFH0GFJF
             //^FO20,20
@@ -101,8 +101,8 @@ namespace BinaryKits.Zpl.Protocol.UnitTest
         [TestMethod]
         public void Compress_ValidData3_Successful()
         {
-            var compressed = ZebraHexCompressionHelper.Compress("FFFFFFFFFFFFFFFFFFFF\n8000FFFF0000FFFF0001\n8000FFFF0000FFFF0001\n8000FFFF0000FFFF0001\nFFFF0000FFFF0000FFFF\nFFFF0000FFFF0000FFFF\nFFFF0000FFFF0000FFFF\nFFFFFFFFFFFFFFFFFFFF\n", 10);
-            Assert.AreEqual("gFG8I0JFJ0JFI0!::JFJ0JFJ0JF::gF", compressed);
+            var compressed = ZebraACSCompressionHelper.Compress("FFFFFFFFFFFFFFFFFFFF\n8000FFFF0000FFFF0001\n8000FFFF0000FFFF0001\n8000FFFF0000FFFF0001\nFFFF0000FFFF0000FFFF\nFFFF0000FFFF0000FFFF\nFFFF0000FFFF0000FFFF\nFFFFFFFFFFFFFFFFFFFF\n", 10);
+            Assert.AreEqual("gF8I0JFJ0JFI0!::JFJ0JFJ0JF::gF", compressed);
             //^XA
             //~DGR:SAMPLE.GRF,00080,010,gFG8I0JFJ0JFI0!::JFJ0JFJ0JF::gF
             //^FO20,20
@@ -115,8 +115,8 @@ namespace BinaryKits.Zpl.Protocol.UnitTest
         {
             var originalData = "FFFFFFFFFFFFFFFFFFFF\n8000FFFF0000FFFF0001\n8000FFFF0000FFFF0001\n8000FFFF0000FFFF0001\nFFFF0000FFFF0000FFFF\nFFFF0000FFFF0000FFFF\nFFFF0000FFFF0000FFFF\nFFFFFFFFFFFFFFFFFFFF\n";
 
-            var compressed = ZebraHexCompressionHelper.Compress(originalData, 10);
-            var uncompressed = ZebraHexCompressionHelper.Uncompress(compressed, 10);
+            var compressed = ZebraACSCompressionHelper.Compress(originalData, 10);
+            var uncompressed = ZebraACSCompressionHelper.Uncompress(compressed, 10);
             Assert.AreEqual(originalData, uncompressed);
         }
 
@@ -125,7 +125,7 @@ namespace BinaryKits.Zpl.Protocol.UnitTest
         {
             var compressedData = "gO0E\n";
 
-            var uncompressed = ZebraHexCompressionHelper.Uncompress(compressedData, 10);
+            var uncompressed = ZebraACSCompressionHelper.Uncompress(compressedData, 10);
             Assert.AreEqual("00000000000000000000000000000E\n", uncompressed);
         }
 
@@ -134,7 +134,7 @@ namespace BinaryKits.Zpl.Protocol.UnitTest
         {
             var compressedData = "gO0GE\n";
 
-            var uncompressed = ZebraHexCompressionHelper.Uncompress(compressedData, 10);
+            var uncompressed = ZebraACSCompressionHelper.Uncompress(compressedData, 10);
             Assert.AreEqual("00000000000000000000000000000E\n", uncompressed);
         }
     }

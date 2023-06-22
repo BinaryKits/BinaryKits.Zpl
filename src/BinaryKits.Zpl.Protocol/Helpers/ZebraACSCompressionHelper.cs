@@ -6,12 +6,12 @@ using System.Text;
 namespace BinaryKits.Zpl.Protocol.Helpers
 {
     /// <summary>
-    /// Alternative Data Compression Scheme for ~DG and ~DB Commands
+    /// Alternative Data Compression Scheme (ACS) for ~DG and ~DB Commands
     /// There is an alternative data compression scheme recognized by the Zebra printer. This scheme further
     /// reduces the actual number of data bytes and the amount of time required to download graphic images and
     /// bitmapped fonts with the ~DG and ~DB commands
     /// </summary>
-    public static class ZebraHexCompressionHelper
+    public static class ZebraACSCompressionHelper
     {
         /// <summary>
         /// MinCompressionBlockCount (CompressionCountMapping -> g)
@@ -94,7 +94,7 @@ namespace BinaryKits.Zpl.Protocol.Helpers
                     compressedCurrentLine.Append(lastChar);
                 }
 
-                if (compressedCurrentLine.Equals(compressedPreviousLine))
+                if (compressedCurrentLine.ToString().Equals(compressedPreviousLine))
                 {
                     //previous line is repeated
                     compressedLines.Append(':');
@@ -179,13 +179,13 @@ namespace BinaryKits.Zpl.Protocol.Helpers
             return hexData.ToString();
         }
 
-        /// <summary>
-        /// Get Zebra char repeat count
-        /// </summary>
-        /// <param name="charRepeatCount"></param>
-        /// <returns></returns>
         public static string GetZebraCharCount(int charRepeatCount)
         {
+            //only append if the repeated character is than 1 otherwise the compression scheme uses 2 characters to represent 1
+            if (charRepeatCount == 1)
+            {
+                return string.Empty;
+            }
             if (CompressionCountMapping.TryGetValue(charRepeatCount, out var compressionKey))
             {
                 return $"{compressionKey}";

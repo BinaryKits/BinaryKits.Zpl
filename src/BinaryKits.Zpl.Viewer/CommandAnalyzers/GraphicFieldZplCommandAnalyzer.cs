@@ -48,12 +48,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var indexOfFourthComma = this.IndexOfNthCharacter(zplCommand, 4, ',');
             var dataHex = zplCommand.Substring(indexOfFourthComma + 1);
 
-            if (dataHex.Length != binaryByteCount * 2)
-            {
-                dataHex = ZebraHexCompressionHelper.Uncompress(dataHex, bytesPerRow);
-            }
+            byte[] grfImageData = ImageHelper.GetImageBytes(dataHex, bytesPerRow);
 
-            var grfImageData = ByteHelper.HexToBytes(dataHex);
             var converter = new ImageSharpImageConverter();
             var imageData = converter.ConvertImage(grfImageData, bytesPerRow);
             dataHex = ByteHelper.BytesToHex(imageData);
