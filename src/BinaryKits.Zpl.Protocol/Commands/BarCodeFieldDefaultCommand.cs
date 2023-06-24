@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Reflection;
 using static System.FormattableString;
 
 namespace BinaryKits.Zpl.Protocol.Commands
@@ -9,6 +10,7 @@ namespace BinaryKits.Zpl.Protocol.Commands
     /// The ^BY command is used to change the default values for the module width (in dots), the wide bar to narrow 
     /// bar width ratio and the bar code height(in dots). It can be used as often as necessary within a label format.
     /// </summary>
+    [CommandPrefix("^BY")]
     public class BarCodeFieldDefaultCommand : CommandBase
     {
         ///<inheritdoc/>
@@ -58,13 +60,19 @@ namespace BinaryKits.Zpl.Protocol.Commands
         ///<inheritdoc/>
         public override string ToZpl()
         {
-            return Invariant($"{CommandPrefix}{this.ModuleWidth},{this.WideBarToNarrowBarWidthRatio:0.0},{this.BarCodeHeight}");
+            var attribute = this.GetType().GetCustomAttribute(typeof(CommandPrefixAttribute));
+            if (attribute is CommandPrefixAttribute prefixAttribute)
+            {
+                return Invariant($"{prefixAttribute.Prefix}{this.ModuleWidth},{this.WideBarToNarrowBarWidthRatio:0.0},{this.BarCodeHeight}");
+            }
+
+            return string.Empty;
         }
 
         ///<inheritdoc/>
         public static new bool CanParseCommand(string zplCommand)
         {
-            return zplCommand.StartsWith(CommandPrefix, StringComparison.OrdinalIgnoreCase);
+            return CommandBase.CanParseCommand<BarCodeFieldDefaultCommand>(zplCommand);
         }
 
         ///<inheritdoc/>

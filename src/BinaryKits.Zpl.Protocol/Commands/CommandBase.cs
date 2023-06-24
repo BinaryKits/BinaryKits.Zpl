@@ -28,6 +28,22 @@ namespace BinaryKits.Zpl.Protocol.Commands
         /// </summary>
         protected static readonly string CommandPrefix;
 
+        public string ToZpl2(bool emitDefault = false)
+        {
+            Type type = this.GetType();
+            var attribute = type.GetCustomAttribute(typeof(CommandPrefixAttribute));
+            if (attribute is CommandPrefixAttribute prefixAttribute)
+            {
+                IEnumerable<(PropertyInfo, Attribute)> dataMembers = type.GetProperties()
+                    .Select(prop => (prop, prop.GetCustomAttribute(typeof(ZplDataMemberAttribute))))
+                    .Where(propattr => propattr.Item2 is ZplDataMemberAttribute);
+                string prefix = prefixAttribute.Prefix;
+                return $"{prefix}";
+            }
+
+            return string.Empty;
+        }
+
         /// <summary>
         /// Get the Zpl Command
         /// </summary>
@@ -35,13 +51,29 @@ namespace BinaryKits.Zpl.Protocol.Commands
         public abstract string ToZpl();
 
         /// <summary>
-        /// Check the zpl command is parsable
+        /// Check the zpl command is parsable by any type
         /// </summary>
         /// <param name="zplCommand"></param>
         /// <returns></returns>
         public static bool CanParseCommand(string zplCommand)
         {
             return Parsers.Any(parser => parser.canParse(zplCommand));
+        }
+
+        /// <summary>
+        /// Check the zpl command is parsable by a specific type
+        /// </summary>
+        /// <param name="zplCommand"></param>
+        /// <returns></returns>
+        public static bool CanParseCommand<T>(string zplCommand) where T : CommandBase
+        {
+            var attribute = typeof(T).GetCustomAttribute(typeof(CommandPrefixAttribute));
+            if (attribute is CommandPrefixAttribute prefixAttribute)
+            {
+                return zplCommand.StartsWith(prefixAttribute.Prefix, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return false;
         }
 
         /// <summary>
