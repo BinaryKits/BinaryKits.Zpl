@@ -1,33 +1,33 @@
-using BarcodeLib;
 using BinaryKits.Zpl.Label.Elements;
-using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text.RegularExpressions;
+using ZXing.OneD;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Code 128 Barcode elements
+    /// </summary>
     public class Barcode128ElementDrawer : BarcodeDrawerBase
     {
-
         /// <summary>
         /// Start sequence lookups.
         /// <see href="https://supportcommunity.zebra.com/s/article/Creating-GS1-Barcodes-with-Zebra-Printers-for-Data-Matrix-and-Code-128-using-ZPL"/>
         /// </summary>
-        private static readonly Dictionary<string, TYPE> startCodeMap = new Dictionary<string, TYPE>()
+        private static readonly Dictionary<string, Code128EncodingOptions.Codesets> startCodeMap = new()
         {
-            { ">9", TYPE.CODE128A },
-            { ">:", TYPE.CODE128B },
-            { ">;", TYPE.CODE128C }
+            { ">9", Code128EncodingOptions.Codesets.A },
+            { ">:", Code128EncodingOptions.Codesets.B },
+            { ">;", Code128EncodingOptions.Codesets.C }
         };
 
         private static readonly Regex startCodeRegex = new Regex(@"^(>[9:;])(.+)$", RegexOptions.Compiled);
         private static readonly Regex invalidInvocationRegex = new Regex(@"(?<!^)>[9:;]", RegexOptions.Compiled);
 
-        // As defined in BarcodeLib.Symbologies.Code128
-        private static readonly string FNC1 = Convert.ToChar(200).ToString();
+        // As defined in ZXing.OneD.Code128Writer
+        private static readonly string FNC1 = Convert.ToChar(241).ToString();
 
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
@@ -36,17 +36,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
-        {
-            Draw(element, new DrawerOptions());
-        }
-
-        ///<inheritdoc/>
         public override void Draw(ZplElementBase element, DrawerOptions options)
         {
             if (element is ZplBarcode128 barcode)
             {
-                var barcodeType = TYPE.CODE128B;
+                var encodingOptions = new Code128EncodingOptions();
+                encodingOptions.Margin = 0;
                 // remove any start sequences not at the start of the content (invalid invocation)
                 string content = invalidInvocationRegex.Replace(barcode.Content, "");
                 string interpretation = content;
@@ -55,9 +50,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     Match startCodeMatch = startCodeRegex.Match(content);
                     if (startCodeMatch.Success)
                     {
-                        barcodeType = startCodeMap[startCodeMatch.Groups[1].Value];
+                        encodingOptions.ForceCodeset = startCodeMap[startCodeMatch.Groups[1].Value];
                         content = startCodeMatch.Groups[2].Value;
                         interpretation = content;
+                    }
+                    else
+                    {
+                        encodingOptions.ForceCodeset = Code128EncodingOptions.Codesets.B;
                     }
                     // support hand-rolled GS1
                     content = content.Replace(">8", FNC1);
@@ -66,11 +65,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
                 else if (barcode.Mode == "A")
                 {
-                    barcodeType = TYPE.CODE128; // dynamic
+                    encodingOptions.CompactEncoding = true;
                 }
                 else if (barcode.Mode == "D")
                 {
-                    barcodeType = TYPE.CODE128C;
+                    encodingOptions.GS1Format = true;
                     content = content.Replace(">8", FNC1);
                     interpretation = interpretation.Replace(">8", "");
                     if (!content.StartsWith(FNC1))
@@ -80,7 +79,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
                 else if (barcode.Mode == "U")
                 {
-                    barcodeType = TYPE.CODE128C;
+                    encodingOptions.ForceCodeset = Code128EncodingOptions.Codesets.C;
                     content = content.PadLeft(19, '0').Substring(0, 19);
                     int checksum = 0;
                     for (int i = 0; i < 19; i++)
@@ -94,26 +93,22 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = barcode.PositionX;
                 float y = barcode.PositionY;
 
-                float labelFontSize = Math.Min(barcode.ModuleWidth * 7.2f, 72f);
-                var labelTypeFace = options.FontLoader("A");
-                var labelFont = new SKFont(labelTypeFace, labelFontSize).ToSystemDrawingFont();
-                int labelHeight = barcode.PrintInterpretationLine ? labelFont.Height : 0;
-                int labelHeightOffset = barcode.PrintInterpretationLineAboveCode ? labelHeight : 0;
+                var writer = new Code128Writer();
+                var result = writer.encode(content, ZXing.BarcodeFormat.CODE_128, 0, 0, encodingOptions.Hints);
+                using var resizedImage = this.BitArrayToSKBitmap(result.getRow(0, null), barcode.Height, barcode.ModuleWidth);
+                var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation);
 
-                var barcodeElement = new Barcode
+                if (barcode.PrintInterpretationLine)
                 {
-                    BarWidth = barcode.ModuleWidth,
-                    BackColor = Color.Transparent,
-                    Height = barcode.Height + labelHeight,
-                    IncludeLabel = barcode.PrintInterpretationLine,
-                    LabelPosition = barcode.PrintInterpretationLineAboveCode ? LabelPositions.TOPCENTER : LabelPositions.BOTTOMCENTER,
-                    LabelFont = labelFont,
-                    AlternateLabel = interpretation
-                };
-
-                using var image = barcodeElement.Encode(barcodeType, content);
-                this.DrawBarcode(this.GetImageData(image), barcode.Height, image.Width, barcode.FieldOrigin != null, x, y, labelHeightOffset, barcode.FieldOrientation);
+                    // TODO: use font 0, auto scale for Mode D
+                    float labelFontSize = Math.Min(barcode.ModuleWidth * 9f, 90f);
+                    var labelTypeFace = options.FontLoader("A");
+                    var labelFont = new SKFont(labelTypeFace, labelFontSize);
+                    this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode);
+                }
             }
         }
+
     }
 }

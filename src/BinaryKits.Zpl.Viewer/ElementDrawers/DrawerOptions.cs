@@ -1,6 +1,5 @@
 using SkiaSharp;
 using System;
-using System.Diagnostics;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -13,6 +12,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         public int RenderQuality { get; set; } = 80;
 
         public bool ReplaceDashWithEnDash { get; set; } = true;
+
+        public bool Antialias { get; set; } = true;
 
         public static Func<string, SKTypeface> DefaultFontLoader = fontName => {
             var typeface = SKTypeface.Default;

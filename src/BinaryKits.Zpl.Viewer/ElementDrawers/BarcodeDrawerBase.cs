@@ -1,73 +1,39 @@
 using SkiaSharp;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using ZXing.Common;
+using SkiaSharp.HarfBuzz;
+using System;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Base clase for Barcode element drawers
+    /// </summary>
     public abstract class BarcodeDrawerBase : ElementDrawerBase
     {
-        public byte[] GetImageData(Image image)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                image.Save(memoryStream, ImageFormat.Png);
-                return memoryStream.ToArray();
-            }
-        }
+        /// <summary>
+        /// Minimum acceptable magin between a barcode and its interpretation line, in pixels
+        /// </summary>
+        protected const float MIN_LABEL_MARGIN = 5f;
 
-        public void DrawBarcode(
+        protected void DrawBarcode(
             byte[] barcodeImageData,
-            int barcodeHeight,
-            int barcodeWidth,
-            bool useFieldOrigin,
             float x,
             float y,
-            int labelHeightOffset,
+            int barcodeWidth,
+            int barcodeHeight,
+            bool useFieldOrigin,
             Label.FieldOrientation fieldOrientation)
         {
             using (new SKAutoCanvasRestore(this._skCanvas))
             {
-                SKMatrix matrix = SKMatrix.Empty;
+                SKMatrix matrix = this.GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
 
-                if (useFieldOrigin)
+                if (!useFieldOrigin)
                 {
-                    switch (fieldOrientation)
-                    {
-                        case Label.FieldOrientation.Rotated90:
-                            matrix = SKMatrix.CreateRotationDegrees(90, x + barcodeHeight / 2, y + barcodeHeight / 2);
-                            break;
-                        case Label.FieldOrientation.Rotated180:
-                            matrix = SKMatrix.CreateRotationDegrees(180, x + barcodeWidth / 2, y + barcodeHeight / 2);
-                            break;
-                        case Label.FieldOrientation.Rotated270:
-                            matrix = SKMatrix.CreateRotationDegrees(270, x + barcodeWidth / 2, y + barcodeWidth / 2);
-                            break;
-                        case Label.FieldOrientation.Normal:
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (fieldOrientation)
-                    {
-                        case Label.FieldOrientation.Rotated90:
-                            matrix = SKMatrix.CreateRotationDegrees(90, x, y);
-                            break;
-                        case Label.FieldOrientation.Rotated180:
-                            matrix = SKMatrix.CreateRotationDegrees(180, x, y);
-                            break;
-                        case Label.FieldOrientation.Rotated270:
-                            matrix = SKMatrix.CreateRotationDegrees(270, x, y);
-                            break;
-                        case Label.FieldOrientation.Normal:
-                            break;
-                    }
                     y -= barcodeHeight;
                 }
-
-                y -= labelHeightOffset;
 
                 if (matrix != SKMatrix.Empty)
                 {
@@ -76,6 +42,119 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 this._skCanvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y);
             }
+        }
+
+        protected void DrawInterpretationLine(
+            string interpretation,
+            SKFont skFont,
+            float x,
+            float y,
+            int barcodeWidth,
+            int barcodeHeight,
+            bool useFieldOrigin,
+            Label.FieldOrientation fieldOrientation,
+            bool printInterpretationLineAboveCode)
+        {
+            using (new SKAutoCanvasRestore(this._skCanvas))
+            {
+                using var skPaint = new SKPaint(skFont);
+                skPaint.IsAntialias = true;
+
+                SKMatrix matrix = this.GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
+
+                if (matrix != SKMatrix.Empty)
+                {
+                    this._skCanvas.SetMatrix(matrix);
+                }
+
+                var textBounds = new SKRect();
+                skPaint.MeasureText(interpretation, ref textBounds);
+
+                x += (barcodeWidth - textBounds.Width) / 2;
+                if (!useFieldOrigin)
+                {
+                    y -= barcodeHeight;
+                }
+
+                float margin = Math.Max((skFont.Spacing - textBounds.Height) / 2, MIN_LABEL_MARGIN);
+
+                if (printInterpretationLineAboveCode)
+                {
+                    this._skCanvas.DrawShapedText(interpretation, x, y - margin, skPaint);
+                }
+                else
+                {
+                    this._skCanvas.DrawShapedText(interpretation, x, y + barcodeHeight + textBounds.Height + margin, skPaint);
+                }
+            }
+        }
+
+        protected SKMatrix GetRotationMatrix(float x, float y, int width, int height, bool useFieldOrigin, Label.FieldOrientation fieldOrientation)
+        {
+            SKMatrix matrix = SKMatrix.Empty;
+
+            if (useFieldOrigin)
+            {
+                switch (fieldOrientation)
+                {
+                    case Label.FieldOrientation.Rotated90:
+                        matrix = SKMatrix.CreateRotationDegrees(90, x + height / 2, y + height / 2);
+                        break;
+                    case Label.FieldOrientation.Rotated180:
+                        matrix = SKMatrix.CreateRotationDegrees(180, x + width / 2, y + height / 2);
+                        break;
+                    case Label.FieldOrientation.Rotated270:
+                        matrix = SKMatrix.CreateRotationDegrees(270, x + width / 2, y + width / 2);
+                        break;
+                    case Label.FieldOrientation.Normal:
+                        break;
+                }
+            }
+            else
+            {
+                switch (fieldOrientation)
+                {
+                    case Label.FieldOrientation.Rotated90:
+                        matrix = SKMatrix.CreateRotationDegrees(90, x, y);
+                        break;
+                    case Label.FieldOrientation.Rotated180:
+                        matrix = SKMatrix.CreateRotationDegrees(180, x, y);
+                        break;
+                    case Label.FieldOrientation.Rotated270:
+                        matrix = SKMatrix.CreateRotationDegrees(270, x, y);
+                        break;
+                    case Label.FieldOrientation.Normal:
+                        break;
+                }
+            }
+
+            return matrix;
+        }
+
+        protected SKBitmap BoolArrayToSKBitmap(bool[] array, int height, int moduleWidth = 1)
+        {
+            using var image = new SKBitmap(array.Length, 1);
+
+            for (int col = 0; col < array.Length; col++)
+            {
+                var color = array[col] ? SKColors.Black : SKColors.Transparent;
+                image.SetPixel(col, 0, color);
+            }
+
+            return image.Resize(new SKSizeI(image.Width * moduleWidth, height), SKFilterQuality.None);
+        }
+
+        protected SKBitmap BitArrayToSKBitmap(BitArray array, int height, int moduleWidth)
+        {
+            using var image = new SKBitmap(array.Size, 1);
+
+            for (int col = 0; col < array.Size; col++)
+            {
+                var color = array[col] ? SKColors.Black : SKColors.Transparent;
+                image.SetPixel(col, 0, color);
+            }
+
+            return image.Resize(new SKSizeI(image.Width * moduleWidth, height), SKFilterQuality.None);
         }
 
         protected SKBitmap BitMatrixToSKBitmap(BitMatrix matrix, int pixelScale)
@@ -92,6 +171,28 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             }
 
             return image.Resize(new SKSizeI(image.Width * pixelScale, image.Height * pixelScale), SKFilterQuality.None);
+        }
+
+        protected bool[] AdjustWidths(bool[] array, int wide, int narrow)
+        {
+            List<bool> result = new List<bool>();
+            var last = true;
+            var count = 0;
+            foreach (var current in array)
+            {
+                if (current != last)
+                {
+                    result.AddRange(Enumerable.Repeat<bool>(last, count == 1 ? narrow : wide));
+                    last = current;
+                    count = 0;
+                }
+
+                count += 1;
+            }
+
+            result.AddRange(Enumerable.Repeat<bool>(last, narrow));
+
+            return result.ToArray();
         }
     }
 }

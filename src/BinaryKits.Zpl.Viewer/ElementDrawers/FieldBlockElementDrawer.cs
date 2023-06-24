@@ -10,6 +10,9 @@ using System.Text;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Field Block elements
+    /// </summary>
     public class FieldBlockElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>
@@ -18,6 +21,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return element is ZplFieldBlock;
         }
 
+        ///<inheritdoc/>
         public override bool IsReverseDraw(ZplElementBase element)
         {
             if (element is ZplFieldBlock fieldBlock)
@@ -26,12 +30,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             }
 
             return false;
-        }
-
-        ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
-        {
-            Draw(element, new DrawerOptions());
         }
 
         ///<inheritdoc/>
@@ -62,6 +60,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var skFont = new SKFont(typeface, fontSize, scaleX);
                 using var skPaint = new SKPaint(skFont);
+                skPaint.IsAntialias = options.Antialias;
+
                 var textBoundBaseline = new SKRect();
                 skPaint.MeasureText("X", ref textBoundBaseline);
 

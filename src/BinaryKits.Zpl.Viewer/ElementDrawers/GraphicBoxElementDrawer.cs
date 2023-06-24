@@ -4,6 +4,9 @@ using System;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Graphic Box elements
+    /// </summary>
     public class GraphicBoxElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>
@@ -12,6 +15,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return element is ZplGraphicBox;
         }
 
+        ///<inheritdoc/>
         public override bool IsReverseDraw(ZplElementBase element)
         {
             if (element is ZplGraphicBox graphicBox)
@@ -23,7 +27,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override void Draw(ZplElementBase element, DrawerOptions options)
         {
             if (element is ZplGraphicBox graphicBox)
             {
@@ -61,11 +65,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var width = width1 - border1;
                 var height = height1 - border1;
 
-                using var skPaint = new SKPaint();
-                skPaint.Style = SKPaintStyle.Stroke;
-                skPaint.StrokeCap = SKStrokeCap.Square;
-                skPaint.Color = SKColors.Black;
-                skPaint.StrokeWidth = border1;
+                using var skPaint = new SKPaint()
+                {
+                    IsAntialias = options.Antialias,
+                    Style = SKPaintStyle.Stroke,
+                    StrokeCap = SKStrokeCap.Square,
+                    Color = SKColors.Black,
+                    StrokeWidth = border1
+                };
 
                 if (graphicBox.LineColor == Label.LineColor.White)
                 {

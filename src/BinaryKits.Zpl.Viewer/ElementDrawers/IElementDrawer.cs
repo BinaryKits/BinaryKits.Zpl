@@ -3,6 +3,9 @@ using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Public interface for element drawers
+    /// </summary>
     public interface IElementDrawer
     {
         /// <summary>
@@ -15,14 +18,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             SKCanvas skCanvas);
 
         /// <summary>
-        /// Check the drawer can draw this element
+        /// Check if the drawer can draw this element
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
         bool CanDraw(ZplElementBase element);
 
         /// <summary>
-        /// Element require reverse draw
+        /// Element requires reverse draw
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>

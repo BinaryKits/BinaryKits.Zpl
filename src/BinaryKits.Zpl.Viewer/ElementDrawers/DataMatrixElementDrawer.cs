@@ -1,12 +1,14 @@
 using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
-using System.Collections.Generic;
 using ZXing;
 using ZXing.Datamatrix;
 using ZXing.Datamatrix.Encoder;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Data Matrix Barcode Elements
+    /// </summary>
     public class DataMatrixElementDrawer : BarcodeDrawerBase
     {
         ///<inheritdoc/>
@@ -30,15 +32,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float y = dataMatrix.PositionY;
 
                 var writer = new DataMatrixWriter();
-                var hints = new Dictionary<EncodeHintType, object> {
-                    { EncodeHintType.DATA_MATRIX_SHAPE, SymbolShapeHint.FORCE_SQUARE }
+                var encodingOptions = new DatamatrixEncodingOptions()
+                {
+                    SymbolShape = SymbolShapeHint.FORCE_SQUARE
                 };
-                var result = writer.encode(dataMatrix.Content, BarcodeFormat.DATA_MATRIX, 0, 0, hints);
+                var result = writer.encode(dataMatrix.Content, BarcodeFormat.DATA_MATRIX, 0, 0, encodingOptions.Hints);
 
                 using var resizedImage = this.BitMatrixToSKBitmap(result, dataMatrix.Height);
                 {
                     var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                    this.DrawBarcode(png, resizedImage.Height, resizedImage.Width, dataMatrix.FieldOrigin != null, x, y, 0, dataMatrix.FieldOrientation);
+                    this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, dataMatrix.FieldOrigin != null, dataMatrix.FieldOrientation);
                 }
             }
         }

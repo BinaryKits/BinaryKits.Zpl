@@ -2,10 +2,12 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 using SkiaSharp.HarfBuzz;
-using System;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Text Field elements
+    /// </summary>
     public class TextFieldElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>
@@ -14,6 +16,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return element.GetType() == typeof(ZplTextField);
         }
 
+        ///<inheritdoc/>
         public override bool IsReverseDraw(ZplElementBase element)
         {
             if (element is ZplTextField textField)
@@ -22,12 +25,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             }
 
             return false;
-        }
-
-        ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
-        {
-            Draw(element, new DrawerOptions());
         }
 
         ///<inheritdoc/>
@@ -51,6 +48,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var skFont = new SKFont(typeface, fontSize, scaleX);
                 using var skPaint = new SKPaint(skFont);
+                skPaint.IsAntialias = options.Antialias;
 
                 string displayText = textField.Text;
                 if (textField.UseHexadecimalIndicator)
@@ -77,13 +75,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         switch (textField.Font.FieldOrientation)
                         {
                             case Label.FieldOrientation.Rotated90:
-                                matrix = SKMatrix.CreateRotationDegrees(90, textField.PositionX + fontSize / 2, textField.PositionY + fontSize / 2);
+                                matrix = SKMatrix.CreateRotationDegrees(90, x + fontSize / 2, y + fontSize / 2);
                                 break;
                             case Label.FieldOrientation.Rotated180:
-                                matrix = SKMatrix.CreateRotationDegrees(180, textField.PositionX + textBounds.Width / 2, textField.PositionY + fontSize / 2);
+                                matrix = SKMatrix.CreateRotationDegrees(180, x + textBounds.Width / 2, y + fontSize / 2);
                                 break;
                             case Label.FieldOrientation.Rotated270:
-                                matrix = SKMatrix.CreateRotationDegrees(270, textField.PositionX + textBounds.Width / 2, textField.PositionY + textBounds.Width / 2);
+                                matrix = SKMatrix.CreateRotationDegrees(270, x + textBounds.Width / 2, y + textBounds.Width / 2);
                                 break;
                             case Label.FieldOrientation.Normal:
                                 break;
@@ -94,13 +92,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         switch (textField.Font.FieldOrientation)
                         {
                             case Label.FieldOrientation.Rotated90:
-                                matrix = SKMatrix.CreateRotationDegrees(90, textField.PositionX, textField.PositionY);
+                                matrix = SKMatrix.CreateRotationDegrees(90, x, y);
                                 break;
                             case Label.FieldOrientation.Rotated180:
-                                matrix = SKMatrix.CreateRotationDegrees(180, textField.PositionX, textField.PositionY);
+                                matrix = SKMatrix.CreateRotationDegrees(180, x, y);
                                 break;
                             case Label.FieldOrientation.Rotated270:
-                                matrix = SKMatrix.CreateRotationDegrees(270, textField.PositionX, textField.PositionY);
+                                matrix = SKMatrix.CreateRotationDegrees(270, x, y);
                                 break;
                             case Label.FieldOrientation.Normal:
                                 break;

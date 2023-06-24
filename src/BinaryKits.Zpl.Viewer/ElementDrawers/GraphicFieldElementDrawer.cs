@@ -1,10 +1,12 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Label.Helpers;
-using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Graphic Field elements
+    /// </summary>
     public class GraphicFieldElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>
