@@ -58,11 +58,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     var labelFont = new SKFont(labelTypeFace, labelFontSize);
                     if (barcode.PrintInterpretationLineAboveCode)
                     {
-                        this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, true);
+                        this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, true, options);
                     }
                     else
                     {
-                        this.DrawEAN13InterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.ModuleWidth);
+                        this.DrawEAN13InterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.ModuleWidth, options);
                     }
                 }
 
@@ -78,12 +78,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             int barcodeHeight,
             bool useFieldOrigin,
             Label.FieldOrientation fieldOrientation,
-            int moduleWidth)
+            int moduleWidth,
+            DrawerOptions options)
         {
             using (new SKAutoCanvasRestore(this._skCanvas))
             {
                 using var skPaint = new SKPaint(skFont);
-                skPaint.IsAntialias = true;
+                skPaint.IsAntialias = options.Antialias;
 
                 SKMatrix matrix = this.GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
 

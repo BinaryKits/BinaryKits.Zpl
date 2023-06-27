@@ -32,10 +32,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float y = dataMatrix.PositionY;
 
                 var writer = new DataMatrixWriter();
-                var encodingOptions = new DatamatrixEncodingOptions()
-                {
-                    SymbolShape = SymbolShapeHint.FORCE_SQUARE
-                };
+                var encodingOptions = new DatamatrixEncodingOptions();
+                encodingOptions.SymbolShape = SymbolShapeHint.FORCE_SQUARE;
+
                 var result = writer.encode(dataMatrix.Content, BarcodeFormat.DATA_MATRIX, 0, 0, encodingOptions.Hints);
 
                 using var resizedImage = this.BitMatrixToSKBitmap(result, dataMatrix.Height);

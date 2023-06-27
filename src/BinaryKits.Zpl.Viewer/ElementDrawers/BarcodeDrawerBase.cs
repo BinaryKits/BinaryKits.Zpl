@@ -53,12 +53,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             int barcodeHeight,
             bool useFieldOrigin,
             Label.FieldOrientation fieldOrientation,
-            bool printInterpretationLineAboveCode)
+            bool printInterpretationLineAboveCode,
+            DrawerOptions options)
         {
             using (new SKAutoCanvasRestore(this._skCanvas))
             {
                 using var skPaint = new SKPaint(skFont);
-                skPaint.IsAntialias = true;
+                skPaint.IsAntialias = options.Antialias;
 
                 SKMatrix matrix = this.GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
 
