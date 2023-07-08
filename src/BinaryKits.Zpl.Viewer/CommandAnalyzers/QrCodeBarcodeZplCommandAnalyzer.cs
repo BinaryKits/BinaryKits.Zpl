@@ -6,26 +6,29 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class QrCodeBarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public QrCodeBarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BQ", virtualPrinter)
-        { }
+        public QrCodeBarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BQ", virtualPrinter) { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
             var zplDataParts = this.SplitCommand(zplCommand);
 
             var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
-            var model = 2;
-            var magnificationFactor = 3;
-            var errorCorrection = ErrorCorrectionLevel.HighReliability;
-            var maskValue = 7;
 
-            if (zplDataParts.Length > 1)
+            int tmpint;
+            int model = 2;
+            int magnificationFactor = 3;
+            var errorCorrection = ErrorCorrectionLevel.HighReliability;
+            int maskValue = 7;
+
+            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[1], out model);
+                model = tmpint;
             }
-            if (zplDataParts.Length > 2)
+
+            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[2], out magnificationFactor);
+                magnificationFactor = tmpint;
 
                 if (magnificationFactor > 10)
                 {
@@ -33,13 +36,15 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                     magnificationFactor = 10;
                 }
             }
+
             if (zplDataParts.Length > 3)
             {
                 errorCorrection = this.ConvertErrorCorrectionLevel(zplDataParts[3]);
             }
-            if (zplDataParts.Length > 4)
+
+            if (zplDataParts.Length > 4 && int.TryParse(zplDataParts[4], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[4], out maskValue);
+                maskValue = tmpint;
             }
 
             this.VirtualPrinter.SetNextElementFieldData(new QrCodeBarcodeFieldData

@@ -4,16 +4,21 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class LabelReversePrintZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public LabelReversePrintZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^LR", virtualPrinter)
-        { }
+        public LabelReversePrintZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^LR", virtualPrinter) { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            if (zplCommand.Length > 3)
+            var zplDataParts = this.SplitCommand(zplCommand);
+
+            bool reverse = false;
+
+            if (zplDataParts.Length > 0)
             {
-                var reverse = char.ToUpperInvariant(zplCommand[3]) == 'Y';
-                this.VirtualPrinter.SetLabelReverse(reverse);
+                reverse = this.ConvertBoolean(zplDataParts[0]);
             }
+
+            this.VirtualPrinter.SetLabelReverse(reverse);
             return null;
         }
     }

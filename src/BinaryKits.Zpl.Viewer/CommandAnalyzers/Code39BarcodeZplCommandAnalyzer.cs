@@ -5,34 +5,35 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class Code39BarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public Code39BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^B3", virtualPrinter)
-        { }
+        public Code39BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^B3", virtualPrinter) { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
             var zplDataParts = this.SplitCommand(zplCommand);
 
-            var mod43CheckDigit = false;
-            var height = this.VirtualPrinter.BarcodeInfo.Height;
-            var printInterpretationLine = true;
-            var printInterpretationLineAboveCode = false;
+            int tmpint;
+            bool mod43CheckDigit = false;
+            int height = this.VirtualPrinter.BarcodeInfo.Height;
+            bool printInterpretationLine = true;
+            bool printInterpretationLineAboveCode = false;
 
             var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
             if (zplDataParts.Length > 1)
             {
                 mod43CheckDigit = this.ConvertBoolean(zplDataParts[1]);
             }
-            if (zplDataParts.Length > 2)
+
+            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint))
             {
-                if (!string.IsNullOrEmpty(zplDataParts[2]))
-                {
-                    _ = int.TryParse(zplDataParts[2], out height);
-                }
+                height = tmpint;
             }
+
             if (zplDataParts.Length > 3)
             {
                 printInterpretationLine = this.ConvertBoolean(zplDataParts[3], "Y");
             }
+
             if (zplDataParts.Length > 4)
             {
                 printInterpretationLineAboveCode = this.ConvertBoolean(zplDataParts[4]);

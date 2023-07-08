@@ -5,14 +5,19 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class GraphicCircleZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public GraphicCircleZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GC", virtualPrinter)
-        { }
+        public GraphicCircleZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GC", virtualPrinter) { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var x = 0;
-            var y = 0;
-            var bottomToTop = false;
+            int tmpint;
+            int circleDiameter = 3;
+            int borderThickness = 1;
+            var lineColor = LineColor.Black;
+
+            int x = 0;
+            int y = 0;
+            bool bottomToTop = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
@@ -23,13 +28,19 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             var zplDataParts = this.SplitCommand(zplCommand);
 
-            _ = int.TryParse(zplDataParts[0], out var circleDiameter);
-            _ = int.TryParse(zplDataParts[1], out var borderThickness);
+            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
+            {
+                circleDiameter = tmpint;
+            }
 
-            var lineColor = LineColor.Black;
+            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
+            {
+                borderThickness = tmpint;
+            }
+
             if (zplDataParts.Length > 2)
             {
-                var lineColorTemp = zplDataParts[2];
+                string lineColorTemp = zplDataParts[2];
                 lineColor = lineColorTemp == "W" ? LineColor.White : LineColor.Black;
             }
 

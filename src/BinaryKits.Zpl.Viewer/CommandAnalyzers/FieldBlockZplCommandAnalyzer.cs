@@ -9,28 +9,32 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public FieldBlockZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FB", virtualPrinter)
         { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
             var zplDataParts = this.SplitCommand(zplCommand);
 
-            var widthOfTextBlockLine = 0;
-            var maximumNumberOfLinesInTextBlock = 1;
-            var addOrDeleteSpaceBetweenLines = 0;
+            int tmpint;
+            int widthOfTextBlockLine = 0;
+            int maximumNumberOfLinesInTextBlock = 1;
+            int addOrDeleteSpaceBetweenLines = 0;
             var textJustification = TextJustification.Left;
-            var hangingIndentOfTheSecondAndRemainingLines = 0;
+            int hangingIndentOfTheSecondAndRemainingLines = 0;
 
-            if (zplDataParts.Length > 0)
+            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[0], out widthOfTextBlockLine);
+                widthOfTextBlockLine = tmpint;
             }
-            if (zplDataParts.Length > 1)
+
+            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[1], out maximumNumberOfLinesInTextBlock);
+                maximumNumberOfLinesInTextBlock = tmpint;
             }
-            if (zplDataParts.Length > 2)
-            {
-                _ = int.TryParse(zplDataParts[2], out addOrDeleteSpaceBetweenLines);
+
+            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint)) {
+                addOrDeleteSpaceBetweenLines = tmpint;
             }
+
             if (zplDataParts.Length > 3)
             {
                 switch (zplDataParts[3])
@@ -46,21 +50,19 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                         break;
                 }
             }
-            if (zplDataParts.Length > 4)
-            {
-                _ = int.TryParse(zplDataParts[4], out hangingIndentOfTheSecondAndRemainingLines);
+
+            if (zplDataParts.Length > 4 && int.TryParse(zplDataParts[4], out tmpint)) {
+                hangingIndentOfTheSecondAndRemainingLines = tmpint;
             }
 
-            var fieldBlock = new FieldBlock
+            this.VirtualPrinter.SetNextElementFieldBlock(new FieldBlock
             {
                 WidthOfTextBlockLine = widthOfTextBlockLine,
                 MaximumNumberOfLinesInTextBlock = maximumNumberOfLinesInTextBlock,
                 AddOrDeleteSpaceBetweenLines = addOrDeleteSpaceBetweenLines,
                 TextJustification = textJustification,
                 HangingIndentOfTheSecondAndRemainingLines = hangingIndentOfTheSecondAndRemainingLines
-            };
-
-            this.VirtualPrinter.SetNextElementFieldBlock(fieldBlock);
+            });
 
             return null;
         }
