@@ -5,8 +5,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class FieldHexadecimalZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public FieldHexadecimalZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FH", virtualPrinter)
-        { }
+        public FieldHexadecimalZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FH", virtualPrinter) { }
+
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
             var zplDataParts = this.SplitCommand(zplCommand);
@@ -17,7 +18,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             {
                 Indicator = zplDataParts[0][0];
             }
+
             StringHelper.ReplaceChar = Indicator;
+
             return null;
         }
     }

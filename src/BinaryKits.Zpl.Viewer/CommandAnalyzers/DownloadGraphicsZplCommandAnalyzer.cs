@@ -10,26 +10,26 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
     public class DownloadGraphicsZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
         private static readonly Regex commandRegex = new Regex( @"^~DG(\w:)?(.*?\..+?),(\d+),(\d+),(.+)$",RegexOptions.Compiled);
+
         private readonly IPrinterStorage _printerStorage;
 
-        public DownloadGraphicsZplCommandAnalyzer(
-            VirtualPrinter virtualPrinter, 
-            IPrinterStorage printerStorage) 
-            : base("~DG",virtualPrinter)
-        { 
-            this._printerStorage = printerStorage; 
+        public DownloadGraphicsZplCommandAnalyzer(VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
+            : base("~DG", virtualPrinter)
+        {
+            this._printerStorage = printerStorage;
         }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
             var commandMatch = commandRegex.Match(zplCommand);
             if (commandMatch.Success)
             {
-                var storageDevice = commandMatch.Groups[1].Success ? commandMatch.Groups[1].Value[0] : 'R';
-                var imageName = commandMatch.Groups[2].Value;
-                _ = int.TryParse(commandMatch.Groups[3].Value, out var totalNumberOfBytesInGraphic);
-                _ = int.TryParse(commandMatch.Groups[4].Value, out var numberOfBytesPerRow);
-                var dataHex = commandMatch.Groups[5].Value;
+                char storageDevice = commandMatch.Groups[1].Success ? commandMatch.Groups[1].Value[0] : 'R';
+                string imageName = commandMatch.Groups[2].Value;
+                _ = int.TryParse(commandMatch.Groups[3].Value, out int totalNumberOfBytesInGraphic);
+                _ = int.TryParse(commandMatch.Groups[4].Value, out int numberOfBytesPerRow);
+                string dataHex = commandMatch.Groups[5].Value;
 
                 byte[] grfImageData = ImageHelper.GetImageBytes(dataHex, numberOfBytesPerRow);
 

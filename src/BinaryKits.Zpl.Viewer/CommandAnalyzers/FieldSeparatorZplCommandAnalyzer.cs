@@ -6,13 +6,13 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
     {
         private ZplCommandAnalyzerBase _fieldDataAnalyzer;
 
-        public FieldSeparatorZplCommandAnalyzer(
-            VirtualPrinter virtualPrinter, ZplCommandAnalyzerBase fieldDataAnalyzer)
+        public FieldSeparatorZplCommandAnalyzer(VirtualPrinter virtualPrinter, ZplCommandAnalyzerBase fieldDataAnalyzer)
             : base("^FS", virtualPrinter)
         {
             _fieldDataAnalyzer = fieldDataAnalyzer;
         }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
             // If next field number has been set and was not consumed by a field data

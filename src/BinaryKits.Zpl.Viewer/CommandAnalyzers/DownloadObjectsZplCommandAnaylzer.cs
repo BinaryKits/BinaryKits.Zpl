@@ -8,28 +8,27 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
     {
         private readonly IPrinterStorage _printerStorage;
 
-        public DownloadObjectsZplCommandAnaylzer(
-            VirtualPrinter virtualPrinter,
-            IPrinterStorage printerStorage)
+        public DownloadObjectsZplCommandAnaylzer(VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
             : base("~DY", virtualPrinter)
         {
             this._printerStorage = printerStorage;
         }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var storageDevice = zplCommand[this.PrinterCommandPrefix.Length];
+            char storageDevice = zplCommand[this.PrinterCommandPrefix.Length];
 
             var zplDataParts = this.SplitCommand(zplCommand, 2);
 
-            var objectName = zplDataParts[0];
-            var formatDownloadedInDataField = zplDataParts[1];
-            var extensionOfStoredFile = zplDataParts[2];
-            _ = int.TryParse(zplDataParts[3], out var objectDataLength);
-            _ = int.TryParse(zplDataParts[4], out var totalNumberOfBytesPerRow);
+            string objectName = zplDataParts[0];
+            string formatDownloadedInDataField = zplDataParts[1];
+            string extensionOfStoredFile = zplDataParts[2];
+            _ = int.TryParse(zplDataParts[3], out int objectDataLength);
+            _ = int.TryParse(zplDataParts[4], out int totalNumberOfBytesPerRow);
 
             //TODO: Handle case when .GRF data is downloaded using the ~DY command
-            var dataHex = zplDataParts[5];
+            string dataHex = zplDataParts[5];
 
             this._printerStorage.AddFile(storageDevice, objectName, ByteHelper.HexToBytes(dataHex));
 

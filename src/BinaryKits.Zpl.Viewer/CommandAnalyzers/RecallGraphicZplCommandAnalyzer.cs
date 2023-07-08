@@ -7,14 +7,14 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
     {
         private static readonly Regex commandRegex = new Regex(@"^\^XG(\w:)?(.*?\..+?)(?:,(\d*))?(?:,(\d*))?$", RegexOptions.Compiled);
 
-        public RecallGraphicZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^XG", virtualPrinter)
-        { }
+        public RecallGraphicZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^XG", virtualPrinter) { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var x = 0;
-            var y = 0;
-            var bottomToTop = false;
+            int x = 0;
+            int y = 0;
+            bool bottomToTop = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
@@ -27,10 +27,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             if (commandMatch.Success)
             {
-                var storageDevice = commandMatch.Groups[1].Success ? commandMatch.Groups[1].Value[0] : 'R';
-                var imageName = commandMatch.Groups[2].Value;
-                var magnificationFactorX = commandMatch.Groups[3].Success ? int.Parse(commandMatch.Groups[3].Value) : 1;
-                var magnificationFactorY = commandMatch.Groups[4].Success ? int.Parse(commandMatch.Groups[4].Value) : 1;
+                char storageDevice = commandMatch.Groups[1].Success ? commandMatch.Groups[1].Value[0] : 'R';
+                string imageName = commandMatch.Groups[2].Value;
+                int magnificationFactorX = commandMatch.Groups[3].Success ? int.Parse(commandMatch.Groups[3].Value) : 1;
+                int magnificationFactorY = commandMatch.Groups[4].Success ? int.Parse(commandMatch.Groups[4].Value) : 1;
 
                 return new ZplRecallGraphic(x, y, storageDevice, imageName, magnificationFactorX, magnificationFactorY, bottomToTop);
             }

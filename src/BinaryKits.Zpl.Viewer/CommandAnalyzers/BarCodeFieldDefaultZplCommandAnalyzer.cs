@@ -4,30 +4,37 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class BarCodeFieldDefaultZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public BarCodeFieldDefaultZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BY", virtualPrinter)
-        { }
+        public BarCodeFieldDefaultZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BY", virtualPrinter) { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
             var zplDataParts = this.SplitCommand(zplCommand);
 
-            if (zplDataParts.Length > 0)
+            int tmpint;
+            double tmpdbl;
+            int moduleWidth = 2;
+            double wideBarToNarrowBarWidthRatio = 3.0;
+            int barcodeHeight = 10;
+
+            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[0], out var moduleWidth);
-                this.VirtualPrinter.SetBarcodeModuleWidth(moduleWidth);
+                moduleWidth = tmpint;
             }
 
-            if (zplDataParts.Length > 1)
+            if (zplDataParts.Length > 1 && double.TryParse(zplDataParts[1], out tmpdbl))
             {
-                _ = double.TryParse(zplDataParts[1], out var wideBarToNarrowBarWidthRatio);
-                this.VirtualPrinter.SetBarcodeWideBarToNarrowBarWidthRatio(wideBarToNarrowBarWidthRatio);
+                wideBarToNarrowBarWidthRatio = tmpdbl;
             }
 
-            if (zplDataParts.Length > 2)
+            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[2], out var barcodeHeight);
-                this.VirtualPrinter.SetBarcodeHeight(barcodeHeight);
+                barcodeHeight = tmpint;
             }
+
+            this.VirtualPrinter.SetBarcodeModuleWidth(moduleWidth);
+            this.VirtualPrinter.SetBarcodeWideBarToNarrowBarWidthRatio(wideBarToNarrowBarWidthRatio);
+            this.VirtualPrinter.SetBarcodeHeight(barcodeHeight);
 
             return null;
         }

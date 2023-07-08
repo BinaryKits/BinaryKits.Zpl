@@ -16,12 +16,12 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         private static readonly Regex qrCodeFieldDataMixedRegex = new Regex(@"^D\d{4}[0-9A-F-a-f]{2},(?<correction>[HQML])(?<input>[AM]),(?<data>.+)$", RegexOptions.Compiled);
         private static readonly Regex qrCodeFieldDataModeRegex = new Regex(@"^(?:[ANK]|(?:B(?<count>\d{4})))(?<data>.+)$", RegexOptions.Compiled);
 
-        public FieldDataZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FD", virtualPrinter)
-        { }
+        public FieldDataZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FD", virtualPrinter) { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var text = zplCommand.Substring(this.PrinterCommandPrefix.Length);
+            string text = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
             // If field data follows a field number, a ZplRecallFieldNumber element has to be returned
             int? fieldNumber = this.VirtualPrinter.NextFieldNumber;
@@ -31,9 +31,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 return new ZplRecallFieldNumber(fieldNumber.Value, text);
             }
 
-            var x = 0;
-            var y = 0;
-            var bottomToTop = false;
+            int x = 0;
+            int y = 0;
+            bool bottomToTop = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
@@ -45,8 +45,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             if (this.VirtualPrinter.NextElementFieldData != null)
             {
-                var moduleWidth = this.VirtualPrinter.BarcodeInfo.ModuleWidth;
-                var wideBarToNarrowBarWidthRatio = this.VirtualPrinter.BarcodeInfo.WideBarToNarrowBarWidthRatio;
+                int moduleWidth = this.VirtualPrinter.BarcodeInfo.ModuleWidth;
+                double wideBarToNarrowBarWidthRatio = this.VirtualPrinter.BarcodeInfo.WideBarToNarrowBarWidthRatio;
 
                 if (this.VirtualPrinter.NextElementFieldData is Code39BarcodeFieldData code39)
                 {
@@ -84,15 +84,15 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 font = this.GetNextFontFromVirtualPrinter();
             }
 
-            var reversePrint = this.VirtualPrinter.NextElementFieldReverse || this.VirtualPrinter.LabelReverse;
+            bool reversePrint = this.VirtualPrinter.NextElementFieldReverse || this.VirtualPrinter.LabelReverse;
 
             if (this.VirtualPrinter.NextElementFieldBlock != null)
             {
-                var width = this.VirtualPrinter.NextElementFieldBlock.WidthOfTextBlockLine;
-                var maxLineCount = this.VirtualPrinter.NextElementFieldBlock.MaximumNumberOfLinesInTextBlock;
+                int width = this.VirtualPrinter.NextElementFieldBlock.WidthOfTextBlockLine;
+                int maxLineCount = this.VirtualPrinter.NextElementFieldBlock.MaximumNumberOfLinesInTextBlock;
                 var textJustification = this.VirtualPrinter.NextElementFieldBlock.TextJustification;
-                var lineSpace = this.VirtualPrinter.NextElementFieldBlock.AddOrDeleteSpaceBetweenLines;
-                var hangingIndent = this.VirtualPrinter.NextElementFieldBlock.HangingIndentOfTheSecondAndRemainingLines;
+                int lineSpace = this.VirtualPrinter.NextElementFieldBlock.AddOrDeleteSpaceBetweenLines;
+                int hangingIndent = this.VirtualPrinter.NextElementFieldBlock.HangingIndentOfTheSecondAndRemainingLines;
 
                 return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, hangingIndent, reversePrint : reversePrint, bottomToTop: bottomToTop);
             }
@@ -190,18 +190,18 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         private ZplFont GetFontFromVirtualPrinter()
         {
-            var fontWidth = this.VirtualPrinter.FontWidth;
-            var fontHeight = this.VirtualPrinter.FontHeight;
-            var fontName = this.VirtualPrinter.FontName;
+            int fontWidth = this.VirtualPrinter.FontWidth;
+            int fontHeight = this.VirtualPrinter.FontHeight;
+            string fontName = this.VirtualPrinter.FontName;
 
             return new ZplFont(fontWidth, fontHeight, fontName);
         }
 
         private ZplFont GetNextFontFromVirtualPrinter()
         {
-            var fontWidth = this.VirtualPrinter.NextFont.FontWidth;
-            var fontHeight = this.VirtualPrinter.NextFont.FontHeight;
-            var fontName = this.VirtualPrinter.NextFont.FontName;
+            int fontWidth = this.VirtualPrinter.NextFont.FontWidth;
+            int fontHeight = this.VirtualPrinter.NextFont.FontHeight;
+            string fontName = this.VirtualPrinter.NextFont.FontName;
             var fieldOrientation = this.VirtualPrinter.NextFont.FieldOrientation;
 
             return new ZplFont(fontWidth, fontHeight, fontName, fieldOrientation);

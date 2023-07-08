@@ -4,25 +4,27 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class FieldTypesetZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public FieldTypesetZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FT", virtualPrinter)
-        { }
+        public FieldTypesetZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FT", virtualPrinter) { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
             var zplDataParts = this.SplitCommand(zplCommand);
 
-            var x = 0;
-            var y = 0;
-            var z = 0;
+            int tmpint;
+            int x = 0;
+            int y = 0;
+            // TODO: Field Justification
+            //int z = 0;
 
-            _ = int.TryParse(zplDataParts[0], out x);
-            if (zplDataParts.Length > 1)
+            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[1], out y);
+                x = tmpint;
             }
-            if (zplDataParts.Length > 2)
+
+            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[2], out z);
+                y = tmpint;
             }
 
             if (this.VirtualPrinter.LabelHomePosition != null)

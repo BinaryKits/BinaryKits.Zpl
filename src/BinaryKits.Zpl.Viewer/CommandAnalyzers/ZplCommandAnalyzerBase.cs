@@ -14,16 +14,18 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             this.VirtualPrinter = virtualPrinter;
         }
 
+        ///<inheritdoc/>
         public bool CanAnalyze(string zplLine)
         {
             return zplLine.StartsWith(this.PrinterCommandPrefix);
         }
 
+        ///<inheritdoc/>
         public abstract ZplElementBase Analyze(string zplCommand);
 
         protected string[] SplitCommand(string zplCommand, int dataStartIndex = 0)
         {
-            var zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length + dataStartIndex);
+            string zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length + dataStartIndex);
             return zplCommandData.TrimStart().Split(',');
         }
 
@@ -58,8 +60,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
         protected int IndexOfNthCharacter(string input, int occurranceToFind, char charToFind)
         {
-            var index = -1;
-            for (var i = 0; i < occurranceToFind; i++)
+            int index = -1;
+            for (int i = 0; i < occurranceToFind; i++)
             {
                 index = input.IndexOf(charToFind, index + 1);
 

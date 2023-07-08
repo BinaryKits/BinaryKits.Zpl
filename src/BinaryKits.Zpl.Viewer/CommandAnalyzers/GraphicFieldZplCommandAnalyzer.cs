@@ -7,14 +7,19 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class GraphicFieldZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public GraphicFieldZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GF", virtualPrinter)
-        { }
+        public GraphicFieldZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GF", virtualPrinter) { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var x = 0;
-            var y = 0;
-            var bottomToTop = false;
+            int tmpint;
+            int binaryByteCount = 0;
+            int graphicFieldCount = 0;
+            int bytesPerRow = 0;
+
+            int x = 0;
+            int y = 0;
+            bool bottomToTop = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
@@ -26,27 +31,26 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             var zplDataParts = this.SplitCommand(zplCommand);
 
-            var compressionType = zplDataParts[0][0];
-            var binaryByteCount = 0;
-            var graphicFieldCount = 0;
-            var bytesPerRow = 0;
+            char compressionType = zplDataParts[0][0];
 
-            if (zplDataParts.Length > 1)
+            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[1], out binaryByteCount);
+                binaryByteCount = tmpint;
             }
-            if (zplDataParts.Length > 2)
+
+            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[2], out graphicFieldCount);
+                graphicFieldCount = tmpint;
             }
-            if (zplDataParts.Length > 3)
+
+            if (zplDataParts.Length > 3 && int.TryParse(zplDataParts[3], out tmpint))
             {
-                _ = int.TryParse(zplDataParts[3], out bytesPerRow);
+                bytesPerRow = tmpint;
             }
 
             //fourth comma is the start of the image data
-            var indexOfFourthComma = this.IndexOfNthCharacter(zplCommand, 4, ',');
-            var dataHex = zplCommand.Substring(indexOfFourthComma + 1);
+            int indexOfFourthComma = this.IndexOfNthCharacter(zplCommand, 4, ',');
+            string dataHex = zplCommand.Substring(indexOfFourthComma + 1);
 
             byte[] grfImageData = ImageHelper.GetImageBytes(dataHex, bytesPerRow);
 

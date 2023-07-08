@@ -5,39 +5,42 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class Code128BarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public Code128BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BC", virtualPrinter)
-        { }
+        public Code128BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BC", virtualPrinter) { }
 
+        ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
             var zplDataParts = this.SplitCommand(zplCommand);
 
             var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
-            var height = this.VirtualPrinter.BarcodeInfo.Height;
-            var printInterpretationLine = true;
-            var printInterpretationLineAboveCode = false;
-            var uccCheckDigit = false;
-            var mode = "N";
 
-            if (zplDataParts.Length > 1)
+            int tmpint;
+            int height = this.VirtualPrinter.BarcodeInfo.Height;
+            bool printInterpretationLine = true;
+            bool printInterpretationLineAboveCode = false;
+            bool uccCheckDigit = false;
+            string mode = "N";
+
+            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
-                if(!string.IsNullOrEmpty(zplDataParts[1]))
-                {
-                    _ = int.TryParse(zplDataParts[1], out height);
-                }
+                height = tmpint;
             }
+
             if (zplDataParts.Length > 2)
             {
                 printInterpretationLine = this.ConvertBoolean(zplDataParts[2], "Y");
             }
+
             if (zplDataParts.Length > 3)
             {
                 printInterpretationLineAboveCode = this.ConvertBoolean(zplDataParts[3]);
             }
+
             if (zplDataParts.Length > 4)
             {
                 uccCheckDigit = this.ConvertBoolean(zplDataParts[4]);
             }
+
             if (zplDataParts.Length > 5)
             {
                 mode = zplDataParts[5];
