@@ -16,18 +16,21 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
 
             int tmpint;
-            int fontHeight = this.VirtualPrinter.FontHeight;
-            int fontWidth = this.VirtualPrinter.FontWidth;
+            int? parsedHeight = null;
+            int? parsedWidth = null;
 
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
-                fontHeight = tmpint;
+                parsedHeight = tmpint;
             }
 
             if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint))
             {
-                fontWidth = tmpint;
+                parsedWidth = tmpint;
             }
+
+            int fontHeight = parsedHeight ?? (parsedWidth ?? this.VirtualPrinter.FontHeight);
+            int fontWidth = parsedWidth ?? (parsedHeight ?? this.VirtualPrinter.FontWidth);
 
             this.VirtualPrinter.SetNextFont(fontName, fieldOrientation, fontWidth, fontHeight);
 
