@@ -21,6 +21,21 @@ namespace BinaryKits.Zpl.Viewer.WebApi
         {
             services.AddControllers();
 
+            string allowedOrigins = this.Configuration["AllowedOrigins"];
+
+            if (!string.IsNullOrEmpty(allowedOrigins))
+            {
+                services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder.WithOrigins(allowedOrigins.Split(","))
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+                });
+            }
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "BinaryKits.Zpl.Viewer.WebApi", Version = "v1" });
@@ -35,6 +50,8 @@ namespace BinaryKits.Zpl.Viewer.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BinaryKits.Zpl.Viewer.WebApi v1"));
