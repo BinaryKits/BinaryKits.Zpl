@@ -14,7 +14,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             char Indicator = '_';
 
-            if (zplDataParts.Length > 0)
+            if ((zplDataParts.Length > 0) && (zplDataParts[0].Length > 0))
             {
                 Indicator = zplDataParts[0][0];
             }
