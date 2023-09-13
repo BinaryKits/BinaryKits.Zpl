@@ -55,7 +55,7 @@
 
         protected string RenderModuleWidth()
         {
-            return $"^BY{ModuleWidth}, {WideBarToNarrowBarWidthRatio}";
+            return $"^BY{ModuleWidth},{WideBarToNarrowBarWidthRatio}";
         }
 
         protected bool IsDigitsOnly(string text)
