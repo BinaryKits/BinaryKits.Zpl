@@ -4,6 +4,7 @@ using BinaryKits.Zpl.Viewer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Application.UseCase.ZplToPdf;
 
@@ -128,7 +129,54 @@ namespace BinaryKits.Zpl.Viewer
 
             var replacementString = string.Empty;
             var cleanZpl = Regex.Replace(zplData, @"\r\n?|\n", replacementString);
-            return Regex.Split(cleanZpl, "(?=\\^)|(?=\\~)").Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            char caret = '^';
+            char tilde = '~';
+            List<string> results = new(200);
+            StringBuilder sb = new(2000);
+            for (int i = 0; i < cleanZpl.Length; i++)
+            {
+                char c = zplData[i];
+                if (c == caret || c == tilde)
+                {
+                    string command = sb.ToString();
+                    sb.Clear();
+                    if (command.Length > 0)
+                    {
+                        patch_command(ref command, ref caret, ref tilde);
+                        results.Add(command);
+                        if (command.Substring(1, 2) == "CT")
+                        {
+                            tilde = command[3];
+                            results.RemoveAt(results.Count - 1);
+                        }
+                        else if (command.Substring(1, 2) == "CC")
+                        {
+                            caret = command[3];
+                            results.RemoveAt(results.Count - 1);
+                        }
+                    }
+                }
+                sb.Append(c);
+            }
+            string lastcmd = sb.ToString();
+            if (lastcmd.Length > 0)
+            {
+                patch_command(ref lastcmd, ref caret, ref tilde);
+                results.Add(lastcmd);
+            }
+            return results.ToArray();
+        }
+        
+		private void patch_command(ref string command, ref char caret, ref char tilde) 
+        {
+            if (caret != '^' && command[0] == caret)
+            {
+                command = '^' + command.Remove(0, 1);
+            }
+            if (tilde != '~' && command[0] == tilde)
+            {
+                command = '~' + command.Remove(0, 1);
+            }
         }
     }
 }
