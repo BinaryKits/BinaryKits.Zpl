@@ -76,6 +76,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                     // N.B.: always pass Field Orientation Normal to QR codes; the ZPL II standard does not allow rotation
                     return new ZplQrCode(parsedText, x, y, qrCode.Model, qrCode.MagnificationFactor, errorCorrection, qrCode.MaskValue, Label.FieldOrientation.Normal, bottomToTop);
                 }
+                if (this.VirtualPrinter.NextElementFieldData is PDF417FieldData pdf147)
+                {
+                    return new ZplPDF417(text, x, y, pdf147.Height, pdf147.Columns, pdf147.Rows, pdf147.Compact, pdf147.SecurityLevel, pdf147.FieldOrientation, bottomToTop);
+                }
             }
 
             var font = this.GetFontFromVirtualPrinter();
