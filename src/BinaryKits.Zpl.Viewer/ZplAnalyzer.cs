@@ -122,27 +122,26 @@ namespace BinaryKits.Zpl.Viewer
 
         private string[] SplitZplCommands(string zplData)
         {
-            if (string.IsNullOrEmpty(zplData))
+            if (string.IsNullOrWhiteSpace(zplData))
             {
                 return Array.Empty<string>();
             }
 
-            var replacementString = string.Empty;
-            var cleanZpl = Regex.Replace(zplData, @"\r\n?|\n", replacementString);
+            var cleanZpl = Regex.Replace(zplData, @"\r|\n", string.Empty);
             char caret = '^';
             char tilde = '~';
             List<string> results = new(200);
-            StringBuilder sb = new(2000);
+            StringBuilder buffer = new(2000);
             for (int i = 0; i < cleanZpl.Length; i++)
             {
-                char c = zplData[i];
+                char c = cleanZpl[i];
                 if (c == caret || c == tilde)
                 {
-                    string command = sb.ToString();
-                    sb.Clear();
-                    if (command.Length > 0)
+                    string command = buffer.ToString();
+                    buffer.Clear();
+                    if (command.Length > 2)
                     {
-                        patch_command(ref command, ref caret, ref tilde);
+                        PatchCommand(ref command, ref caret, ref tilde);
                         results.Add(command);
                         if (command.Substring(1, 2) == "CT")
                         {
@@ -155,19 +154,23 @@ namespace BinaryKits.Zpl.Viewer
                             results.RemoveAt(results.Count - 1);
                         }
                     }
+                    // likely invalid command
+                    else if (command.Trim().Length > 0) {
+                        results.Add(command.Trim());
+                    }
                 }
-                sb.Append(c);
+                buffer.Append(c);
             }
-            string lastcmd = sb.ToString();
-            if (lastcmd.Length > 0)
+            string lastCommand = buffer.ToString();
+            if (lastCommand.Length > 0)
             {
-                patch_command(ref lastcmd, ref caret, ref tilde);
-                results.Add(lastcmd);
+                PatchCommand(ref lastCommand, ref caret, ref tilde);
+                results.Add(lastCommand);
             }
             return results.ToArray();
         }
 
-        private void patch_command(ref string command, ref char caret, ref char tilde) 
+        private void PatchCommand(ref string command, ref char caret, ref char tilde)
         {
             if (caret != '^' && command[0] == caret)
             {
