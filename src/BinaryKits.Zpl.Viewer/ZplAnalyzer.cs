@@ -59,6 +59,7 @@ namespace BinaryKits.Zpl.Viewer
                 new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
                 new LabelHomeZplCommandAnalyzer(this._virtualPrinter),
                 new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new PDF417ZplCommandAnalyzer(this._virtualPrinter),
                 new RecallFormatCommandAnalyzer(this._virtualPrinter),
                 new RecallGraphicZplCommandAnalyzer(this._virtualPrinter),
                 new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter),
