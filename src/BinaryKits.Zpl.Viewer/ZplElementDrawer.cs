@@ -100,7 +100,26 @@ namespace BinaryKits.Zpl.Viewer
                 }
             }
 
-            using var data = skBitmap.Encode(_drawerOptions.RenderFormat, _drawerOptions.RenderQuality);
+            SKBitmap finalBitmap;
+            if (this._drawerOptions.OpaqueBackground == true)
+            {
+                finalBitmap = new SKBitmap(labelImageWidth, labelImageHeight);
+                using (SKCanvas canvas = new SKCanvas(finalBitmap))
+                {
+                    SKPaint paint = new SKPaint
+                    {
+                        IsAntialias = true,
+                        FilterQuality = SKFilterQuality.High
+                    };
+                    canvas.Clear(SKColors.White);
+                    canvas.DrawBitmap(skBitmap, 0, 0, paint);
+                }
+            }
+            else {
+                finalBitmap = skBitmap;
+            }
+
+            using var data = finalBitmap.Encode(_drawerOptions.RenderFormat, _drawerOptions.RenderQuality);
             return data.ToArray();
         }
 

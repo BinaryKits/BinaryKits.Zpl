@@ -10,6 +10,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
         public SKEncodedImageFormat RenderFormat { get; set; } = SKEncodedImageFormat.Png;
 
+        /// <summary>
+        /// Applies label over a white background after rendering all elements
+        /// </summary>
+        public bool OpaqueBackground { get; set; } = false;
+
         public int RenderQuality { get; set; } = 80;
 
         public bool ReplaceDashWithEnDash { get; set; } = true;
