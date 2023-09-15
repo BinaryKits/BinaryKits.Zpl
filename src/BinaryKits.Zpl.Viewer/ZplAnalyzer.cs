@@ -166,8 +166,8 @@ namespace BinaryKits.Zpl.Viewer
             }
             return results.ToArray();
         }
-        
-		private void patch_command(ref string command, ref char caret, ref char tilde) 
+
+        private void patch_command(ref string command, ref char caret, ref char tilde) 
         {
             if (caret != '^' && command[0] == caret)
             {
