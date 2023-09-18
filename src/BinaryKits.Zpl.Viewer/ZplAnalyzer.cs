@@ -121,7 +121,7 @@ namespace BinaryKits.Zpl.Viewer
             return analyzeInfo;
         }
 
-        // Always in uppercase when adding new commands
+        // When adding new commands: 1 per line, always upper case, comment why if possible
         private string[] ignoredCommands = {
             "CI", // may be implemented in the future, but for now always set to CI128
         };
