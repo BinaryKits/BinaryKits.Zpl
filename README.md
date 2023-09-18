@@ -18,14 +18,14 @@ This module is our own implementation of a viewer. It converts the ZPL data into
 
 ## How can I use it?
 
-The packages are available via [![NuGet](https://img.shields.io/nuget/v/BinaryKits.Zpl.Label.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Label)
+The packages are available via:
 
-| Package Manager | .NET CLI |
-| ------------- | ------------- |
-| ``` PM> install-package BinaryKits.Zpl.Label ``` | ``` > dotnet add package BinaryKits.Zpl.Label ``` |
-| ``` PM> install-package BinaryKits.Zpl.Labelary ``` | ``` > dotnet add package BinaryKits.Zpl.Labelary ``` |
-| ``` PM> install-package BinaryKits.Zpl.Viewer ``` | ``` > dotnet add package BinaryKits.Zpl.Viewer ``` |
-| ``` PM> install-package BinaryKits.Zpl.Protocol ``` | ``` > dotnet add package BinaryKits.Zpl.Protocol ``` |
+| Package Manager | .NET CLI |  |
+| ------------- | ------------- | ------------- |
+| ``` PM> install-package BinaryKits.Zpl.Label ``` | ``` > dotnet add package BinaryKits.Zpl.Label ``` | [![NuGet](https://img.shields.io/nuget/v/BinaryKits.Zpl.Label.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Label) |
+| ``` PM> install-package BinaryKits.Zpl.Labelary ``` | ``` > dotnet add package BinaryKits.Zpl.Labelary ``` | [![NuGet](https://img.shields.io/nuget/v/BinaryKits.Zpl.Labelary.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Labelary) |
+| ``` PM> install-package BinaryKits.Zpl.Viewer ``` | ``` > dotnet add package BinaryKits.Zpl.Viewer ``` | [![NuGet](https://img.shields.io/nuget/v/BinaryKits.Zpl.Viewer.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Viewer) |
+| ``` PM> install-package BinaryKits.Zpl.Protocol ``` | ``` > dotnet add package BinaryKits.Zpl.Protocol ``` | [![NuGet](https://img.shields.io/nuget/v/BinaryKits.Zpl.Protocol.svg?label=NuGet)](https://www.nuget.org/packages/BinaryKits.Zpl.Protocol) |
 
 ## Supported Elements
 
