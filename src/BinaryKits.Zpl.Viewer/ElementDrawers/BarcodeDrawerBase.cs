@@ -80,7 +80,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
         protected SKBitmap BitMatrixToSKBitmap(BitMatrix matrix, int pixelScale)
         {
-            using var image = new SKBitmap(matrix.Width, matrix.Height);
+            using var image = new SKBitmap(matrix.Width, matrix.Height, SKColorType.Alpha8, SKAlphaType.Unpremul);
 
             for (int row = 0; row < matrix.Height; row++)
             {

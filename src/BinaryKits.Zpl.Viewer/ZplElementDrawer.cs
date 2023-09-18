@@ -56,7 +56,7 @@ namespace BinaryKits.Zpl.Viewer
             var labelImageWidth = Convert.ToInt32(labelWidth * printDensityDpmm);
             var labelImageHeight = Convert.ToInt32(labelHeight * printDensityDpmm);
 
-            using var skBitmap = new SKBitmap(labelImageWidth, labelImageHeight);
+            using var skBitmap = new SKBitmap(labelImageWidth, labelImageHeight, SKColorType.Alpha8, SKAlphaType.Unpremul);
             using var skCanvas = new SKCanvas(skBitmap);
             skCanvas.Clear(SKColors.Transparent);
 
@@ -72,7 +72,7 @@ namespace BinaryKits.Zpl.Viewer
                 {
                     if (drawer.IsReverseDraw(element))
                     {
-                        using var skBitmapInvert = new SKBitmap(skBitmap.Width, skBitmap.Height);
+                        using var skBitmapInvert = new SKBitmap(skBitmap.Width, skBitmap.Height, SKColorType.Alpha8, SKAlphaType.Unpremul);
                         using var skCanvasInvert = new SKCanvas(skBitmapInvert);
 
                         drawer.Prepare(this._printerStorage, skCanvasInvert);
