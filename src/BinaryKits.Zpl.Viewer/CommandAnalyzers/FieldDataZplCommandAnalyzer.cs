@@ -16,7 +16,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         private static readonly Regex qrCodeFieldDataMixedRegex = new Regex(@"^D\d{4}[0-9A-F-a-f]{2},(?<correction>[HQML])(?<input>[AM]),(?<data>.+)$", RegexOptions.Compiled);
         private static readonly Regex qrCodeFieldDataModeRegex = new Regex(@"^(?:[ANK]|(?:B(?<count>\d{4})))(?<data>.+)$", RegexOptions.Compiled);
 
-        public FieldDataZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FD", virtualPrinter) { }
+        public FieldDataZplCommandAnalyzer(VirtualPrinter virtualPrinter, string prefix="^FD") : base(prefix, virtualPrinter) { }
 
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
