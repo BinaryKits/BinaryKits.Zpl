@@ -121,6 +121,11 @@ namespace BinaryKits.Zpl.Viewer
             return analyzeInfo;
         }
 
+        // Always in uppercase when adding new commands
+        private string[] ignoredCommands = {
+            "CI", // may be implemented in the future, but for now always set to CI128
+        };
+
         private string[] SplitZplCommands(string zplData)
         {
             if (string.IsNullOrWhiteSpace(zplData))
@@ -133,6 +138,7 @@ namespace BinaryKits.Zpl.Viewer
             char tilde = '~';
             List<string> results = new(200);
             StringBuilder buffer = new(2000);
+            HashSet<string> ignoredCommandsHS = new HashSet<string>(ignoredCommands);
             for (int i = 0; i < cleanZpl.Length; i++)
             {
                 char c = cleanZpl[i];
@@ -140,25 +146,33 @@ namespace BinaryKits.Zpl.Viewer
                 {
                     string command = buffer.ToString();
                     buffer.Clear();
+
+                    // all commands have at least 3 chars, even ^A because of required font parameter
                     if (command.Length > 2)
                     {
                         PatchCommand(ref command, ref caret, ref tilde);
-                        results.Add(command);
-                        if (command.Substring(1, 2) == "CT")
+
+                        var commandLetters = command.Substring(1, 2).ToUpper();
+
+                        if (ignoredCommandsHS.Contains(commandLetters)) {
+                            continue;
+                        }
+                        else if (commandLetters == "CT")
                         {
                             tilde = command[3];
-                            results.RemoveAt(results.Count - 1);
                         }
-                        else if (command.Substring(1, 2) == "CC")
+                        else if (commandLetters == "CC")
                         {
                             caret = command[3];
-                            results.RemoveAt(results.Count - 1);
+                        } else {
+                            results.Add(command);
                         }
                     }
                     // likely invalid command
                     else if (command.Trim().Length > 0) {
                         results.Add(command.Trim());
                     }
+                    // no else case, multiple ^ or ~ in a row should not be valid commands to be processed
                 }
                 buffer.Append(c);
             }
