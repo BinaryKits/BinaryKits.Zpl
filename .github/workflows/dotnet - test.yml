@@ -42,7 +42,7 @@ jobs:
       run: dotnet restore
     - name: Build
       working-directory: ./src
-      run: dotnet build --configuration Release --no-restore /p:NoWarn=1591
+      run: dotnet build --configuration Release --no-restore /p:NoWarn=1591dddd
     - name: Test
       working-directory: ./src
       run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
