@@ -3,6 +3,9 @@ using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Graphic Circle elements
+    /// </summary>
     public class GraphicCircleElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>
@@ -12,7 +15,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override void Draw(ZplElementBase element, DrawerOptions options)
         {
             if (element is ZplGraphicCircle graphicCircle)
             {
@@ -24,10 +27,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     border = radius;
                 }
 
-                using var skPaint = new SKPaint();
-                skPaint.Style = SKPaintStyle.Stroke;
-                skPaint.Color = SKColors.Black;
-                skPaint.StrokeWidth = border;
+                using var skPaint = new SKPaint()
+                {
+                    IsAntialias = options.Antialias,
+                    Style = SKPaintStyle.Stroke,
+                    Color = SKColors.Black,
+                    StrokeWidth = border
+                };
 
                 var halfBorderThickness = border / 2.0f;
 

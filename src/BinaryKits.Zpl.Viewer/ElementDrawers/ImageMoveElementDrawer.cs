@@ -3,6 +3,9 @@ using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Image Move elements
+    /// </summary>
     public class ImageMoveElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>
