@@ -20,13 +20,13 @@
     <ProjectReference Include="..\BinaryKits.Zpl.Viewer\BinaryKits.Zpl.Viewer.csproj" />
   </ItemGroup>
 <ItemGroup>
-    <Content Update="Data\**">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Data\**">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
 </ItemGroup>
 <ItemGroup>
-    <Folder Include="Data\Png\Test\" />
-	<Folder Include="Data\Png\Ref\" />
-	<Folder Include="Data\Zpl\" />
+    <Folder Update="Data\Png\Test\" />
+	<Folder Update="Data\Png\Ref\" />
+	<Folder Update="Data\Zpl\" />
 </ItemGroup>
 </Project>
