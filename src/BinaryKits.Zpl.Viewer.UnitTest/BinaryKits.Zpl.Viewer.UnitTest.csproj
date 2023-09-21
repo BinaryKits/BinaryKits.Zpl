@@ -24,9 +24,4 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
 </ItemGroup>
-<ItemGroup>
-    <Folder Update="Data\Png\Test\" />
-	<Folder Update="Data\Png\Ref\" />
-	<Folder Update="Data\Zpl\" />
-</ItemGroup>
 </Project>

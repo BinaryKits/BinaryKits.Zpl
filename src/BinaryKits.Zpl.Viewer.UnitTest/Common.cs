@@ -15,7 +15,7 @@ namespace BinaryKits.Zpl.Viewer.UnitTest
             {
                 name += ".zpl2"; ;
             }
-            var path = Path.Combine("Data", "ZPl", name);
+            var path = Path.Combine("Data", "Zpl", name);
             return System.IO.File.ReadAllText(path);
         }
 
