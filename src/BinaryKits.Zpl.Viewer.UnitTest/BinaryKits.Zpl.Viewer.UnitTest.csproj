@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -20,12 +20,13 @@
     <ProjectReference Include="..\BinaryKits.Zpl.Viewer\BinaryKits.Zpl.Viewer.csproj" />
   </ItemGroup>
 <ItemGroup>
-    <Content Include="Data\**">
+    <Content Update="Data\**">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 </ItemGroup>
 <ItemGroup>
-  <Folder Include="Data\Png\Test\" />
-  <Folder Include="Data\Png\Ref\" />
+    <Folder Include="Data\Png\Test\" />
+	<Folder Include="Data\Png\Ref\" />
+	<Folder Include="Data\Zpl\" />
 </ItemGroup>
 </Project>
