@@ -47,7 +47,8 @@ There are several ways to view the result from the ZPL data.
 | ------------- | ------------- |
 | [labelary.com](http://labelary.com/viewer.html) | A widely used and accurate solution. Unfortunately, there is no information who runs the project. Therefore, no customer information should be sent to this service. |
 | [BinaryKits.Zpl.Viewer](https://www.nuget.org/packages/BinaryKits.Zpl.Viewer) | This viewer is part of our project, it is open source and can be easily used on your infrastructure. [Demo](https://binarykits-zpl-viewer.azurewebsites.net) |
-| [Zpl Printer](https://chrome.google.com/webstore/detail/zpl-printer/phoidlklenidapnijkabnfdgmadlcmjo) | A Chrome plugin that simulates a network printer on port 9100 in the background the label is then sent to a Labelary API and displayed. |
+| [Zpl Printer](https://chrome.google.com/webstore/detail/zpl-printer/phoidlklenidapnijkabnfdgmadlcmjo) | A Chrome OS plugin that simulates a network printer on port 9100 in the background the label is then sent to a Labelary API and displayed. |
+| [Zpl Printer](https://github.com/MrL0co/ZplPrinter) | A fork of the original Zpl Printer that supports windows and linux platforms using Electron. Printer emulator for zpl rendering engine. The emulator is based on the labelary web service. You can configure print density, label size and the tcp server to listen for any incoming labels. |
 
 ## How can I send the generated data to my printer?
 
