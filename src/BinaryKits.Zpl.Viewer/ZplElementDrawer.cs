@@ -79,7 +79,7 @@ namespace BinaryKits.Zpl.Viewer
 
                         drawer.Draw(element, _drawerOptions);
 
-                        this.InvertDraw(skBitmap, skBitmapInvert);
+                        this.InvertDraw(skCanvas, skBitmapInvert);
                         continue;
                     }
 
@@ -124,37 +124,12 @@ namespace BinaryKits.Zpl.Viewer
             return data.ToArray();
         }
 
-        private void InvertDraw(SKBitmap skBitmap, SKBitmap skBitmapInvert)
+        private void InvertDraw(SKCanvas baseCanvas, SKBitmap bmToInvert)
         {
-            // Fast local copy
-            var originalBytes = skBitmap.GetPixelSpan();
-            var invertBytes = skBitmapInvert.GetPixelSpan();
-
-            int total = originalBytes.Length / 4;
-            for (int i = 0; i < total; i++)
+            using (SKPaint paint = new SKPaint())
             {
-                // RGBA8888
-                int rLoc = (i << 2);
-                int gLoc = (i << 2) + 1;
-                int bLoc = (i << 2) + 2;
-                int aLoc = (i << 2) + 3;
-                if (invertBytes[aLoc] == 0)
-                {
-                    continue;
-                }
-
-                // Set color
-                byte rByte = (byte)(originalBytes[rLoc] ^ invertBytes[rLoc]);
-                byte gByte = (byte)(originalBytes[gLoc] ^ invertBytes[gLoc]);
-                byte bByte = (byte)(originalBytes[bLoc] ^ invertBytes[bLoc]);
-                byte aByte = (byte)(originalBytes[aLoc] ^ invertBytes[aLoc]);
-
-                var targetColor = new SKColor(rByte, gByte, bByte, aByte);
-
-                int x, y;
-                y = Math.DivRem(i, skBitmapInvert.Width, out x);
-
-                skBitmap.SetPixel(x, y, targetColor);
+                paint.BlendMode = SKBlendMode.Xor;
+                baseCanvas.DrawBitmap(bmToInvert, 0, 0, paint);
             }
         }
     }
