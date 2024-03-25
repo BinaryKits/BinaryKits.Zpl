@@ -76,13 +76,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             }
             else
             {
-                //Note: It looks like Labelary doesn't allow a fontsize below 20 for mono space
-                if (fontFamilies.Contains("Courier"))
+                if (fontFamilies.Contains("DejaVu Sans Mono"))
                 {
-                    //typeface = SKTypeface.FromFile(@"swiss-721-black-bt.ttf");
                     typeface = SKTypeface.FromFamilyName(
-                        "Courier New",
-                        SKFontStyleWeight.Medium,
+                        "DejaVu Sans Mono",
+                        SKFontStyleWeight.Normal,
                         SKFontStyleWidth.Normal,
                         SKFontStyleSlant.Upright
                     );
@@ -91,6 +89,15 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 {
                     typeface = SKTypeface.FromFamilyName(
                         "Courier New",
+                        SKFontStyleWeight.Medium,
+                        SKFontStyleWidth.Normal,
+                        SKFontStyleSlant.Upright
+                    );
+                }
+                else if (fontFamilies.Contains("Courier"))
+                {
+                    typeface = SKTypeface.FromFamilyName(
+                        "Courier",
                         SKFontStyleWeight.Medium,
                         SKFontStyleWidth.Normal,
                         SKFontStyleSlant.Upright
