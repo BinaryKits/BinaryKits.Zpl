@@ -61,7 +61,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 var skFont = new SKFont(typeface, fontSize, scaleX);
-                using var skPaint = new SKPaint(skFont);
+                using var skPaint = new SKPaint(skFont) { IsAntialias = true, };
                 var textBoundBaseline = new SKRect();
                 skPaint.MeasureText("X", ref textBoundBaseline);
 
