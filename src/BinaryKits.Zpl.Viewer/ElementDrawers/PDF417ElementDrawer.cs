@@ -56,6 +56,15 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 {
                     mincols = 1;
                     maxcols = 30;
+
+                    if (pdf417.Rows != null)
+                    {
+                        //When column count isn't defined, and rows count is,
+                        // the col/row ratio is calculated using the algorithm in: ZXing.PDF417.Internal.PDF417.determineDimensions
+                        // to allow a range for that algorithm, we divide the given row amount by 2.
+                        // as the algorithm goes from highest to lowest, this usually produces an acceptable result 
+                        minrows /= 2;
+                    }
                 }
                 var writer = new PDF417Writer();
                 var hints = new Dictionary<EncodeHintType, object> {
@@ -64,8 +73,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     //{ EncodeHintType.PDF417_AUTO_ECI, true },
                     //{ EncodeHintType.DISABLE_ECI, true },
                     { EncodeHintType.PDF417_COMPACTION, Compaction.AUTO},
-                    { EncodeHintType.PDF417_ASPECT_RATIO, 3 }, // height of a single bar relative to width
-                    { EncodeHintType.PDF417_IMAGE_ASPECT_RATIO, 2.0f }, // zpl default, proportions of columns to rows
+                    { EncodeHintType.PDF417_ASPECT_RATIO, PDF417AspectRatio.AUTO }, // height of a single bar relative to width
+                    { EncodeHintType.PDF417_IMAGE_ASPECT_RATIO, 1.0f }, // zpl default 2.0f, proportions of columns to rows //1.0f looks closer to labelary
                     { EncodeHintType.MARGIN, 0 }, // its an int
                     { EncodeHintType.ERROR_CORRECTION, ConvertErrorCorrection(pdf417.SecurityLevel) },
                     { EncodeHintType.PDF417_DIMENSIONS, new Dimensions(mincols, maxcols, minrows, maxrows) },
@@ -73,7 +82,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             
                 var default_bitmatrix = writer.encode(pdf417.Content, BarcodeFormat.PDF_417, 0, 0, hints);
 
-                var upscaled = proportional_upscale(default_bitmatrix, 3);
+                var upscaled = proportional_upscale(default_bitmatrix, pdf417.ModuleWidth);
                 var result = vertical_scale(upscaled, pdf417.Height);
 
                 using var resizedImage = this.BitMatrixToSKBitmap(result, 1);
