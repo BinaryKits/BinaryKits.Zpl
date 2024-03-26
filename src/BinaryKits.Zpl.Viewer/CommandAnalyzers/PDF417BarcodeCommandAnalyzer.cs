@@ -2,6 +2,7 @@ using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
 using System;
+using System.Globalization;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -32,6 +33,16 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
                 height = tmpint;
+            }
+            else if (zplDataParts.Length > 1)
+            {
+                //Sometimes a decimal is given, this works around that.
+                var tempDecimal = Convert.ToDecimal(zplDataParts[1], new CultureInfo("en-US"));
+                var tempHeight = (int)Math.Floor(tempDecimal);
+                if (tempHeight > 0)
+                {
+                    height = tempHeight;
+                }
             }
 
             int securityLevel = 0;
