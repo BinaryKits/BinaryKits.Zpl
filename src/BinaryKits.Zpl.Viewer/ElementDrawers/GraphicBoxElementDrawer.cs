@@ -63,6 +63,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     border1 = height1 / 2;
                 }
 
+                //make sure border is never smaller than 1
+                if (border1 < 1)
+                {
+                    border1 = 1;
+                }
+
                 //if the border is thick, the rounding is off, so we need to build that for each increment
                 for (var border2 = border1; border2 >= 1; border2--)
                 {
