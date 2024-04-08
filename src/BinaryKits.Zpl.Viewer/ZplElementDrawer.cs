@@ -125,8 +125,18 @@ namespace BinaryKits.Zpl.Viewer
 
                 try
                 {
-                    if (drawer.IsReverseDraw(element))
+                    //The inverse drawing is moved to the ZplTextField/ZplFieldBlock drawer, so only collect imageHistory for the PDF 
+                    if ((element is ZplFieldBlock || element is ZplTextField) && drawer.IsReverseDraw(element))
                     {
+                        //save state before inverted draw
+                        if (this._drawerOptions.PdfOutput == true)
+                        {
+                            imageHistory.Add(surface.Snapshot());
+                        }
+                    }
+                    else if (drawer.IsReverseDraw(element))
+                    {
+                        //basically only ZplGraphicBox
                         using var skBitmapInvert = new SKBitmap(labelImageWidth, labelImageHeight);
                         using var skCanvasInvert = new SKCanvas(skBitmapInvert);
                         skCanvasInvert.Clear(SKColors.Transparent);
@@ -211,7 +221,7 @@ namespace BinaryKits.Zpl.Viewer
         }
 
         /**
-         * PDF transparency and SKBlendMode are not very good friends, SKBlendMode.Xor behaves as SKBlendMode.Plus.
+         * PDF transparency and SKBlendMode are not very good friends, SKBlendMode.Xor behaves as SKBlendMode.SrcOver.
          * 
          * This function extracts all the pixels that are removed in the draw process
          * Then that is used to make a white image as overlay in the PDF to get the same effect as SKBlendMode.Xor
@@ -227,7 +237,7 @@ namespace BinaryKits.Zpl.Viewer
             foreach (var imageHistoryState in imageHistory)
             {
                 var pdfPaint = new SKPaint();
-                pdfPaint.BlendMode = SKBlendMode.Plus;
+                pdfPaint.BlendMode = SKBlendMode.SrcOver;
                 skImageCanvasPdfInvertColorFix.DrawImage(imageHistoryState, 0f, 0f, pdfPaint);
             }
             
@@ -248,7 +258,7 @@ namespace BinaryKits.Zpl.Viewer
                 0f,  0f,  0f, 1f, 0f
             };
             pdfFinalPaintInverted.ColorFilter = SKColorFilter.CreateColorMatrix(inverter);
-            pdfFinalPaintInverted.BlendMode = SKBlendMode.Plus;
+            pdfFinalPaintInverted.BlendMode = SKBlendMode.SrcOver;
             skCanvas.DrawBitmap(pdfTransparentPartsBitmap, 0, 0, pdfFinalPaintInverted);
         }
 
