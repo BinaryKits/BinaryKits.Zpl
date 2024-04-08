@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
 using System;
 
@@ -17,6 +18,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             if (element is ZplGraphicBox graphicBox)
             {
                 return graphicBox.ReversePrint;
+            }
+
+            return false;
+        }
+
+        public override bool IsWhiteDraw(ZplElementBase element)
+        {
+            if (element is ZplGraphicBox graphicBox)
+            {
+                return graphicBox.LineColor == LineColor.White;
             }
 
             return false;
@@ -41,56 +52,61 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     height1 = border1;
                 }
 
-                var offsetX = border1 / 2.0f;
-                var offsetY = border1 / 2.0f;
-
-                var x = graphicBox.PositionX + offsetX;
-                var y = graphicBox.PositionY + offsetY;
-
-                if (graphicBox.FieldTypeset != null)
+                //border cant be bigger or equal to width or height
+                if (border1 > (width1 / 2) && width1 >= height1)
                 {
-                    y -= height1;
+                    border1 = width1 / 2;
+                }
+                
+                if (border1 > (height1 / 2) && height1 >= width1)
+                {
+                    border1 = height1 / 2;
+                }
 
-                    //Fallback
-                    if (y < offsetY)
+                //if the border is thick, the rounding is off, so we need to build that for each increment
+                for (var border2 = border1; border2 >= 1; border2--)
+                {
+                    var offsetX = border2 / 2.0f;
+                    var offsetY = border2 / 2.0f;
+
+                    var x = graphicBox.PositionX + offsetX;
+                    var y = graphicBox.PositionY + offsetY;
+
+                    if (graphicBox.FieldTypeset != null)
                     {
-                        y = offsetY;
+                        y -= height1;
+
+                        //Fallback
+                        if (y < offsetY)
+                        {
+                            y = offsetY;
+                        }
                     }
+
+                    var width = width1 - border2;
+                    var height = height1 - border2;
+
+                    using var skPaint = new SKPaint();
+                    skPaint.Style = SKPaintStyle.Stroke;
+                    skPaint.StrokeCap = SKStrokeCap.Square;
+                    skPaint.Color = SKColors.Black;
+                    skPaint.StrokeWidth = border2;
+
+                    if (graphicBox.LineColor == Label.LineColor.White)
+                    {
+                        skPaint.Color = SKColors.White;
+                    }
+
+                    var cornerRadius = (graphicBox.CornerRounding / 8.0f) * (Math.Min(width1, height1) / 2.0f);
+
+                    if (cornerRadius == 0)
+                    {
+                        this._skCanvas.DrawRect(x, y, width, height, skPaint);
+                        return;
+                    }
+
+                    this._skCanvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, skPaint);
                 }
-
-                var width = width1 - border1;
-                var height = height1 - border1;
-
-                using var skPaint = new SKPaint();
-                skPaint.Style = SKPaintStyle.Stroke;
-                skPaint.StrokeCap = SKStrokeCap.Square;
-                skPaint.Color = SKColors.Black;
-                skPaint.StrokeWidth = border1;
-
-                if (graphicBox.LineColor == Label.LineColor.White)
-                {
-                    skPaint.Color = SKColors.Transparent;
-                }
-
-                var cornerRadius = (graphicBox.CornerRounding / 8.0f) * (Math.Min(width1, height1) / 2.0f);
-                if (cornerRadius == 0)
-                {
-                    this._skCanvas.DrawRect(x, y, width, height, skPaint);
-                    return;
-                }
-
-                //using var test = new SkiaSharp.SKRoundRect(new SkiaSharp.SKRect(x, y, width + x, height + y), cornerRadius);
-                //test.Deflate(5,5);
-                //test.Inflate(10, 10);
-                //test.Offset(offsetX, offsetY);
-                //test.SetNinePatch(new SkiaSharp.SKRect(x + 1, y, width + x, height + y), 40, 3,4, 5);
-                //test.SetOval(new SkiaSharp.SKRect(x - 50, y-10, width + x -10, height + y - 10));
-                //this._skCanvas.DrawRoundRect(test, this._skPaint);
-
-                //TODO:Some corner radius is too much
-                //^XA^FO50,50^GB100,100,120,B,1^FS^XZ
-
-                this._skCanvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, skPaint);
             }
         }
     }

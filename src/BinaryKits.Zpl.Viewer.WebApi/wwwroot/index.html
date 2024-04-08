@@ -39,6 +39,9 @@
                     <input type="text" v-model.number="printDensityDpmm" style="width: 40px" /> dpmm ({{dpi}} dpi)<br />
                 </div>
                 <button type="button" class="btn btn-primary" @click="render">Render</button>
+                <button type="button" class="btn btn-secondary" @click="downloadZpl">Download ZPL</button>
+                <button type="button" class="btn btn-secondary" @click="downloadPng">Download PNG</button>
+                <button type="button" class="btn btn-secondary" @click="downloadPDF">Download PDF</button>
                 <div>
                     <hr />
                     <input type="checkbox" id="overlayCheckbox" v-model="showLabelaryOverlay" @change="renderOverlay" /> <label for="overlayCheckbox">Show labelary.com Overlay*</label>
@@ -97,6 +100,7 @@
                     loadingPreview: false,
                     zplData: null,
                     labels: null,
+                    pdfs: null,
                     renderResponse: null,
                     renderError: null,
                     printDensityDpmm: 8,
@@ -174,6 +178,65 @@
                     }
                     finally {
                         this.loadingPreview = false
+                    }
+                },
+                async downloadPDF() {
+                    this.renderError = null
+                    try {
+                        const payload = {
+                            zplData: this.zplData,
+                            printDensityDpmm: this.printDensityDpmm,
+                            labelWidth: this.labelWidth,
+                            labelHeight: this.labelHeight,
+                            type: 'PDF'
+                        }
+                        const response = await axios.post('api/v1/viewer', payload)
+
+                        response.data.pdfs.forEach(function (labelInfo, index) {
+                            var element = document.createElement('a');
+                            element.setAttribute('href', 'data:application/pdf;base64,' + labelInfo.pdfBase64);
+                            element.setAttribute('download', 'label-'+ index +'.pdf');
+
+                            element.style.display = 'none';
+                            document.body.appendChild(element);
+
+                            element.click();
+
+                            document.body.removeChild(element);
+                        });
+                    } catch(error) {
+                        this.renderError = error.response.data
+                        console.error(this.renderError)
+                    }
+                },
+                async downloadZpl() {
+                    var element = document.createElement('a');
+                    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.zplData));
+                    element.setAttribute('download', 'label.zpl');
+
+                    element.style.display = 'none';
+                    document.body.appendChild(element);
+
+                    element.click();
+
+                    document.body.removeChild(element);
+                },
+                async downloadPng() {
+                    try {
+                        this.renderResponse.labels.forEach(function (labelInfo, index) {
+                            var element = document.createElement('a');
+                            element.setAttribute('href', 'data:image/png;base64,' + labelInfo.imageBase64);
+                            element.setAttribute('download', 'label-'+ index +'.png');
+
+                            element.style.display = 'none';
+                            document.body.appendChild(element);
+
+                            element.click();
+
+                            document.body.removeChild(element);
+                        });
+                    } catch(error) {
+                        console.error(error);
                     }
                 },
                 async renderOverlay() {
