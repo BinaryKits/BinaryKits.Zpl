@@ -53,14 +53,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 //border cant be bigger or equal to width or height
-                if (border1 > (width1 / 2) && width1 >= height1)
+                if (border1 > (width1 / 2) && width1 <= height1)
                 {
-                    border1 = width1 / 2;
+                    border1 = (int)Math.Ceiling((float)width1 / 2);
                 }
                 
-                if (border1 > (height1 / 2) && height1 >= width1)
+                if (border1 > (height1 / 2) && height1 <= width1)
                 {
-                    border1 = height1 / 2;
+                    border1 = (int)Math.Ceiling((float)height1 / 2);
                 }
 
                 //make sure border is never smaller than 1
