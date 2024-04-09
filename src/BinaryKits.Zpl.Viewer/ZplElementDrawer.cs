@@ -89,6 +89,7 @@ namespace BinaryKits.Zpl.Viewer
             double labelHeight = 152.4,
             int printDensityDpmm = 8)
         {
+            var result = new List<byte[]>();
             var imageHistory = new List<SKImage>();
             var labelImageWidth = Convert.ToInt32(labelWidth * printDensityDpmm);
             var labelImageHeight = Convert.ToInt32(labelHeight * printDensityDpmm);
@@ -196,14 +197,17 @@ namespace BinaryKits.Zpl.Viewer
                 
                 image = surfaceWhiteBg.Snapshot();
             }
+
             var imageData = image.Encode(SKEncodedImageFormat.Png, 80);
+            result.Add(imageData.ToArray());
 
             //only return image
             if (this._drawerOptions.PdfOutput == false)
             {
-                return [imageData.ToArray(), null];
+                result.Add(null);
+                return result;
             }
-            
+
             //Fix the PDF blend
             this.FixPdfInvertDraw(info, imageHistory, surface, skCanvas);
 
@@ -214,10 +218,14 @@ namespace BinaryKits.Zpl.Viewer
             //try to export the PDF stream to a byte array
             if (pdfStream is MemoryStream memStream)
             {
-                return [imageData.ToArray(), memStream.ToArray()];
+                result.Add(memStream.ToArray());
+            }
+            else
+            {
+                result.Add(null);
             }
 
-            return [imageData.ToArray(), null];
+            return result;
         }
 
         /**
