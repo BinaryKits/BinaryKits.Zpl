@@ -44,7 +44,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 lineColor = lineColorTemp == "W" ? LineColor.White : LineColor.Black;
             }
 
-            return new ZplGraphicCircle(x, y, circleDiameter, borderThickness, lineColor, bottomToTop);
+            bool reversePrint = this.VirtualPrinter.NextElementFieldReverse || this.VirtualPrinter.LabelReverse;
+            
+            return new ZplGraphicCircle(x, y, circleDiameter, borderThickness, lineColor, reversePrint, bottomToTop);
         }
     }
 }

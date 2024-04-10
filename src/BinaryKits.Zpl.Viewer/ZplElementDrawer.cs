@@ -126,8 +126,15 @@ namespace BinaryKits.Zpl.Viewer
 
                 try
                 {
-                    //The inverse drawing is moved to the ZplTextField/ZplFieldBlock drawer, so only collect imageHistory for the PDF 
-                    if ((element is ZplFieldBlock || element is ZplTextField) && drawer.IsReverseDraw(element))
+                    //The inverse drawing is moved to the element drawer, so only collect imageHistory for the PDF 
+                    if ((element is ZplFieldBlock
+                         || element is ZplTextField
+                         || element is ZplGraphicCircle
+                         || element is ZplGraphicBox
+                        )
+                        && drawer.IsReverseDraw(element)
+                        && !drawer.IsWhiteDraw(element)
+                        && !drawer.ForceBitmapDraw(element))
                     {
                         //save state before inverted draw
                         if (this._drawerOptions.PdfOutput == true)
@@ -137,7 +144,7 @@ namespace BinaryKits.Zpl.Viewer
                     }
                     else if (drawer.IsReverseDraw(element))
                     {
-                        //basically only ZplGraphicBox
+                        //basically only ZplGraphicBox/Circle depending on requirements
                         using var skBitmapInvert = new SKBitmap(labelImageWidth, labelImageHeight);
                         using var skCanvasInvert = new SKCanvas(skBitmapInvert);
                         skCanvasInvert.Clear(SKColors.Transparent);

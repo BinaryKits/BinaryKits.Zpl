@@ -42,6 +42,9 @@ namespace BinaryKits.Zpl.Labelary
         {
             var dpi = printDensity.ToString().Substring(2);
             var zpl = Encoding.UTF8.GetBytes(zplData);
+            
+            //without setting this a comma separator might be used for for the size numbers in the URL
+            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-EN");
 
             using var byteContent = new ByteArrayContent(zpl);
             using (var response = await _httpClient.PostAsync($"{_apiEndpoint}/{dpi}/labels/{labelSize.WidthInInch}x{labelSize.HeightInInch}/0/", byteContent))

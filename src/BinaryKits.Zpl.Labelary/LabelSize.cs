@@ -25,7 +25,8 @@ namespace BinaryKits.Zpl.Labelary
                     return _width;
                 }
 
-                return Math.Round(_width / _millimeterToInch, 0);
+                var rounded = Math.Round(_width / _millimeterToInch, 8);
+                return rounded;
             }
         }
 
@@ -37,8 +38,9 @@ namespace BinaryKits.Zpl.Labelary
                 {
                     return _height;
                 }
-
-                return Math.Round(_height / _millimeterToInch, 0);
+                
+                var rounded = Math.Round(_height / _millimeterToInch, 8);
+                return rounded;
             }
         }
     }

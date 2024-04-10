@@ -33,6 +33,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return false;
         }
 
+        public override bool ForceBitmapDraw(ZplElementBase element)
+        {
+            if (element is ZplGraphicBox graphicBox && graphicBox.CornerRounding > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         ///<inheritdoc/>
         public override void Draw(ZplElementBase element)
         {
@@ -70,8 +80,17 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 //if the border is thick, the rounding is off, so we need to build that for each increment
+                var lastPrintedBorder = border1;
                 for (var border2 = border1; border2 >= 1; border2--)
                 {
+                    //skip the parts that have overlap from the previous draw
+                    if (border2 != 1 && border2 != lastPrintedBorder && border2 > (lastPrintedBorder / 2))
+                    {
+                        continue;
+                    }
+                    
+                    lastPrintedBorder = border2;
+
                     var offsetX = border2 / 2.0f;
                     var offsetY = border2 / 2.0f;
 
@@ -98,7 +117,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     skPaint.Color = SKColors.Black;
                     skPaint.StrokeWidth = border2;
 
-                    if (graphicBox.LineColor == Label.LineColor.White)
+                    if (graphicBox.LineColor == LineColor.White)
                     {
                         skPaint.Color = SKColors.White;
                     }
@@ -107,6 +126,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                     if (cornerRadius == 0)
                     {
+                        if (graphicBox.ReversePrint)
+                        {
+                            skPaint.BlendMode = SKBlendMode.Xor;
+                        }
+                        
                         this._skCanvas.DrawRect(x, y, width, height, skPaint);
                         return;
                     }
