@@ -4,6 +4,7 @@ using CoelWu.Zint.Net;
 using System;
 using System.IO;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -104,15 +105,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     maxiBarcode.DrawBarcode(graphics, new Point(-6, -6));
                     
                     //Linux container fix, redraw the circles (variation of: CoelWu.Zint.Net.ZintNetLib.DrawBarcode)
-                    float num3 = 13.64f * 7.2f;
-                    float num4 = 13.43f * 7.2f;
-                    float num5 = 0.85f * 7.2f;
-                    float num6 = 2.2f * 7.2f;
-                    float num7 = 3.54f * 7.2f;
-                    Pen pen = new Pen(Color.Black, 0.67f * 7.2f);
-                    graphics.DrawEllipse(pen, new RectangleF(num3 - num5 - 1, num4 - num5 - 1, num5 * 2f, num5 * 2f));
-                    graphics.DrawEllipse(pen, new RectangleF(num3 - num6 - 1, num4 - num6 - 1, num6 * 2f, num6 * 2f));
-                    graphics.DrawEllipse(pen, new RectangleF(num3 - num7 - 1, num4 - num7 - 1, num7 * 2f, num7 * 2f));
+                    graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    float num3 = 13.64f * 7f;
+                    float num4 = 13.43f * 7f;
+                    float num5 = 0.85f * 7f;
+                    float num6 = 2.2f * 7f;
+                    float num7 = 3.54f * 7f;
+                    Pen pen = new Pen(Color.Black, 0.67f * 7f);
+                    graphics.DrawEllipse(pen, new RectangleF(num3 - num5 + 1, num4 - num5 + 1, num5 * 2.12f, num5 * 2.12f));
+                    graphics.DrawEllipse(pen, new RectangleF(num3 - num6 + 0.5f, num4 - num6 + 0.5f, num6 * 2.12f, num6 * 2.12f));
+                    graphics.DrawEllipse(pen, new RectangleF(num3 - num7, num4 - num7, num7 * 2.12f, num7 * 2.12f));
 
                     Size symbolSize;
                     var section = Rectangle.Empty;
