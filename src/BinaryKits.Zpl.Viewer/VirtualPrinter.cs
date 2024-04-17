@@ -21,6 +21,7 @@ namespace BinaryKits.Zpl.Viewer
         public FontInfo NextFont { get; private set; }
 
         public bool NextElementFieldReverse { get; private set; }
+        public bool NextElementFieldUseHexadecimalIndicator { get; private set; }
         public bool LabelReverse { get; private set; }
         public BarcodeInfo BarcodeInfo { get; private set; }
 
@@ -82,6 +83,11 @@ namespace BinaryKits.Zpl.Viewer
             this.NextElementFieldReverse = true;
         }
 
+        public void SetNextElementFieldUseHexadecimalIndicator()
+        {
+            this.NextElementFieldUseHexadecimalIndicator = true;
+        }
+
         public void SetLabelReverse(bool reverse)
         {
             this.LabelReverse = reverse;
@@ -90,6 +96,11 @@ namespace BinaryKits.Zpl.Viewer
         public void ClearNextElementFieldReverse()
         {
             this.NextElementFieldReverse = false;
+        }
+
+        public void ClearNextElementFieldUseHexadecimalIndicator()
+        {
+            this.NextElementFieldUseHexadecimalIndicator = false;
         }
 
         public void SetFontWidth(int fontWidth)

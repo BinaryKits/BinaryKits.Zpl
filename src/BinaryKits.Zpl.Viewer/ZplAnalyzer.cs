@@ -60,6 +60,7 @@ namespace BinaryKits.Zpl.Viewer
                 new Interleaved2of5BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
                 new LabelHomeZplCommandAnalyzer(this._virtualPrinter),
+                new MaxiCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new PDF417ZplCommandAnalyzer(this._virtualPrinter),
                 new RecallFormatCommandAnalyzer(this._virtualPrinter),
