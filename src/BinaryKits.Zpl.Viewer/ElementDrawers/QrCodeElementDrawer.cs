@@ -2,6 +2,7 @@
 using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using ZXing;
 using ZXing.QrCode;
 
@@ -22,6 +23,15 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             {
                 float x = qrcode.PositionX;
                 float y = qrcode.PositionY;
+                
+                // support hand-rolled GS1
+                bool gs1Mode = false;
+                var content = qrcode.Content;
+                if (Regex.Match(content, @"(^>;>8)", RegexOptions.None).Success)
+                {
+                    content = Regex.Replace(content, @"(^>;>8)", "");
+                    gs1Mode = true;
+                }
 
                 int verticalQuietZone = 10;
 
@@ -30,9 +40,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     { EncodeHintType.ERROR_CORRECTION, CovertErrorCorrection(qrcode.ErrorCorrectionLevel) },
                     { EncodeHintType.QR_MASK_PATTERN, qrcode.MaskValue },
                     { EncodeHintType.CHARACTER_SET, "UTF-8" },
-                    { EncodeHintType.MARGIN, 0 }
+                    { EncodeHintType.MARGIN, 0 },
+                    { EncodeHintType.GS1_FORMAT, gs1Mode }
                 };
-                var result = writer.encode(qrcode.Content, BarcodeFormat.QR_CODE, 0, 0, hints);
+                var result = writer.encode(content, BarcodeFormat.QR_CODE, 0, 0, hints);
 
                 using var resizedImage = this.BitMatrixToSKBitmap(result, qrcode.MagnificationFactor);
 
