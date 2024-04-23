@@ -38,6 +38,7 @@ namespace BinaryKits.Zpl.Viewer
                 new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
                 new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
                 new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new Code93BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new CodeEAN13BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new CommentZplCommandAnalyzer(this._virtualPrinter),
