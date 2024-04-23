@@ -156,22 +156,22 @@ namespace BinaryKits.Zpl.Viewer
 
                         var commandLetters = command.Substring(1, 2).ToUpper();
 
-                        if (ignoredCommandsHS.Contains(commandLetters)) {
-                            continue;
-                        }
-                        else if (commandLetters == "CT")
+                        if (commandLetters == "CT")
                         {
                             tilde = command[3];
                         }
                         else if (commandLetters == "CC")
                         {
                             caret = command[3];
-                        } else {
+                        }
+                        else if (!ignoredCommandsHS.Contains(commandLetters))
+                        {
                             results.Add(command);
                         }
                     }
                     // likely invalid command
-                    else if (command.Trim().Length > 0) {
+                    else if (command.Trim().Length > 0)
+                    {
                         results.Add(command.Trim());
                     }
                     // no else case, multiple ^ or ~ in a row should not be valid commands to be processed
