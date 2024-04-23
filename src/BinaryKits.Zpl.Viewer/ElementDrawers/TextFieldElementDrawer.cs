@@ -117,6 +117,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         y += textBoundBaseline.Height;
                     }
 
+                    if (textField.ReversePrint)
+                    {
+                        skPaint.BlendMode = SKBlendMode.Xor;
+                    }
+
                     this._skCanvas.DrawShapedText(displayText, x, y, skPaint);
                 }
             }

@@ -15,6 +15,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// Applies label over a white background after rendering all elements
         /// </summary>
         public bool OpaqueBackground { get; set; } = false;
+        
+        /// <summary>
+        /// Renders the label as pdf
+        /// </summary>
+        public bool PdfOutput { get; set; } = false;
 
         public int RenderQuality { get; set; } = 80;
 

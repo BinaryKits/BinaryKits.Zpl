@@ -3,6 +3,7 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
 
@@ -14,8 +15,17 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// Start sequence lookups.
         /// <see href="https://supportcommunity.zebra.com/s/article/Creating-GS1-Barcodes-with-Zebra-Printers-for-Data-Matrix-and-Code-128-using-ZPL"/>
         /// </summary>
-        private static readonly Regex startCodeRegex = new Regex(@"(>[9:;])", RegexOptions.Compiled);
-        private static readonly Regex invalidInvocationRegex = new Regex(@"(?<!^)>[<0=12345679:;]", RegexOptions.Compiled); //>8 has limited support here
+        private static readonly Dictionary<string, TYPE> startCodeMap = new Dictionary<string, TYPE>()
+        {
+            { ">6", TYPE.CODE128A },
+            { ">9", TYPE.CODE128A },
+            { ">:", TYPE.CODE128B },
+            { ">;", TYPE.CODE128C },
+            { ">5", TYPE.CODE128C },
+        };
+
+        private static readonly Regex startCodeRegex = new Regex(@"(>[569:;])(.+)", RegexOptions.Compiled);
+        private static readonly Regex invalidInvocationRegex = new Regex(@"(?<!^)>[569:;]", RegexOptions.Compiled);
 
         // As defined in BarcodeLib.Symbologies.Code128
         private static readonly string FNC1 = Convert.ToChar(200).ToString();
@@ -53,15 +63,23 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 
                 if (string.IsNullOrEmpty(barcode.Mode) || barcode.Mode == "N")
                 {
-                    barcodeType = TYPE.CODE128; // dynamic
-                    //TODO: Instead of using the auto type, switch type for each part of the content
-                    // - Current library doesn't support that.
-                    //>:+B210AC>50270>6/$+2>5023080000582>6L
-                    //[TYPE.CODE128B]+B210AC
-                    //[TYPE.CODE128C]0270
-                    //[TYPE.CODE128B]+/$+2
-                    //[TYPE.CODE128C]023080000582
-                    //[TYPE.CODE128B]L
+                    Match startCodeMatch = startCodeRegex.Match(barcode.Content);
+                    if (startCodeMatch.Success)
+                    {
+                        barcodeType = TYPE.CODE128;
+                        //TODO: Instead of using the auto type, switch type for each part of the content
+                        //>:+B210AC>50270>6/$+2>5023080000582>6L
+                        //[TYPE.CODE128B]+B210AC
+                        //[TYPE.CODE128C]0270
+                        //[TYPE.CODE128A]+/$+2
+                        //[TYPE.CODE128C]023080000582
+                        //[TYPE.CODE128A]L
+                    }
+                    
+                    // support hand-rolled GS1
+                    content = content.Replace(">8", FNC1);
+                    interpretation = interpretation.Replace(">8", "");
+                    // TODO: support remaining escapes within a barcode
                 }
                 else if (barcode.Mode == "A")
                 {

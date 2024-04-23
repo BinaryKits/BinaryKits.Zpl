@@ -151,6 +151,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                                 break;
                         }
 
+                        if (fieldBlock.ReversePrint)
+                        {
+                            skPaint.BlendMode = SKBlendMode.Xor;
+                        }
+                        
                         this._skCanvas.DrawShapedText(textLine, x, y, skPaint);
                         y += lineHeight;
                     }

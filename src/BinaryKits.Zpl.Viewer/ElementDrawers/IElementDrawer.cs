@@ -27,6 +27,20 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// <param name="element"></param>
         /// <returns></returns>
         bool IsReverseDraw(ZplElementBase element);
+        
+        /// <summary>
+        /// Element is white
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        bool IsWhiteDraw(ZplElementBase element);
+        
+        /// <summary>
+        /// Element needs to be drawn in bitmap mode
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        bool ForceBitmapDraw(ZplElementBase element);
 
         /// <summary>
         /// Draw the element

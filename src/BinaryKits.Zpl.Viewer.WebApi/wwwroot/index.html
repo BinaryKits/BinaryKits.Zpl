@@ -5,24 +5,53 @@
     <title>BinaryKits.Zpl.Viewer.WebApi</title>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/bootstrap/dist/js/bootstrap.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.css" />
 </head>
 <body>
     <div id="app" class="container-fluid mt-1">
         <div class="row">
             <div class="col-2">
-                <div v-if="loadingTestData">
-                    <div class="spinner-grow text-secondary" role="status">
-                        <span class="sr-only">Loading...</span>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="tests-tab" data-bs-toggle="tab" data-bs-target="#tests-tab-pane" type="button" role="tab" aria-controls="tests-tab-pane" aria-selected="true">Tests</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="example-tab" data-bs-toggle="tab" data-bs-target="#example-tab-pane" type="button" role="tab" aria-controls="example-tab-pane" aria-selected="false">Examples</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tests-tab-pane" role="tabpanel" aria-labelledby="tests-tab" tabindex="0">
+                        <div v-if="loadingTestData">
+                            <div class="spinner-grow text-secondary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div v-else class="list-group">
+                            <div v-for="label in testLabels"
+                                 :key="label.name"
+                                 :class="[ 'list-group-item', 'list-group-item-action', label.category === 'test' ? 'bg-light' : '' ]"
+                                 style="cursor:pointer; overflow:hidden"
+                                 @click="changeZplData(label.content, label.format)">
+                                {{ label.name }} <span class="badge bg-info text-white">{{ label.format }}</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div v-else class="list-group">
-                    <div v-for="label in labels"
-                         :key="label.name"
-                         :class="[ 'list-group-item', 'list-group-item-action', label.category === 'test' ? 'bg-light' : '' ]"
-                         style="cursor:pointer; overflow:hidden"
-                         @click="changeZplData(label.content)">
-                        {{ label.name }} <span class="badge bg-info text-white">{{ label.format }}</span>
+                    <div class="tab-pane fade" id="example-tab-pane" role="tabpanel" aria-labelledby="example-tab" tabindex="0">
+                        <div v-if="loadingTestData">
+                            <div class="spinner-grow text-secondary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div v-else class="list-group">
+                            <div v-for="label in exampleLabels"
+                                 :key="label.name"
+                                 :class="[ 'list-group-item', 'list-group-item-action', label.category === 'test' ? 'bg-light' : '' ]"
+                                 style="cursor:pointer; overflow:hidden"
+                                 @click="changeZplData(label.content, label.format)">
+                                {{ label.name }} <span class="badge bg-info text-white">{{ label.format }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,7 +67,12 @@
                     <input type="text" v-model.number="labelHeight" style="width: 50px" /> mm ({{labelHeightInch}} inches)
                     <input type="text" v-model.number="printDensityDpmm" style="width: 40px" /> dpmm ({{dpi}} dpi)<br />
                 </div>
-                <button type="button" class="btn btn-primary" @click="render">Render</button>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-primary" @click="render">Render</button>
+                    <button type="button" class="btn btn-secondary" @click="downloadZpl">Download ZPL</button>
+                    <button type="button" class="btn btn-secondary" @click="downloadPng">Download PNG</button>
+                    <button type="button" class="btn btn-secondary" @click="downloadPDF">Download PDF</button>
+                </div>
                 <div>
                     <hr />
                     <input type="checkbox" id="overlayCheckbox" v-model="showLabelaryOverlay" @change="renderOverlay" /> <label for="overlayCheckbox">Show labelary.com Overlay*</label>
@@ -96,7 +130,9 @@
                     loadingTestData: false,
                     loadingPreview: false,
                     zplData: null,
-                    labels: null,
+                    testLabels: null,
+                    exampleLabels: null,
+                    pdfs: null,
                     renderResponse: null,
                     renderError: null,
                     printDensityDpmm: 8,
@@ -144,12 +180,28 @@
                     try {
                         this.loadingTestData = true
                         const response = await axios.get('api/v1/label')
-                        this.labels = response.data.items
+                        
+                        let labels = response.data.items;
+                        labels.sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base', numeric: true }));
+                        
+                        this.testLabels = labels.filter(function(label){
+                            return label.category === 'Test';
+                        });
+
+                        this.exampleLabels = labels.filter(function(label){
+                            return label.category === 'Example';
+                        });
                     } finally {
                         this.loadingTestData = false
                     }
                 },
-                async changeZplData(zplData) {
+                async changeZplData(zplData, formatData = '') {
+                    let formatParts = formatData.split("x");
+                    if (formatParts.length === 2) {
+                        this.labelWidth = formatParts[0];
+                        this.labelHeight = formatParts[1];
+                    }
+                    
                     this.zplData = zplData
                     await this.render()
                 },
@@ -174,6 +226,65 @@
                     }
                     finally {
                         this.loadingPreview = false
+                    }
+                },
+                async downloadPDF() {
+                    this.renderError = null
+                    try {
+                        const payload = {
+                            zplData: this.zplData,
+                            printDensityDpmm: this.printDensityDpmm,
+                            labelWidth: this.labelWidth,
+                            labelHeight: this.labelHeight,
+                            type: 'PDF'
+                        }
+                        const response = await axios.post('api/v1/viewer', payload)
+
+                        response.data.pdfs.forEach(function (labelInfo, index) {
+                            var element = document.createElement('a');
+                            element.setAttribute('href', 'data:application/pdf;base64,' + labelInfo.pdfBase64);
+                            element.setAttribute('download', 'label-'+ index +'.pdf');
+
+                            element.style.display = 'none';
+                            document.body.appendChild(element);
+
+                            element.click();
+
+                            document.body.removeChild(element);
+                        });
+                    } catch(error) {
+                        this.renderError = error.response.data
+                        console.error(this.renderError)
+                    }
+                },
+                async downloadZpl() {
+                    var element = document.createElement('a');
+                    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.zplData));
+                    element.setAttribute('download', 'label.zpl');
+
+                    element.style.display = 'none';
+                    document.body.appendChild(element);
+
+                    element.click();
+
+                    document.body.removeChild(element);
+                },
+                async downloadPng() {
+                    try {
+                        this.renderResponse.labels.forEach(function (labelInfo, index) {
+                            var element = document.createElement('a');
+                            element.setAttribute('href', 'data:image/png;base64,' + labelInfo.imageBase64);
+                            element.setAttribute('download', 'label-'+ index +'.png');
+
+                            element.style.display = 'none';
+                            document.body.appendChild(element);
+
+                            element.click();
+
+                            document.body.removeChild(element);
+                        });
+                    } catch(error) {
+                        console.error(error);
                     }
                 },
                 async renderOverlay() {
