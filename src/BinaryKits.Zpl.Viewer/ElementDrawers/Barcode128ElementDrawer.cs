@@ -3,7 +3,6 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
 
@@ -11,20 +10,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public class Barcode128ElementDrawer : BarcodeDrawerBase
     {
-
         /// <summary>
         /// Start sequence lookups.
         /// <see href="https://supportcommunity.zebra.com/s/article/Creating-GS1-Barcodes-with-Zebra-Printers-for-Data-Matrix-and-Code-128-using-ZPL"/>
         /// </summary>
-        private static readonly Dictionary<string, TYPE> startCodeMap = new Dictionary<string, TYPE>()
-        {
-            { ">9", TYPE.CODE128A },
-            { ">:", TYPE.CODE128B },
-            { ">;", TYPE.CODE128C }
-        };
-
-        private static readonly Regex startCodeRegex = new Regex(@"^(>[9:;])(.+)$", RegexOptions.Compiled);
-        private static readonly Regex invalidInvocationRegex = new Regex(@"(?<!^)>[9:;]", RegexOptions.Compiled);
+        private static readonly Regex startCodeRegex = new Regex(@"(>[9:;])", RegexOptions.Compiled);
+        private static readonly Regex invalidInvocationRegex = new Regex(@"(?<!^)>[<0=12345679:;]", RegexOptions.Compiled); //>8 has limited support here
 
         // As defined in BarcodeLib.Symbologies.Code128
         private static readonly string FNC1 = Convert.ToChar(200).ToString();
@@ -46,33 +37,42 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplBarcode128 barcode)
             {
-                var barcodeType = TYPE.CODE128B;
-                // remove any start sequences not at the start of the content (invalid invocation)
-                string content = invalidInvocationRegex.Replace(barcode.Content, "");
+                var barcodeType = TYPE.CODE128;
+                
+                //remove the start code form the content we only support the globals N,A,D,U and our barcode library doesn't support these types
+                string content = startCodeRegex.Replace(barcode.Content, "");
                 string interpretation = content;
+                
+                // remove any start sequences not at the start of the content (invalid invocation)
+                content = invalidInvocationRegex.Replace(content, "");
+                interpretation = content;
+                
+                // support hand-rolled GS1
+                content = content.Replace(">8", FNC1);
+                interpretation = interpretation.Replace(">8", "");
+                
                 if (string.IsNullOrEmpty(barcode.Mode) || barcode.Mode == "N")
                 {
-                    Match startCodeMatch = startCodeRegex.Match(content);
-                    if (startCodeMatch.Success)
-                    {
-                        barcodeType = startCodeMap[startCodeMatch.Groups[1].Value];
-                        content = startCodeMatch.Groups[2].Value;
-                        interpretation = content;
-                    }
-                    // support hand-rolled GS1
-                    content = content.Replace(">8", FNC1);
-                    interpretation = interpretation.Replace(">8", "");
-                    // TODO: support remaining escapes within a barcode
+                    barcodeType = TYPE.CODE128; // dynamic
+                    //TODO: Instead of using the auto type, switch type for each part of the content
+                    // - Current library doesn't support that.
+                    //>:+B210AC>50270>6/$+2>5023080000582>6L
+                    //[TYPE.CODE128B]+B210AC
+                    //[TYPE.CODE128C]0270
+                    //[TYPE.CODE128B]+/$+2
+                    //[TYPE.CODE128C]023080000582
+                    //[TYPE.CODE128B]L
                 }
                 else if (barcode.Mode == "A")
                 {
+                    //A (automatic mode, the ZPL engine automatically determines the subsets that are used to encode the data)
                     barcodeType = TYPE.CODE128; // dynamic
                 }
                 else if (barcode.Mode == "D")
                 {
+                    //D (UCC/EAN mode, field data must contain GS1 numbers)
                     barcodeType = TYPE.CODE128C;
-                    content = content.Replace(">8", FNC1);
-                    interpretation = interpretation.Replace(">8", "");
+                    
                     if (!content.StartsWith(FNC1))
                     {
                         content = FNC1 + content;
@@ -80,6 +80,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
                 else if (barcode.Mode == "U")
                 {
+                    //U (UCC case mode, field data must contain 19 digits)
                     barcodeType = TYPE.CODE128C;
                     content = content.PadLeft(19, '0').Substring(0, 19);
                     int checksum = 0;

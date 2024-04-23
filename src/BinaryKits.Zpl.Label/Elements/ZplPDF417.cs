@@ -9,6 +9,7 @@ namespace BinaryKits.Zpl.Label.Elements
     {
 
         public int Height { get; protected set; }
+        public int ModuleWidth { get; protected set; }
         public string Content { get; protected set; }
         public FieldOrientation FieldOrientation { get; protected set; }
         public int? Columns { get; protected set; }
@@ -23,6 +24,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="positionX"></param>
         /// <param name="positionY"></param>
         /// <param name="height"></param>
+        /// <param name="moduleWidth"></param>
         /// <param name="columns">1-30: Number of data columns to encode. Default will auto balance 1:2 row to column</param>
         /// <param name="rows">3-90. Number of data columns to encode. Default will auto balance 1:2 row to column</param>
         /// <param name="compact">Truncate right row indicators and stop pattern</param>
@@ -34,6 +36,7 @@ namespace BinaryKits.Zpl.Label.Elements
             int positionX,
             int positionY,
             int height = 8,
+            int moduleWidth = 2,
             int? columns = null,
             int? rows = null,
             bool compact = false,
@@ -45,6 +48,7 @@ namespace BinaryKits.Zpl.Label.Elements
         {
             FieldOrientation = fieldOrientation;
             Height = height;
+            ModuleWidth = moduleWidth;
             Columns = columns;
             Rows = rows;
             Compact = compact;

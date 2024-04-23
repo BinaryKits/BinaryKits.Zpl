@@ -126,6 +126,12 @@
     <None Update="Labels\Test\TextRotation2-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Labels\Test\BarcodePDF417-102x152.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Labels\Test\GS1-102x152.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

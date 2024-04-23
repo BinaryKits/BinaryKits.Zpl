@@ -56,26 +56,37 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 {
                     mincols = 1;
                     maxcols = 30;
+
+                    if (pdf417.Rows != null)
+                    {
+                        //When column count isn't defined, and rows count is,
+                        // the col/row ratio is calculated using the algorithm in: ZXing.PDF417.Internal.PDF417.determineDimensions
+                        // to allow a range for that algorithm, we divide the given row amount by 2.
+                        // as the algorithm goes from highest to lowest, this usually produces an acceptable result 
+                        minrows /= 2;
+                    }
                 }
                 var writer = new PDF417Writer();
                 var hints = new Dictionary<EncodeHintType, object> {
-                    { EncodeHintType.CHARACTER_SET, "UTF-8" },
+                    // { EncodeHintType.CHARACTER_SET, "ISO-8859-1" },
                     { EncodeHintType.PDF417_COMPACT, pdf417.Compact },
                     //{ EncodeHintType.PDF417_AUTO_ECI, true },
                     //{ EncodeHintType.DISABLE_ECI, true },
                     { EncodeHintType.PDF417_COMPACTION, Compaction.AUTO},
-                    { EncodeHintType.PDF417_ASPECT_RATIO, 3 }, // height of a single bar relative to width
-                    { EncodeHintType.PDF417_IMAGE_ASPECT_RATIO, 2.0f }, // zpl default, proportions of columns to rows
+                    { EncodeHintType.PDF417_ASPECT_RATIO, PDF417AspectRatio.A3 }, // height of a single bar relative to width
+                    { EncodeHintType.PDF417_IMAGE_ASPECT_RATIO, 1.0f }, // zpl default 2.0f, proportions of columns to rows //1.0f looks closer to printed Zebra label
                     { EncodeHintType.MARGIN, 0 }, // its an int
                     { EncodeHintType.ERROR_CORRECTION, ConvertErrorCorrection(pdf417.SecurityLevel) },
                     { EncodeHintType.PDF417_DIMENSIONS, new Dimensions(mincols, maxcols, minrows, maxrows) },
                 };
             
                 var default_bitmatrix = writer.encode(pdf417.Content, BarcodeFormat.PDF_417, 0, 0, hints);
-
-                var upscaled = proportional_upscale(default_bitmatrix, 3);
-                var result = vertical_scale(upscaled, pdf417.Height);
-
+                
+                //PDF417_ASPECT_RATIO set to 3, we need to multiply that with pdf417.ModuleWidth (defined by ^BY)
+                var bar_height = pdf417.ModuleWidth * 3;
+                var upscaled = proportional_upscale(default_bitmatrix, pdf417.ModuleWidth);
+                var result = vertical_scale(upscaled, pdf417.Height, bar_height);
+                
                 using var resizedImage = this.BitMatrixToSKBitmap(result, 1);
                 {
                     var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
@@ -107,14 +118,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return upscaled;
         }
 
-        // needed to match labelary
+        // needed to match zebra and labelary
         // zebra assumptions:
         //  - we can only set the height in zpl in points, not the width
-        //  - each bar is 3 "points" thick, until ^BY is implemented
-        //  - because we have PDF417_ASPECT_RATIO set to 3, and upscaling to 3, the height of a single bar is now 9
-        // we only need to scale to the bar height/9
-        private BitMatrix vertical_scale(BitMatrix old_matrix, int new_bar_height) {
-            int old_bar_height = 9;
+        //  - each bar is ^BY "points" thick
+        //  - because we have PDF417_ASPECT_RATIO set to 3, the height of a single bar is now 3 * ^BY
+        private BitMatrix vertical_scale(BitMatrix old_matrix, int new_bar_height, int old_bar_height) {
             int width = old_matrix.Width;
             int rows = old_matrix.Height / old_bar_height; // logical rows;
 
