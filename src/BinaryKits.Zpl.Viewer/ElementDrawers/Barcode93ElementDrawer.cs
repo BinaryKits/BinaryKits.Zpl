@@ -30,7 +30,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float y = barcode.PositionY;
 
                 var content = barcode.Content;
-                var interpretation = string.Format("*{0}*", content.Trim('*'));
 
                 float labelFontSize = Math.Min(barcode.ModuleWidth * 7.2f, 72f);
                 var labelTypeFace = options.FontLoader("A");
@@ -46,7 +45,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     IncludeLabel = barcode.PrintInterpretationLine,
                     LabelPosition = barcode.PrintInterpretationLineAboveCode ? LabelPositions.TOPCENTER : LabelPositions.BOTTOMCENTER,
                     LabelFont = labelFont,
-                    AlternateLabel = interpretation
+                    AlternateLabel = content
                 };
 
                 using var image = barcodeElement.Encode(TYPE.CODE93, content);
