@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
   </ItemGroup>
 
@@ -24,7 +24,7 @@
     <None Update="Labels\Example\Example1-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Labels\Example\Example3-102x152.zpl2">
+    <None Update="Labels\Example\Example3-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Labels\Test\Barcode128-102x152.zpl2">
@@ -69,16 +69,16 @@
     <None Update="Labels\Example\Example4-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Labels\Example\Example7-102x152.zpl2">
+    <None Update="Labels\Example\Example7-178x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Labels\Example\Example6-102x152.zpl2">
+    <None Update="Labels\Example\Example6-75x254.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Labels\Example\Example5-102x152.zpl2">
+    <None Update="Labels\Example\Example5-75x202.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Labels\Example\Example8-102x152.zpl2">
+    <None Update="Labels\Example\Example8-64x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Labels\Example\Example2-102x170.zpl2">
@@ -127,6 +127,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Labels\Test\MaxiCode-102x152.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Labels\Test\BarcodePDF417-102x152.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Labels\Test\FieldReversePrint3-54x86.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Labels\Example\Example10-102x152.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Labels\Example\Example11-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Labels\Example\Example12-102x152.zpl2">

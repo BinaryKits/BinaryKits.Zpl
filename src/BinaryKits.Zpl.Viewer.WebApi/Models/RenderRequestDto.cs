@@ -18,5 +18,9 @@
         /// Dots per Millimeter
         /// </summary>
         public int PrintDensityDpmm { get; set; } = 8;
+        /// <summary>
+        /// File type
+        /// </summary>
+        public string Type { get; set; } = "image";
     }
 }

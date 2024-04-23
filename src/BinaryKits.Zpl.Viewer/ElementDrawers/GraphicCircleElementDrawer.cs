@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -9,6 +10,26 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         public override bool CanDraw(ZplElementBase element)
         {
             return element is ZplGraphicCircle;
+        }
+        
+        public override bool IsReverseDraw(ZplElementBase element)
+        {
+            if (element is ZplGraphicCircle graphicCircle)
+            {
+                return graphicCircle.ReversePrint;
+            }
+
+            return false;
+        }
+        
+        public override bool IsWhiteDraw(ZplElementBase element)
+        {
+            if (element is ZplGraphicCircle graphicCircle)
+            {
+                return graphicCircle.LineColor == LineColor.White;
+            }
+
+            return false;
         }
 
         ///<inheritdoc/>
@@ -28,6 +49,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 skPaint.Style = SKPaintStyle.Stroke;
                 skPaint.Color = SKColors.Black;
                 skPaint.StrokeWidth = border;
+                if (graphicCircle.LineColor == LineColor.White)
+                {
+                    skPaint.Color = SKColors.White;
+                }
 
                 var halfBorderThickness = border / 2.0f;
 
@@ -46,6 +71,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     {
                         y = radius;
                     }
+                }
+                
+                if (graphicCircle.ReversePrint)
+                {
+                    skPaint.BlendMode = SKBlendMode.Xor;
                 }
 
                 this._skCanvas.DrawCircle(x, y, radiusMinusBorder, skPaint);

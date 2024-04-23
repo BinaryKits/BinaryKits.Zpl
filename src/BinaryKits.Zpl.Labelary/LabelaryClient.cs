@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Globalization;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,9 +43,15 @@ namespace BinaryKits.Zpl.Labelary
         {
             var dpi = printDensity.ToString().Substring(2);
             var zpl = Encoding.UTF8.GetBytes(zplData);
+            
+            //without setting this, a comma separator might be used for for the size numbers in the URL
+            var specifier = "G";
+            var culture = CultureInfo.CreateSpecificCulture("en-US");
+            var width = labelSize.WidthInInch.ToString(specifier, culture);
+            var height = labelSize.HeightInInch.ToString(specifier, culture);
 
             using var byteContent = new ByteArrayContent(zpl);
-            using (var response = await _httpClient.PostAsync($"{_apiEndpoint}/{dpi}/labels/{labelSize.WidthInInch}x{labelSize.HeightInInch}/0/", byteContent))
+            using (var response = await _httpClient.PostAsync($"{_apiEndpoint}/{dpi}/labels/{width}x{height}/0/", byteContent))
             {
                 if (!response.IsSuccessStatusCode)
                 {
