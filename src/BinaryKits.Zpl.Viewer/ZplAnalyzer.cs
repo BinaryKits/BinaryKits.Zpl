@@ -38,6 +38,7 @@ namespace BinaryKits.Zpl.Viewer
                 new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
                 new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
                 new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new Code93BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new CodeEAN13BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new CommentZplCommandAnalyzer(this._virtualPrinter),
@@ -156,7 +157,8 @@ namespace BinaryKits.Zpl.Viewer
 
                         var commandLetters = command.Substring(1, 2).ToUpper();
 
-                        if (ignoredCommandsHS.Contains(commandLetters)) {
+                        if (ignoredCommandsHS.Contains(commandLetters))
+                        {
                             continue;
                         }
                         else if (commandLetters == "CT")
@@ -166,12 +168,15 @@ namespace BinaryKits.Zpl.Viewer
                         else if (commandLetters == "CC")
                         {
                             caret = command[3];
-                        } else {
+                        }
+                        else
+                        {
                             results.Add(command);
                         }
                     }
                     // likely invalid command
-                    else if (command.Trim().Length > 0) {
+                    else if (command.Trim().Length > 0)
+                    {
                         results.Add(command.Trim());
                     }
                     // no else case, multiple ^ or ~ in a row should not be valid commands to be processed

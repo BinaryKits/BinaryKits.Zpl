@@ -26,6 +26,7 @@ namespace BinaryKits.Zpl.Viewer
             {
                 new Barcode128ElementDrawer(),
                 new Barcode39ElementDrawer(),
+                new Barcode93ElementDrawer(),
                 new BarcodeEAN13ElementDrawer(),
                 new DataMatrixElementDrawer(),
                 new FieldBlockElementDrawer(),
@@ -58,7 +59,7 @@ namespace BinaryKits.Zpl.Viewer
         {
             return this.DrawMulti(elements, labelWidth, labelHeight, printDensityDpmm)[0];
         }
-        
+
         /// <summary>
         /// Draw the label as PDF
         /// </summary>
@@ -94,7 +95,7 @@ namespace BinaryKits.Zpl.Viewer
             var imageHistory = new List<SKImage>();
             var labelImageWidth = Convert.ToInt32(labelWidth * printDensityDpmm);
             var labelImageHeight = Convert.ToInt32(labelHeight * printDensityDpmm);
-            
+
             //use SKNWayCanvas to be able to draw on multiple canvases
             using var skCanvas = new SKNWayCanvas(labelImageWidth, labelImageHeight);
 
@@ -103,7 +104,7 @@ namespace BinaryKits.Zpl.Viewer
             var surface = SKSurface.Create(info);
             using var skImageCanvas = surface.Canvas;
             skCanvas.AddCanvas(skImageCanvas);
-            
+
             //add PDF canvas
             // - When drawing PDF we need the Bitmap as well to fix inverted coloring
             Stream pdfStream = new MemoryStream();
@@ -113,7 +114,7 @@ namespace BinaryKits.Zpl.Viewer
             {
                 skCanvas.AddCanvas(pdfCanvas);
             }
-            
+
             //make sure to have a transparent canvas for SKBlendMode.Xor to work properly
             skCanvas.Clear(SKColors.Transparent);
 
@@ -149,16 +150,16 @@ namespace BinaryKits.Zpl.Viewer
                         using var skBitmapInvert = new SKBitmap(labelImageWidth, labelImageHeight);
                         using var skCanvasInvert = new SKCanvas(skBitmapInvert);
                         skCanvasInvert.Clear(SKColors.Transparent);
-                    
+
                         drawer.Prepare(this._printerStorage, skCanvasInvert);
                         drawer.Draw(element, _drawerOptions);
-                        
+
                         //save state before inverted draw
                         if (this._drawerOptions.PdfOutput == true)
                         {
                             imageHistory.Add(surface.Snapshot());
                         }
-                        
+
                         //use color inversion on an reverse draw white element
                         if (drawer.IsWhiteDraw(element))
                         {
@@ -168,7 +169,7 @@ namespace BinaryKits.Zpl.Viewer
                         {
                             this.InvertDraw(skCanvas, skBitmapInvert);
                         }
-                        
+
                         continue;
                     }
 
@@ -197,12 +198,12 @@ namespace BinaryKits.Zpl.Viewer
                 using var surfaceWhiteBg = SKSurface.Create(info);
                 using var skImageCanvasWhiteBg = surfaceWhiteBg.Canvas;
                 skImageCanvasWhiteBg.Clear(SKColors.White);
-                
+
                 var surfaceImage = surface.Snapshot();
                 var paint = new SKPaint();
                 paint.BlendMode = SKBlendMode.SrcOver;
                 skImageCanvasWhiteBg.DrawImage(surfaceImage, 0f, 0f, paint);
-                
+
                 image = surfaceWhiteBg.Snapshot();
             }
 
@@ -248,7 +249,7 @@ namespace BinaryKits.Zpl.Viewer
             using var surfacePdfInvertColorFix = SKSurface.Create(info);
             using var skImageCanvasPdfInvertColorFix = surfacePdfInvertColorFix.Canvas;
             skImageCanvasPdfInvertColorFix.Clear(SKColors.Transparent);
-            
+
             //make an image of everything that was once colored
             foreach (var imageHistoryState in imageHistory)
             {
@@ -256,13 +257,13 @@ namespace BinaryKits.Zpl.Viewer
                 pdfPaint.BlendMode = SKBlendMode.SrcOver;
                 skImageCanvasPdfInvertColorFix.DrawImage(imageHistoryState, 0f, 0f, pdfPaint);
             }
-            
+
             //subtract the parts that are transparent in the final image
             var finalSurfaceImage = surface.Snapshot();
             var pdfFinalPaint = new SKPaint();
             pdfFinalPaint.BlendMode = SKBlendMode.DstOut;
             skImageCanvasPdfInvertColorFix.DrawImage(finalSurfaceImage, 0f, 0f, pdfFinalPaint);
-            
+
             //now invert the colors of the pixels that should be white place it on the canvas
             var pdfTransparentPartsImage = surfacePdfInvertColorFix.Snapshot();
             var pdfTransparentPartsBitmap = SKBitmap.FromImage(pdfTransparentPartsImage);
@@ -286,7 +287,7 @@ namespace BinaryKits.Zpl.Viewer
                 baseCanvas.DrawBitmap(bmToInvert, 0, 0, paint);
             }
         }
-        
+
         private void InvertDrawWhite(SKCanvas baseCanvas, SKBitmap bmToInvert)
         {
             using (SKPaint paint = new SKPaint())
