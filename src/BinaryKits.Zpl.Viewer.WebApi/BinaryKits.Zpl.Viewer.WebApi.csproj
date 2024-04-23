@@ -42,6 +42,9 @@
     <None Update="Labels\Test\Barcode39-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Labels\Test\Barcode93-102x152.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Labels\Test\DownloadGraphicsCompressed-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
