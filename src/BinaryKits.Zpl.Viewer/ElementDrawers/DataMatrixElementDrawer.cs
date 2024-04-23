@@ -1,6 +1,7 @@
 using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using ZXing;
 using ZXing.Datamatrix;
 using ZXing.Datamatrix.Encoder;
@@ -29,11 +30,22 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = dataMatrix.PositionX;
                 float y = dataMatrix.PositionY;
 
+                // support hand-rolled GS1
+                bool gs1Mode = false;
+                var content = dataMatrix.Content;
+                if (Regex.Match(content, @"(^_1)", RegexOptions.None).Success)
+                {
+                    content = Regex.Replace(content, @"(^_1)", "");
+                    gs1Mode = true;
+                }
+
                 var writer = new DataMatrixWriter();
                 var hints = new Dictionary<EncodeHintType, object> {
-                    { EncodeHintType.DATA_MATRIX_SHAPE, SymbolShapeHint.FORCE_SQUARE }
+                    { EncodeHintType.DATA_MATRIX_SHAPE, SymbolShapeHint.FORCE_SQUARE },
+                    { EncodeHintType.DATA_MATRIX_COMPACT, gs1Mode },
+                    { EncodeHintType.GS1_FORMAT, gs1Mode }
                 };
-                var result = writer.encode(dataMatrix.Content, BarcodeFormat.DATA_MATRIX, 0, 0, hints);
+                var result = writer.encode(content, BarcodeFormat.DATA_MATRIX, 0, 0, hints);
 
                 using var resizedImage = this.BitMatrixToSKBitmap(result, dataMatrix.Height);
                 {

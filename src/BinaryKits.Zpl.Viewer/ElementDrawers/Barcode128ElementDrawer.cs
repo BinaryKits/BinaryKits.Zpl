@@ -11,7 +11,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public class Barcode128ElementDrawer : BarcodeDrawerBase
     {
-
         /// <summary>
         /// Start sequence lookups.
         /// <see href="https://supportcommunity.zebra.com/s/article/Creating-GS1-Barcodes-with-Zebra-Printers-for-Data-Matrix-and-Code-128-using-ZPL"/>
@@ -48,10 +47,20 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplBarcode128 barcode)
             {
-                var barcodeType = TYPE.CODE128B;
-                // remove any start sequences not at the start of the content (invalid invocation)
-                string content = invalidInvocationRegex.Replace(barcode.Content, "");
+                var barcodeType = TYPE.CODE128;
+                
+                //remove the start code form the content we only support the globals N,A,D,U and our barcode library doesn't support these types
+                string content = startCodeRegex.Replace(barcode.Content, "");
                 string interpretation = content;
+                
+                // remove any start sequences not at the start of the content (invalid invocation)
+                content = invalidInvocationRegex.Replace(content, "");
+                interpretation = content;
+                
+                // support hand-rolled GS1
+                content = content.Replace(">8", FNC1);
+                interpretation = interpretation.Replace(">8", "");
+                
                 if (string.IsNullOrEmpty(barcode.Mode) || barcode.Mode == "N")
                 {
                     Match startCodeMatch = startCodeRegex.Match(barcode.Content);
@@ -74,13 +83,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
                 else if (barcode.Mode == "A")
                 {
+                    //A (automatic mode, the ZPL engine automatically determines the subsets that are used to encode the data)
                     barcodeType = TYPE.CODE128; // dynamic
                 }
                 else if (barcode.Mode == "D")
                 {
+                    //D (UCC/EAN mode, field data must contain GS1 numbers)
                     barcodeType = TYPE.CODE128C;
-                    content = content.Replace(">8", FNC1);
-                    interpretation = interpretation.Replace(">8", "");
+                    
                     if (!content.StartsWith(FNC1))
                     {
                         content = FNC1 + content;
@@ -88,6 +98,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
                 else if (barcode.Mode == "U")
                 {
+                    //U (UCC case mode, field data must contain 19 digits)
                     barcodeType = TYPE.CODE128C;
                     content = content.PadLeft(19, '0').Substring(0, 19);
                     int checksum = 0;
