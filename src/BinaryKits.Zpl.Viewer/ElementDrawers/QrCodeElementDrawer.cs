@@ -8,6 +8,9 @@ using ZXing.QrCode;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for QR Code Barcode elements
+    /// </summary>
     public class QrCodeElementDrawer : BarcodeDrawerBase
     {
         ///<inheritdoc/>
@@ -36,6 +39,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 int verticalQuietZone = 10;
 
                 var writer = new QRCodeWriter();
+                // TODO: use QrCodeEncodingOptions in next version of ZXing.NET
                 var hints = new Dictionary<EncodeHintType, object> {
                     { EncodeHintType.ERROR_CORRECTION, CovertErrorCorrection(qrcode.ErrorCorrectionLevel) },
                     { EncodeHintType.QR_MASK_PATTERN, qrcode.MaskValue },
@@ -48,7 +52,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 using var resizedImage = this.BitMatrixToSKBitmap(result, qrcode.MagnificationFactor);
 
                 var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                this.DrawBarcode(png, resizedImage.Height + 2 * verticalQuietZone, resizedImage.Width, qrcode.FieldOrigin != null, x, y + verticalQuietZone, 0, qrcode.FieldOrientation);
+                this.DrawBarcode(png, x, y + verticalQuietZone, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation);
             }
         }
 

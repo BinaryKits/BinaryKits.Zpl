@@ -134,12 +134,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                         this.DrawBarcode(
                             data,
+                            maxiCode.PositionX,
+                            maxiCode.PositionY,
                             section.Width,
                             section.Height,
                             true,
-                            maxiCode.PositionX,
-                            maxiCode.PositionY,
-                            0,
                             Label.FieldOrientation.Normal
                         );
                     }

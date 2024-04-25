@@ -1,6 +1,5 @@
 using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using ZXing;
 using ZXing.Datamatrix;
@@ -40,17 +39,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 var writer = new DataMatrixWriter();
-                var hints = new Dictionary<EncodeHintType, object> {
-                    { EncodeHintType.DATA_MATRIX_SHAPE, SymbolShapeHint.FORCE_SQUARE },
-                    { EncodeHintType.DATA_MATRIX_COMPACT, gs1Mode },
-                    { EncodeHintType.GS1_FORMAT, gs1Mode }
+                var encodingOptions = new DatamatrixEncodingOptions()
+                {
+                    SymbolShape = SymbolShapeHint.FORCE_SQUARE,
+                    CompactEncoding = gs1Mode,
+                    GS1Format = gs1Mode
                 };
-                var result = writer.encode(content, BarcodeFormat.DATA_MATRIX, 0, 0, hints);
+                var result = writer.encode(content, BarcodeFormat.DATA_MATRIX, 0, 0, encodingOptions.Hints);
 
                 using var resizedImage = this.BitMatrixToSKBitmap(result, dataMatrix.Height);
                 {
                     var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                    this.DrawBarcode(png, resizedImage.Height, resizedImage.Width, dataMatrix.FieldOrigin != null, x, y, 0, dataMatrix.FieldOrientation);
+                    this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, dataMatrix.FieldOrigin != null, dataMatrix.FieldOrientation);
                 }
             }
         }

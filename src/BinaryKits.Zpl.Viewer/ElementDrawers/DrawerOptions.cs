@@ -11,6 +11,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
         public SKEncodedImageFormat RenderFormat { get; set; } = SKEncodedImageFormat.Png;
 
+        public int RenderQuality { get; set; } = 80;
+
         /// <summary>
         /// Applies label over a white background after rendering all elements
         /// </summary>
@@ -21,9 +23,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// </summary>
         public bool PdfOutput { get; set; } = false;
 
-        public int RenderQuality { get; set; } = 80;
-
         public bool ReplaceDashWithEnDash { get; set; } = true;
+
+        public bool Antialias { get; set; } = true;
 
         public static Func<string, SKTypeface> DefaultFontLoader = fontName => {
             var typeface = SKTypeface.Default;

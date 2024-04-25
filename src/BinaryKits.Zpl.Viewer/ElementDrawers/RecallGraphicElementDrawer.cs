@@ -3,6 +3,9 @@ using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Recall Graphic elements
+    /// </summary>
     public class RecallGraphicElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>

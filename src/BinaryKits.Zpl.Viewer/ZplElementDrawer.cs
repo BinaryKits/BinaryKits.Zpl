@@ -207,7 +207,7 @@ namespace BinaryKits.Zpl.Viewer
                 image = surfaceWhiteBg.Snapshot();
             }
 
-            var imageData = image.Encode(SKEncodedImageFormat.Png, 80);
+            var imageData = image.Encode(_drawerOptions.RenderFormat, _drawerOptions.RenderQuality);
             result.Add(imageData.ToArray());
 
             //only return image

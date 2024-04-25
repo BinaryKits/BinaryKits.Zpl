@@ -33,7 +33,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override void Draw(ZplElementBase element, DrawerOptions options)
         {
             if (element is ZplGraphicCircle graphicCircle)
             {
@@ -45,10 +45,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     border = radius;
                 }
 
-                using var skPaint = new SKPaint();
-                skPaint.Style = SKPaintStyle.Stroke;
-                skPaint.Color = SKColors.Black;
-                skPaint.StrokeWidth = border;
+                using var skPaint = new SKPaint()
+                {
+                    IsAntialias = options.Antialias,
+                    Style = SKPaintStyle.Stroke,
+                    Color = SKColors.Black,
+                    StrokeWidth = border
+                };
                 if (graphicCircle.LineColor == LineColor.White)
                 {
                     skPaint.Color = SKColors.White;
