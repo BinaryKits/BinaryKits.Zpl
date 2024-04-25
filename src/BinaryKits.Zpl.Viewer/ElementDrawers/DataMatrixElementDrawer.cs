@@ -7,8 +7,13 @@ using ZXing.Datamatrix.Encoder;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Data Matrix Barcode elements
+    /// </summary>
     public class DataMatrixElementDrawer : BarcodeDrawerBase
     {
+        private static readonly Regex gs1Regex = new Regex(@"^_1(.+)$", RegexOptions.Compiled);
+
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
@@ -32,9 +37,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 // support hand-rolled GS1
                 bool gs1Mode = false;
                 var content = dataMatrix.Content;
-                if (Regex.Match(content, @"(^_1)", RegexOptions.None).Success)
+
+                Match gs1Match = gs1Regex.Match(content);
+                if (gs1Match.Success)
                 {
-                    content = Regex.Replace(content, @"(^_1)", "");
+                    content = gs1Match.Groups[1].Value;
                     gs1Mode = true;
                 }
 
@@ -54,5 +61,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
             }
         }
+
     }
 }

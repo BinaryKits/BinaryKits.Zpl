@@ -13,6 +13,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
     /// </summary>
     public class QrCodeElementDrawer : BarcodeDrawerBase
     {
+        private static readonly Regex gs1Regex = new Regex(@"^>;>8(.+)$", RegexOptions.Compiled);
+
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
@@ -30,9 +32,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 // support hand-rolled GS1
                 bool gs1Mode = false;
                 var content = qrcode.Content;
-                if (Regex.Match(content, @"(^>;>8)", RegexOptions.None).Success)
+
+                Match gs1Match = gs1Regex.Match(content);
+                if (gs1Match.Success)
                 {
-                    content = Regex.Replace(content, @"(^>;>8)", "");
+                    content = gs1Match.Groups[1].Value;
                     gs1Mode = true;
                 }
 
@@ -67,5 +71,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 _ => ZXing.QrCode.Internal.ErrorCorrectionLevel.M
             };
         }
+
     }
 }
