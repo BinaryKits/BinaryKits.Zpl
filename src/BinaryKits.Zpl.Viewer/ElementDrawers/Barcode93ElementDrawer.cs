@@ -1,9 +1,7 @@
-﻿using BarcodeLib;
-using BinaryKits.Zpl.Label.Elements;
-using BinaryKits.Zpl.Viewer.Helpers;
+﻿using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
 using System;
-using System.Drawing;
+using ZXing.OneD;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -31,25 +29,20 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var content = barcode.Content;
 
-                float labelFontSize = Math.Min(barcode.ModuleWidth * 7.2f, 72f);
-                var labelTypeFace = options.FontLoader("A");
-                var labelFont = new SKFont(labelTypeFace, labelFontSize).ToSystemDrawingFont();
-                int labelHeight = barcode.PrintInterpretationLine ? labelFont.Height : 0;
-                int labelHeightOffset = barcode.PrintInterpretationLineAboveCode ? labelHeight : 0;
+                var writer = new Code93Writer();
+                var result = writer.encode(content);
+                using var resizedImage = this.BoolArrayToSKBitmap(result, barcode.Height, barcode.ModuleWidth);
+                var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation);
 
-                var barcodeElement = new Barcode
+                if (barcode.PrintInterpretationLine)
                 {
-                    BarWidth = barcode.ModuleWidth,
-                    BackColor = Color.Transparent,
-                    Height = barcode.Height + labelHeight,
-                    IncludeLabel = barcode.PrintInterpretationLine,
-                    LabelPosition = barcode.PrintInterpretationLineAboveCode ? LabelPositions.TOPCENTER : LabelPositions.BOTTOMCENTER,
-                    LabelFont = labelFont,
-                    AlternateLabel = content
-                };
+                    float labelFontSize = Math.Min(barcode.ModuleWidth * 10f, 100f);
+                    var labelTypeFace = options.FontLoader("A");
+                    var labelFont = new SKFont(labelTypeFace, labelFontSize);
+                    this.DrawInterpretationLine(content, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrientation != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
+                }
 
-                using var image = barcodeElement.Encode(TYPE.CODE93, content);
-                this.DrawBarcode(this.GetImageData(image), barcode.Height, image.Width, barcode.FieldOrigin != null, x, y, labelHeightOffset, barcode.FieldOrientation);
             }
         }
     }

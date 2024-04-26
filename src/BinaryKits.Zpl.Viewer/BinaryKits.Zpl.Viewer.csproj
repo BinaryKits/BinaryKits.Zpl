@@ -22,8 +22,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BarcodeLib" Version="2.4.0" />
-    <PackageReference Include="SkiaSharp" Version="2.88.8" />
     <PackageReference Include="SkiaSharp.HarfBuzz" Version="2.88.8" />
     <PackageReference Include="ZXing.Net" Version="0.16.9" />
     <PackageReference Include="CoelWu.Zint.Net" Version="1.0.0" />

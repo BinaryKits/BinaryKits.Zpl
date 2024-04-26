@@ -12,6 +12,8 @@ namespace BinaryKits.Zpl.Viewer
 {
     public class ZplAnalyzer : IZplAnalyzer
     {
+        private static readonly Regex verticalWhitespaceRegex = new Regex(@"[\n\v\f\r]", RegexOptions.Compiled);
+
         private readonly VirtualPrinter _virtualPrinter;
         private readonly IPrinterStorage _printerStorage;
         private readonly IFormatMerger _formatMerger;
@@ -136,7 +138,7 @@ namespace BinaryKits.Zpl.Viewer
                 return Array.Empty<string>();
             }
 
-            var cleanZpl = Regex.Replace(zplData, @"\r|\n", string.Empty);
+            var cleanZpl = verticalWhitespaceRegex.Replace(zplData, string.Empty);
             char caret = '^';
             char tilde = '~';
             List<string> results = new(200);

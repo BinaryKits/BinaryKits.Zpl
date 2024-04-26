@@ -90,7 +90,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 using var resizedImage = this.BitMatrixToSKBitmap(result, 1);
                 {
                     var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                    this.DrawBarcode(png, resizedImage.Height, resizedImage.Width, pdf417.FieldOrigin != null, x, y, 0, pdf417.FieldOrientation);
+                    this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, pdf417.FieldOrigin != null, pdf417.FieldOrientation);
                 }
             }
         }

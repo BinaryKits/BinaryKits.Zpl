@@ -8,8 +8,13 @@ using ZXing.QrCode;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for QR Code Barcode elements
+    /// </summary>
     public class QrCodeElementDrawer : BarcodeDrawerBase
     {
+        private static readonly Regex gs1Regex = new Regex(@"^>;>8(.+)$", RegexOptions.Compiled);
+
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
@@ -27,15 +32,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 // support hand-rolled GS1
                 bool gs1Mode = false;
                 var content = qrcode.Content;
-                if (Regex.Match(content, @"(^>;>8)", RegexOptions.None).Success)
+
+                Match gs1Match = gs1Regex.Match(content);
+                if (gs1Match.Success)
                 {
-                    content = Regex.Replace(content, @"(^>;>8)", "");
+                    content = gs1Match.Groups[1].Value;
                     gs1Mode = true;
                 }
 
                 int verticalQuietZone = 10;
 
                 var writer = new QRCodeWriter();
+                // TODO: use QrCodeEncodingOptions in next version of ZXing.NET
                 var hints = new Dictionary<EncodeHintType, object> {
                     { EncodeHintType.ERROR_CORRECTION, CovertErrorCorrection(qrcode.ErrorCorrectionLevel) },
                     { EncodeHintType.QR_MASK_PATTERN, qrcode.MaskValue },
@@ -48,7 +56,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 using var resizedImage = this.BitMatrixToSKBitmap(result, qrcode.MagnificationFactor);
 
                 var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                this.DrawBarcode(png, resizedImage.Height + 2 * verticalQuietZone, resizedImage.Width, qrcode.FieldOrigin != null, x, y + verticalQuietZone, 0, qrcode.FieldOrientation);
+                this.DrawBarcode(png, x, y + verticalQuietZone, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation);
             }
         }
 
@@ -63,5 +71,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 _ => ZXing.QrCode.Internal.ErrorCorrectionLevel.M
             };
         }
+
     }
 }

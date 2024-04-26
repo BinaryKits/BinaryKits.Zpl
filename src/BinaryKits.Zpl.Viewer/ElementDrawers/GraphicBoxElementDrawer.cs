@@ -44,7 +44,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override void Draw(ZplElementBase element, DrawerOptions options)
         {
             if (element is ZplGraphicBox graphicBox)
             {
@@ -111,11 +111,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     var width = width1 - border2;
                     var height = height1 - border2;
 
-                    using var skPaint = new SKPaint();
-                    skPaint.Style = SKPaintStyle.Stroke;
-                    skPaint.StrokeCap = SKStrokeCap.Square;
-                    skPaint.Color = SKColors.Black;
-                    skPaint.StrokeWidth = border2;
+                    using var skPaint = new SKPaint()
+                    {
+                        IsAntialias = options.Antialias,
+                        Style = SKPaintStyle.Stroke,
+                        StrokeCap = SKStrokeCap.Square,
+                        Color = SKColors.Black,
+                        StrokeWidth = border2
+                    };
 
                     if (graphicBox.LineColor == LineColor.White)
                     {
