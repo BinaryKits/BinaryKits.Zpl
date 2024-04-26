@@ -74,7 +74,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
         private static readonly Dictionary<Code128CodeSet, (string[], Dictionary<string, int>)> codeMaps;
 
         /// <summary>
-        /// <see cref="https://en.wikipedia.org/wiki/Code_128#Bar_code_widths"/>
+        /// <see href="https://en.wikipedia.org/wiki/Code_128#Bar_code_widths"/>
         /// </summary>
         static ZplCode128Symbology() {
             var codeSetTable = new[]

@@ -87,7 +87,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     
                     maxiBarcode.CreateBarcode("Maxicode(ISO 16023)", content);
                 }
-                catch (Exception e)
+                catch
                 {
                     // Do nothing
                 }

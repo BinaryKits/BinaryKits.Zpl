@@ -23,7 +23,6 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="printInterpretationLineAboveCode"></param>
         /// <param name="bottomToTop"></param>
         /// <param name="checkDigit"></param>
-        /// <param name="mode"></param>
         public ZplBarcode93(
             string content,
             int positionX,
