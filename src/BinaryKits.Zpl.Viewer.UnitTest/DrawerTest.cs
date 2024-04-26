@@ -1,11 +1,7 @@
 using BinaryKits.Zpl.Viewer.ElementDrawers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using ZXing;
-using ZXing.Datamatrix;
+
 
 namespace BinaryKits.Zpl.Viewer.UnitTest
 {
@@ -15,13 +11,7 @@ namespace BinaryKits.Zpl.Viewer.UnitTest
         [TestMethod]
         public void FontAssignment()
         {
-            string zplString = @"
-^XA
-^FO20, 20
-^A1N,40, 30 ^FD西瓜^FS
-^FO20, 50
-^A0N,40, 30 ^FDABCDEFG^FS
-^XZ";
+            string zplString = Common.LoadZPL("font-assign");
 
             var drawOptions = new DrawerOptions()
             {
@@ -40,56 +30,26 @@ namespace BinaryKits.Zpl.Viewer.UnitTest
                     return SKTypeface.Default;
                 }
             };
-            IPrinterStorage printerStorage = new PrinterStorage();
-            var drawer = new ZplElementDrawer(printerStorage, drawOptions);
-
-            var analyzer = new ZplAnalyzer(printerStorage);
-            var analyzeInfo = analyzer.Analyze(zplString);
-
-            foreach (var labelInfo in analyzeInfo.LabelInfos)
-            {
-                var imageData = drawer.Draw(labelInfo.ZplElements, 300, 300, 8);
-                File.WriteAllBytes("test.png", imageData);
-            }
+            Common.DefaultPrint(zplString, "font-assign.png", 300, 300, 8, drawOptions);
         }
 
         [TestMethod]
         public void FormatHandling()
         {
-            string zplString = @"
-^XA
-^DFETIQUE-1^FS
-^PRC
-^LH0,0^FS
-^LL408
-^MD0
-^MNY
-^LH0,0^FS
-^FO120,141^A0N,27,23^CI13^FR^FN999^FS
-^BY2,3.0^FO213,7^BCN,80,N,Y,N^FR^FN997^FS
-^FO313,95^A0N,35,23^CI13^FR^FB105,2,0,L^FN997^FS
-^FO40,141^A0N,27,33^CI13^FR^FDP/N :^FS
-^XZ
+            string zplString = Common.LoadZPL("merge");
+            Common.DefaultPrint(zplString, "merge.png", 100, 100, 8);
+        }
 
+        [TestMethod]
+        public void InvertColor()
+        {
+            // Example in ZPL manual
+            string test1 = Common.LoadZPL("invert1");
+            // from https://github.com/BinaryKits/BinaryKits.Zpl/pull/64
+            string test2 = Common.LoadZPL("invert2");
 
-^XA
-^XFETIQUE-1.ZPL
-^FN999^FDC19755BA01:F9111^FS
-^FN997^FD3758292^FS
-^PQ1,0,1,N
-^XZ
-^FX";
-            IPrinterStorage printerStorage = new PrinterStorage();
-            var drawer = new ZplElementDrawer(printerStorage);
-
-            var analyzer = new ZplAnalyzer(printerStorage);
-            var analyzeInfo = analyzer.Analyze(zplString);
-
-            foreach (var labelInfo in analyzeInfo.LabelInfos)
-            {
-                var imageData = drawer.Draw(labelInfo.ZplElements, 300, 300, 8);
-                File.WriteAllBytes("merge-test.png", imageData);
-            }
+            Common.DefaultPrint(test1, "inverted1.png", 100, 100, 8);
+            Common.DefaultPrint(test2, "inverted2.png");
         }
     }
 }

@@ -4,7 +4,7 @@
     <TargetFrameworks>net472;netstandard2.0;net6.0</TargetFrameworks>
     <Description>This package contains the zebra protocol of the Zebra Programming Language. It also supports you with image conversion.</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Zebra ZPL ZPL2 Printer Protocol</PackageTags>
@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp">
-      <Version>1.0.4</Version>
+      <Version>2.1.8</Version>
     </PackageReference>
   </ItemGroup>
 

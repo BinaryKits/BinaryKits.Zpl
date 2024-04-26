@@ -1,8 +1,10 @@
 using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
+
 using SkiaSharp;
 using SkiaSharp.HarfBuzz;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,9 @@ using System.Text;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Field Block elements
+    /// </summary>
     public class FieldBlockElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>
@@ -18,6 +23,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return element is ZplFieldBlock;
         }
 
+        ///<inheritdoc/>
         public override bool IsReverseDraw(ZplElementBase element)
         {
             if (element is ZplFieldBlock fieldBlock)
@@ -26,12 +32,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             }
 
             return false;
-        }
-
-        ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
-        {
-            Draw(element, new DrawerOptions());
         }
 
         ///<inheritdoc/>
@@ -61,7 +61,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 var skFont = new SKFont(typeface, fontSize, scaleX);
-                using var skPaint = new SKPaint(skFont);
+                using var skPaint = new SKPaint(skFont)
+                {
+                    IsAntialias = options.Antialias
+                };
+
                 var textBoundBaseline = new SKRect();
                 skPaint.MeasureText("X", ref textBoundBaseline);
 
@@ -79,7 +83,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 if (fieldBlock.FieldTypeset != null)
                 {
-                    totalHeight = lineHeight * (fieldBlock.MaxLineCount-1) + textBoundBaseline.Height;
+                    totalHeight = lineHeight * (fieldBlock.MaxLineCount - 1) + textBoundBaseline.Height;
                     y -= totalHeight;
                 }
 
@@ -151,6 +155,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                                 break;
                         }
 
+                        if (fieldBlock.ReversePrint)
+                        {
+                            skPaint.BlendMode = SKBlendMode.Xor;
+                        }
+
                         this._skCanvas.DrawShapedText(textLine, x, y, skPaint);
                         y += lineHeight;
                     }
@@ -167,7 +176,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             var words = new Stack<string>(text.Split(new[] { ' ' }, StringSplitOptions.None).Reverse());
             var line = new StringBuilder();
             float width = 0;
-            while(words.Any())
+            while (words.Any())
             {
                 var word = words.Pop();
                 if (word.Contains(@"\&"))

@@ -16,7 +16,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         private static readonly Regex qrCodeFieldDataMixedRegex = new Regex(@"^D\d{4}[0-9A-F-a-f]{2},(?<correction>[HQML])(?<input>[AM]),(?<data>.+)$", RegexOptions.Compiled);
         private static readonly Regex qrCodeFieldDataModeRegex = new Regex(@"^(?:[ANK]|(?:B(?<count>\d{4})))(?<data>.+)$", RegexOptions.Compiled);
 
-        public FieldDataZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FD", virtualPrinter) { }
+        public FieldDataZplCommandAnalyzer(VirtualPrinter virtualPrinter, string prefix = "^FD") : base(prefix, virtualPrinter) { }
 
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
@@ -47,10 +47,15 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             {
                 int moduleWidth = this.VirtualPrinter.BarcodeInfo.ModuleWidth;
                 double wideBarToNarrowBarWidthRatio = this.VirtualPrinter.BarcodeInfo.WideBarToNarrowBarWidthRatio;
+                bool useHexadecimalIndicator = this.VirtualPrinter.NextElementFieldUseHexadecimalIndicator;
 
                 if (this.VirtualPrinter.NextElementFieldData is Code39BarcodeFieldData code39)
                 {
                     return new ZplBarcode39(text, x, y, code39.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code39.FieldOrientation, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit, bottomToTop: bottomToTop);
+                }
+                if (this.VirtualPrinter.NextElementFieldData is Code93BarcodeFieldData code93)
+                {
+                    return new ZplBarcode93(text, x, y, code93.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code93.FieldOrientation, code93.PrintInterpretationLine, code93.PrintInterpretationLineAboveCode, code93.PrintCheckDigit, bottomToTop: bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is Code128BarcodeFieldData code128)
                 {
@@ -69,6 +74,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 {
                     return new ZplBarcodeInterleaved2of5(text, x, y, interleaved2of5.Height, moduleWidth, wideBarToNarrowBarWidthRatio, interleaved2of5.FieldOrientation, interleaved2of5.PrintInterpretationLine, interleaved2of5.PrintInterpretationLineAboveCode, bottomToTop: bottomToTop);
                 }
+                if (this.VirtualPrinter.NextElementFieldData is MaxiCodeBarcodeFieldData maxiCode)
+                {
+                    return new ZplMaxiCode(text, x, y, maxiCode.Mode, maxiCode.Position, maxiCode.Total, useHexadecimalIndicator, bottomToTop);
+                }
                 if (this.VirtualPrinter.NextElementFieldData is QrCodeBarcodeFieldData qrCode)
                 {
                     (ErrorCorrectionLevel errorCorrection, string parsedText) = ParseQrCodeFieldData(qrCode, text);
@@ -78,7 +87,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 }
                 if (this.VirtualPrinter.NextElementFieldData is PDF417FieldData pdf147)
                 {
-                    return new ZplPDF417(text, x, y, pdf147.Height, pdf147.Columns, pdf147.Rows, pdf147.Compact, pdf147.SecurityLevel, pdf147.FieldOrientation, bottomToTop);
+                    return new ZplPDF417(text, x, y, pdf147.Height, moduleWidth, pdf147.Columns, pdf147.Rows, pdf147.Compact, pdf147.SecurityLevel, pdf147.FieldOrientation, bottomToTop);
                 }
             }
 
@@ -98,7 +107,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 int lineSpace = this.VirtualPrinter.NextElementFieldBlock.AddOrDeleteSpaceBetweenLines;
                 int hangingIndent = this.VirtualPrinter.NextElementFieldBlock.HangingIndentOfTheSecondAndRemainingLines;
 
-                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, hangingIndent, reversePrint : reversePrint, bottomToTop: bottomToTop);
+                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, hangingIndent, reversePrint: reversePrint, bottomToTop: bottomToTop);
             }
 
             return new ZplTextField(text, x, y, font, reversePrint: reversePrint, bottomToTop: bottomToTop);

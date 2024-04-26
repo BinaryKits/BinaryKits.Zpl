@@ -12,6 +12,8 @@ namespace BinaryKits.Zpl.Viewer
 {
     public class ZplAnalyzer : IZplAnalyzer
     {
+        private static readonly Regex verticalWhitespaceRegex = new Regex(@"[\n\v\f\r]", RegexOptions.Compiled);
+
         private readonly VirtualPrinter _virtualPrinter;
         private readonly IPrinterStorage _printerStorage;
         private readonly IFormatMerger _formatMerger;
@@ -38,6 +40,7 @@ namespace BinaryKits.Zpl.Viewer
                 new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
                 new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
                 new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
+                new Code93BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new CodeEAN13BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new CommentZplCommandAnalyzer(this._virtualPrinter),
@@ -48,6 +51,7 @@ namespace BinaryKits.Zpl.Viewer
                 new FieldBlockZplCommandAnalyzer(this._virtualPrinter),
                 new FieldHexadecimalZplCommandAnalyzer(this._virtualPrinter),
                 new FieldNumberCommandAnalyzer(this._virtualPrinter),
+                new FieldVariableZplCommandAnalyzer(this._virtualPrinter),
                 new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),
                 new LabelReversePrintZplCommandAnalyzer(this._virtualPrinter),
                 new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter, fieldDataAnalyzer),
@@ -59,6 +63,7 @@ namespace BinaryKits.Zpl.Viewer
                 new Interleaved2of5BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
                 new LabelHomeZplCommandAnalyzer(this._virtualPrinter),
+                new MaxiCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new PDF417ZplCommandAnalyzer(this._virtualPrinter),
                 new RecallFormatCommandAnalyzer(this._virtualPrinter),
@@ -121,6 +126,11 @@ namespace BinaryKits.Zpl.Viewer
             return analyzeInfo;
         }
 
+        // When adding new commands: 1 per line, always upper case, comment why if possible
+        private string[] ignoredCommands = {
+            "CI", // may be implemented in the future, but for now always set to CI128
+        };
+
         private string[] SplitZplCommands(string zplData)
         {
             if (string.IsNullOrWhiteSpace(zplData))
@@ -128,11 +138,12 @@ namespace BinaryKits.Zpl.Viewer
                 return Array.Empty<string>();
             }
 
-            var cleanZpl = Regex.Replace(zplData, @"\r|\n", string.Empty);
+            var cleanZpl = verticalWhitespaceRegex.Replace(zplData, string.Empty);
             char caret = '^';
             char tilde = '~';
             List<string> results = new(200);
             StringBuilder buffer = new(2000);
+            HashSet<string> ignoredCommandsHS = new HashSet<string>(ignoredCommands);
             for (int i = 0; i < cleanZpl.Length; i++)
             {
                 char c = cleanZpl[i];
@@ -140,25 +151,33 @@ namespace BinaryKits.Zpl.Viewer
                 {
                     string command = buffer.ToString();
                     buffer.Clear();
+
+                    // all commands have at least 3 chars, even ^A because of required font parameter
                     if (command.Length > 2)
                     {
                         PatchCommand(ref command, ref caret, ref tilde);
-                        results.Add(command);
-                        if (command.Substring(1, 2) == "CT")
+
+                        var commandLetters = command.Substring(1, 2).ToUpper();
+
+                        if (commandLetters == "CT")
                         {
                             tilde = command[3];
-                            results.RemoveAt(results.Count - 1);
                         }
-                        else if (command.Substring(1, 2) == "CC")
+                        else if (commandLetters == "CC")
                         {
                             caret = command[3];
-                            results.RemoveAt(results.Count - 1);
+                        }
+                        else if (!ignoredCommandsHS.Contains(commandLetters))
+                        {
+                            results.Add(command);
                         }
                     }
                     // likely invalid command
-                    else if (command.Trim().Length > 0) {
+                    else if (command.Trim().Length > 0)
+                    {
                         results.Add(command.Trim());
                     }
+                    // no else case, multiple ^ or ~ in a row should not be valid commands to be processed
                 }
                 buffer.Append(c);
             }

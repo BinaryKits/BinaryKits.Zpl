@@ -84,10 +84,11 @@ namespace BinaryKits.Zpl.TestConsole
             {
                 new ZplBarcode128("Barcode128", 10, 0),
                 new ZplBarcode39("Barcode39", 10, 150),
-                new ZplBarcodeAnsiCodabar("123456", 'a', 'd', 10, 300, 100),
-                new ZplBarcodeEan13("123456789", 10, 450),
-                new ZplBarcodeInterleaved2of5("123456789", 10, 600),
-                new ZplQrCode("BinaryKits ZplUtility BinaryKits ZplUtility BinaryKits ZplUtility", 10, 800, magnificationFactor: 6)
+                new ZplBarcode93("Barcode93", 10, 300),
+                new ZplBarcodeAnsiCodabar("123456", 'a', 'd', 10, 450, 100),
+                new ZplBarcodeEan13("123456789", 10, 600),
+                new ZplBarcodeInterleaved2of5("123456789", 10, 750),
+                new ZplQrCode("BinaryKits ZplUtility BinaryKits ZplUtility BinaryKits ZplUtility", 10, 950, magnificationFactor: 6)
             };
 
             var renderEngine = new ZplEngine(elements);
@@ -192,7 +193,7 @@ namespace BinaryKits.Zpl.TestConsole
                 new ZplTextBlock(text, 10, 120, 400, 100, font1, NewLineConversionMethod.ToSpace),
 
                 new ZplTextBlock(text, 10, 240, 400, 100, font2, NewLineConversionMethod.ToEmpty),
-                
+
                 new ZplFieldBlock(text, 10, 360, 400, font1, 4)
             };
 

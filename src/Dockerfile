@@ -8,6 +8,7 @@ RUN apt-get update \
     libc6-dev \
     libgdiplus \
     libx11-dev \
+    fonts-roboto \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

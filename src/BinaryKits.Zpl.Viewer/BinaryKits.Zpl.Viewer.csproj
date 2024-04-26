@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.0;net6.0</TargetFrameworks>
     <Description>This package provides a rendering logic for ZPL data, as an alternative to labelary.com.</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
-    <Version>1.1.5</Version>
+    <Version>1.2.0</Version>
     <Authors>Binary Kits Pte. Ltd.</Authors>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Zebra ZPL ZPL2 ZPLEmulator ZPLVirtualPrinter ZPLViewer ZPLParser</PackageTags>
@@ -22,15 +22,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BarcodeLib" Version="2.4.0" />
-    <PackageReference Include="SkiaSharp" Version="2.88.3" />
-    <PackageReference Include="SkiaSharp.HarfBuzz" Version="2.88.3" />
+    <PackageReference Include="SkiaSharp.HarfBuzz" Version="2.88.8" />
     <PackageReference Include="ZXing.Net" Version="0.16.9" />
+    <PackageReference Include="CoelWu.Zint.Net" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.3" />
-    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="2.8.2.3" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="7.3.0.2" />
   </ItemGroup>
 
   <ItemGroup>
