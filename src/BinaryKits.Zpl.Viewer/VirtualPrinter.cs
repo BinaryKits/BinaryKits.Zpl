@@ -10,6 +10,7 @@ namespace BinaryKits.Zpl.Viewer
         public LabelPosition NextElementPosition { get; private set; }
         public FieldDataBase NextElementFieldData { get; private set; }
         public FieldBlock NextElementFieldBlock { get; private set; }
+        public FieldOrientation FieldOrientation { get; private set; } = FieldOrientation.Normal;
         public int FontWidth { get; private set; } = 0;
         public int FontHeight { get; private set; } = 10;
         public string FontName { get; private set; } = "0";
@@ -101,6 +102,14 @@ namespace BinaryKits.Zpl.Viewer
         public void ClearNextElementFieldUseHexadecimalIndicator()
         {
             this.NextElementFieldUseHexadecimalIndicator = false;
+        }
+
+        public void SetFieldOrientation(FieldOrientation fieldOrientation) {
+            this.FieldOrientation = fieldOrientation;
+            if (this.NextFont != null)
+            {
+                this.SetNextFont(this.NextFont.FontName, fieldOrientation, this.NextFont.FontWidth, this.NextFont.FontHeight);
+            }
         }
 
         public void SetFontWidth(int fontWidth)

@@ -206,8 +206,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             int fontWidth = this.VirtualPrinter.FontWidth;
             int fontHeight = this.VirtualPrinter.FontHeight;
             string fontName = this.VirtualPrinter.FontName;
+            var fieldOrientation = this.VirtualPrinter.FieldOrientation;
 
-            return new ZplFont(fontWidth, fontHeight, fontName);
+            return new ZplFont(fontWidth, fontHeight, fontName, fieldOrientation);
         }
 
         private ZplFont GetNextFontFromVirtualPrinter()
