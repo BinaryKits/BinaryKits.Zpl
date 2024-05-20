@@ -43,16 +43,27 @@ namespace BinaryKits.Zpl.Viewer
         {
             var elements = new List<ZplElementBase>();
 
-            foreach (ZplElementBase element in rawLabelInfo.ZplElements)
+            foreach (ZplElementBase zplElement in rawLabelInfo.ZplElements)
             {
-                if (element is ZplRecallFormat recallFormat)
+                if (zplElement is ZplRecallFormat recallFormat)
                 {
                     LabelInfo formatLabelInfo = GetFormatLabelInfo(recallFormat, templateFormats);
                     elements.AddRange(GetMergedElements(rawLabelInfo, formatLabelInfo));
                 }
-                else if (element is not ZplRecallFieldNumber)
+                else if (zplElement is ZplRecallFieldNumber recallFieldNumber)
                 {
-                    elements.Add(element);
+                    for(int i = 0; i < elements.Count; i++)
+                    {
+                        if (elements[i] is ZplFieldNumber fieldNumber && fieldNumber.Number == recallFieldNumber.Number)
+                        {
+                            ((IFormatElement)fieldNumber.FormatElement).SetTemplateContent(recallFieldNumber.Text);
+                            elements[i] = fieldNumber.FormatElement;
+                        }
+                    }
+                }
+                else
+                {
+                    elements.Add(zplElement);
                 }
             }
 

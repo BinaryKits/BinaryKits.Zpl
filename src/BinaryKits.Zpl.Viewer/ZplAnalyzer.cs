@@ -50,6 +50,7 @@ namespace BinaryKits.Zpl.Viewer
                 new DownloadObjectsZplCommandAnaylzer(this._virtualPrinter, this._printerStorage),
                 new FieldBlockZplCommandAnalyzer(this._virtualPrinter),
                 new FieldHexadecimalZplCommandAnalyzer(this._virtualPrinter),
+                new FieldOrientationZplCommandAnalyzer(this._virtualPrinter),
                 new FieldNumberCommandAnalyzer(this._virtualPrinter),
                 new FieldVariableZplCommandAnalyzer(this._virtualPrinter),
                 new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),

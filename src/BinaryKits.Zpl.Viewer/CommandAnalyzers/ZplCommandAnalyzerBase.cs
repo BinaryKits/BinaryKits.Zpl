@@ -37,7 +37,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 "R" => FieldOrientation.Rotated90,
                 "I" => FieldOrientation.Rotated180,
                 "B" => FieldOrientation.Rotated270,
-                 _  => FieldOrientation.Normal,
+                 _  => this.VirtualPrinter.FieldOrientation,
             };
         }
 

@@ -34,13 +34,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
                 else if (barcode.Mode == "D")
                 {
-                    codeSet = Code128CodeSet.Code128C;
+                    codeSet = Code128CodeSet.Code128;
                     gs1 = true;
                 }
                 else if (barcode.Mode == "U")
                 {
                     codeSet = Code128CodeSet.Code128C;
-                    gs1 = true;
                     content = content.PadLeft(19, '0').Substring(0, 19);
                     int checksum = 0;
                     for (int i = 0; i < 19; i++)
