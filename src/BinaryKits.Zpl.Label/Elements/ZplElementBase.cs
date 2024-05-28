@@ -61,6 +61,23 @@ namespace BinaryKits.Zpl.Label.Elements
             throw new NotImplementedException("Unknown Field Orientation");
         }
 
+        public string RenderFieldJustification(FieldJustification fieldJustification)
+        {
+            switch (fieldJustification)
+            {
+                case FieldJustification.None:
+                    return string.Empty;
+                case FieldJustification.Left:
+                    return "0";
+                case FieldJustification.Right:
+                    return "1";
+                case FieldJustification.Auto:
+                    return "2";
+            }
+
+            throw new NotImplementedException("Unknown Field Justification");
+        }
+
         public string RenderLineColor(LineColor lineColor)
         {
             switch (lineColor)

@@ -41,6 +41,17 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             };
         }
 
+        protected FieldJustification ConvertFieldJustification(string fieldJustification)
+        {
+            return fieldJustification switch
+            {
+                "0" => FieldJustification.Left,
+                "1" => FieldJustification.Right,
+                "2" => FieldJustification.Auto,
+                _ => this.VirtualPrinter.FieldJustification,
+            };
+        }
+
         protected ErrorCorrectionLevel ConvertErrorCorrectionLevel(string errorCorrection)
         {
             return errorCorrection switch

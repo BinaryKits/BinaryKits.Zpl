@@ -11,6 +11,7 @@ namespace BinaryKits.Zpl.Viewer
         public FieldDataBase NextElementFieldData { get; private set; }
         public FieldBlock NextElementFieldBlock { get; private set; }
         public FieldOrientation FieldOrientation { get; private set; } = FieldOrientation.Normal;
+        public FieldJustification FieldJustification { get; private set; } = FieldJustification.None;
         public int FontWidth { get; private set; } = 0;
         public int FontHeight { get; private set; } = 10;
         public string FontName { get; private set; } = "0";
@@ -23,6 +24,7 @@ namespace BinaryKits.Zpl.Viewer
 
         public bool NextElementFieldReverse { get; private set; }
         public bool NextElementFieldUseHexadecimalIndicator { get; private set; }
+        public FieldJustification NextElementFieldJustification { get; private set; } = FieldJustification.None;
         public bool LabelReverse { get; private set; }
         public BarcodeInfo BarcodeInfo { get; private set; }
 
@@ -84,24 +86,34 @@ namespace BinaryKits.Zpl.Viewer
             this.NextElementFieldReverse = true;
         }
 
-        public void SetNextElementFieldUseHexadecimalIndicator()
-        {
-            this.NextElementFieldUseHexadecimalIndicator = true;
-        }
-
-        public void SetLabelReverse(bool reverse)
-        {
-            this.LabelReverse = reverse;
-        }
-
         public void ClearNextElementFieldReverse()
         {
             this.NextElementFieldReverse = false;
         }
 
+        public void SetNextElementFieldUseHexadecimalIndicator()
+        {
+            this.NextElementFieldUseHexadecimalIndicator = true;
+        }
+
         public void ClearNextElementFieldUseHexadecimalIndicator()
         {
             this.NextElementFieldUseHexadecimalIndicator = false;
+        }
+
+        public void SetNextElementFieldJustification(FieldJustification fieldJustification)
+        {
+            this.NextElementFieldJustification = fieldJustification;
+        }
+
+        public void ClearNextElementFieldJustification()
+        {
+            this.NextElementFieldJustification = FieldJustification.None;
+        }
+
+        public void SetLabelReverse(bool reverse)
+        {
+            this.LabelReverse = reverse;
         }
 
         public void SetFieldOrientation(FieldOrientation fieldOrientation) {
@@ -110,6 +122,11 @@ namespace BinaryKits.Zpl.Viewer
             {
                 this.SetNextFont(this.NextFont.FontName, fieldOrientation, this.NextFont.FontWidth, this.NextFont.FontHeight);
             }
+        }
+
+        public void SetFieldJustification(FieldJustification fieldJustification)
+        {
+            this.FieldJustification = fieldJustification;
         }
 
         public void SetFontWidth(int fontWidth)

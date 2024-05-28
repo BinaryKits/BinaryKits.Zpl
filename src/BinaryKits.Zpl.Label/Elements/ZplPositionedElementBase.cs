@@ -16,17 +16,18 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="positionX"></param>
         /// <param name="positionY"></param>
         /// <param name="bottomToTop">Use FieldTypeset</param>
-        public ZplPositionedElementBase(int positionX, int positionY, bool bottomToTop = false) : base()
+        /// <param name="fieldJustification"></param>
+        public ZplPositionedElementBase(int positionX, int positionY, bool bottomToTop = false, FieldJustification fieldJustification = FieldJustification.None) : base()
         {
             if (bottomToTop)
             {
-                FieldTypeset = new ZplFieldTypeset(positionX, positionY);
+                FieldTypeset = new ZplFieldTypeset(positionX, positionY, fieldJustification);
                 PositionX = positionX;
                 PositionY = positionY;
                 return;
             }
 
-            FieldOrigin = new ZplFieldOrigin(positionX, positionY);
+            FieldOrigin = new ZplFieldOrigin(positionX, positionY, fieldJustification);
             PositionX = positionX;
             PositionY = positionY;
         }

@@ -16,6 +16,12 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 this.VirtualPrinter.SetFieldOrientation(fieldOrientation);
             }
 
+            if (zplDataParts.Length > 1)
+            {
+                var fieldJustification = ConvertFieldJustification(zplDataParts[1]);
+                this.VirtualPrinter.SetFieldJustification(fieldJustification);
+            }
+
             return null;
         }
     }
