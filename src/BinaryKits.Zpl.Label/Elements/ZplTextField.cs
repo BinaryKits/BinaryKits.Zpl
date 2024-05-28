@@ -30,6 +30,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="useHexadecimalIndicator"></param>
         /// <param name="reversePrint"></param>
         /// <param name="bottomToTop"></param>
+        /// <param name="fieldJustification"></param>
         public ZplTextField(
             string text,
             int positionX,
@@ -38,8 +39,9 @@ namespace BinaryKits.Zpl.Label.Elements
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace,
             bool useHexadecimalIndicator = true,
             bool reversePrint = false,
-            bool bottomToTop = false)
-            : base(positionX, positionY, bottomToTop)
+            bool bottomToTop = false,
+            FieldJustification fieldJustification = FieldJustification.None)
+            : base(positionX, positionY, bottomToTop, fieldJustification)
         {
             Text = text;
             Font = font;

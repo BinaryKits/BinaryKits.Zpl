@@ -16,23 +16,26 @@ namespace BinaryKits.Zpl.Label.Elements
     {
         public int PositionX { get; protected set; }
         public int PositionY { get; protected set; }
+        public FieldJustification FieldJustification { get; protected set; }
 
         /// <summary>
         /// Field Typeset
         /// </summary>
         /// <param name="positionX">X Position (0-32000)</param>
         /// <param name="positionY">Y Position (0-32000)</param>
-        public ZplFieldTypeset(int positionX, int positionY)
+        /// <param name="fieldJustification"></param>
+        public ZplFieldTypeset(int positionX, int positionY, FieldJustification fieldJustification = FieldJustification.None)
         {
-            PositionX = positionX;
-            PositionY = positionY;
+            this.PositionX = positionX;
+            this.PositionY = positionY;
+            this.FieldJustification = fieldJustification;
         }
 
         ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             //^FO50,50
-            return new string[] { $"^FT{context.Scale(PositionX)},{context.Scale(PositionY)}" };
+            return new string[] { $"^FT{context.Scale(this.PositionX)},{context.Scale(this.PositionY)},{RenderFieldJustification(this.FieldJustification)}".TrimEnd(',') };
         }
 
         /// <summary>
@@ -43,7 +46,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <returns></returns>
         public ZplFieldTypeset Offset(int offsetX, int offsetY)
         {
-            return new ZplFieldTypeset(PositionX + offsetX, PositionY + offsetY);
+            return new ZplFieldTypeset(this.PositionX + offsetX, this.PositionY + offsetY, this.FieldJustification);
         }
     }
 }

@@ -34,6 +34,11 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             int x = 0;
             int y = 0;
             bool bottomToTop = false;
+            var fieldJustification = this.VirtualPrinter.NextElementFieldJustification;
+            if (fieldJustification == FieldJustification.None)
+            {
+                fieldJustification = this.VirtualPrinter.FieldJustification;
+            }
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
@@ -110,7 +115,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, hangingIndent, reversePrint: reversePrint, bottomToTop: bottomToTop);
             }
 
-            return new ZplTextField(text, x, y, font, reversePrint: reversePrint, bottomToTop: bottomToTop);
+            return new ZplTextField(text, x, y, font, reversePrint: reversePrint, bottomToTop: bottomToTop, fieldJustification: fieldJustification);
         }
 
         private (ErrorCorrectionLevel, string) ParseQrCodeFieldData(QrCodeBarcodeFieldData qrCode, string text)

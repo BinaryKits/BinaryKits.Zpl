@@ -30,6 +30,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             {
                 float x = textField.PositionX;
                 float y = textField.PositionY;
+                var fieldJustification = Label.FieldJustification.None;
 
                 var font = textField.Font;
 
@@ -84,6 +85,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                             case Label.FieldOrientation.Normal:
                                 break;
                         }
+                        fieldJustification = textField.FieldOrigin.FieldJustification;
                     }
                     else
                     {
@@ -101,6 +103,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                             case Label.FieldOrientation.Normal:
                                 break;
                         }
+                        fieldJustification = textField.FieldTypeset.FieldJustification;
                     }
 
                     if (matrix != SKMatrix.Empty)
@@ -118,7 +121,27 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         skPaint.BlendMode = SKBlendMode.Xor;
                     }
 
+                    if (fieldJustification == Label.FieldJustification.Left)
+                    {
+                        skPaint.TextAlign = SKTextAlign.Left;
+                    }
+                    else if (fieldJustification == Label.FieldJustification.Right)
+                    {
+                        skPaint.TextAlign = SKTextAlign.Right;
+                    }
+                    else if (fieldJustification == Label.FieldJustification.Auto)
+                    {
+                        var buffer = new HarfBuzzSharp.Buffer();
+                        buffer.AddUtf16(displayText);
+                        buffer.GuessSegmentProperties();
+                        if (buffer.Direction == HarfBuzzSharp.Direction.RightToLeft)
+                        {
+                            skPaint.TextAlign = SKTextAlign.Right;
+                        }
+                    }
+
                     this._skCanvas.DrawShapedText(displayText, x, y, skPaint);
+
                 }
             }
         }

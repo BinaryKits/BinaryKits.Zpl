@@ -27,6 +27,12 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y = tmpint;
             }
 
+            if (zplDataParts.Length > 2)
+            {
+                var fieldJustification = ConvertFieldJustification(zplDataParts[2]);
+                this.VirtualPrinter.SetNextElementFieldJustification(fieldJustification);
+            }
+
             if (this.VirtualPrinter.LabelHomePosition != null)
             {
                 x += this.VirtualPrinter.LabelHomePosition.X;
