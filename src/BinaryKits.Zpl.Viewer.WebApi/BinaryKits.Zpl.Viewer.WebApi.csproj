@@ -90,7 +90,10 @@
     <None Update="Labels\Example\Example9-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Labels\Test\Format.zpl2">
+    <None Update="Labels\Test\Format-54x86.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Labels\Test\Format2-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Labels\Test\GraphicBox3-54x86.zpl2">
@@ -109,6 +112,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Labels\Test\GraphicCircle1-54x86.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Labels\Test\GS1-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Labels\Test\QrCode-54x86.zpl2">
