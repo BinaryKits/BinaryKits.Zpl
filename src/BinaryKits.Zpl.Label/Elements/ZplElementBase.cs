@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
@@ -8,7 +8,7 @@ namespace BinaryKits.Zpl.Label.Elements
         public List<string> Comments { get; protected set; }
 
         /// <summary>
-        /// Indicate the rendering process whether this elemenet can be skipped
+        /// Indicate the rendering process whether this element can be skipped
         /// </summary>
         public bool IsEnabled { get; set; }
 
@@ -106,6 +106,16 @@ namespace BinaryKits.Zpl.Label.Elements
             }
 
             throw new NotImplementedException("Unknown Error Correction Level");
+        }
+
+        /// <summary>
+        /// Render Zpl char for boolean
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public string RenderBoolean(bool value)
+        {
+            return value ? "Y" : "N";
         }
 
         public string ToZplString()

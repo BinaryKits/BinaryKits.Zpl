@@ -94,6 +94,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 {
                     return new ZplPDF417(text, x, y, pdf147.Height, moduleWidth, pdf147.Columns, pdf147.Rows, pdf147.Compact, pdf147.SecurityLevel, pdf147.FieldOrientation, bottomToTop);
                 }
+                if (this.VirtualPrinter.NextElementFieldData is AztecBarcodeFieldData aztec)
+                {
+                    return new ZplAztecBarcode(text, x, y, aztec.MagnificationFactor, aztec.ExtendedChannel, aztec.ErrorControl, aztec.MenuSymbol, aztec.SymbolCount, aztec.IdField, useHexadecimalIndicator, aztec.FieldOrientation, bottomToTop);
+                }
             }
 
             var font = this.GetFontFromVirtualPrinter();

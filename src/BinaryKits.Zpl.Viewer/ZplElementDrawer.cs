@@ -24,6 +24,7 @@ namespace BinaryKits.Zpl.Viewer
             this._printerStorage = printerStorage;
             this._elementDrawers = new IElementDrawer[]
             {
+                new AztecBarcodeElementDrawer(),
                 new Barcode128ElementDrawer(),
                 new Barcode39ElementDrawer(),
                 new Barcode93ElementDrawer(),
@@ -33,11 +34,11 @@ namespace BinaryKits.Zpl.Viewer
                 new GraphicBoxElementDrawer(),
                 new GraphicCircleElementDrawer(),
                 new GraphicFieldElementDrawer(),
-                new Interleaved2of5BarcodeDrawer(),
                 new ImageMoveElementDrawer(),
+                new Interleaved2of5BarcodeDrawer(),
                 new MaxiCodeElementDrawer(),
-                new QrCodeElementDrawer(),
                 new Pdf417ElementDrawer(),
+                new QrCodeElementDrawer(),
                 new RecallGraphicElementDrawer(),
                 new TextFieldElementDrawer()
             };
