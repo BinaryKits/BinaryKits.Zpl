@@ -37,6 +37,7 @@ namespace BinaryKits.Zpl.Viewer
             var elementAnalyzers = new List<IZplCommandAnalyzer>
             {
                 fieldDataAnalyzer,
+                new AztecBarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
                 new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
                 new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
@@ -70,7 +71,6 @@ namespace BinaryKits.Zpl.Viewer
                 new RecallFormatCommandAnalyzer(this._virtualPrinter),
                 new RecallGraphicZplCommandAnalyzer(this._virtualPrinter),
                 new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter),
-
             };
 
             var labelInfos = new List<LabelInfo>();
