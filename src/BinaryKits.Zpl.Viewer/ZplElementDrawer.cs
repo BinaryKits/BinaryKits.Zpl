@@ -238,6 +238,82 @@ namespace BinaryKits.Zpl.Viewer
             return result;
         }
 
+        /// <summary>
+        /// Draw the label on the provided surface
+        /// </summary>
+        /// <param name="surface">Skia Surface</param>
+        /// <param name="elements">Zpl elements</param>
+        /// <param name="labelWidth">Label width in millimeter</param>
+        /// <param name="labelHeight">Label height in millimeter</param>
+        /// <param name="printDensityDpmm">Dots per millimeter</param>
+        /// <returns></returns>
+        public void DrawSurface(SKSurface surface,
+            ZplElementBase[] elements,
+            double labelWidth = 101.6,
+            double labelHeight = 152.4,
+            int printDensityDpmm = 8)
+        {
+            var result = new List<byte[]>();
+            var imageHistory = new List<SKImage>();
+            var labelImageWidth = Convert.ToInt32(labelWidth * printDensityDpmm);
+            var labelImageHeight = Convert.ToInt32(labelHeight * printDensityDpmm);
+
+            var skCanvas = surface.Canvas;
+            //This has an issue with AvaloniaUI making the window transparent. 
+            skCanvas.Clear(SKColors.Transparent);
+
+            foreach (var element in elements)
+            {
+                var drawer = this._elementDrawers.SingleOrDefault(o => o.CanDraw(element));
+                if (drawer == null)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    if (drawer.IsReverseDraw(element))
+                    {
+                        //basically only ZplGraphicBox/Circle depending on requirements
+                        using var skBitmapInvert = new SKBitmap(labelImageWidth, labelImageHeight);
+                        using var skCanvasInvert = new SKCanvas(skBitmapInvert);
+                        skCanvasInvert.Clear(SKColors.Transparent);
+
+                        drawer.Prepare(this._printerStorage, skCanvasInvert);
+                        drawer.Draw(element, _drawerOptions);
+
+                        //use color inversion on an reverse draw white element
+                        if (drawer.IsWhiteDraw(element))
+                        {
+                            this.InvertDrawWhite(skCanvas, skBitmapInvert);
+                        }
+                        else
+                        {
+                            this.InvertDraw(skCanvas, skBitmapInvert);
+                        }
+
+                        continue;
+                    }
+
+                    drawer.Prepare(this._printerStorage, skCanvas);
+                    drawer.Draw(element, _drawerOptions);
+
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    if (element is ZplBarcode barcodeElement)
+                        throw new Exception($"Error on zpl element \"{barcodeElement.Content}\": {ex.Message}", ex);
+                    else if (element is ZplDataMatrix dataMatrixElement)
+                        throw new Exception($"Error on zpl element \"{dataMatrixElement.Content}\": {ex.Message}", ex);
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
+
         /**
          * PDF transparency and SKBlendMode are not very good friends, SKBlendMode.Xor behaves as SKBlendMode.SrcOver.
          * 
