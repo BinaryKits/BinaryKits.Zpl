@@ -1,5 +1,6 @@
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.ElementDrawers;
+using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace BinaryKits.Zpl.Viewer
 {
     public class ZplElementDrawer
     {
+        private const int PdfDpi = 72;
+        private const float ZplDpi = 203.2f;
+        private const float PdfScaleFactor = PdfDpi / ZplDpi;
+
         private readonly DrawerOptions _drawerOptions;
         private readonly IPrinterStorage _printerStorage;
         private readonly IElementDrawer[] _elementDrawers;
@@ -110,7 +115,13 @@ namespace BinaryKits.Zpl.Viewer
             // - When drawing PDF we need the Bitmap as well to fix inverted coloring
             Stream pdfStream = new MemoryStream();
             using var document = SKDocument.CreatePdf(pdfStream);
-            using var pdfCanvas = document.BeginPage(labelImageWidth, labelImageHeight);
+
+            using var pdfCanvas = document.BeginPage(
+                (float)(UnitsHelper.ConvertMillimetersToInches(labelWidth) * PdfDpi),
+                (float)(UnitsHelper.ConvertMillimetersToInches(labelHeight) * PdfDpi));
+            
+            pdfCanvas.Scale(PdfScaleFactor, PdfScaleFactor);
+            
             if (this._drawerOptions.PdfOutput == true)
             {
                 skCanvas.AddCanvas(pdfCanvas);
