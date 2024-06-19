@@ -128,7 +128,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                     if (matrix != SKMatrix.Empty)
                     {
-                        this._skCanvas.SetMatrix(matrix);
+                        var currentMatrix = _skCanvas.TotalMatrix;
+                        var concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
+                        this._skCanvas.SetMatrix(concatMatrix);
                     }
 
                     foreach (var textLine in textLines)
