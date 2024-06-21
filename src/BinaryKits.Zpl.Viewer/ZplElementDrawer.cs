@@ -40,7 +40,8 @@ namespace BinaryKits.Zpl.Viewer
                 new Pdf417ElementDrawer(),
                 new QrCodeElementDrawer(),
                 new RecallGraphicElementDrawer(),
-                new TextFieldElementDrawer()
+                new TextFieldElementDrawer(),
+                new BarcodeAnsiCodabarElementDrawer(),
             };
         }
 
