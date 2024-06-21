@@ -71,6 +71,7 @@ namespace BinaryKits.Zpl.Viewer
                 new RecallFormatCommandAnalyzer(this._virtualPrinter),
                 new RecallGraphicZplCommandAnalyzer(this._virtualPrinter),
                 new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter),
+                new AnsiCodabarBarcodeZplCommandAnalyzer(this._virtualPrinter),
             };
 
             var labelInfos = new List<LabelInfo>();
