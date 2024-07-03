@@ -78,7 +78,7 @@ namespace BinaryKits.Zpl.Viewer
             var elements = new List<ZplElementBase>();
             for (var i = 0; i < zplCommands.Length; i++)
             {
-                var currentCommand = zplCommands[i];
+                var currentCommand = zplCommands[i].Trim();//any command can not end with white-space
 
                 if (this._labelStartCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
@@ -134,61 +134,71 @@ namespace BinaryKits.Zpl.Viewer
 
         private string[] SplitZplCommands(string zplData)
         {
-            if (string.IsNullOrWhiteSpace(zplData))
+            try
             {
-                return Array.Empty<string>();
-            }
-
-            var cleanZpl = verticalWhitespaceRegex.Replace(zplData, string.Empty);
-            char caret = '^';
-            char tilde = '~';
-            List<string> results = new(200);
-            StringBuilder buffer = new(2000);
-            HashSet<string> ignoredCommandsHS = new HashSet<string>(ignoredCommands);
-            for (int i = 0; i < cleanZpl.Length; i++)
-            {
-                char c = cleanZpl[i];
-                if (c == caret || c == tilde)
+                if (string.IsNullOrWhiteSpace(zplData))
                 {
-                    string command = buffer.ToString();
-                    buffer.Clear();
-
-                    // all commands have at least 3 chars, even ^A because of required font parameter
-                    if (command.Length > 2)
-                    {
-                        PatchCommand(ref command, ref caret, ref tilde);
-
-                        var commandLetters = command.Substring(1, 2).ToUpper();
-
-                        if (commandLetters == "CT")
-                        {
-                            tilde = command[3];
-                        }
-                        else if (commandLetters == "CC")
-                        {
-                            caret = command[3];
-                        }
-                        else if (!ignoredCommandsHS.Contains(commandLetters))
-                        {
-                            results.Add(command);
-                        }
-                    }
-                    // likely invalid command
-                    else if (command.Trim().Length > 0)
-                    {
-                        results.Add(command.Trim());
-                    }
-                    // no else case, multiple ^ or ~ in a row should not be valid commands to be processed
+                    return Array.Empty<string>();
                 }
-                buffer.Append(c);
+                zplData = zplData.Replace("\u0010CT~", "~CT").Replace("~CD", "^CD").Replace("~CC^", "^CC").Replace("~CT~", "");
+
+                var cleanZpl = verticalWhitespaceRegex.Replace(zplData, string.Empty);
+                char caret = '^';
+                char tilde = '~';
+                List<string> results = new(200);
+                StringBuilder buffer = new(2000);
+                HashSet<string> ignoredCommandsHS = new HashSet<string>(ignoredCommands);
+                for (int i = 0; i < cleanZpl.Length; i++)
+                {
+                    char c = cleanZpl[i];
+                    if (c == caret || c == tilde)
+                    {
+                        string command = buffer.ToString();
+                        buffer.Clear();
+
+                        // all commands have at least 3 chars, even ^A because of required font parameter
+                        if (command.Length > 2)
+                        {
+                            PatchCommand(ref command, ref caret, ref tilde);
+
+                            var commandLetters = command.Substring(1, 2).ToUpper();
+
+                            if (commandLetters == "CT")
+                            {
+                                tilde = command.Length > 3 ? command[3] : command[0];
+                            }
+                            else if (commandLetters == "CC")
+                            {
+                                caret = command.Length > 3 ? command[3] : command[0];
+                            }
+                            else if (!ignoredCommandsHS.Contains(commandLetters))
+                            {
+                                results.Add(command);
+                            }
+                        }
+                        // likely invalid command
+                        else if (command.Trim().Length > 0)
+                        {
+                            results.Add(command.Trim());
+                        }
+                        // no else case, multiple ^ or ~ in a row should not be valid commands to be processed
+                    }
+                    buffer.Append(c);
+                }
+                string lastCommand = buffer.ToString();
+                if (lastCommand.Length > 0)
+                {
+                    PatchCommand(ref lastCommand, ref caret, ref tilde);
+                    results.Add(lastCommand);
+                }
+                return results.ToArray();
+
             }
-            string lastCommand = buffer.ToString();
-            if (lastCommand.Length > 0)
+            catch (Exception exception)
             {
-                PatchCommand(ref lastCommand, ref caret, ref tilde);
-                results.Add(lastCommand);
+                Console.WriteLine(exception.ToString());
+                return new string[0];
             }
-            return results.ToArray();
         }
 
         private void PatchCommand(ref string command, ref char caret, ref char tilde)

@@ -9,7 +9,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class DownloadGraphicsZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        private static readonly Regex commandRegex = new Regex( @"^~DG(\w:)?(.*?\..+?),(\d+),(\d+),(.+)$",RegexOptions.Compiled);
+        private static readonly Regex commandRegex = new Regex( @"^~DG(\w:)?(.*?|\..+?),(\d+),(\d+),(.+)$",RegexOptions.Compiled);
 
         private readonly IPrinterStorage _printerStorage;
 

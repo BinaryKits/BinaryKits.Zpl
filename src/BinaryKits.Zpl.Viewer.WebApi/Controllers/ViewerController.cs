@@ -53,6 +53,10 @@ namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
             var pdfs = new List<RenderLabelDto>();
             foreach (var labelInfo in analyzeInfo.LabelInfos)
             {
+                if (labelInfo.ZplElements?.Length <= 0)
+                {
+                    continue;
+                }
                 if (request.Type == "image")
                 {
                     var imageData = drawer.Draw(labelInfo.ZplElements, request.LabelWidth, request.LabelHeight, request.PrintDensityDpmm);
