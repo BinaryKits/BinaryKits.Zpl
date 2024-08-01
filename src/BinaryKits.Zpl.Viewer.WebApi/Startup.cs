@@ -32,6 +32,7 @@ namespace BinaryKits.Zpl.Viewer.WebApi
                         builder.WithOrigins(allowedOrigins.Split(","))
                                .AllowAnyHeader()
                                .AllowAnyMethod();
+
                     });
                 });
             }
@@ -50,14 +51,12 @@ namespace BinaryKits.Zpl.Viewer.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseCors();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BinaryKits.Zpl.Viewer.WebApi v1"));
 
             app.UseRouting();
-
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
