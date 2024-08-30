@@ -162,11 +162,13 @@ namespace BinaryKits.Zpl.Viewer
 
                         if (commandLetters == "CT")
                         {
-                            tilde = command[3];
+                            tilde = c;
+                            continue;
                         }
                         else if (commandLetters == "CC")
                         {
-                            caret = command[3];
+                            caret = c;
+                            continue;
                         }
                         else if (!ignoredCommandsHS.Contains(commandLetters))
                         {
