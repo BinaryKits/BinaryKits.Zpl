@@ -50,7 +50,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^FDZEBRA TECHNOLOGIES CORPORATION ^ FS
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
-            result.Add($"^BX{RenderFieldOrientation()},{context.Scale(Height)}");
+            result.Add($"^BX{RenderFieldOrientation()},{context.Scale(Height)},200");
             result.Add($"^FD{Content}^FS");
 
             return result;
