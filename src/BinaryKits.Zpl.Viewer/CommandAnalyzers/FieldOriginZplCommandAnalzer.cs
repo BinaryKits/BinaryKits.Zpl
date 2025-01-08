@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using System;
+using BinaryKits.Zpl.Label.Elements;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -11,20 +12,29 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         {
             var zplDataParts = this.SplitCommand(zplCommand);
 
-            int tmpint;
             int x = 0;
             int y = 0;
+            decimal tempdec;
             // TODO: Field Justification
             //int z = 0;
 
-            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
-            {
-                x = tmpint;
-            }
+            if (zplDataParts.Length > 0 && 
+                decimal.TryParse(zplDataParts[0], out tempdec) && 
+                int.MinValue <= tempdec && 
+                tempdec <= int.MaxValue
+                )
+              {
+                x = Decimal.ToInt32(tempdec);
+              }
+            
 
-            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
+            if (zplDataParts.Length > 1 && 
+                decimal.TryParse(zplDataParts[1], out tempdec) &&
+                int.MinValue <= tempdec && 
+                tempdec <= int.MaxValue
+               )
             {
-                y = tmpint;
+                y = Decimal.ToInt32(tempdec);
             }
 
             if (zplDataParts.Length > 2)
