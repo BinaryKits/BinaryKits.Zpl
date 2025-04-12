@@ -1,12 +1,9 @@
 using System;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
-using ZXing;
-using ZXing.Datamatrix.Encoder;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -97,6 +94,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 if (this.VirtualPrinter.NextElementFieldData is AztecBarcodeFieldData aztec)
                 {
                     return new ZplAztecBarcode(text, x, y, aztec.MagnificationFactor, aztec.ExtendedChannel, aztec.ErrorControl, aztec.MenuSymbol, aztec.SymbolCount, aztec.IdField, useHexadecimalIndicator, aztec.FieldOrientation, bottomToTop);
+                }
+                if (this.VirtualPrinter.NextElementFieldData is AnsiCodabarFieldData codabar)
+                {
+                    return new ZplBarcodeAnsiCodabar(text, codabar.StartCharacter, codabar.StopCharacter, x, y, codabar.Height, moduleWidth, wideBarToNarrowBarWidthRatio, codabar.FieldOrientation, codabar.PrintInterpretationLine, codabar.PrintInterpretationLineAboveCode, codabar.CheckDigit, bottomToTop);
                 }
             }
 
