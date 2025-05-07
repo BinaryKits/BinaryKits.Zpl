@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;net6.0</TargetFrameworks>
-
+    <TargetFramework Condition="$([MSBuild]::IsOSPlatform('Linux'))">net6.0</TargetFramework>
+	<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net472;net6.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

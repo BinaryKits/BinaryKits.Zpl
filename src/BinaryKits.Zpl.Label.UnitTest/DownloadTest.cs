@@ -41,6 +41,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
         [TestMethod]
         [DeploymentItem(@"ZplData/Zpl.png")]
         [DeploymentItem(@"ZplData/DownloadGraphicsZ64.txt")]
+        [DeploymentItem(@"ZplData/DownloadGraphicsZ64_net472.txt")]
         public void DownloadGraphicsZ64()
         {
             var imageData = File.ReadAllBytes("Zpl.png");
