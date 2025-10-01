@@ -157,17 +157,17 @@ namespace BinaryKits.Zpl.Viewer
                     // all commands have at least 3 chars, even ^A because of required font parameter
                     if (command.Length > 2)
                     {
-                        PatchCommand(ref command, ref caret, ref tilde);
+                        PatchCommand(ref command, caret, tilde);
 
                         var commandLetters = command.Substring(1, 2).ToUpper();
 
                         if (commandLetters == "CT")
                         {
-                            tilde = command[3];
+                            tilde = command.Length > 3 ? command[3] : c;
                         }
                         else if (commandLetters == "CC")
                         {
-                            caret = command[3];
+                            caret = command.Length > 3 ? command[3] : c;
                         }
                         else if (!ignoredCommandsHS.Contains(commandLetters))
                         {
@@ -186,13 +186,13 @@ namespace BinaryKits.Zpl.Viewer
             string lastCommand = buffer.ToString();
             if (lastCommand.Length > 0)
             {
-                PatchCommand(ref lastCommand, ref caret, ref tilde);
+                PatchCommand(ref lastCommand, caret, tilde);
                 results.Add(lastCommand);
             }
             return results.ToArray();
         }
 
-        private void PatchCommand(ref string command, ref char caret, ref char tilde)
+        private void PatchCommand(ref string command, char caret, char tilde)
         {
             if (caret != '^' && command[0] == caret)
             {
