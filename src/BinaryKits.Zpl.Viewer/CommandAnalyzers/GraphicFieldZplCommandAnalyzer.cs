@@ -50,7 +50,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             //fourth comma is the start of the image data
             int indexOfFourthComma = this.IndexOfNthCharacter(zplCommand, 4, ',');
-            string dataHex = zplCommand.Substring(indexOfFourthComma + 1);
+            string dataHex = zplCommand.Substring(indexOfFourthComma + 1).TrimStart();
 
             byte[] grfImageData = ImageHelper.GetImageBytes(dataHex, bytesPerRow);
 

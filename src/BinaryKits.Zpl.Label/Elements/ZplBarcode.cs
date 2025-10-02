@@ -10,6 +10,7 @@
             int moduleWidth,
             double wideBarToNarrowBarWidthRatio,
             FieldOrientation fieldOrientation,
+            bool useHexadecimalIndicator,
             bool printInterpretationLine,
             bool printInterpretationLineAboveCode,
             bool bottomToTop = false)
@@ -20,6 +21,7 @@
             ModuleWidth = moduleWidth;
             WideBarToNarrowBarWidthRatio = wideBarToNarrowBarWidthRatio;
             FieldOrientation = fieldOrientation;
+            UseHexadecimalIndicator = useHexadecimalIndicator;
             PrintInterpretationLine = printInterpretationLine;
             PrintInterpretationLineAboveCode = printInterpretationLineAboveCode;
         }
@@ -35,6 +37,7 @@
         public FieldOrientation FieldOrientation { get; protected set; }
 
         public string Content { get; protected set; }
+        public bool UseHexadecimalIndicator { get; protected set; }
         public bool PrintInterpretationLine { get; protected set; }
         public bool PrintInterpretationLineAboveCode { get; protected set; }
 

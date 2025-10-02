@@ -20,6 +20,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="moduleWidth"></param>
         /// <param name="wideBarToNarrowBarWidthRatio"></param>
         /// <param name="fieldOrientation"></param>
+        /// <param name="useHexadecimalIndicator"></param>
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
         /// <param name="mod10CheckDigit"></param>
@@ -32,6 +33,7 @@ namespace BinaryKits.Zpl.Label.Elements
             int moduleWidth = 2,
             double wideBarToNarrowBarWidthRatio = 3,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
+            bool useHexadecimalIndicator = false,
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
             bool mod10CheckDigit = false,
@@ -43,6 +45,7 @@ namespace BinaryKits.Zpl.Label.Elements
                   moduleWidth,
                   wideBarToNarrowBarWidthRatio,
                   fieldOrientation,
+                  useHexadecimalIndicator,
                   printInterpretationLine,
                   printInterpretationLineAboveCode,
                   bottomToTop)
@@ -62,6 +65,11 @@ namespace BinaryKits.Zpl.Label.Elements
             result.AddRange(RenderPosition(context));
             result.Add(RenderModuleWidth());
             result.Add($"^B2{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{(Mod10CheckDigit ? "Y" : "N")}");
+            if (UseHexadecimalIndicator)
+            {
+                result.Add("^FH");
+            }
+
             result.Add($"^FD{Content}^FS");
 
             return result;

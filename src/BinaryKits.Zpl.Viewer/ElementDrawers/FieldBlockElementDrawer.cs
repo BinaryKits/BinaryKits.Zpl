@@ -60,6 +60,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     text = text.Replace("-", " \u2013 ");
                 }
 
+                if (options.ReplaceUnderscoreWithEnSpace)
+                {
+                    text = text.Replace('_', '\u2002');
+                }
+
                 var skFont = new SKFont(typeface, fontSize, scaleX);
                 using var skPaint = new SKPaint(skFont)
                 {

@@ -1,4 +1,6 @@
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
+
 using SkiaSharp;
 using System;
 using ZXing.OneD;
@@ -24,8 +26,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = barcode.PositionX;
                 float y = barcode.PositionY;
 
+                string content = barcode.Content;
+                if (barcode.UseHexadecimalIndicator)
+                {
+                    content = content.ReplaceHexEscapes();
+                }
+
                 var writer = new ITFWriter();
-                var result = writer.encode(barcode.Content);
+                var result = writer.encode(content);
                 int narrow = barcode.ModuleWidth;
                 int wide = (int)Math.Floor(barcode.WideBarToNarrowBarWidthRatio * narrow);
                 result = this.AdjustWidths(result, wide, narrow);

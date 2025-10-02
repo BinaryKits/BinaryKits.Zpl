@@ -1,5 +1,7 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
+
 using SkiaSharp;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -28,11 +30,15 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             {
                 float x = qrcode.PositionX;
                 float y = qrcode.PositionY;
-                
+
+                var content = qrcode.Content;
+                if (qrcode.UseHexadecimalIndicator)
+                {
+                    content = content.ReplaceHexEscapes();
+                }
+
                 // support hand-rolled GS1
                 bool gs1Mode = false;
-                var content = qrcode.Content;
-
                 Match gs1Match = gs1Regex.Match(content);
                 if (gs1Match.Success)
                 {

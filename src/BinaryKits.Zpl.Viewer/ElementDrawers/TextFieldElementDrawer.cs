@@ -60,6 +60,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     displayText = displayText.Replace("-", " \u2013 ");
                 }
 
+                if(options.ReplaceUnderscoreWithEnSpace) {
+                    displayText = displayText.Replace('_', '\u2002');
+                }
+
                 var textBounds = new SKRect();
                 var textBoundBaseline = new SKRect();
                 skPaint.MeasureText("X", ref textBoundBaseline);

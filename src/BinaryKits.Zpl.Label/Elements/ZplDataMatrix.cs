@@ -15,6 +15,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="positionY"></param>
         /// <param name="height"></param>
         /// <param name="fieldOrientation"></param>
+        /// <param name="useHexadecimalIndicator"></param>
         /// <param name="bottomToTop"></param>
         public ZplDataMatrix(
             string content,
@@ -22,12 +23,14 @@ namespace BinaryKits.Zpl.Label.Elements
             int positionY,
             int height = 100,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
+            bool useHexadecimalIndicator = false,
             bool bottomToTop = false
            )
             : base(positionX, positionY, bottomToTop)
         {
             Content = content;
             FieldOrientation = fieldOrientation;
+            UseHexadecimalIndicator = useHexadecimalIndicator;
             Height = height;
         }
 
@@ -36,6 +39,8 @@ namespace BinaryKits.Zpl.Label.Elements
         public FieldOrientation FieldOrientation { get; protected set; }
 
         public string Content { get; protected set; }
+
+        public bool UseHexadecimalIndicator { get; protected set; }
 
         protected string RenderFieldOrientation()
         {
@@ -51,6 +56,11 @@ namespace BinaryKits.Zpl.Label.Elements
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
             result.Add($"^BX{RenderFieldOrientation()},{context.Scale(Height)}");
+            if (UseHexadecimalIndicator)
+            {
+                result.Add("^FH");
+            }
+
             result.Add($"^FD{Content}^FS");
 
             return result;

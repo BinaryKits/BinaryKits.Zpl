@@ -1,6 +1,9 @@
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
 using BinaryKits.Zpl.Viewer.Symologies;
+
 using SkiaSharp;
+
 using System;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -22,6 +25,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             if (element is ZplBarcode128 barcode)
             {
                 string content = barcode.Content;
+                if (barcode.UseHexadecimalIndicator)
+                {
+                    content = content.ReplaceHexEscapes();
+                }
+
                 Code128CodeSet codeSet = Code128CodeSet.Code128B;
                 bool gs1 = false;
                 if (string.IsNullOrEmpty(barcode.Mode) || barcode.Mode == "N")

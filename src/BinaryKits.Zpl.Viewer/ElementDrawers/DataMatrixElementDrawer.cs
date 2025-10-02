@@ -1,4 +1,6 @@
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
+
 using SkiaSharp;
 using System.Text.RegularExpressions;
 using ZXing;
@@ -34,10 +36,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = dataMatrix.PositionX;
                 float y = dataMatrix.PositionY;
 
+                var content = dataMatrix.Content;
+                if(dataMatrix.UseHexadecimalIndicator)
+                {
+                    content = content.ReplaceHexEscapes();
+                }
+
                 // support hand-rolled GS1
                 bool gs1Mode = false;
-                var content = dataMatrix.Content;
-
                 Match gs1Match = gs1Regex.Match(content);
                 if (gs1Match.Success)
                 {
