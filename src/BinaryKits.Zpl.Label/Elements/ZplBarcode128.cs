@@ -7,7 +7,6 @@ namespace BinaryKits.Zpl.Label.Elements
     /// </summary>
     public class ZplBarcode128 : ZplBarcode
     {
-
         public string Mode { get; set; }
 
         /// <summary>
@@ -65,12 +64,7 @@ namespace BinaryKits.Zpl.Label.Elements
             result.AddRange(RenderPosition(context));
             result.Add(RenderModuleWidth());
             result.Add($"^BC{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()}");
-            if (UseHexadecimalIndicator)
-            {
-                result.Add("^FH");
-            }
-
-            result.Add($"^FD{Content}^FS");
+            result.Add(RenderFieldDataSection());
 
             return result;
         }

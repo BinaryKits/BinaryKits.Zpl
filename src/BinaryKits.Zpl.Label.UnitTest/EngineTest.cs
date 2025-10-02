@@ -132,7 +132,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^CI28\n^FX\n//A important field\n^A0N,30,30\n^FO50,100\n^FH^FDPure element zpl only^FS", output);
+            Assert.AreEqual("^CI28\n^FX\n//A important field\n^A0N,30,30\n^FO50,100\n^FDPure element zpl only^FS", output);
         }
     }
 }

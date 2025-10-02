@@ -1,22 +1,14 @@
 using System.Collections.Generic;
+using System.Text;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
-    public class ZplQrCode : ZplPositionedElementBase, IFormatElement
+    public class ZplQrCode : ZplFieldDataElementBase
     {
-        public string Content { get; protected set; }
-
         public int Model { get; private set; }
-
         public int MagnificationFactor { get; private set; }
-
         public ErrorCorrectionLevel ErrorCorrectionLevel { get; private set; }
-
         public int MaskValue { get; private set; }
-
-        public FieldOrientation FieldOrientation { get; protected set; }
-
-        public bool UseHexadecimalIndicator { get; protected set; }
 
         /// <summary>
         /// Zpl QrCode
@@ -42,20 +34,12 @@ namespace BinaryKits.Zpl.Label.Elements
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
             bool useHexadecimalIndicator = false,
             bool bottomToTop = false)
-            : base(positionX, positionY, bottomToTop)
+            : base(content, positionX, positionY, fieldOrientation, useHexadecimalIndicator, bottomToTop)
         {
-            Content = content;
             Model = model;
             MagnificationFactor = magnificationFactor;
             ErrorCorrectionLevel = errorCorrectionLevel;
             MaskValue = maskValue;
-            FieldOrientation = fieldOrientation;
-            UseHexadecimalIndicator = useHexadecimalIndicator;
-        }
-
-        protected string RenderFieldOrientation()
-        {
-            return RenderFieldOrientation(FieldOrientation);
         }
 
         ///<inheritdoc/>
@@ -67,20 +51,22 @@ namespace BinaryKits.Zpl.Label.Elements
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
             result.Add($"^BQ{RenderFieldOrientation()},{Model},{context.Scale(MagnificationFactor)},{RenderErrorCorrectionLevel(ErrorCorrectionLevel)},{MaskValue}");
-            if(UseHexadecimalIndicator)
-            {
-                result.Add("^FH");
-            }
-
-            result.Add($"^FD{RenderErrorCorrectionLevel(ErrorCorrectionLevel)}A,{Content}^FS");
+            result.Add(RenderFieldDataSection());
 
             return result;
         }
 
-        /// <inheritdoc />
-        public void SetTemplateContent(string content)
+        protected new string RenderFieldDataSection()
         {
-            Content = content;
+            var sb = new StringBuilder();
+            if (UseHexadecimalIndicator)
+            {
+                sb.Append("^FH");
+            }
+
+            sb.Append($"^FD{RenderErrorCorrectionLevel(ErrorCorrectionLevel)}A,{Content}^FS");
+
+            return sb.ToString();
         }
     }
 }

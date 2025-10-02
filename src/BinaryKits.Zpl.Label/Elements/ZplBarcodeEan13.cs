@@ -46,10 +46,6 @@ namespace BinaryKits.Zpl.Label.Elements
                   printInterpretationLineAboveCode,
                   bottomToTop)
         {
-            if (!IsDigitsOnly(content))
-            {
-                throw new ArgumentException("EAN-13 Barcode allow only digits", nameof(content));
-            }
         }
 
         ///<inheritdoc/>
@@ -59,12 +55,7 @@ namespace BinaryKits.Zpl.Label.Elements
             result.AddRange(RenderPosition(context));
             result.Add(RenderModuleWidth());
             result.Add($"^BE{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()}");
-            if(UseHexadecimalIndicator)
-            {
-                result.Add("^FH");
-            }
-
-            result.Add($"^FD{Content}^FS");
+            result.Add(RenderFieldDataSection());
 
             return result;
         }

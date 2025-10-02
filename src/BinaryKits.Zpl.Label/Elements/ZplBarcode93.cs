@@ -63,13 +63,8 @@ namespace BinaryKits.Zpl.Label.Elements
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
             result.Add(RenderModuleWidth());
-            result.Add($"^BA{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{(CheckDigit ? "Y" : "N")}");
-            if(UseHexadecimalIndicator)
-            {
-                result.Add("^FH");
-            }
-
-            result.Add($"^FD{Content}^FS");
+            result.Add($"^BA{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{RenderBoolean(CheckDigit)}");
+            result.Add(RenderFieldDataSection());
 
             return result;
         }

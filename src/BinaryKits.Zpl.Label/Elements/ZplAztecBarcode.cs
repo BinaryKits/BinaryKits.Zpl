@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
-    public class ZplAztecBarcode : ZplPositionedElementBase, IFormatElement
+    public class ZplAztecBarcode : ZplFieldDataElementBase
     {
         public int MagnificationFactor { get; protected set; }
         public bool ExtendedChannel { get; protected set; }
@@ -10,9 +11,6 @@ namespace BinaryKits.Zpl.Label.Elements
         public bool MenuSymbol { get; protected set; }
         public int SymbolCount { get; protected set; }
         public string IdField { get; protected set; }
-        public string Content { get; protected set; }
-        public bool UseHexadecimalIndicator { get; protected set; }
-        public FieldOrientation FieldOrientation { get; protected set; }
 
         /// <summary>
         /// Aztec Bar Code
@@ -39,20 +37,16 @@ namespace BinaryKits.Zpl.Label.Elements
             bool menuSymbol = false,
             int symbolCount = 1,
             string idField = null,
-            bool useHexadecimalIndicator = true,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
-            bool bottomToTop = false
-           )
-            : base(positionX, positionY, bottomToTop)
+            bool useHexadecimalIndicator = false,
+            bool bottomToTop = false)
+            : base(content, positionX, positionY, fieldOrientation, useHexadecimalIndicator, bottomToTop)
         {
-            this.Content = content;
             this.MagnificationFactor = magnificationFactor;
             this.ExtendedChannel = extendedChannel;
             this.ErrorControl = errorControl;
             this.SymbolCount = symbolCount;
             this.IdField = idField;
-            this.UseHexadecimalIndicator = useHexadecimalIndicator;
-            this.FieldOrientation = fieldOrientation;
         }
  
         ///<inheritdoc/>
@@ -62,15 +56,9 @@ namespace BinaryKits.Zpl.Label.Elements
             result.AddRange(RenderPosition(context));
             result.Add($"^BO{RenderFieldOrientation(this.FieldOrientation)},{this.MagnificationFactor},{RenderBoolean(this.ExtendedChannel)}," +
                 $"{this.ErrorControl},{RenderBoolean(this.MenuSymbol)},{this.SymbolCount},{this.IdField}");
-            result.Add($"^FD{this.Content}^FS");
+            result.Add(RenderFieldDataSection());
 
             return result;
-        }
-
-        /// <inheritdoc />
-        public void SetTemplateContent(string content)
-        {
-            this.Content = content;
         }
     }
 }

@@ -5,14 +5,10 @@ namespace BinaryKits.Zpl.Label.Elements
     /// <summary>
     /// PDF417 Barcode ^B7o,h,s,c,r,t
     /// </summary>
-    public class ZplPDF417 : ZplPositionedElementBase, IFormatElement
+    public class ZplPDF417 : ZplFieldDataElementBase
     {
-
         public int Height { get; protected set; }
         public int ModuleWidth { get; protected set; }
-        public string Content { get; protected set; }
-        public FieldOrientation FieldOrientation { get; protected set; }
-        public bool UseHexadecimalIndicator { get; protected set; }
         public int? Columns { get; protected set; }
         public int? Rows { get; protected set; }
         public bool Compact { get; protected set; }
@@ -47,22 +43,14 @@ namespace BinaryKits.Zpl.Label.Elements
             bool useHexadecimalIndicator = false,
             bool bottomToTop = false
             )
-            : base(positionX, positionY, bottomToTop)
+            : base(content, positionX, positionY, fieldOrientation, useHexadecimalIndicator, bottomToTop)
         {
-            FieldOrientation = fieldOrientation;
-            UseHexadecimalIndicator = useHexadecimalIndicator;
             Height = height;
             ModuleWidth = moduleWidth;
             Columns = columns;
             Rows = rows;
             Compact = compact;
             SecurityLevel = securityLevel;
-            Content = content;
-        }
-
-        protected string RenderFieldOrientation()
-        {
-            return RenderFieldOrientation(FieldOrientation);
         }
 
         ///<inheritdoc/>
@@ -74,20 +62,9 @@ namespace BinaryKits.Zpl.Label.Elements
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
             result.Add($"^BX{RenderFieldOrientation()},{context.Scale(Height)}");
-            if(UseHexadecimalIndicator)
-            {
-                result.Add("^FH");
-            }
-
-            result.Add($"^FD{Content}^FS");
+            result.Add(RenderFieldDataSection());
 
             return result;
-        }
-
-        /// <inheritdoc />
-        public void SetTemplateContent(string content)
-        {
-            Content = content;
         }
     }
 }

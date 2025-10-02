@@ -37,7 +37,7 @@ namespace BinaryKits.Zpl.Label.Elements
             int positionY,
             ZplFont font,
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace,
-            bool useHexadecimalIndicator = true,
+            bool useHexadecimalIndicator = false,
             bool reversePrint = false,
             bool bottomToTop = false,
             FieldJustification fieldJustification = FieldJustification.None)
@@ -73,16 +73,15 @@ namespace BinaryKits.Zpl.Label.Elements
                 sb.Append("^FR");
             }
 
+            sb.Append("^FD");
             if (Text != null)
             {
-                sb.Append("^FD");
                 foreach (var c in Text)
                 {
                     sb.Append(SanitizeCharacter(c, NewLineConversion, UseHexadecimalIndicator));
                 }
-
-                sb.Append("^FS");
             }
+            sb.Append("^FS");
 
             return sb.ToString();
         }
@@ -90,7 +89,7 @@ namespace BinaryKits.Zpl.Label.Elements
         internal static string SanitizeCharacter(
             char input,
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace,
-            bool useHexadecimalIndicator = true)
+            bool useHexadecimalIndicator = false)
         {
             if (useHexadecimalIndicator)
             {

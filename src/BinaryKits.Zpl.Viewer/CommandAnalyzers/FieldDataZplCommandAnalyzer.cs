@@ -93,11 +93,11 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 }
                 if (this.VirtualPrinter.NextElementFieldData is AztecBarcodeFieldData aztec)
                 {
-                    return new ZplAztecBarcode(text, x, y, aztec.MagnificationFactor, aztec.ExtendedChannel, aztec.ErrorControl, aztec.MenuSymbol, aztec.SymbolCount, aztec.IdField, useHexadecimalIndicator, aztec.FieldOrientation, bottomToTop);
+                    return new ZplAztecBarcode(text, x, y, aztec.MagnificationFactor, aztec.ExtendedChannel, aztec.ErrorControl, aztec.MenuSymbol, aztec.SymbolCount, aztec.IdField, aztec.FieldOrientation, useHexadecimalIndicator, bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is AnsiCodabarFieldData codabar)
                 {
-                    return new ZplBarcodeAnsiCodabar(text, codabar.StartCharacter, codabar.StopCharacter, x, y, codabar.Height, moduleWidth, wideBarToNarrowBarWidthRatio, codabar.FieldOrientation, codabar.PrintInterpretationLine, codabar.PrintInterpretationLineAboveCode, codabar.CheckDigit, bottomToTop);
+                    return new ZplBarcodeAnsiCodabar(text, codabar.StartCharacter, codabar.StopCharacter, x, y, codabar.Height, moduleWidth, wideBarToNarrowBarWidthRatio, codabar.FieldOrientation, useHexadecimalIndicator, codabar.PrintInterpretationLine, codabar.PrintInterpretationLineAboveCode, codabar.CheckDigit, bottomToTop);
                 }
             }
 
