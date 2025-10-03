@@ -22,8 +22,8 @@ namespace BinaryKits.Zpl.Label.Elements
             int height,
             ZplFont font,
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace,
-            bool useHexadecimalIndicator = false)
-            : base(text, positionX, positionY, font, newLineConversion, useHexadecimalIndicator)
+            char? hexadecimalIndicator = null)
+            : base(text, positionX, positionY, font, newLineConversion, hexadecimalIndicator)
         {
             Width = width;
             Height = height;

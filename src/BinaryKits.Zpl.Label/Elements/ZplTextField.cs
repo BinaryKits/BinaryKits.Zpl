@@ -10,7 +10,7 @@ namespace BinaryKits.Zpl.Label.Elements
         //^A
         public ZplFont Font { get; protected set; }
         //^FH
-        public bool UseHexadecimalIndicator { get; protected set; }
+        public char? HexadecimalIndicator { get; protected set; }
         //^FR
         public bool ReversePrint { get; protected set; }
 
@@ -27,7 +27,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="positionY"></param>
         /// <param name="font"></param>
         /// <param name="newLineConversion"></param>
-        /// <param name="useHexadecimalIndicator"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="reversePrint"></param>
         /// <param name="bottomToTop"></param>
         /// <param name="fieldJustification"></param>
@@ -37,7 +37,7 @@ namespace BinaryKits.Zpl.Label.Elements
             int positionY,
             ZplFont font,
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace,
-            bool useHexadecimalIndicator = false,
+            char? hexadecimalIndicator = null,
             bool reversePrint = false,
             bool bottomToTop = false,
             FieldJustification fieldJustification = FieldJustification.None)
@@ -45,7 +45,7 @@ namespace BinaryKits.Zpl.Label.Elements
         {
             Text = text;
             Font = font;
-            UseHexadecimalIndicator = useHexadecimalIndicator;
+            HexadecimalIndicator = hexadecimalIndicator;
             NewLineConversion = newLineConversion;
             ReversePrint = reversePrint;
         }
@@ -64,9 +64,13 @@ namespace BinaryKits.Zpl.Label.Elements
         protected string RenderFieldDataSection()
         {
             var sb = new StringBuilder();
-            if (UseHexadecimalIndicator)
+            if (HexadecimalIndicator is char hexIndicator)
             {
                 sb.Append("^FH");
+                if (hexIndicator != '_')
+                {
+                    sb.Append(hexIndicator);
+                }
             }
             if (ReversePrint)
             {
@@ -78,7 +82,7 @@ namespace BinaryKits.Zpl.Label.Elements
             {
                 foreach (var c in Text)
                 {
-                    sb.Append(SanitizeCharacter(c, NewLineConversion, UseHexadecimalIndicator));
+                    sb.Append(SanitizeCharacter(c, NewLineConversion, HexadecimalIndicator));
                 }
             }
             sb.Append("^FS");
@@ -89,9 +93,9 @@ namespace BinaryKits.Zpl.Label.Elements
         internal static string SanitizeCharacter(
             char input,
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToSpace,
-            bool useHexadecimalIndicator = false)
+            char? hexadecimalIndicator = null)
         {
-            if (useHexadecimalIndicator)
+            if (hexadecimalIndicator != null)
             {
                 //Convert to hex
                 switch (input)
@@ -99,7 +103,7 @@ namespace BinaryKits.Zpl.Label.Elements
                     case '_':
                     case '^':
                     case '~':
-                        return "_" + Convert.ToByte(input).ToString("X2");
+                        return hexadecimalIndicator + Convert.ToByte(input).ToString("X2");
                     case '\\':
                         return " ";
                 }

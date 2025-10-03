@@ -33,8 +33,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 string content = pdf417.Content;
-                if (pdf417.UseHexadecimalIndicator) {
-                    content = content.ReplaceHexEscapes();
+                if (pdf417.HexadecimalIndicator is char hexIndicator) {
+                    content = content.ReplaceHexEscapes(hexIndicator);
                 }
 
                 if (string.IsNullOrWhiteSpace(content))

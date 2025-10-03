@@ -37,9 +37,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float y = barcode.PositionY;
 
                 var content = barcode.Content;
-                if (barcode.UseHexadecimalIndicator)
+                if (barcode.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes();
+                    content = content.ReplaceHexEscapes(hexIndicator);
                 }
 
                 content = content.PadLeft(12, '0').Substring(0, 12);

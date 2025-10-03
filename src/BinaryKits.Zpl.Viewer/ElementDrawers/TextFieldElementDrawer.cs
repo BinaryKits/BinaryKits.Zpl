@@ -50,9 +50,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 };
 
                 string displayText = textField.Text;
-                if (textField.UseHexadecimalIndicator)
+                if (textField.HexadecimalIndicator is char hexIndicator)
                 {
-                    displayText = displayText.ReplaceHexEscapes();
+                    displayText = displayText.ReplaceHexEscapes(hexIndicator);
                 }
 
                 if (options.ReplaceDashWithEnDash)

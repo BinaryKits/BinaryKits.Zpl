@@ -23,11 +23,11 @@ namespace BinaryKits.Zpl.Label.Elements
             int moduleWidth,
             double wideBarToNarrowBarWidthRatio,
             FieldOrientation fieldOrientation,
-            bool useHexadecimalIndicator,
+            char? hexadecimalIndicator,
             bool printInterpretationLine,
             bool printInterpretationLineAboveCode,
             bool bottomToTop)
-            : base(content, positionX, positionY, fieldOrientation, useHexadecimalIndicator, bottomToTop)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
         {
             Height = height;
             ModuleWidth = moduleWidth;

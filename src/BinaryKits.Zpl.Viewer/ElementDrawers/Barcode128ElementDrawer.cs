@@ -25,9 +25,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             if (element is ZplBarcode128 barcode)
             {
                 string content = barcode.Content;
-                if (barcode.UseHexadecimalIndicator)
+                if (barcode.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes();
+                    content = content.ReplaceHexEscapes(hexIndicator);
                 }
 
                 Code128CodeSet codeSet = Code128CodeSet.Code128B;

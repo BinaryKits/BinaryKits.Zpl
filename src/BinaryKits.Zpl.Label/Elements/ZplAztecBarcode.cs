@@ -24,7 +24,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="menuSymbol">menu symbol indicator</param>
         /// <param name="symbolCount">number of symbols for structured append</param>
         /// <param name="idField">optional ID field for structured append</param>
-        /// <param name="useHexadecimalIndicator"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="fieldOrientation"></param>
         /// <param name="bottomToTop"></param>
         public ZplAztecBarcode(
@@ -38,9 +38,9 @@ namespace BinaryKits.Zpl.Label.Elements
             int symbolCount = 1,
             string idField = null,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
-            bool useHexadecimalIndicator = false,
+            char? hexadecimalIndicator = null,
             bool bottomToTop = false)
-            : base(content, positionX, positionY, fieldOrientation, useHexadecimalIndicator, bottomToTop)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
         {
             this.MagnificationFactor = magnificationFactor;
             this.ExtendedChannel = extendedChannel;

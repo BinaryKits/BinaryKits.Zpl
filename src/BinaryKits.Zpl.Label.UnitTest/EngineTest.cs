@@ -102,9 +102,9 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             var elements = new List<ZplElementBase>();
             //Specail character is repalced with space
-            elements.Add(new ZplTextField(sampleText, 10, 10, font, useHexadecimalIndicator: false));
+            elements.Add(new ZplTextField(sampleText, 10, 10, font, hexadecimalIndicator: null));
             //Specail character is using Hex value ^FH
-            elements.Add(new ZplTextField(sampleText, 10, 50, font, useHexadecimalIndicator: true));
+            elements.Add(new ZplTextField(sampleText, 10, 50, font, hexadecimalIndicator: '_'));
             //Only the first line is displayed
             elements.Add(new ZplSingleLineFieldBlock(sampleText, 10, 150, 500, font));
             //Max 2 lines, text exceeding the maximum number of lines overwrites the last line.

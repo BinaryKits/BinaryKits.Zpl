@@ -20,7 +20,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="mode">2 (numeric postal code) Default, 3 (alphanumeric postal code), 4 (standard), 5 (full EEC), and 6 (reader programming)</param>
         /// <param name="position">1-8, (default: 1)</param>
         /// <param name="total">1-8, (default: 1)</param>
-        /// <param name="useHexadecimalIndicator"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="bottomToTop"></param>
         public ZplMaxiCode(
             string content,
@@ -29,9 +29,9 @@ namespace BinaryKits.Zpl.Label.Elements
             int mode = 2,
             int position = 1,
             int total = 1,
-            bool useHexadecimalIndicator = false,
+            char? hexadecimalIndicator = null,
             bool bottomToTop = false)
-            : base(content, positionX, positionY, FieldOrientation.Normal, useHexadecimalIndicator, bottomToTop)
+            : base(content, positionX, positionY, FieldOrientation.Normal, hexadecimalIndicator, bottomToTop)
         {
             Mode = mode;
             Position = position;

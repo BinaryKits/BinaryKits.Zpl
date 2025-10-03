@@ -21,7 +21,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="errorCorrectionLevel"></param>
         /// <param name="maskValue">0-7, (default: 7)</param>
         /// <param name="fieldOrientation"></param>
-        /// <param name="useHexadecimalIndicator"></param> 
+        /// <param name="hexadecimalIndicator"></param> 
         /// <param name="bottomToTop"></param>
         public ZplQrCode(
             string content,
@@ -32,9 +32,9 @@ namespace BinaryKits.Zpl.Label.Elements
             ErrorCorrectionLevel errorCorrectionLevel = ErrorCorrectionLevel.HighReliability,
             int maskValue = 7,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
-            bool useHexadecimalIndicator = false,
+            char? hexadecimalIndicator = null,
             bool bottomToTop = false)
-            : base(content, positionX, positionY, fieldOrientation, useHexadecimalIndicator, bottomToTop)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
         {
             Model = model;
             MagnificationFactor = magnificationFactor;
@@ -59,9 +59,13 @@ namespace BinaryKits.Zpl.Label.Elements
         protected new string RenderFieldDataSection()
         {
             var sb = new StringBuilder();
-            if (UseHexadecimalIndicator)
+            if (HexadecimalIndicator is char hexIndicator)
             {
                 sb.Append("^FH");
+                if (hexIndicator != '_')
+                {
+                    sb.Append(hexIndicator);
+                }
             }
 
             sb.Append($"^FD{RenderErrorCorrectionLevel(ErrorCorrectionLevel)}A,{Content}^FS");

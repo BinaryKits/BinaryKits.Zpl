@@ -20,7 +20,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="moduleWidth"></param>
         /// <param name="wideBarToNarrowBarWidthRatio"></param>
         /// <param name="fieldOrientation"></param>
-        /// <param name="useHexadecimalIndicator"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
         /// <param name="mod10CheckDigit"></param>
@@ -33,7 +33,7 @@ namespace BinaryKits.Zpl.Label.Elements
             int moduleWidth = 2,
             double wideBarToNarrowBarWidthRatio = 3,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
-            bool useHexadecimalIndicator = false,
+            char? hexadecimalIndicator = null,
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
             bool mod10CheckDigit = false,
@@ -45,7 +45,7 @@ namespace BinaryKits.Zpl.Label.Elements
                   moduleWidth,
                   wideBarToNarrowBarWidthRatio,
                   fieldOrientation,
-                  useHexadecimalIndicator,
+                  hexadecimalIndicator,
                   printInterpretationLine,
                   printInterpretationLineAboveCode,
                   bottomToTop)

@@ -27,7 +27,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="compact">Truncate right row indicators and stop pattern</param>
         /// <param name="securityLevel">1-8 This determines the number of error detection and correction code-words to be generated for the symbol.The default level (0) provides only error detection without correction.Increasing the security level adds increasing levels of error correction and increases the symbol size.</param>
         /// <param name="fieldOrientation"></param>
-        /// <param name="useHexadecimalIndicator"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="bottomToTop"></param>
         public ZplPDF417(
             string content,
@@ -40,10 +40,10 @@ namespace BinaryKits.Zpl.Label.Elements
             bool compact = false,
             int securityLevel = 0,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
-            bool useHexadecimalIndicator = false,
+            char? hexadecimalIndicator = null,
             bool bottomToTop = false
             )
-            : base(content, positionX, positionY, fieldOrientation, useHexadecimalIndicator, bottomToTop)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
         {
             Height = height;
             ModuleWidth = moduleWidth;

@@ -27,9 +27,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float y = barcode.PositionY;
 
                 string content = barcode.Content;
-                if (barcode.UseHexadecimalIndicator)
+                if (barcode.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes();
+                    content = content.ReplaceHexEscapes(hexIndicator);
                 }
 
                 var writer = new ITFWriter();

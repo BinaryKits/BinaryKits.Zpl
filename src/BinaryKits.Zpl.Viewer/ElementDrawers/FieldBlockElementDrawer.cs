@@ -50,9 +50,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var typeface = options.FontLoader(font.FontName);
                 var text = fieldBlock.Text;
-                if (fieldBlock.UseHexadecimalIndicator)
+                if (fieldBlock.HexadecimalIndicator is char hexIndicator)
                 {
-                    text = text.ReplaceHexEscapes();
+                    text = text.ReplaceHexEscapes(hexIndicator);
                 }
 
                 if (options.ReplaceDashWithEnDash)

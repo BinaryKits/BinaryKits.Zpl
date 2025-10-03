@@ -18,7 +18,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="positionY"></param>
         /// <param name="height"></param>
         /// <param name="fieldOrientation"></param>
-        /// <param name="useHexadecimalIndicator"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="bottomToTop"></param>
         public ZplDataMatrix(
             string content,
@@ -26,10 +26,10 @@ namespace BinaryKits.Zpl.Label.Elements
             int positionY,
             int height = 100,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
-            bool useHexadecimalIndicator = false,
+            char? hexadecimalIndicator = null,
             bool bottomToTop = false
            )
-            : base(content, positionX, positionY, fieldOrientation, useHexadecimalIndicator, bottomToTop)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
         {
             Height = height;
         }

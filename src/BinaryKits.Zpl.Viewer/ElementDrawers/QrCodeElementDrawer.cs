@@ -32,9 +32,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float y = qrcode.PositionY;
 
                 var content = qrcode.Content;
-                if (qrcode.UseHexadecimalIndicator)
+                if (qrcode.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes();
+                    content = content.ReplaceHexEscapes(hexIndicator);
                 }
 
                 // support hand-rolled GS1

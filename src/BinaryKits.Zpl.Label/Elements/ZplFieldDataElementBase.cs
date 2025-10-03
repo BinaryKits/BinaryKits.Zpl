@@ -11,7 +11,7 @@ namespace BinaryKits.Zpl.Label.Elements
 
         public FieldOrientation FieldOrientation { get; protected set; }
 
-        public bool UseHexadecimalIndicator { get; protected set; }
+        public char? HexadecimalIndicator { get; protected set; }
 
         public bool IsDigitsOnly => this.Content.All(char.IsDigit);
 
@@ -20,13 +20,13 @@ namespace BinaryKits.Zpl.Label.Elements
             int positionX,
             int positionY,
             FieldOrientation fieldOrientation,
-            bool useHexadecimalIndicator,
+            char? hexadecimalIndicator,
             bool bottomToTop)
             : base(positionX, positionY, bottomToTop)
         {
             Content = content;
             FieldOrientation = fieldOrientation;
-            UseHexadecimalIndicator = useHexadecimalIndicator;
+            HexadecimalIndicator = hexadecimalIndicator;
         }
 
         ///<inheritdoc/>
@@ -47,9 +47,13 @@ namespace BinaryKits.Zpl.Label.Elements
         protected string RenderFieldDataSection()
         {
             var sb = new StringBuilder();
-            if (UseHexadecimalIndicator)
+            if (HexadecimalIndicator is char hexIndicator)
             {
                 sb.Append("^FH");
+                if (hexIndicator != '_')
+                {
+                    sb.Append(hexIndicator);
+                }
             }
 
             sb.Append("^FD");

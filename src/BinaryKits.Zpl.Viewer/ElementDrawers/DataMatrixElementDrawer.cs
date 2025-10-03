@@ -37,9 +37,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float y = dataMatrix.PositionY;
 
                 var content = dataMatrix.Content;
-                if(dataMatrix.UseHexadecimalIndicator)
+                if(dataMatrix.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes();
+                    content = content.ReplaceHexEscapes(hexIndicator);
                 }
 
                 // support hand-rolled GS1
