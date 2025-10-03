@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-
+    <TargetFramework Condition="$([MSBuild]::IsOSPlatform('Linux'))">net6.0</TargetFramework>
+	<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net472;net6.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -25,6 +25,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ZplData\DownloadGraphicsB64.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ZplData\DownloadGraphicsZ64_net472.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ZplData\DownloadGraphicsZ64.txt">
