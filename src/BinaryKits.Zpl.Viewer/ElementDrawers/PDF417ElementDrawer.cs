@@ -1,5 +1,6 @@
-using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
+
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,19 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             if (element is ZplPDF417 pdf417)
             {
                 if (pdf417.Height == 0)
-                    throw new System.Exception("PDF417 Height is set to zero.");
+                {
+                    throw new Exception("PDF417 Height is set to zero.");
+                }
 
-                if (string.IsNullOrWhiteSpace(pdf417.Content))
-                    throw new System.Exception("PDF147 Content is empty.");
+                string content = pdf417.Content;
+                if (pdf417.HexadecimalIndicator is char hexIndicator) {
+                    content = content.ReplaceHexEscapes(hexIndicator);
+                }
+
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    throw new Exception("PDF147 Content is empty.");
+                }
 
                 float x = pdf417.PositionX;
                 float y = pdf417.PositionY;
@@ -80,7 +90,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     { EncodeHintType.PDF417_DIMENSIONS, new Dimensions(mincols, maxcols, minrows, maxrows) },
                 };
             
-                var default_bitmatrix = writer.encode(pdf417.Content, BarcodeFormat.PDF_417, 0, 0, hints);
+                var default_bitmatrix = writer.encode(content, BarcodeFormat.PDF_417, 0, 0, hints);
                 
                 //PDF417_ASPECT_RATIO set to 3, we need to multiply that with pdf417.ModuleWidth (defined by ^BY)
                 var bar_height = pdf417.ModuleWidth * 3;

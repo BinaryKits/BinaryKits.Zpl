@@ -1,12 +1,9 @@
 using System;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
-using ZXing;
-using ZXing.Datamatrix.Encoder;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -33,6 +30,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             int x = 0;
             int y = 0;
+            char? hexadecimalIndicator = this.VirtualPrinter.NextElementFieldHexadecimalIndicator;
             bool bottomToTop = false;
             var fieldJustification = this.VirtualPrinter.NextElementFieldJustification;
             if (fieldJustification == FieldJustification.None)
@@ -52,51 +50,54 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             {
                 int moduleWidth = this.VirtualPrinter.BarcodeInfo.ModuleWidth;
                 double wideBarToNarrowBarWidthRatio = this.VirtualPrinter.BarcodeInfo.WideBarToNarrowBarWidthRatio;
-                bool useHexadecimalIndicator = this.VirtualPrinter.NextElementFieldUseHexadecimalIndicator;
 
                 if (this.VirtualPrinter.NextElementFieldData is Code39BarcodeFieldData code39)
                 {
-                    return new ZplBarcode39(text, x, y, code39.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code39.FieldOrientation, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit, bottomToTop: bottomToTop);
+                    return new ZplBarcode39(text, x, y, code39.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code39.FieldOrientation, hexadecimalIndicator, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit, bottomToTop: bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is Code93BarcodeFieldData code93)
                 {
-                    return new ZplBarcode93(text, x, y, code93.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code93.FieldOrientation, code93.PrintInterpretationLine, code93.PrintInterpretationLineAboveCode, code93.PrintCheckDigit, bottomToTop: bottomToTop);
+                    return new ZplBarcode93(text, x, y, code93.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code93.FieldOrientation, hexadecimalIndicator, code93.PrintInterpretationLine, code93.PrintInterpretationLineAboveCode, code93.PrintCheckDigit, bottomToTop: bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is Code128BarcodeFieldData code128)
                 {
-                    return new ZplBarcode128(text, x, y, code128.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code128.FieldOrientation, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode, bottomToTop, code128.Mode);
+                    return new ZplBarcode128(text, x, y, code128.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code128.FieldOrientation, hexadecimalIndicator, code128.PrintInterpretationLine, code128.PrintInterpretationLineAboveCode, bottomToTop, code128.Mode);
                 }
 
                 if (this.VirtualPrinter.NextElementFieldData is CodeEAN13BarcodeFieldData codeEAN13)
                 {
-                    return new ZplBarcodeEan13(text, x, y, codeEAN13.Height, moduleWidth, wideBarToNarrowBarWidthRatio, codeEAN13.FieldOrientation, codeEAN13.PrintInterpretationLine, codeEAN13.PrintInterpretationLineAboveCode, bottomToTop);
+                    return new ZplBarcodeEan13(text, x, y, codeEAN13.Height, moduleWidth, wideBarToNarrowBarWidthRatio, codeEAN13.FieldOrientation, hexadecimalIndicator, codeEAN13.PrintInterpretationLine, codeEAN13.PrintInterpretationLineAboveCode, bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is DataMatrixFieldData dataMatrixFieldData)
                 {
-                    return new ZplDataMatrix(text, x, y, dataMatrixFieldData.Height, dataMatrixFieldData.FieldOrientation, bottomToTop);
+                    return new ZplDataMatrix(text, x, y, dataMatrixFieldData.Height, dataMatrixFieldData.QualityLevel, dataMatrixFieldData.FieldOrientation, hexadecimalIndicator, bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is Interleaved2of5BarcodeFieldData interleaved2of5)
                 {
-                    return new ZplBarcodeInterleaved2of5(text, x, y, interleaved2of5.Height, moduleWidth, wideBarToNarrowBarWidthRatio, interleaved2of5.FieldOrientation, interleaved2of5.PrintInterpretationLine, interleaved2of5.PrintInterpretationLineAboveCode, bottomToTop: bottomToTop);
+                    return new ZplBarcodeInterleaved2of5(text, x, y, interleaved2of5.Height, moduleWidth, wideBarToNarrowBarWidthRatio, interleaved2of5.FieldOrientation, hexadecimalIndicator, interleaved2of5.PrintInterpretationLine, interleaved2of5.PrintInterpretationLineAboveCode, bottomToTop: bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is MaxiCodeBarcodeFieldData maxiCode)
                 {
-                    return new ZplMaxiCode(text, x, y, maxiCode.Mode, maxiCode.Position, maxiCode.Total, useHexadecimalIndicator, bottomToTop);
+                    return new ZplMaxiCode(text, x, y, maxiCode.Mode, maxiCode.Position, maxiCode.Total, hexadecimalIndicator, bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is QrCodeBarcodeFieldData qrCode)
                 {
                     (ErrorCorrectionLevel errorCorrection, string parsedText) = ParseQrCodeFieldData(qrCode, text);
 
                     // N.B.: always pass Field Orientation Normal to QR codes; the ZPL II standard does not allow rotation
-                    return new ZplQrCode(parsedText, x, y, qrCode.Model, qrCode.MagnificationFactor, errorCorrection, qrCode.MaskValue, Label.FieldOrientation.Normal, bottomToTop);
+                    return new ZplQrCode(parsedText, x, y, qrCode.Model, qrCode.MagnificationFactor, errorCorrection, qrCode.MaskValue, Label.FieldOrientation.Normal, hexadecimalIndicator, bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is PDF417FieldData pdf147)
                 {
-                    return new ZplPDF417(text, x, y, pdf147.Height, moduleWidth, pdf147.Columns, pdf147.Rows, pdf147.Compact, pdf147.SecurityLevel, pdf147.FieldOrientation, bottomToTop);
+                    return new ZplPDF417(text, x, y, pdf147.Height, moduleWidth, pdf147.Columns, pdf147.Rows, pdf147.Compact, pdf147.SecurityLevel, pdf147.FieldOrientation, hexadecimalIndicator, bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is AztecBarcodeFieldData aztec)
                 {
-                    return new ZplAztecBarcode(text, x, y, aztec.MagnificationFactor, aztec.ExtendedChannel, aztec.ErrorControl, aztec.MenuSymbol, aztec.SymbolCount, aztec.IdField, useHexadecimalIndicator, aztec.FieldOrientation, bottomToTop);
+                    return new ZplAztecBarcode(text, x, y, aztec.MagnificationFactor, aztec.ExtendedChannel, aztec.ErrorControl, aztec.MenuSymbol, aztec.SymbolCount, aztec.IdField, aztec.FieldOrientation, hexadecimalIndicator, bottomToTop);
+                }
+                if (this.VirtualPrinter.NextElementFieldData is AnsiCodabarFieldData codabar)
+                {
+                    return new ZplBarcodeAnsiCodabar(text, codabar.StartCharacter, codabar.StopCharacter, x, y, codabar.Height, moduleWidth, wideBarToNarrowBarWidthRatio, codabar.FieldOrientation, hexadecimalIndicator, codabar.PrintInterpretationLine, codabar.PrintInterpretationLineAboveCode, codabar.CheckDigit, bottomToTop);
                 }
             }
 
@@ -116,10 +117,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 int lineSpace = this.VirtualPrinter.NextElementFieldBlock.AddOrDeleteSpaceBetweenLines;
                 int hangingIndent = this.VirtualPrinter.NextElementFieldBlock.HangingIndentOfTheSecondAndRemainingLines;
 
-                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, hangingIndent, reversePrint: reversePrint, bottomToTop: bottomToTop);
+                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, hangingIndent, hexadecimalIndicator: hexadecimalIndicator, reversePrint: reversePrint, bottomToTop: bottomToTop);
             }
 
-            return new ZplTextField(text, x, y, font, reversePrint: reversePrint, bottomToTop: bottomToTop, fieldJustification: fieldJustification);
+            return new ZplTextField(text, x, y, font, hexadecimalIndicator: hexadecimalIndicator, reversePrint: reversePrint, bottomToTop: bottomToTop, fieldJustification: fieldJustification);
         }
 
         private (ErrorCorrectionLevel, string) ParseQrCodeFieldData(QrCodeBarcodeFieldData qrCode, string text)
