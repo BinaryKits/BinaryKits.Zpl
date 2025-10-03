@@ -1,4 +1,6 @@
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
+
 using SkiaSharp;
 using System;
 using ZXing.OneD;
@@ -24,8 +26,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = barcode.PositionX;
                 float y = barcode.PositionY;
 
+                string content = barcode.Content;
+                if (barcode.HexadecimalIndicator is char hexIndicator)
+                {
+                    content = content.ReplaceHexEscapes(hexIndicator);
+                }
+
                 var writer = new ITFWriter();
-                var result = writer.encode(barcode.Content);
+                var result = writer.encode(content);
                 int narrow = barcode.ModuleWidth;
                 int wide = (int)Math.Floor(barcode.WideBarToNarrowBarWidthRatio * narrow);
                 result = this.AdjustWidths(result, wide, narrow);
@@ -38,7 +46,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     float labelFontSize = Math.Min(barcode.ModuleWidth * 10f, 100f);
                     var labelTypeFace = options.FontLoader("A");
                     var labelFont = new SKFont(labelTypeFace, labelFontSize);
-                    this.DrawInterpretationLine(barcode.Content, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
+                    this.DrawInterpretationLine(content, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
                 }
             }
         }

@@ -25,9 +25,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var content = aztecBarcode.Content;
 
-                if (aztecBarcode.UseHexadecimalIndicator)
+                if (aztecBarcode.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes();
+                    content = content.ReplaceHexEscapes(hexIndicator);
                 }
 
                 var writer = new AztecWriter();

@@ -3,17 +3,13 @@ using System.Text;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
-    public class ZplMaxiCode : ZplPositionedElementBase, IFormatElement
+    public class ZplMaxiCode : ZplFieldDataElementBase
     {
-        public string Content { get; protected set; }
-
         public int Mode { get; private set; }
 
         public int Position { get; private set; }
 
         public int Total { get; private set; }
-        
-        public bool UseHexadecimalIndicator { get; protected set; }
 
         /// <summary>
         /// Zpl QrCode
@@ -24,7 +20,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="mode">2 (numeric postal code) Default, 3 (alphanumeric postal code), 4 (standard), 5 (full EEC), and 6 (reader programming)</param>
         /// <param name="position">1-8, (default: 1)</param>
         /// <param name="total">1-8, (default: 1)</param>
-        /// <param name="useHexadecimalIndicator"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="bottomToTop"></param>
         public ZplMaxiCode(
             string content,
@@ -33,15 +29,13 @@ namespace BinaryKits.Zpl.Label.Elements
             int mode = 2,
             int position = 1,
             int total = 1,
-            bool useHexadecimalIndicator = false,
+            char? hexadecimalIndicator = null,
             bool bottomToTop = false)
-            : base(positionX, positionY, bottomToTop)
+            : base(content, positionX, positionY, FieldOrientation.Normal, hexadecimalIndicator, bottomToTop)
         {
-            Content = content;
             Mode = mode;
             Position = position;
             Total = total;
-            UseHexadecimalIndicator = useHexadecimalIndicator;
         }
 
         ///<inheritdoc/>
@@ -56,30 +50,6 @@ namespace BinaryKits.Zpl.Label.Elements
             result.Add(RenderFieldDataSection());
 
             return result;
-        }
-        
-        protected string RenderFieldDataSection()
-        {
-            var sb = new StringBuilder();
-            if (UseHexadecimalIndicator)
-            {
-                sb.Append("^FH");
-            }
-
-            if (Content != null)
-            {
-                sb.Append("^FD");
-                sb.Append(Content);
-                sb.Append("^FS");
-            }
-
-            return sb.ToString();
-        }
-
-        /// <inheritdoc />
-        public void SetTemplateContent(string content)
-        {
-            Content = content;
         }
     }
 }

@@ -25,6 +25,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="moduleWidth"></param>
         /// <param name="wideBarToNarrowBarWidthRatio"></param>
         /// <param name="fieldOrientation"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
         /// <param name="checkDigit"></param>
@@ -39,6 +40,7 @@ namespace BinaryKits.Zpl.Label.Elements
             int moduleWidth = 2,
             double wideBarToNarrowBarWidthRatio = 3,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
+            char? hexadecimalIndicator = null,
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
             bool checkDigit = false,
@@ -50,6 +52,7 @@ namespace BinaryKits.Zpl.Label.Elements
                   moduleWidth,
                   wideBarToNarrowBarWidthRatio,
                   fieldOrientation,
+                  hexadecimalIndicator,
                   printInterpretationLine,
                   printInterpretationLineAboveCode,
                   bottomToTop)
@@ -84,8 +87,8 @@ namespace BinaryKits.Zpl.Label.Elements
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
             result.Add(RenderModuleWidth());
-            result.Add($"^BK{RenderFieldOrientation()},{(CheckDigit ? "Y" : "N")},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{StartCharacter},{StopCharacter}");
-            result.Add($"^FD{Content}^FS");
+            result.Add($"^BK{RenderFieldOrientation()},{RenderBoolean(CheckDigit)},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{StartCharacter},{StopCharacter}");
+            result.Add(RenderFieldDataSection());
 
             return result;
         }

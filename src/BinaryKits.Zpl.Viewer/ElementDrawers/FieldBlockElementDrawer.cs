@@ -50,14 +50,19 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var typeface = options.FontLoader(font.FontName);
                 var text = fieldBlock.Text;
-                if (fieldBlock.UseHexadecimalIndicator)
+                if (fieldBlock.HexadecimalIndicator is char hexIndicator)
                 {
-                    text = text.ReplaceHexEscapes();
+                    text = text.ReplaceHexEscapes(hexIndicator);
                 }
 
                 if (options.ReplaceDashWithEnDash)
                 {
                     text = text.Replace("-", " \u2013 ");
+                }
+
+                if (options.ReplaceUnderscoreWithEnSpace)
+                {
+                    text = text.Replace('_', '\u2002');
                 }
 
                 var skFont = new SKFont(typeface, fontSize, scaleX);
