@@ -9,6 +9,16 @@ namespace BinaryKits.Zpl.Label.UnitTest
     public class ZebraZ64CompressionHelperTest
     {
         [TestMethod]
+        public void CompressUncompress_Flow_Successful()
+        {
+            var originalData = "FFFFFFFFFFFFFFFFFFFF8000FFFF0000FFFF00018000FFFF0000FFFF00018000FFFF0000FFFF0001FFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFFFFFF";
+
+            string compressed = ZebraZ64CompressionHelper.Compress(originalData);
+            string uncompressed = ZebraZ64CompressionHelper.Uncompress(compressed).ToHexFromBytes();
+            Assert.AreEqual(originalData, uncompressed);
+        }
+#if NET5_0_OR_GREATER
+        [TestMethod]
         public void Compress_ValidData1_Successful()
         {
             var compressed = ZebraZ64CompressionHelper.Compress("FFFFFFFFFFFFFFFFFFFF8000FFFF0000FFFF00018000FFFF0000FFFF00018000FFFF0000FFFF0001FFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFFFFFF");
@@ -19,16 +29,6 @@ namespace BinaryKits.Zpl.Label.UnitTest
             //^XGR:SAMPLE.GRF,1,1^FS
             //^XZ
         }
-        [TestMethod]
-        public void CompressUncompress_Flow_Successful()
-        {
-            var originalData = "FFFFFFFFFFFFFFFFFFFF8000FFFF0000FFFF00018000FFFF0000FFFF00018000FFFF0000FFFF0001FFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFF0000FFFF0000FFFFFFFFFFFFFFFFFFFFFFFF";
-
-            string compressed = ZebraZ64CompressionHelper.Compress(originalData);
-            string uncompressed = ZebraZ64CompressionHelper.Uncompress(compressed).ToHexFromBytes();
-            Assert.AreEqual(originalData, uncompressed);
-        }
-#if NET5_0_OR_GREATER
         [TestMethod]
         public void DeflateNetStandardSameAsNetCore_Optimal_Successful()
         {

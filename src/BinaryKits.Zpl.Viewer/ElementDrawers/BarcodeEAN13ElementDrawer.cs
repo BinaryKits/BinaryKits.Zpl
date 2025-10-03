@@ -1,4 +1,6 @@
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
+
 using SkiaSharp;
 using System;
 using ZXing.OneD;
@@ -35,6 +37,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float y = barcode.PositionY;
 
                 var content = barcode.Content;
+                if (barcode.HexadecimalIndicator is char hexIndicator)
+                {
+                    content = content.ReplaceHexEscapes(hexIndicator);
+                }
+
                 content = content.PadLeft(12, '0').Substring(0, 12);
                 var interpretation = content;
 

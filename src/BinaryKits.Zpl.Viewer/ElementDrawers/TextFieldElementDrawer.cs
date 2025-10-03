@@ -50,14 +50,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 };
 
                 string displayText = textField.Text;
-                if (textField.UseHexadecimalIndicator)
+                if (textField.HexadecimalIndicator is char hexIndicator)
                 {
-                    displayText = displayText.ReplaceHexEscapes();
+                    displayText = displayText.ReplaceHexEscapes(hexIndicator);
                 }
 
                 if (options.ReplaceDashWithEnDash)
                 {
                     displayText = displayText.Replace("-", " \u2013 ");
+                }
+
+                if(options.ReplaceUnderscoreWithEnSpace) {
+                    displayText = displayText.Replace('_', '\u2002');
                 }
 
                 var textBounds = new SKRect();

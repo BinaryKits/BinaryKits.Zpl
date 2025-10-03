@@ -22,8 +22,19 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// </summary>
         public bool PdfOutput { get; set; } = false;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether dashes should be replaced with en dash.
+        /// </summary>
         public bool ReplaceDashWithEnDash { get; set; } = true;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether underscores in text should be replaced with en space.
+        /// </summary>
+        public bool ReplaceUnderscoreWithEnSpace { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether antialiasing is enabled.
+        /// </summary>
         public bool Antialias { get; set; } = true;
 
         private static readonly string[] fontStack0 = new string[] {

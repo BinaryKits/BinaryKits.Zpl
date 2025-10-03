@@ -28,10 +28,10 @@ namespace BinaryKits.Zpl.Label.Elements
             TextJustification textJustification = TextJustification.Left,
             int hangingIndent = 0,
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToZplNewLine,
-            bool useHexadecimalIndicator = true,
+            char? hexadecimalIndicator = null,
             bool reversePrint = false,
             bool bottomToTop = false)
-            : base(text, positionX, positionY, font, newLineConversion, useHexadecimalIndicator, reversePrint, bottomToTop)
+            : base(text, positionX, positionY, font, newLineConversion, hexadecimalIndicator, reversePrint, bottomToTop)
         {
             TextJustification = textJustification;
             Width = width;

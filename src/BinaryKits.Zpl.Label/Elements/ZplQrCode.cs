@@ -1,20 +1,14 @@
 using System.Collections.Generic;
+using System.Text;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
-    public class ZplQrCode : ZplPositionedElementBase, IFormatElement
+    public class ZplQrCode : ZplFieldDataElementBase
     {
-        public string Content { get; protected set; }
-
         public int Model { get; private set; }
-
         public int MagnificationFactor { get; private set; }
-
         public ErrorCorrectionLevel ErrorCorrectionLevel { get; private set; }
-
         public int MaskValue { get; private set; }
-
-        public FieldOrientation FieldOrientation { get; protected set; }
 
         /// <summary>
         /// Zpl QrCode
@@ -26,7 +20,8 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="magnificationFactor">Size of the QR code, 1 on 150 dpi printers, 2 on 200 dpi printers, 3 on 300 dpi printers, 6 on 600 dpi printers</param>
         /// <param name="errorCorrectionLevel"></param>
         /// <param name="maskValue">0-7, (default: 7)</param>
-        ///  <param name="fieldOrientation"></param>
+        /// <param name="fieldOrientation"></param>
+        /// <param name="hexadecimalIndicator"></param> 
         /// <param name="bottomToTop"></param>
         public ZplQrCode(
             string content,
@@ -37,20 +32,14 @@ namespace BinaryKits.Zpl.Label.Elements
             ErrorCorrectionLevel errorCorrectionLevel = ErrorCorrectionLevel.HighReliability,
             int maskValue = 7,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
+            char? hexadecimalIndicator = null,
             bool bottomToTop = false)
-            : base(positionX, positionY, bottomToTop)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
         {
-            Content = content;
             Model = model;
             MagnificationFactor = magnificationFactor;
             ErrorCorrectionLevel = errorCorrectionLevel;
             MaskValue = maskValue;
-            FieldOrientation = fieldOrientation;
-        }
-
-        protected string RenderFieldOrientation()
-        {
-            return RenderFieldOrientation(FieldOrientation);
         }
 
         ///<inheritdoc/>
@@ -62,15 +51,26 @@ namespace BinaryKits.Zpl.Label.Elements
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
             result.Add($"^BQ{RenderFieldOrientation()},{Model},{context.Scale(MagnificationFactor)},{RenderErrorCorrectionLevel(ErrorCorrectionLevel)},{MaskValue}");
-            result.Add($"^FD{RenderErrorCorrectionLevel(ErrorCorrectionLevel)}A,{Content}^FS");
+            result.Add(RenderFieldDataSection());
 
             return result;
         }
 
-        /// <inheritdoc />
-        public void SetTemplateContent(string content)
+        protected new string RenderFieldDataSection()
         {
-            Content = content;
+            var sb = new StringBuilder();
+            if (HexadecimalIndicator is char hexIndicator)
+            {
+                sb.Append("^FH");
+                if (hexIndicator != '_')
+                {
+                    sb.Append(hexIndicator);
+                }
+            }
+
+            sb.Append($"^FD{RenderErrorCorrectionLevel(ErrorCorrectionLevel)}A,{Content}^FS");
+
+            return sb.ToString();
         }
     }
 }
