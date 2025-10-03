@@ -41,6 +41,20 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             };
         }
 
+        protected QualityLevel ConvertQualityLevel(string qualityLevel)
+        {
+            return qualityLevel switch
+            {
+                "0" => QualityLevel.ECC0,
+                "50" => QualityLevel.ECC50,
+                "80" => QualityLevel.ECC80,
+                "100" => QualityLevel.ECC100,
+                "140" => QualityLevel.ECC140,
+                "200" => QualityLevel.ECC200,
+                _ => QualityLevel.ECC0
+            };
+        }
+
         protected FieldJustification ConvertFieldJustification(string fieldJustification)
         {
             return fieldJustification switch

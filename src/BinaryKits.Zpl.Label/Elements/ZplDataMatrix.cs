@@ -9,6 +9,8 @@ namespace BinaryKits.Zpl.Label.Elements
     public class ZplDataMatrix : ZplFieldDataElementBase
     {
         public int Height { get; protected set; }
+      
+        public QualityLevel QualityLevel { get; protected set; }
 
         /// <summary>
         /// Data Matrix Bar Code
@@ -20,11 +22,13 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="fieldOrientation"></param>
         /// <param name="hexadecimalIndicator"></param>
         /// <param name="bottomToTop"></param>
+        /// <param name="qualityLevel"></param>
         public ZplDataMatrix(
             string content,
             int positionX,
             int positionY,
             int height = 100,
+            QualityLevel qualityLevel = QualityLevel.ECC0,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
             char? hexadecimalIndicator = null,
             bool bottomToTop = false
@@ -32,6 +36,12 @@ namespace BinaryKits.Zpl.Label.Elements
             : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
         {
             Height = height;
+            QualityLevel = qualityLevel;
+        }
+
+        protected string RenderQualityLevel()
+        {
+            return RenderQualityLevel(QualityLevel);
         }
 
         ///<inheritdoc/>
@@ -42,7 +52,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^FDZEBRA TECHNOLOGIES CORPORATION ^ FS
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
-            result.Add($"^BX{RenderFieldOrientation()},{context.Scale(Height)}");
+            result.Add($"^BX{RenderFieldOrientation()},{context.Scale(Height)},{RenderQualityLevel()}");
             result.Add(RenderFieldDataSection());
 
             return result;
