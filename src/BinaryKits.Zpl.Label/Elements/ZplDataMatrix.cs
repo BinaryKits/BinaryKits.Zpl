@@ -53,7 +53,6 @@ namespace BinaryKits.Zpl.Label.Elements
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
             result.Add($"^BX{RenderFieldOrientation()},{context.Scale(Height)},{RenderQualityLevel()}");
-            result.Add($"^BX{RenderFieldOrientation()},{context.Scale(Height)}");
             result.Add(RenderFieldDataSection());
 
             return result;
