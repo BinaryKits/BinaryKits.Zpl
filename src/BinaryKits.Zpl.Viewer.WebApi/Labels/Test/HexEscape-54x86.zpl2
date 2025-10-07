@@ -1,19 +1,18 @@
 ﻿^XA
 
-^CF0,40
+^CI0
+^A0N,30,30
+^FO10,10
+^FH^FDStra_E1e^FS
 
-^FO20,20
-^FDA_42C_312_33^FS
+^CI27
+^A0N,30,30
+^FO10,50
+^FH^FDStra_DFe^FS
 
-^FX Default hex escape
-^FO20,70
-^FH^FDA_42C_312_33^FS
-
-^FO20,120
-^FDA\42C\312\33C^FS
-
-^FX Custom hex escape
-^FO20,170
-^FH\^FDA\42C\312\33C^FS
+^CI28
+^A0N,30,30
+^FO10,90
+^FH\^FDStra\C3\9Fe^FS
 
 ^XZ

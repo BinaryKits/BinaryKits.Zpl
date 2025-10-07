@@ -1,3 +1,4 @@
+using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
@@ -23,7 +24,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
         {
             if (element is ZplDataMatrix dataMatrix)
             {
@@ -39,7 +40,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var content = dataMatrix.Content;
                 if(dataMatrix.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes(hexIndicator);
+                    content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
                 // support hand-rolled GS1

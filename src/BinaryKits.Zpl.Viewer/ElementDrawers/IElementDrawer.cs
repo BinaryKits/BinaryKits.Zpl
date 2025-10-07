@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -57,5 +58,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// <param name="element"></param>
         /// <param name="options"></param>
         void Draw(ZplElementBase element, DrawerOptions options);
+
+        /// <summary>
+        /// Draw the element with extra context information
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="options"></param>
+        void Draw(ZplElementBase element, DrawerOptions options, InternationalFont international);
     }
 }

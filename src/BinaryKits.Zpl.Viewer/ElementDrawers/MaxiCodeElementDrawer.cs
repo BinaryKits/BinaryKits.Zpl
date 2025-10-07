@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using BinaryKits.Zpl.Label;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -17,7 +18,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
         {
             if (element is ZplMaxiCode maxiCode)
             {
@@ -30,7 +31,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     //replace hex items before mode 2 and mode 3 specific string manipulation 
                     if (maxiCode.HexadecimalIndicator is char hexIndicator)
                     {
-                        content = content.ReplaceHexEscapes(hexIndicator);
+                        content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                     }
                     
                     if (maxiBarcode.MaxicodeMode == MaxicodeMode.Mode2)

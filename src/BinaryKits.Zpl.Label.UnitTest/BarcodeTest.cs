@@ -21,7 +21,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,100\n^BY2,3\n^B3N,N,100,Y,N\n^FD123ABC^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n\n^FO100,100\n^BY2,3\n^B3N,N,100,Y,N\n^FD123ABC^FS\n^XZ", output);
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BY2,3\n^BAN,100,Y,N,N\n^FD123ABC^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n\n^FO100,300\n^BY2,3\n^BAN,100,Y,N,N\n^FD123ABC^FS\n^XZ", output);
         }
 
         [TestMethod]
@@ -53,7 +53,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BY2,3\n^BCN,100,Y,N\n^FD123ABC^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n\n^FO100,300\n^BY2,3\n^BCN,100,Y,N\n^FD123ABC^FS\n^XZ", output);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BY2,3\n^BEN,100,Y,N\n^FD123456^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n\n^FO100,300\n^BY2,3\n^BEN,100,Y,N\n^FD123456^FS\n^XZ", output);
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BXN,100,0\n^FD123ABC^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n\n^FO100,300\n^BXN,100,0\n^FD123ABC^FS\n^XZ", output);
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n\n^FO100,300\n^BXN,100,200\n^FD123ABC^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n\n^FO100,300\n^BXN,100,200\n^FD123ABC^FS\n^XZ", output);
         }
     }
 }

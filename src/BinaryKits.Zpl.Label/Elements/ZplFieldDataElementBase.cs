@@ -13,8 +13,6 @@ namespace BinaryKits.Zpl.Label.Elements
 
         public char? HexadecimalIndicator { get; protected set; }
 
-        public bool IsDigitsOnly => this.Content.All(char.IsDigit);
-
         public ZplFieldDataElementBase(
             string content,
             int positionX,

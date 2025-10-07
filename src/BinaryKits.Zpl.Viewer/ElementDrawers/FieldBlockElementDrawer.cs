@@ -35,7 +35,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options)
+        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
         {
             if (element is ZplFieldBlock fieldBlock)
             {
@@ -52,7 +52,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var text = fieldBlock.Text;
                 if (fieldBlock.HexadecimalIndicator is char hexIndicator)
                 {
-                    text = text.ReplaceHexEscapes(hexIndicator);
+                    text = text.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
                 if (options.ReplaceDashWithEnDash)

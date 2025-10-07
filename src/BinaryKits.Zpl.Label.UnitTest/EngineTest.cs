@@ -54,7 +54,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^XA\n^LH0,0\n^CI28\n^FO591,1034\n^GB147,147,7,B,0^FS\n^XZ", output);
+            Assert.AreEqual("^XA\n^LH0,0\n^FO591,1034\n^GB147,147,7,B,0^FS\n^XZ", output);
         }
 
         [TestMethod]
@@ -132,7 +132,24 @@ namespace BinaryKits.Zpl.Label.UnitTest
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
-            Assert.AreEqual("^CI28\n^FX\n//A important field\n^A0N,30,30\n^FO50,100\n^FDPure element zpl only^FS", output);
+            Assert.AreEqual("^FX\n//A important field\n^A0N,30,30\n^FO50,100\n^FDPure element zpl only^FS", output);
+        }
+
+        [TestMethod]
+        public void ChangeInternationalFont()
+        {
+            var elements = new List<ZplElementBase>() {
+                new ZplChangeInternationalFont(InternationalFont.ZCP1252),
+                new ZplTextField("Straße", 10, 10, ZplConstants.Font.Default, hexadecimalIndicator: '_'),
+            };
+
+            var renderEngine = new ZplEngine(elements);
+            var output = renderEngine.ToZplString(new ZplRenderOptions());
+
+            Debug.WriteLine(output);
+            Assert.IsNotNull(output);
+            //TODO: escape non-ascii characters according to current charset if hexIndicator is given
+            Assert.AreEqual("^XA\n^LH0,0\n^CI27\n^A0N,30,30\n^FO10,10\n^FH^FDStraße^FS\n^XZ", output);
         }
     }
 }
