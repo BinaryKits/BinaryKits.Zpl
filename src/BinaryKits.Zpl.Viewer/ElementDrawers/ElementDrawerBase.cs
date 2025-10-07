@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -48,6 +49,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         public virtual void Draw(ZplElementBase element, DrawerOptions options = null)
         {
             Draw(element);  // Most element just ignore the context
+        }
+
+        ///<inheritdoc/>
+        public virtual void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont = InternationalFont.ZCP850)
+        {
+            Draw(element, options);
         }
     }
 }

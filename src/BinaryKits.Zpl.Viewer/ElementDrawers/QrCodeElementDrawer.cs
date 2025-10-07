@@ -24,7 +24,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
         {
             if (element is ZplQrCode qrcode)
             {
@@ -34,7 +34,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var content = qrcode.Content;
                 if (qrcode.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes(hexIndicator);
+                    content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
                 // support hand-rolled GS1

@@ -40,6 +40,7 @@ namespace BinaryKits.Zpl.Viewer
                 new AztecBarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
                 new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
+                new ChangeInternationalFontCommandAnalyzer(this._virtualPrinter),
                 new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new Code93BarcodeZplCommandAnalyzer(this._virtualPrinter),
                 new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
@@ -130,7 +131,6 @@ namespace BinaryKits.Zpl.Viewer
 
         // When adding new commands: 1 per line, always upper case, comment why if possible
         private string[] ignoredCommands = {
-            "CI", // may be implemented in the future, but for now always set to CI128
         };
 
         private string[] SplitZplCommands(string zplData)

@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
@@ -22,7 +23,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options)
+        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
         {
             if (element is ZplBarcode93 barcode)
             {
@@ -32,7 +33,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var content = barcode.Content;
                 if(barcode.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes(hexIndicator);
+                    content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
                 var writer = new Code93Writer();

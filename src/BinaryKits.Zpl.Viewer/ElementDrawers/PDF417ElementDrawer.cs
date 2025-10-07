@@ -1,3 +1,4 @@
+using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
@@ -23,7 +24,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
         {
             if (element is ZplPDF417 pdf417)
             {
@@ -34,7 +35,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 string content = pdf417.Content;
                 if (pdf417.HexadecimalIndicator is char hexIndicator) {
-                    content = content.ReplaceHexEscapes(hexIndicator);
+                    content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
                 if (string.IsNullOrWhiteSpace(content))

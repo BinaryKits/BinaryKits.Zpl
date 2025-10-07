@@ -1,3 +1,4 @@
+using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
@@ -19,7 +20,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options)
+        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
         {
             if (element is ZplBarcodeInterleaved2of5 barcode)
             {
@@ -29,7 +30,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 string content = barcode.Content;
                 if (barcode.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes(hexIndicator);
+                    content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
                 var writer = new ITFWriter();

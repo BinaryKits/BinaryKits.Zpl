@@ -37,8 +37,6 @@ namespace BinaryKits.Zpl.Label
                 result.Add("^LH0,0");
             }
 
-            result.Add(context.ChangeInternationalFontEncoding);
-
             foreach (var element in this.Where(x => x.IsEnabled))
             {
                 //Empty line

@@ -1,3 +1,4 @@
+using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
@@ -19,7 +20,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options)
+        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
         {
             if (element is ZplBarcode39 barcode)
             {
@@ -29,7 +30,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var content = barcode.Content.Trim('*');
                 if(barcode.HexadecimalIndicator is char hexIndicator)
                 {
-                    content = content.ReplaceHexEscapes(hexIndicator);
+                    content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
                 var interpretation = string.Format("*{0}*", content);

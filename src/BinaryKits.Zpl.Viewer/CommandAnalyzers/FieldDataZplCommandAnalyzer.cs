@@ -85,7 +85,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                     (ErrorCorrectionLevel errorCorrection, string parsedText) = ParseQrCodeFieldData(qrCode, text);
 
                     // N.B.: always pass Field Orientation Normal to QR codes; the ZPL II standard does not allow rotation
-                    return new ZplQrCode(parsedText, x, y, qrCode.Model, qrCode.MagnificationFactor, errorCorrection, qrCode.MaskValue, Label.FieldOrientation.Normal, hexadecimalIndicator, bottomToTop);
+                    return new ZplQrCode(parsedText, x, y, qrCode.Model, qrCode.MagnificationFactor, errorCorrection, qrCode.MaskValue, FieldOrientation.Normal, hexadecimalIndicator, bottomToTop);
                 }
                 if (this.VirtualPrinter.NextElementFieldData is PDF417FieldData pdf147)
                 {

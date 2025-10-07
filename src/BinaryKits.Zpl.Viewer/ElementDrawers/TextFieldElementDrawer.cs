@@ -1,3 +1,4 @@
+using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
@@ -24,7 +25,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options)
+        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
         {
             if (element is ZplTextField textField)
             {
@@ -52,7 +53,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 string displayText = textField.Text;
                 if (textField.HexadecimalIndicator is char hexIndicator)
                 {
-                    displayText = displayText.ReplaceHexEscapes(hexIndicator);
+                    displayText = displayText.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
                 if (options.ReplaceDashWithEnDash)
