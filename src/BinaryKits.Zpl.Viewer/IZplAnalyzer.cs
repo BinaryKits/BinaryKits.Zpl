@@ -1,6 +1,6 @@
 ﻿using BinaryKits.Zpl.Viewer.Models;
 
-namespace Application.UseCase.ZplToPdf
+namespace BinaryKits.Zpl.Viewer
 {
     public interface IZplAnalyzer
     {
