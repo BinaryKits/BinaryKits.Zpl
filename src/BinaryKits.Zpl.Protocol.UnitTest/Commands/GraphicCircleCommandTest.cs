@@ -47,17 +47,17 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidCircleDiameter_Exception()
         {
-            new GraphicCircleCommand(1);
+            Assert.Throws<ArgumentException>(() => 
+                new GraphicCircleCommand(1));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidBorderThickness_Exception()
         {
-            new GraphicCircleCommand(3, 5000);
+            Assert.Throws<ArgumentException>(() => 
+                new GraphicCircleCommand(3, 5000));
         }
 
         [TestMethod]

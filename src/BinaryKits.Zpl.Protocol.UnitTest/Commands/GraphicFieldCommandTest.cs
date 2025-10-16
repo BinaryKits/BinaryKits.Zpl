@@ -31,45 +31,45 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_BinaryByteCountTooLow_Exception()
         {
-            new GraphicFieldCommand('A', 0, 1, 1, "AB");
+            Assert.Throws<ArgumentException>(() => 
+                new GraphicFieldCommand('A', 0, 1, 1, "AB"));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_BinaryByteCountTooHigh_Exception()
         {
-            new GraphicFieldCommand('A', 100000, 1, 1, "AB");
+            Assert.Throws<ArgumentException>(() => 
+                new GraphicFieldCommand('A', 100000, 1, 1, "AB"));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_GraphicFieldCountTooLow_Exception()
         {
-            new GraphicFieldCommand('A', 1, 0, 1, "AB");
+            Assert.Throws<ArgumentException>(() => 
+                new GraphicFieldCommand('A', 1, 0, 1, "AB"));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_GraphicFieldCountTooHigh_Exception()
         {
-            new GraphicFieldCommand('A', 1, 100000, 1, "AB");
+            Assert.Throws<ArgumentException>(() => 
+                new GraphicFieldCommand('A', 1, 100000, 1, "AB"));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_BytesPerRowTooLow_Exception()
         {
-            new GraphicFieldCommand('A', 1, 1, 0, "AB");
+            Assert.Throws<ArgumentException>(() => 
+                new GraphicFieldCommand('A', 1, 1, 0, "AB"));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_BytesPerRowTooHigh_Exception()
         {
-            new GraphicFieldCommand('A', 1, 1, 100000, "AB");
+            Assert.Throws<ArgumentException>(() => 
+                new GraphicFieldCommand('A', 1, 1, 100000, "AB"));
         }
 
         [TestMethod]

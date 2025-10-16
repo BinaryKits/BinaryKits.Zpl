@@ -39,17 +39,17 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_WidthMinus10Height1_Exception()
         {
-            new GraphicBoxCommand(-10, 1);
+            Assert.Throws<ArgumentException>(() => 
+                new GraphicBoxCommand(-10, 1));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_Widht1HeightMinus10_Exception()
         {
-            new GraphicBoxCommand(1, -10);
+            Assert.Throws<ArgumentException>(() => 
+                new GraphicBoxCommand(1, -10));
         }
 
         [TestMethod]

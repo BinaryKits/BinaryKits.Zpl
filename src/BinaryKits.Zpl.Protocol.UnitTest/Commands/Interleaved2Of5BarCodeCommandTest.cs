@@ -39,17 +39,17 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidBarCodeHeight1_Exception()
         {
-            new Interleaved2Of5BarCodeCommand(barCodeHeight: 0);
+            Assert.Throws<ArgumentException>(() => 
+                new Interleaved2Of5BarCodeCommand(barCodeHeight: 0));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidBarCodeHeight2_Exception()
         {
-            new Interleaved2Of5BarCodeCommand(barCodeHeight: 33000);
+            Assert.Throws<ArgumentException>(() => 
+                new Interleaved2Of5BarCodeCommand(barCodeHeight: 33000));
         }
 
         [TestMethod]
