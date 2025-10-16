@@ -31,31 +31,31 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidDeviceToStoreImage1_Exception()
         {
-            new DownloadGraphicsCommand("R", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
+            Assert.Throws<ArgumentException>(() => 
+                new DownloadGraphicsCommand("R", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00"));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidDeviceToStoreImage2_Exception()
         {
-            new DownloadGraphicsCommand("R2", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
+            Assert.Throws<ArgumentException>(() => 
+                new DownloadGraphicsCommand("R2", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00"));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidDeviceToStoreImage3_Exception()
         {
-            new DownloadGraphicsCommand("R2", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
+            Assert.Throws<ArgumentException>(() => 
+                new DownloadGraphicsCommand("R2", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00"));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidDeviceToStoreImage4_Exception()
         {
-            new DownloadGraphicsCommand("Z:", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00");
+            Assert.Throws<ArgumentException>(() => 
+                new DownloadGraphicsCommand("Z:", "TEST", 10, 5, "0000FFFFFFFFFFFFFF00"));
         }
 
         [TestMethod]

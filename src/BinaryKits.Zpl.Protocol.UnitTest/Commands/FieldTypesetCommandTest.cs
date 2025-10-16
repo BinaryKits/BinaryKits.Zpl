@@ -39,17 +39,17 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_XMinus10Y0_Exception()
         {
-            new FieldTypesetCommand(-10, 0);
+            Assert.Throws<ArgumentException>(() => 
+                new FieldTypesetCommand(-10, 0));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_X0YMinus10_Exception()
         {
-            new FieldTypesetCommand(0, -10);
+            Assert.Throws<ArgumentException>(() => 
+                new FieldTypesetCommand(0, -10));
         }
 
         [TestMethod]

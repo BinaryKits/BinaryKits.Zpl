@@ -21,7 +21,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
         public void WrongTypeElement()
         {
             var data = new ZplReferenceGrid();
-            Assert.ThrowsException<ArgumentException>(() => new ZplFieldNumber(100, data).ToZplString());
+            Assert.Throws<ArgumentException>(() => new ZplFieldNumber(100, data).ToZplString());
         }
     }
 }

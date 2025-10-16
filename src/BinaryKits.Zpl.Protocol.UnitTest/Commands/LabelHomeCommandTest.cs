@@ -39,17 +39,17 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_XMinus10Y0_Exception()
         {
-            new LabelHomeCommand(-10, 0);
+            Assert.Throws<ArgumentException>(() => 
+                new LabelHomeCommand(-10, 0));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_X0YMinus10_Exception()
         {
-            new LabelHomeCommand(0, -10);
+            Assert.Throws<ArgumentException>(() => 
+                new LabelHomeCommand(0, -10));
         }
 
         [TestMethod]

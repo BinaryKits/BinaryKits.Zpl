@@ -31,17 +31,17 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidIndividualCharacterHeight_Exception()
         {
-            new ChangeAlphanumericDefaultFontCommand('A', 600000);
+            Assert.Throws<ArgumentException>(() => 
+                new ChangeAlphanumericDefaultFontCommand('A', 600000));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidIndividualCharacterWidth_Exception()
         {
-            new ChangeAlphanumericDefaultFontCommand('A', 1, 600000);
+            Assert.Throws<ArgumentException>(() => 
+                new ChangeAlphanumericDefaultFontCommand('A', 1, 600000));
         }
 
         [TestMethod]

@@ -23,31 +23,31 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_MaximumNumberOfLinesInTextBlockMin_Exception()
         {
-            new FieldBlockCommand(maximumNumberOfLinesInTextBlock: 0);
+            Assert.Throws<ArgumentException>(() => 
+                new FieldBlockCommand(maximumNumberOfLinesInTextBlock: 0));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_MaximumNumberOfLinesInTextBlockMax_Exception()
         {
-            new FieldBlockCommand(maximumNumberOfLinesInTextBlock: 10000);
+            Assert.Throws<ArgumentException>(() => 
+                new FieldBlockCommand(maximumNumberOfLinesInTextBlock: 10000));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_AddOrDeleteSpaceBetweenLinesMin_Exception()
         {
-            new FieldBlockCommand(addOrDeleteSpaceBetweenLines: -10000);
+            Assert.Throws<ArgumentException>(() => 
+                new FieldBlockCommand(addOrDeleteSpaceBetweenLines: -10000));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_AddOrDeleteSpaceBetweenLinesMax_Exception()
         {
-            new FieldBlockCommand(addOrDeleteSpaceBetweenLines: 10000);
+            Assert.Throws<ArgumentException>(() => 
+                new FieldBlockCommand(addOrDeleteSpaceBetweenLines: 10000));
         }
 
         [TestMethod]
