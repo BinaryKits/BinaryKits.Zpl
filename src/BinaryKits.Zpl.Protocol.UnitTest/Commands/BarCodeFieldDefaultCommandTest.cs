@@ -23,17 +23,21 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidModuleWidth1_Exception()
         {
-            new BarCodeFieldDefaultCommand(0, 3, 10);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                new BarCodeFieldDefaultCommand(0, 3, 10);
+            });
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidModuleWidth2_Exception()
         {
-            new BarCodeFieldDefaultCommand(11, 3, 10);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                new BarCodeFieldDefaultCommand(11, 3, 10);
+            });
         }
 
         [TestMethod]

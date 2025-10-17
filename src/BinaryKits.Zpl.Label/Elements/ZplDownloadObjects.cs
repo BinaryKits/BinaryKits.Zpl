@@ -54,6 +54,11 @@ namespace BinaryKits.Zpl.Label.Elements
 
                 using (var ms = new MemoryStream())
                 {
+                    //ImageSharp v3 workaround. 
+#if NET6_0_OR_GREATER
+                    PngMetadata metadata = image.Metadata.GetPngMetadata();
+                    metadata.ColorTable = null;
+#endif
                     image.Save(ms, new PngEncoder());
                     objectData = ms.ToArray();
                 }

@@ -68,7 +68,7 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             Assert.AreEqual("P", command.ExtensionOfStoredFile);
             Assert.AreEqual(4, command.TotalNumberOfBytesInFile);
             Assert.AreEqual(2, command.TotalNumberOfBytesPerRow);
-            Assert.AreEqual(null, command.Data);
+            Assert.IsNull(command.Data);
         }
 
         [TestMethod]
@@ -79,10 +79,10 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             Assert.AreEqual("R:", command.StorageDevice);
             Assert.AreEqual("UNKNOWN", command.FileName);
             Assert.AreEqual(char.MinValue, command.FormatDownloadedInDataField);
-            Assert.AreEqual(null, command.ExtensionOfStoredFile);
+            Assert.IsNull(command.ExtensionOfStoredFile);
             Assert.AreEqual(0, command.TotalNumberOfBytesInFile);
             Assert.AreEqual(0, command.TotalNumberOfBytesPerRow);
-            Assert.AreEqual(null, command.Data);
+            Assert.IsNull(command.Data);
         }
     }
 }
