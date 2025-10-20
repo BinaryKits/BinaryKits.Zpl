@@ -44,7 +44,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplGraphicBox graphicBox)
             {
@@ -79,6 +79,15 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     border1 = 1;
                 }
 
+                float baseX = graphicBox.PositionX;
+                float baseY = graphicBox.PositionY;
+
+                if (graphicBox.UseDefaultPosition)
+                {
+                    baseX = currentPosition.X;
+                    baseY = currentPosition.Y;
+                }
+
                 //if the border is thick, the rounding is off, so we need to build that for each increment
                 var lastPrintedBorder = border1;
                 for (var border2 = border1; border2 >= 1; border2--)
@@ -94,8 +103,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     var offsetX = border2 / 2.0f;
                     var offsetY = border2 / 2.0f;
 
-                    var x = graphicBox.PositionX + offsetX;
-                    var y = graphicBox.PositionY + offsetY;
+                    var x = baseX + offsetX;
+                    var y = baseY + offsetY;
 
                     if (graphicBox.FieldTypeset != null)
                     {
@@ -135,13 +144,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         }
                         
                         this._skCanvas.DrawRect(x, y, width, height, skPaint);
-                        return;
+                        // Calculate next position based on box dimensions
+                        return this.CalculateNextDefaultPosition(baseX, baseY, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
                     }
 
                     this._skCanvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, skPaint);
-                    this.UpdateNextDefaultPosition(x, y, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, options);
                 }
+
+                // Calculate next position based on box dimensions
+                return this.CalculateNextDefaultPosition(baseX, baseY, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
             }
+            
+            return currentPosition;
         }
     }
 }

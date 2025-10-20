@@ -40,41 +40,38 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public virtual void Draw(ZplElementBase element)
+        public virtual SKPoint Draw(ZplElementBase element)
         {
-            Draw(element, new DrawerOptions());
+            return Draw(element, new DrawerOptions(), InternationalFont.ZCP850, new SKPoint(0, 0));
         }
 
         ///<inheritdoc/>
-        public virtual void Draw(ZplElementBase element, DrawerOptions options = null)
+        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options)
         {
-            Draw(element);  // Most element just ignore the context
+            return Draw(element, options, InternationalFont.ZCP850, new SKPoint(0, 0));
         }
 
         ///<inheritdoc/>
-        public virtual void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont = InternationalFont.ZCP850)
+        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             Draw(element, options);
+            return currentPosition;
         }
 
-        protected virtual void UpdateNextDefaultPosition(float x, float y, float elementWidth, float elementHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, DrawerOptions options)
+        protected virtual SKPoint CalculateNextDefaultPosition(float x, float y, float elementWidth, float elementHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, SKPoint currentPosition)
         {
             if (useFieldOrigin)
             {
                 switch (fieldOrientation)
                 {
                     case Label.FieldOrientation.Normal:
-                        options.NextDefaultFieldPosition = new SKPoint(x + elementWidth, y + elementHeight);
-                        break;
+                        return new SKPoint(x + elementWidth, y + elementHeight);
                     case Label.FieldOrientation.Rotated90:
-                        options.NextDefaultFieldPosition = new SKPoint(x, y + elementHeight);
-                        break;
+                        return new SKPoint(x, y + elementHeight);
                     case Label.FieldOrientation.Rotated180:
-                        options.NextDefaultFieldPosition = new SKPoint(x - elementWidth, y);
-                        break;
+                        return new SKPoint(x - elementWidth, y);
                     case Label.FieldOrientation.Rotated270:
-                        options.NextDefaultFieldPosition = new SKPoint(x, y - elementHeight);
-                        break;
+                        return new SKPoint(x, y - elementHeight);
                 }
             }
             else
@@ -82,19 +79,17 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 switch (fieldOrientation)
                 {
                     case Label.FieldOrientation.Normal:
-                        options.NextDefaultFieldPosition = new SKPoint(x + elementWidth, y);
-                        break;
+                        return new SKPoint(x + elementWidth, y);
                     case Label.FieldOrientation.Rotated90:
-                        options.NextDefaultFieldPosition = new SKPoint(x, y + elementWidth);
-                        break;
+                        return new SKPoint(x, y + elementWidth);
                     case Label.FieldOrientation.Rotated180:
-                        options.NextDefaultFieldPosition = new SKPoint(x - elementWidth, y);
-                        break;
+                        return new SKPoint(x - elementWidth, y);
                     case Label.FieldOrientation.Rotated270:
-                        options.NextDefaultFieldPosition = new SKPoint(x, y - elementWidth);
-                        break;
+                        return new SKPoint(x, y - elementWidth);
                 }
             }
+            
+            return currentPosition;
         }
     }
 }

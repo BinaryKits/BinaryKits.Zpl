@@ -50,20 +50,24 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// Draw the element
         /// </summary>
         /// <param name="element"></param>
-        void Draw(ZplElementBase element);
+        /// <returns>The updated default field position after drawing this element</returns>
+        SKPoint Draw(ZplElementBase element);
 
         /// <summary>
         /// Draw the element with extra context information
         /// </summary>
         /// <param name="element"></param>
         /// <param name="options"></param>
-        void Draw(ZplElementBase element, DrawerOptions options);
+        /// <returns>The updated default field position after drawing this element</returns>
+        SKPoint Draw(ZplElementBase element, DrawerOptions options);
 
         /// <summary>
         /// Draw the element with extra context information
         /// </summary>
         /// <param name="element"></param>
         /// <param name="options"></param>
-        void Draw(ZplElementBase element, DrawerOptions options, InternationalFont international);
+        /// <param name="currentPosition">The current default field position for elements using default positioning</param>
+        /// <returns>The updated default field position after drawing this element</returns>
+        SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont international, SKPoint currentPosition);
     }
 }

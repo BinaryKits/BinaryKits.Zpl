@@ -20,18 +20,17 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplBarcode39 barcode)
             {
                 float x = barcode.PositionX;
                 float y = barcode.PositionY;
 
-                // Handle default positioning for ^FT commands without coordinates
                 if (barcode.UseDefaultPosition)
                 {
-                    x = options.NextDefaultFieldPosition.X;
-                    y = options.NextDefaultFieldPosition.Y;
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
                 }
 
                 var content = barcode.Content.Trim('*');
@@ -59,8 +58,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
                 }
 
-                this.UpdateNextDefaultPosition(x,y,resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, options);
+                return this.CalculateNextDefaultPosition(x,y,resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, currentPosition);
             }
+            
+            return currentPosition;
         }
     }
 }

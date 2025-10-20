@@ -132,6 +132,7 @@ namespace BinaryKits.Zpl.Viewer
             //make sure to have a transparent canvas for SKBlendMode.Xor to work properly
             skCanvas.Clear(SKColors.Transparent);
             InternationalFont internationalFont = InternationalFont.ZCP850;
+            SKPoint currentDefaultPosition = new SKPoint(0, 0);
 
             foreach (var element in elements)
             {
@@ -173,7 +174,7 @@ namespace BinaryKits.Zpl.Viewer
                         skCanvasInvert.Clear(SKColors.Transparent);
 
                         drawer.Prepare(this._printerStorage, skCanvasInvert);
-                        drawer.Draw(element, _drawerOptions, internationalFont);
+                        currentDefaultPosition = drawer.Draw(element, _drawerOptions, internationalFont, currentDefaultPosition);
 
                         //save state before inverted draw
                         if (this._drawerOptions.PdfOutput == true)
@@ -195,7 +196,7 @@ namespace BinaryKits.Zpl.Viewer
                     }
 
                     drawer.Prepare(this._printerStorage, skCanvas);
-                    drawer.Draw(element, _drawerOptions, internationalFont);
+                    currentDefaultPosition = drawer.Draw(element, _drawerOptions, internationalFont, currentDefaultPosition);
 
                     continue;
                 }

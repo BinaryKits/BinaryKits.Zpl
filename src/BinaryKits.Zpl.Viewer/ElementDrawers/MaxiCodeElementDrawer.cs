@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
+using SkiaSharp;
 using System;
 using System.IO;
 using BinaryKits.Zpl.Label;
@@ -23,30 +24,43 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplMaxiCode maxiCode)
             {
 #if WINDOWS
-                DrawMaxiCode(maxiCode, internationalFont);
+                return DrawMaxiCode(maxiCode, internationalFont, currentPosition);
+#else
+                return currentPosition;
 #endif
             }
+            
+            return currentPosition;
         }
 
 #if WINDOWS
-        private void DrawMaxiCode(ZplMaxiCode maxiCode, InternationalFont internationalFont)
-        {
-            var maxiBarcode = new ZintNetLib();
-            maxiBarcode.MaxicodeMode = ConvertMaxiCodeMode(maxiCode.Mode);
-            var content = maxiCode.Content;
+private SKPoint DrawMaxiCode(ZplMaxiCode maxiCode, InternationalFont internationalFont, SKPoint currentPosition)
+{
+    float x = maxiCode.PositionX;
+    float y = maxiCode.PositionY;
+
+    if (maxiCode.UseDefaultPosition)
+    {
+        x = currentPosition.X;
+        y = currentPosition.Y;
+    }
+
+    var maxiBarcode = new ZintNetLib();
+    maxiBarcode.MaxicodeMode = ConvertMaxiCodeMode(maxiCode.Mode);
+    var content = maxiCode.Content;
             
-            try
-            {
-                //replace hex items before mode 2 and mode 3 specific string manipulation 
-                if (maxiCode.HexadecimalIndicator is char hexIndicator)
-                {
-                    content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
-                }
+    try
+    {
+        //replace hex items before mode 2 and mode 3 specific string manipulation 
+        if (maxiCode.HexadecimalIndicator is char hexIndicator)
+        {
+            content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
+        }
                 
                 if (maxiCode.Mode == 2)
                 {
@@ -149,8 +163,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                     this.DrawBarcode(
                         data,
-                        maxiCode.PositionX,
-                        maxiCode.PositionY,
+                        x,
+                        y,
                         section.Width,
                         section.Height,
                         true,
@@ -158,16 +172,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     );
                 }
 
-                this.UpdateNextDefaultPosition(
-                    maxiCode.PositionX,
-                    maxiCode.PositionY,
+                return this.CalculateNextDefaultPosition(
+                    x,
+                    y,
                     section.Width,
                     section.Height,
                     true,
                     Label.FieldOrientation.Normal,
-                    new DrawerOptions()
+                    currentPosition
                 );
             }
+            
+            return currentPosition;
         }
         private MaxicodeMode ConvertMaxiCodeMode(int mode)
         {

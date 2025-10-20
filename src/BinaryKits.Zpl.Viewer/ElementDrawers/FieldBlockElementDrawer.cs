@@ -35,7 +35,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplFieldBlock fieldBlock)
             {
@@ -77,11 +77,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = fieldBlock.PositionX;
                 float y = fieldBlock.PositionY + textBoundBaseline.Height;
 
-                // Handle default positioning for ^FT commands without coordinates
                 if (fieldBlock.UseDefaultPosition)
                 {
-                    x = options.NextDefaultFieldPosition.X;
-                    y = options.NextDefaultFieldPosition.Y + textBoundBaseline.Height;
+                    x = currentPosition.X;
+                    y = currentPosition.Y + textBoundBaseline.Height;
                 }
 
                 var textLines = WordWrap(text, skFont, fieldBlock.Width);
@@ -178,9 +177,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         y += lineHeight;
                     }
 
-                    this.UpdateNextDefaultPosition(fieldBlock.PositionX, fieldBlock.PositionY, fieldBlock.Width, totalHeight, fieldBlock.FieldOrigin != null, fieldBlock.Font.FieldOrientation, options);
+                    return this.CalculateNextDefaultPosition(fieldBlock.PositionX, fieldBlock.PositionY, fieldBlock.Width, totalHeight, fieldBlock.FieldOrigin != null, fieldBlock.Font.FieldOrientation, currentPosition);
                 }
             }
+            
+            return currentPosition;
         }
 
         private IEnumerable<string> WordWrap(string text, SKFont font, int maxWidth)

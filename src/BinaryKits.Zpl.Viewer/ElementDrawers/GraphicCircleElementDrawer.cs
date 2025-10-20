@@ -33,7 +33,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplGraphicCircle graphicCircle)
             {
@@ -62,8 +62,17 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var radiusMinusBorder = radius - halfBorderThickness;
                 var offset = halfBorderThickness + radiusMinusBorder;
 
-                var x = graphicCircle.PositionX + offset;
-                var y = graphicCircle.PositionY + offset;
+                float baseX = graphicCircle.PositionX;
+                float baseY = graphicCircle.PositionY;
+
+                if (graphicCircle.UseDefaultPosition)
+                {
+                    baseX = currentPosition.X;
+                    baseY = currentPosition.Y;
+                }
+
+                var x = baseX + offset;
+                var y = baseY + offset;
 
                 if (graphicCircle.FieldTypeset != null)
                 {
@@ -82,8 +91,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 this._skCanvas.DrawCircle(x, y, radiusMinusBorder, skPaint);
-                this.UpdateNextDefaultPosition(graphicCircle.PositionX, graphicCircle.PositionY, graphicCircle.Diameter, graphicCircle.Diameter, graphicCircle.FieldOrigin != null, FieldOrientation.Normal, options);
+                return this.CalculateNextDefaultPosition(baseX, baseY, graphicCircle.Diameter, graphicCircle.Diameter, graphicCircle.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
             }
+            
+            return currentPosition;
         }
     }
 }

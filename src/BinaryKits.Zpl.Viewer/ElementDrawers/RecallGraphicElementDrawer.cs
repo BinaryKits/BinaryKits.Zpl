@@ -1,3 +1,4 @@
+using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using SkiaSharp;
 
@@ -15,7 +16,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplRecallGraphic recallGraphic)
             {
@@ -23,11 +24,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 if (imageData.Length == 0)
                 {
-                    return;
+                    return currentPosition;
                 }
 
-                var x = recallGraphic.PositionX;
-                var y = recallGraphic.PositionY;
+                float x = recallGraphic.PositionX;
+                float y = recallGraphic.PositionY;
+
+                if (recallGraphic.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
+
                 var bitmap = SKBitmap.Decode(imageData);
                 if (recallGraphic.FieldTypeset != null)
                 {
@@ -35,8 +43,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 this._skCanvas.DrawBitmap(bitmap, x, y);
-                this.UpdateNextDefaultPosition(x, y, bitmap.Width * recallGraphic.MagnificationFactorX, bitmap.Height * recallGraphic.MagnificationFactorY, recallGraphic.FieldTypeset != null, Label.FieldOrientation.Normal, new DrawerOptions());
+
+                float width = bitmap.Width;
+                float height = bitmap.Height;
+                return this.CalculateNextDefaultPosition(x, y, width, height, recallGraphic.FieldOrigin != null, Label.FieldOrientation.Normal, currentPosition);
             }
+            
+            return currentPosition;
         }
     }
 }
