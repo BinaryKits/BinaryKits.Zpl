@@ -282,9 +282,17 @@ namespace BinaryKits.Zpl.Viewer
             var skCanvas = surface.Canvas;
             //This has an issue with AvaloniaUI making the window transparent. 
             skCanvas.Clear(SKColors.Transparent);
+            InternationalFont internationalFont = InternationalFont.ZCP850;
+            SKPoint currentDefaultPosition = new SKPoint(0, 0);
 
             foreach (var element in elements)
             {
+                if (element is ZplChangeInternationalFont changeFont)
+                {
+                    internationalFont = changeFont.InternationalFont;
+                    continue;
+                }
+
                 var drawer = this._elementDrawers.SingleOrDefault(o => o.CanDraw(element));
                 if (drawer == null)
                 {
@@ -301,7 +309,7 @@ namespace BinaryKits.Zpl.Viewer
                         skCanvasInvert.Clear(SKColors.Transparent);
 
                         drawer.Prepare(this._printerStorage, skCanvasInvert);
-                        drawer.Draw(element, _drawerOptions);
+                        currentDefaultPosition = drawer.Draw(element, _drawerOptions, internationalFont, currentDefaultPosition);
 
                         //use color inversion on an reverse draw white element
                         if (drawer.IsWhiteDraw(element))
@@ -317,7 +325,7 @@ namespace BinaryKits.Zpl.Viewer
                     }
 
                     drawer.Prepare(this._printerStorage, skCanvas);
-                    drawer.Draw(element, _drawerOptions);
+                    currentDefaultPosition = drawer.Draw(element, _drawerOptions, internationalFont, currentDefaultPosition);
 
                     continue;
                 }
