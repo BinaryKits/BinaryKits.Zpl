@@ -120,9 +120,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                     if (matrix != SKMatrix.Empty)
                     {
-                        var currentMatrix = _skCanvas.TotalMatrix;
-                        var concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
-                        this._skCanvas.SetMatrix(concatMatrix);
+                        this._skCanvas.Concat(matrix);
                     }
 
                     if (textField.FieldTypeset == null)

@@ -29,9 +29,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
                 if (matrix != SKMatrix.Empty)
                 {
-                    var currentMatrix = _skCanvas.TotalMatrix;
-                    var concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
-                    this._skCanvas.SetMatrix(concatMatrix);
+                    this._skCanvas.Concat(matrix);
                 }
                 this._skCanvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y);
             }
@@ -46,9 +44,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 SKMatrix matrix = this.GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
                 if (matrix != SKMatrix.Empty)
                 {
-                    var currentMatrix = _skCanvas.TotalMatrix;
-                    var concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
-                    this._skCanvas.SetMatrix(concatMatrix);
+                    this._skCanvas.Concat(matrix);
                 }
                 var textBounds = new SKRect();
                 skPaint.MeasureText(interpretation, ref textBounds);
