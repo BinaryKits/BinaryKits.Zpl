@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using ZXing;
 using ZXing.Datamatrix;
 using ZXing.Datamatrix.Encoder;
+using ZXing.QrCode.Internal;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -66,8 +67,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                     this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, dataMatrix.FieldOrigin != null, dataMatrix.FieldOrientation);
                 }
+
+                this.UpdateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, dataMatrix.FieldOrigin != null, dataMatrix.FieldOrientation, options);
             }
         }
-
     }
 }

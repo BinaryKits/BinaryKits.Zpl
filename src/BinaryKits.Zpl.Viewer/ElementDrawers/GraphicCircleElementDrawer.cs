@@ -82,6 +82,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 this._skCanvas.DrawCircle(x, y, radiusMinusBorder, skPaint);
+                this.UpdateNextDefaultPosition(graphicCircle.PositionX, graphicCircle.PositionY, graphicCircle.Diameter, graphicCircle.Diameter, graphicCircle.FieldOrigin != null, FieldOrientation.Normal, options);
             }
         }
     }

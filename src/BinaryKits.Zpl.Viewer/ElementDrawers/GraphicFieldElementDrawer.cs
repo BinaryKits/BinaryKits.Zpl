@@ -33,6 +33,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 this._skCanvas.DrawBitmap(image, x, y);
+                this.UpdateNextDefaultPosition(x, y, image.Width, image.Height, useFieldTypeset, Label.FieldOrientation.Normal, new DrawerOptions());
             }
         }
     }

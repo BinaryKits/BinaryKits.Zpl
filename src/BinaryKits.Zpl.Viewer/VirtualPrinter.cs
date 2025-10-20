@@ -32,6 +32,11 @@ namespace BinaryKits.Zpl.Viewer
         public string NextDownloadFormatName { get; private set; }
         public int? NextFieldNumber { get; private set; }
 
+        /// <summary>
+        /// Tracks if the next element should use default position (when ^FT coordinates are missing)
+        /// </summary>
+        public bool NextElementUseDefaultPosition { get; private set; }
+
         public VirtualPrinter()
         {
             this.BarcodeInfo = new BarcodeInfo();
@@ -41,11 +46,23 @@ namespace BinaryKits.Zpl.Viewer
         public void SetNextElementPosition(int x, int y, bool calculateFromBottom = false)
         {
             this.NextElementPosition = new LabelPosition(x, y, calculateFromBottom);
+            this.NextElementUseDefaultPosition = false;
+        }
+
+        public void SetNextElementUseDefaultPosition(bool useDefaultPosition = true)
+        {
+            this.NextElementUseDefaultPosition = useDefaultPosition;
         }
 
         public void ClearNextElementPosition()
         {
             this.NextElementPosition = new LabelPosition(0, 0, false);
+            this.NextElementUseDefaultPosition = false;
+        }
+
+        public void ClearNextElementUseDefaultPosition()
+        {
+            this.NextElementUseDefaultPosition = false;
         }
 
         public void SetNextElementFieldData(FieldDataBase fieldData)

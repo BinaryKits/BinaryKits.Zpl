@@ -33,6 +33,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float y = textField.PositionY;
                 var fieldJustification = Label.FieldJustification.None;
 
+                // Handle default positioning for ^FT commands without coordinates
+                if (textField.UseDefaultPosition)
+                {
+                    x = options.NextDefaultFieldPosition.X;
+                    y = options.NextDefaultFieldPosition.Y;
+                }
+
                 var font = textField.Font;
 
                 float fontSize = font.FontHeight > 0 ? font.FontHeight : font.FontWidth;
@@ -68,7 +75,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var textBounds = new SKRect();
                 var textBoundBaseline = new SKRect();
                 skPaint.MeasureText("X", ref textBoundBaseline);
-                skPaint.MeasureText(displayText, ref textBounds);
+                var totalWidth = skPaint.MeasureText(displayText, ref textBounds);
 
                 using (new SKAutoCanvasRestore(this._skCanvas))
                 {
@@ -149,6 +156,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                     this._skCanvas.DrawShapedText(displayText, x, y, skPaint);
 
+                    // Update the next default field position after rendering
+                    this.UpdateNextDefaultPosition(x, y, totalWidth, textBounds.Height, false, textField.Font.FieldOrientation, options);
                 }
             }
         }

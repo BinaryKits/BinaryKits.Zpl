@@ -32,18 +32,24 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             int y = 0;
             char? hexadecimalIndicator = this.VirtualPrinter.NextElementFieldHexadecimalIndicator;
             bool bottomToTop = false;
+            bool useDefaultPosition = this.VirtualPrinter.NextElementUseDefaultPosition;
             var fieldJustification = this.VirtualPrinter.NextElementFieldJustification;
             if (fieldJustification == FieldJustification.None)
             {
                 fieldJustification = this.VirtualPrinter.FieldJustification;
             }
 
-            if (this.VirtualPrinter.NextElementPosition != null)
+            if(useDefaultPosition)
+            {
+                bottomToTop = true;
+            }
+            else if (this.VirtualPrinter.NextElementPosition != null)
             {
                 x = this.VirtualPrinter.NextElementPosition.X;
                 y = this.VirtualPrinter.NextElementPosition.Y;
 
                 bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
+
             }
 
             if (this.VirtualPrinter.NextElementFieldData != null)
@@ -53,11 +59,13 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
                 if (this.VirtualPrinter.NextElementFieldData is Code39BarcodeFieldData code39)
                 {
-                    return new ZplBarcode39(text, x, y, code39.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code39.FieldOrientation, hexadecimalIndicator, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit, bottomToTop: bottomToTop);
+                    var barcode = new ZplBarcode39(text, x, y, code39.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code39.FieldOrientation, hexadecimalIndicator, code39.PrintInterpretationLine, code39.PrintInterpretationLineAboveCode, code39.Mod43CheckDigit, bottomToTop: bottomToTop, useDefaultPosition: useDefaultPosition);
+                    return barcode;
                 }
                 if (this.VirtualPrinter.NextElementFieldData is Code93BarcodeFieldData code93)
                 {
-                    return new ZplBarcode93(text, x, y, code93.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code93.FieldOrientation, hexadecimalIndicator, code93.PrintInterpretationLine, code93.PrintInterpretationLineAboveCode, code93.PrintCheckDigit, bottomToTop: bottomToTop);
+                    var barcode = new ZplBarcode93(text, x, y, code93.Height, moduleWidth, wideBarToNarrowBarWidthRatio, code93.FieldOrientation, hexadecimalIndicator, code93.PrintInterpretationLine, code93.PrintInterpretationLineAboveCode, code93.PrintCheckDigit, bottomToTop: bottomToTop, useDefaultPosition: useDefaultPosition);
+                    return barcode;
                 }
                 if (this.VirtualPrinter.NextElementFieldData is Code128BarcodeFieldData code128)
                 {
@@ -117,10 +125,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 int lineSpace = this.VirtualPrinter.NextElementFieldBlock.AddOrDeleteSpaceBetweenLines;
                 int hangingIndent = this.VirtualPrinter.NextElementFieldBlock.HangingIndentOfTheSecondAndRemainingLines;
 
-                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, hangingIndent, hexadecimalIndicator: hexadecimalIndicator, reversePrint: reversePrint, bottomToTop: bottomToTop);
+                return new ZplFieldBlock(text, x, y, width, font, maxLineCount, lineSpace, textJustification, hangingIndent, hexadecimalIndicator: hexadecimalIndicator, reversePrint: reversePrint, bottomToTop: bottomToTop, useDefaultPosition: useDefaultPosition);
             }
 
-            return new ZplTextField(text, x, y, font, hexadecimalIndicator: hexadecimalIndicator, reversePrint: reversePrint, bottomToTop: bottomToTop, fieldJustification: fieldJustification);
+            return new ZplTextField(text, x, y, font, hexadecimalIndicator: hexadecimalIndicator, reversePrint: reversePrint, bottomToTop: bottomToTop, fieldJustification: fieldJustification, useDefaultPosition: useDefaultPosition);
         }
 
         private (ErrorCorrectionLevel, string) ParseQrCodeFieldData(QrCodeBarcodeFieldData qrCode, string text)

@@ -103,6 +103,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                     this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, pdf417.FieldOrigin != null, pdf417.FieldOrientation);
                 }
+
+                this.UpdateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, pdf417.FieldOrigin != null, pdf417.FieldOrientation, options);
             }
         }
 

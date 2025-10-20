@@ -30,8 +30,9 @@ namespace BinaryKits.Zpl.Label.Elements
             NewLineConversionMethod newLineConversion = NewLineConversionMethod.ToZplNewLine,
             char? hexadecimalIndicator = null,
             bool reversePrint = false,
-            bool bottomToTop = false)
-            : base(text, positionX, positionY, font, newLineConversion, hexadecimalIndicator, reversePrint, bottomToTop)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(text, positionX, positionY, font, newLineConversion, hexadecimalIndicator, reversePrint, bottomToTop, useDefaultPosition: useDefaultPosition)
         {
             TextJustification = textJustification;
             Width = width;

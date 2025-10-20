@@ -157,6 +157,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         Label.FieldOrientation.Normal
                     );
                 }
+
+                this.UpdateNextDefaultPosition(
+                    maxiCode.PositionX,
+                    maxiCode.PositionY,
+                    section.Width,
+                    section.Height,
+                    true,
+                    Label.FieldOrientation.Normal,
+                    new DrawerOptions()
+                );
             }
         }
         private MaxicodeMode ConvertMaxiCodeMode(int mode)

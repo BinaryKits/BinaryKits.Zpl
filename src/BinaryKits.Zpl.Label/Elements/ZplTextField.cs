@@ -31,6 +31,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="reversePrint"></param>
         /// <param name="bottomToTop"></param>
         /// <param name="fieldJustification"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplTextField(
             string text,
             int positionX,
@@ -40,8 +41,8 @@ namespace BinaryKits.Zpl.Label.Elements
             char? hexadecimalIndicator = null,
             bool reversePrint = false,
             bool bottomToTop = false,
-            FieldJustification fieldJustification = FieldJustification.None)
-            : base(positionX, positionY, bottomToTop, fieldJustification)
+            FieldJustification fieldJustification = FieldJustification.None, bool useDefaultPosition = false)
+            : base(positionX, positionY, bottomToTop, fieldJustification,useDefaultPosition)
         {
             Text = text;
             Font = font;

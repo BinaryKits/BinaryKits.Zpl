@@ -14,17 +14,45 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             int tmpint;
             int x = 0;
             int y = 0;
+            bool useDefaultPosition = false;
             // TODO: Field Justification
             //int z = 0;
 
-            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
+            // Handle missing coordinates - when coordinates are missing, use default positioning
+            if (zplDataParts.Length == 0 || string.IsNullOrEmpty(zplDataParts[0]))
             {
-                x = tmpint;
+                // No coordinates specified - use default position
+                useDefaultPosition = true;
+            }
+            else
+            {
+                if (int.TryParse(zplDataParts[0], out tmpint))
+                {
+                    x = tmpint;
+                }
+                else
+                {
+                    // Empty or invalid x coordinate - use default position
+                    useDefaultPosition = true;
+                }
             }
 
-            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
+            if (zplDataParts.Length > 1 && !string.IsNullOrEmpty(zplDataParts[1]))
             {
-                y = tmpint;
+                if (int.TryParse(zplDataParts[1], out tmpint))
+                {
+                    y = tmpint;
+                }
+                else if (!useDefaultPosition)
+                {
+                    // Invalid y coordinate but x was valid - use default position
+                    useDefaultPosition = true;
+                }
+            }
+            else if (zplDataParts.Length > 1)
+            {
+                // Empty y coordinate - use default position
+                useDefaultPosition = true;
             }
 
             if (zplDataParts.Length > 2)
@@ -39,7 +67,14 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y += this.VirtualPrinter.LabelHomePosition.Y;
             }
 
-            this.VirtualPrinter.SetNextElementPosition(x, y, calculateFromBottom: true);
+            if (useDefaultPosition)
+            {
+                this.VirtualPrinter.SetNextElementUseDefaultPosition(true);
+            }
+            else
+            {
+                this.VirtualPrinter.SetNextElementPosition(x, y, calculateFromBottom: true);
+            }
 
             return null;
         }

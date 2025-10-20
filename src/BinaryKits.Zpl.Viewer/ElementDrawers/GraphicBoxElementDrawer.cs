@@ -139,6 +139,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
 
                     this._skCanvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, skPaint);
+                    this.UpdateNextDefaultPosition(x, y, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, options);
                 }
             }
         }

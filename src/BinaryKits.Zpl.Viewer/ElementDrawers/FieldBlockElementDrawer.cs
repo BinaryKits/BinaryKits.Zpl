@@ -77,6 +77,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = fieldBlock.PositionX;
                 float y = fieldBlock.PositionY + textBoundBaseline.Height;
 
+                // Handle default positioning for ^FT commands without coordinates
+                if (fieldBlock.UseDefaultPosition)
+                {
+                    x = options.NextDefaultFieldPosition.X;
+                    y = options.NextDefaultFieldPosition.Y + textBoundBaseline.Height;
+                }
+
                 var textLines = WordWrap(text, skFont, fieldBlock.Width);
                 var hangingIndent = 0;
                 var lineHeight = fontSize + fieldBlock.LineSpace;
@@ -170,6 +177,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         this._skCanvas.DrawShapedText(textLine, x, y, skPaint);
                         y += lineHeight;
                     }
+
+                    this.UpdateNextDefaultPosition(fieldBlock.PositionX, fieldBlock.PositionY, fieldBlock.Width, totalHeight, fieldBlock.FieldOrigin != null, fieldBlock.Font.FieldOrientation, options);
                 }
             }
         }

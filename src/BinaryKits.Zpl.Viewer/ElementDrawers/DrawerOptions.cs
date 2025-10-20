@@ -37,6 +37,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// </summary>
         public bool Antialias { get; set; } = true;
 
+        /// <summary>
+        /// Tracks the next default field position for ^FT commands without coordinates
+        /// </summary>
+        public SKPoint NextDefaultFieldPosition { get; set; } = new SKPoint(0, 0);
+
         private static readonly string[] fontStack0 = new string[] {
             "Swis721 Cn BT",
             "Nimbus Sans",

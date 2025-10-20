@@ -19,8 +19,9 @@ namespace BinaryKits.Zpl.Label.Elements
             int positionY,
             FieldOrientation fieldOrientation,
             char? hexadecimalIndicator,
-            bool bottomToTop)
-            : base(positionX, positionY, bottomToTop)
+            bool bottomToTop,
+            bool useDefaultPosition = false)
+            : base(positionX, positionY, bottomToTop, useDefaultPosition: useDefaultPosition)
         {
             Content = content;
             FieldOrientation = fieldOrientation;

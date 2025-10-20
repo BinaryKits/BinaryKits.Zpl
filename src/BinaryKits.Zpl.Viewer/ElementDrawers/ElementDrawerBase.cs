@@ -56,5 +56,45 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             Draw(element, options);
         }
+
+        protected virtual void UpdateNextDefaultPosition(float x, float y, float elementWidth, float elementHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, DrawerOptions options)
+        {
+            if (useFieldOrigin)
+            {
+                switch (fieldOrientation)
+                {
+                    case Label.FieldOrientation.Normal:
+                        options.NextDefaultFieldPosition = new SKPoint(x + elementWidth, y + elementHeight);
+                        break;
+                    case Label.FieldOrientation.Rotated90:
+                        options.NextDefaultFieldPosition = new SKPoint(x, y + elementHeight);
+                        break;
+                    case Label.FieldOrientation.Rotated180:
+                        options.NextDefaultFieldPosition = new SKPoint(x - elementWidth, y);
+                        break;
+                    case Label.FieldOrientation.Rotated270:
+                        options.NextDefaultFieldPosition = new SKPoint(x, y - elementHeight);
+                        break;
+                }
+            }
+            else
+            {
+                switch (fieldOrientation)
+                {
+                    case Label.FieldOrientation.Normal:
+                        options.NextDefaultFieldPosition = new SKPoint(x + elementWidth, y);
+                        break;
+                    case Label.FieldOrientation.Rotated90:
+                        options.NextDefaultFieldPosition = new SKPoint(x, y + elementWidth);
+                        break;
+                    case Label.FieldOrientation.Rotated180:
+                        options.NextDefaultFieldPosition = new SKPoint(x - elementWidth, y);
+                        break;
+                    case Label.FieldOrientation.Rotated270:
+                        options.NextDefaultFieldPosition = new SKPoint(x, y - elementWidth);
+                        break;
+                }
+            }
+        }
     }
 }

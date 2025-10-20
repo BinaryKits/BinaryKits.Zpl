@@ -24,6 +24,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="printInterpretationLineAboveCode"></param>
         /// <param name="mod43CheckDigit"></param>
         /// <param name="bottomToTop"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplBarcode39(
             string content,
             int positionX,
@@ -36,7 +37,8 @@ namespace BinaryKits.Zpl.Label.Elements
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
             bool mod43CheckDigit = false,
-            bool bottomToTop = false)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
             : base(content,
                   positionX,
                   positionY,
@@ -47,7 +49,8 @@ namespace BinaryKits.Zpl.Label.Elements
                   hexadecimalIndicator,
                   printInterpretationLine,
                   printInterpretationLineAboveCode,
-                  bottomToTop)
+                  bottomToTop,
+                  useDefaultPosition)
         {
             Mod43CheckDigit = mod43CheckDigit;
         }

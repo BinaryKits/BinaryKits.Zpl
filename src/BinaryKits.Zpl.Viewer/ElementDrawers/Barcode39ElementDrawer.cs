@@ -27,6 +27,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = barcode.PositionX;
                 float y = barcode.PositionY;
 
+                // Handle default positioning for ^FT commands without coordinates
+                if (barcode.UseDefaultPosition)
+                {
+                    x = options.NextDefaultFieldPosition.X;
+                    y = options.NextDefaultFieldPosition.Y;
+                }
+
                 var content = barcode.Content.Trim('*');
                 if(barcode.HexadecimalIndicator is char hexIndicator)
                 {
@@ -51,6 +58,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     var labelFont = new SKFont(labelTypeFace, labelFontSize);
                     this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
                 }
+
+                this.UpdateNextDefaultPosition(x,y,resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, options);
             }
         }
     }

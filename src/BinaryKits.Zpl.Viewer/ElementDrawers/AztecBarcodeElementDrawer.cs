@@ -5,6 +5,7 @@ using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 
 using ZXing.Aztec;
+using ZXing.QrCode.Internal;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -59,6 +60,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 using var resizedImage = this.BitMatrixToSKBitmap(result, aztecBarcode.MagnificationFactor);
                 var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation);
+                this.UpdateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation, options);
             }
         }
     }

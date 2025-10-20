@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ZXing.Common;
+using ZXing.QrCode.Internal;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -17,79 +18,54 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// </summary>
         protected const float MIN_LABEL_MARGIN = 5f;
 
-        protected void DrawBarcode(
-            byte[] barcodeImageData,
-            float x,
-            float y,
-            int barcodeWidth,
-            int barcodeHeight,
-            bool useFieldOrigin,
-            Label.FieldOrientation fieldOrientation)
+        protected void DrawBarcode(byte[] barcodeImageData, float x, float y, int barcodeWidth, int barcodeHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation)
         {
             using (new SKAutoCanvasRestore(this._skCanvas))
             {
                 SKMatrix matrix = this.GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
-
                 if (!useFieldOrigin)
                 {
                     y -= barcodeHeight;
                 }
-
                 if (matrix != SKMatrix.Empty)
                 {
                     var currentMatrix = _skCanvas.TotalMatrix;
                     var concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
                     this._skCanvas.SetMatrix(concatMatrix);
                 }
-
                 this._skCanvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y);
             }
         }
 
-        protected void DrawInterpretationLine(
-            string interpretation,
-            SKFont skFont,
-            float x,
-            float y,
-            int barcodeWidth,
-            int barcodeHeight,
-            bool useFieldOrigin,
-            Label.FieldOrientation fieldOrientation,
-            bool printInterpretationLineAboveCode,
-            DrawerOptions options)
+        protected void DrawInterpretationLine(string interpretation, SKFont skFont, float x, float y, int barcodeWidth, int barcodeHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, bool printInterpretationLineAboveCode, DrawerOptions options)
         {
             using (new SKAutoCanvasRestore(this._skCanvas))
             {
                 using var skPaint = new SKPaint(skFont);
                 skPaint.IsAntialias = options.Antialias;
-
                 SKMatrix matrix = this.GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
-
                 if (matrix != SKMatrix.Empty)
                 {
                     var currentMatrix = _skCanvas.TotalMatrix;
                     var concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
                     this._skCanvas.SetMatrix(concatMatrix);
                 }
-
                 var textBounds = new SKRect();
                 skPaint.MeasureText(interpretation, ref textBounds);
-
                 x += (barcodeWidth - textBounds.Width) / 2;
                 if (!useFieldOrigin)
                 {
                     y -= barcodeHeight;
                 }
-
                 float margin = Math.Max((skFont.Spacing - textBounds.Height) / 2, MIN_LABEL_MARGIN);
-
                 if (printInterpretationLineAboveCode)
                 {
                     this._skCanvas.DrawShapedText(interpretation, x, y - margin, skPaint);
                 }
                 else
                 {
-                    this._skCanvas.DrawShapedText(interpretation, x, y + barcodeHeight + textBounds.Height + margin, skPaint);
+                    this._skCanvas
+                        .DrawShapedText(interpretation, x, y + barcodeHeight + textBounds.Height + margin, skPaint);
                 }
             }
         }
@@ -97,7 +73,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         protected SKMatrix GetRotationMatrix(float x, float y, int width, int height, bool useFieldOrigin, Label.FieldOrientation fieldOrientation)
         {
             SKMatrix matrix = SKMatrix.Empty;
-
             if (useFieldOrigin)
             {
                 switch (fieldOrientation)
@@ -132,27 +107,23 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         break;
                 }
             }
-
             return matrix;
         }
 
         protected SKBitmap BoolArrayToSKBitmap(bool[] array, int height, int moduleWidth = 1)
         {
             using var image = new SKBitmap(array.Length, 1);
-
             for (int col = 0; col < array.Length; col++)
             {
                 var color = array[col] ? SKColors.Black : SKColors.Transparent;
                 image.SetPixel(col, 0, color);
             }
-
             return image.Resize(new SKSizeI(image.Width * moduleWidth, height), SKFilterQuality.None);
         }
 
         protected SKBitmap BitMatrixToSKBitmap(BitMatrix matrix, int pixelScale)
         {
             using var image = new SKBitmap(matrix.Width, matrix.Height);
-
             for (int row = 0; row < matrix.Height; row++)
             {
                 for (int col = 0; col < matrix.Width; col++)
@@ -161,7 +132,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     image.SetPixel(col, row, color);
                 }
             }
-
             return image.Resize(new SKSizeI(image.Width * pixelScale, image.Height * pixelScale), SKFilterQuality.None);
         }
 
@@ -178,12 +148,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     last = current;
                     count = 0;
                 }
-
                 count += 1;
             }
-
             result.AddRange(Enumerable.Repeat<bool>(last, narrow));
-
             return result.ToArray();
         }
     }

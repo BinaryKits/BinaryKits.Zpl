@@ -29,7 +29,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var x = imageMove.PositionX;
                 var y = imageMove.PositionY;
 
-                this._skCanvas.DrawBitmap(SKBitmap.Decode(imageData), x, y);
+                var bitmap = SKBitmap.Decode(imageData);
+                this._skCanvas.DrawBitmap(bitmap, x, y);
+                this.UpdateNextDefaultPosition(x, y, bitmap.Width, bitmap.Height, imageMove.FieldOrigin != null, Label.FieldOrientation.Normal, new DrawerOptions());
             }
         }
     }

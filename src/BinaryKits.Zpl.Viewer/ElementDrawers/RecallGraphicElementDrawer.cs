@@ -35,6 +35,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 this._skCanvas.DrawBitmap(bitmap, x, y);
+                this.UpdateNextDefaultPosition(x, y, bitmap.Width * recallGraphic.MagnificationFactorX, bitmap.Height * recallGraphic.MagnificationFactorY, recallGraphic.FieldTypeset != null, Label.FieldOrientation.Normal, new DrawerOptions());
             }
         }
     }
