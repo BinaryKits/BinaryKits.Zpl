@@ -40,22 +40,21 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public virtual SKPoint Draw(ZplElementBase element)
+        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition)
         {
-            return Draw(element, new DrawerOptions(), InternationalFont.ZCP850, new SKPoint(0, 0));
-        }
-
-        ///<inheritdoc/>
-        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options)
-        {
-            return Draw(element, options, InternationalFont.ZCP850, new SKPoint(0, 0));
-        }
-
-        ///<inheritdoc/>
-        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
-        {
-            Draw(element, options);
             return currentPosition;
+        }
+
+        ///<inheritdoc/>
+        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        {
+            return Draw(element, options, currentPosition);
+        }
+
+        ///<inheritdoc/>
+        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
+        {
+            return Draw(element, options, currentPosition, internationalFont);
         }
 
         protected virtual SKPoint CalculateNextDefaultPosition(float x, float y, float elementWidth, float elementHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, SKPoint currentPosition)
@@ -91,5 +90,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             
             return currentPosition;
         }
+
     }
 }

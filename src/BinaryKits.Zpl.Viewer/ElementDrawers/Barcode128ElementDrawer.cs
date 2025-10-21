@@ -21,7 +21,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplBarcode128 barcode)
             {
@@ -68,7 +68,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 var (data, interpretation) = ZplCode128Symbology.Encode(content, codeSet, gs1);
-                using var resizedImage = this.BoolArrayToSKBitmap(data.ToArray(), barcode.Height, barcode.ModuleWidth);
+                using var resizedImage = this.BoolArrayToSKBitmap(data, barcode.Height, barcode.ModuleWidth);
                 var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation);
 
