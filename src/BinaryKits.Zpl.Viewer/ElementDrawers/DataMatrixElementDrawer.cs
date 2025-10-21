@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using ZXing;
 using ZXing.Datamatrix;
 using ZXing.Datamatrix.Encoder;
+using ZXing.QrCode.Internal;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -24,7 +25,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplDataMatrix dataMatrix)
             {
@@ -36,6 +37,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 float x = dataMatrix.PositionX;
                 float y = dataMatrix.PositionY;
+
+                if (dataMatrix.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
 
                 var content = dataMatrix.Content;
                 if(dataMatrix.HexadecimalIndicator is char hexIndicator)
@@ -66,8 +73,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                     this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, dataMatrix.FieldOrigin != null, dataMatrix.FieldOrientation);
                 }
-            }
-        }
 
+                return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, dataMatrix.FieldOrigin != null, dataMatrix.FieldOrientation, currentPosition);
+            }
+            
+            return currentPosition;
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplPDF417 pdf417)
             {
@@ -45,6 +45,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 float x = pdf417.PositionX;
                 float y = pdf417.PositionY;
+
+                if (pdf417.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
 
                 int mincols, maxcols, minrows, maxrows;
                 if (pdf417.Rows != null)
@@ -103,7 +109,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                     this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, pdf417.FieldOrigin != null, pdf417.FieldOrientation);
                 }
+
+                return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, pdf417.FieldOrigin != null, pdf417.FieldOrientation, currentPosition);
             }
+            
+            return currentPosition;
         }
 
         // bitmatrix scaling instead of bitmap

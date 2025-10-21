@@ -35,7 +35,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplFieldBlock fieldBlock)
             {
@@ -76,6 +76,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 float x = fieldBlock.PositionX;
                 float y = fieldBlock.PositionY + textBoundBaseline.Height;
+
+                if (fieldBlock.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y + textBoundBaseline.Height;
+                }
 
                 var textLines = WordWrap(text, skFont, fieldBlock.Width);
                 var hangingIndent = 0;
@@ -170,8 +176,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         this._skCanvas.DrawShapedText(textLine, x, y, skPaint);
                         y += lineHeight;
                     }
+
+                    return this.CalculateNextDefaultPosition(fieldBlock.PositionX, fieldBlock.PositionY, fieldBlock.Width, totalHeight, fieldBlock.FieldOrigin != null, fieldBlock.Font.FieldOrientation, currentPosition);
                 }
             }
+            
+            return currentPosition;
         }
 
         private IEnumerable<string> WordWrap(string text, SKFont font, int maxWidth)

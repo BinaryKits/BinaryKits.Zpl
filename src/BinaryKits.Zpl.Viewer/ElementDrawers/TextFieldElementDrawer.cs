@@ -25,13 +25,19 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplTextField textField)
             {
                 float x = textField.PositionX;
                 float y = textField.PositionY;
                 var fieldJustification = Label.FieldJustification.None;
+
+                if (textField.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
 
                 var font = textField.Font;
 
@@ -68,7 +74,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 var textBounds = new SKRect();
                 var textBoundBaseline = new SKRect();
                 skPaint.MeasureText("X", ref textBoundBaseline);
-                skPaint.MeasureText(displayText, ref textBounds);
+                var totalWidth = skPaint.MeasureText(displayText, ref textBounds);
 
                 using (new SKAutoCanvasRestore(this._skCanvas))
                 {
@@ -113,9 +119,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                     if (matrix != SKMatrix.Empty)
                     {
-                        var currentMatrix = _skCanvas.TotalMatrix;
-                        var concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
-                        this._skCanvas.SetMatrix(concatMatrix);
+                        this._skCanvas.Concat(matrix);
                     }
 
                     if (textField.FieldTypeset == null)
@@ -149,8 +153,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                     this._skCanvas.DrawShapedText(displayText, x, y, skPaint);
 
+                    // Update the next default field position after rendering
+                    return this.CalculateNextDefaultPosition(x, y, totalWidth, textBounds.Height, false, textField.Font.FieldOrientation, currentPosition);
                 }
             }
+            
+            return currentPosition;
         }
     }
 }

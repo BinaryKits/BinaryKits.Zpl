@@ -20,6 +20,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             int x = 0;
             int y = 0;
             bool bottomToTop = false;
+            bool useDefaultPosition = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
@@ -27,6 +28,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y = this.VirtualPrinter.NextElementPosition.Y;
 
                 bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
+                useDefaultPosition = this.VirtualPrinter.NextElementPosition.UseDefaultPosition;
             }
 
             var zplDataParts = this.SplitCommand(zplCommand);
@@ -58,7 +60,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             var imageData = converter.ConvertImage(grfImageData, bytesPerRow);
             dataHex = ByteHelper.BytesToHex(imageData);
 
-            return new ZplGraphicField(x, y, binaryByteCount, graphicFieldCount, bytesPerRow, dataHex, bottomToTop: bottomToTop, compressionType);
+            return new ZplGraphicField(x, y, binaryByteCount, graphicFieldCount, bytesPerRow, dataHex, bottomToTop, useDefaultPosition, compressionType);
         }
     }
 }

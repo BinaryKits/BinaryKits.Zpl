@@ -30,12 +30,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplBarcodeEan13 barcode)
             {
                 float x = barcode.PositionX;
                 float y = barcode.PositionY;
+
+                if (barcode.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
 
                 var content = barcode.Content;
                 if (barcode.HexadecimalIndicator is char hexIndicator)
@@ -74,7 +80,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
                 }
 
+                return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, currentPosition);
             }
+            
+            return currentPosition;
         }
 
         private void DrawEAN13InterpretationLine(
@@ -109,6 +118,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 if (!useFieldOrigin)
                 {
                     y -= barcodeHeight;
+                    if (y < 0)
+                    {
+                        y = 0;
+                    }
                 }
 
                 float margin = Math.Max((skFont.Spacing - textBounds.Height) / 2, MIN_LABEL_MARGIN);

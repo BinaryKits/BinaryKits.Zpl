@@ -102,6 +102,9 @@
     <None Update="Labels\Example\Example9-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Labels\Test\TextPosition4-102x152.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Labels\Test\Format-54x86.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -133,6 +136,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Labels\Test\TextPosition2-102x152.zpl2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Labels\Test\TextPosition3-102x152.zpl2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Labels\Test\TextRotation1-102x152.zpl2">

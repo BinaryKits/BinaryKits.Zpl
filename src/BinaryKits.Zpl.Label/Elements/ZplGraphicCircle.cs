@@ -25,8 +25,9 @@ namespace BinaryKits.Zpl.Label.Elements
             int borderThickness = 1,
             LineColor lineColor = LineColor.Black,
             bool reversePrint = false,
-            bool bottomToTop = false)
-            : base(positionX, positionY, borderThickness, lineColor, reversePrint, bottomToTop)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(positionX, positionY, borderThickness, lineColor, reversePrint, bottomToTop, useDefaultPosition)
         {
             Diameter = diameter;
         }

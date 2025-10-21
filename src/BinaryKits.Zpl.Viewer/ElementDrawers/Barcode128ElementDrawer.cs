@@ -21,7 +21,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplBarcode128 barcode)
             {
@@ -61,6 +61,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float x = barcode.PositionX;
                 float y = barcode.PositionY;
 
+                if (barcode.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
+
                 var (data, interpretation) = ZplCode128Symbology.Encode(content, codeSet, gs1);
                 using var resizedImage = this.BoolArrayToSKBitmap(data.ToArray(), barcode.Height, barcode.ModuleWidth);
                 var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
@@ -74,7 +80,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     var labelFont = new SKFont(labelTypeFace, labelFontSize);
                     this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
                 }
+
+                return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, currentPosition);
             }
+            
+            return currentPosition;
         }
 
     }

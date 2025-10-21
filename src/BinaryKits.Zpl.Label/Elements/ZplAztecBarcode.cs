@@ -27,6 +27,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="hexadecimalIndicator"></param>
         /// <param name="fieldOrientation"></param>
         /// <param name="bottomToTop"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplAztecBarcode(
             string content,
             int positionX,
@@ -39,8 +40,9 @@ namespace BinaryKits.Zpl.Label.Elements
             string idField = null,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
             char? hexadecimalIndicator = null,
-            bool bottomToTop = false)
-            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop, useDefaultPosition)
         {
             this.MagnificationFactor = magnificationFactor;
             this.ExtendedChannel = extendedChannel;

@@ -5,6 +5,7 @@ using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 
 using ZXing.Aztec;
+using ZXing.QrCode.Internal;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -17,12 +18,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplAztecBarcode aztecBarcode)
             {
                 float x = aztecBarcode.PositionX;
                 float y = aztecBarcode.PositionY;
+
+                if (aztecBarcode.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
 
                 var content = aztecBarcode.Content;
 
@@ -59,7 +66,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 using var resizedImage = this.BitMatrixToSKBitmap(result, aztecBarcode.MagnificationFactor);
                 var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation);
+                return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation, currentPosition);
             }
+            
+            return currentPosition;
         }
     }
 }

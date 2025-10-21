@@ -26,8 +26,9 @@ namespace BinaryKits.Zpl.Label.Elements
             char? hexadecimalIndicator,
             bool printInterpretationLine,
             bool printInterpretationLineAboveCode,
-            bool bottomToTop)
-            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
+            bool bottomToTop,
+            bool useDefaultPosition)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop, useDefaultPosition)
         {
             Height = height;
             ModuleWidth = moduleWidth;

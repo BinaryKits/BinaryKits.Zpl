@@ -24,12 +24,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
         {
             if (element is ZplQrCode qrcode)
             {
                 float x = qrcode.PositionX;
                 float y = qrcode.PositionY;
+
+                if (qrcode.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
 
                 var content = qrcode.Content;
                 if (qrcode.HexadecimalIndicator is char hexIndicator)
@@ -63,7 +69,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y + verticalQuietZone, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation);
+                return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation, currentPosition);
             }
+            
+            return currentPosition;
         }
 
         private ZXing.QrCode.Internal.ErrorCorrectionLevel CovertErrorCorrection(ErrorCorrectionLevel errorCorrectionLevel)

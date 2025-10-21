@@ -22,6 +22,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
         /// <param name="bottomToTop"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplBarcodeEan13(
             string content,
             int positionX,
@@ -33,7 +34,8 @@ namespace BinaryKits.Zpl.Label.Elements
             char? hexadecimalIndicator = null,
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
-            bool bottomToTop = false)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
             : base(content,
                   positionX,
                   positionY,
@@ -44,7 +46,8 @@ namespace BinaryKits.Zpl.Label.Elements
                   hexadecimalIndicator,
                   printInterpretationLine,
                   printInterpretationLineAboveCode,
-                  bottomToTop)
+                  bottomToTop,
+                  useDefaultPosition)
         {
         }
 
