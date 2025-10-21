@@ -21,8 +21,9 @@ namespace BinaryKits.Zpl.Label.Elements
             int bytesPerRow,
             string data,
             bool bottomToTop = false,
+            bool useDefaultPosition = false,
             char compressionType = 'A')
-            : base(positionX, positionY, bottomToTop)
+            : base(positionX, positionY, bottomToTop, useDefaultPosition)
         {
             CompressionType = compressionType;
             BinaryByteCount = binaryByteCount;

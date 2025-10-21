@@ -27,7 +27,7 @@ namespace BinaryKits.Zpl.Label.Elements
             bool printInterpretationLine,
             bool printInterpretationLineAboveCode,
             bool bottomToTop,
-            bool useDefaultPosition = false)
+            bool useDefaultPosition)
             : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop, useDefaultPosition)
         {
             Height = height;

@@ -17,8 +17,9 @@
             int borderThickness = 1,
             LineColor lineColor = LineColor.Black,
             bool reversePrint = false,
-            bool bottomToTop = false)
-            : base(positionX, positionY, bottomToTop)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(positionX, positionY, bottomToTop, useDefaultPosition)
         {
             BorderThickness = borderThickness;
             LineColor = lineColor;

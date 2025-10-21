@@ -18,7 +18,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="bottomToTop">Use FieldTypeset</param>
         /// <param name="fieldJustification"></param>
         /// <param name="useDefaultPosition"></param>
-        public ZplPositionedElementBase(int positionX, int positionY, bool bottomToTop = false, FieldJustification fieldJustification = FieldJustification.None, bool useDefaultPosition = false) : base()
+        public ZplPositionedElementBase(int positionX, int positionY, bool bottomToTop, bool useDefaultPosition, FieldJustification fieldJustification = FieldJustification.None) : base()
         {
             this.UseDefaultPosition = useDefaultPosition;
             

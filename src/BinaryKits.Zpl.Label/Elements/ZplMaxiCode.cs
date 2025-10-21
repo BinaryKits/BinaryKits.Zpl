@@ -22,6 +22,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="total">1-8, (default: 1)</param>
         /// <param name="hexadecimalIndicator"></param>
         /// <param name="bottomToTop"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplMaxiCode(
             string content,
             int positionX,
@@ -30,8 +31,9 @@ namespace BinaryKits.Zpl.Label.Elements
             int position = 1,
             int total = 1,
             char? hexadecimalIndicator = null,
-            bool bottomToTop = false)
-            : base(content, positionX, positionY, FieldOrientation.Normal, hexadecimalIndicator, bottomToTop)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(content, positionX, positionY, FieldOrientation.Normal, hexadecimalIndicator, bottomToTop, useDefaultPosition)
         {
             Mode = mode;
             Position = position;

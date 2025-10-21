@@ -23,6 +23,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="fieldOrientation"></param>
         /// <param name="hexadecimalIndicator"></param> 
         /// <param name="bottomToTop"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplQrCode(
             string content,
             int positionX,
@@ -33,8 +34,9 @@ namespace BinaryKits.Zpl.Label.Elements
             int maskValue = 7,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
             char? hexadecimalIndicator = null,
-            bool bottomToTop = false)
-            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop, useDefaultPosition)
         {
             Model = model;
             MagnificationFactor = magnificationFactor;

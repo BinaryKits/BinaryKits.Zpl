@@ -118,6 +118,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 if (!useFieldOrigin)
                 {
                     y -= barcodeHeight;
+                    if (y < 0)
+                    {
+                        y = 0;
+                    }
                 }
 
                 float margin = Math.Max((skFont.Spacing - textBounds.Height) / 2, MIN_LABEL_MARGIN);

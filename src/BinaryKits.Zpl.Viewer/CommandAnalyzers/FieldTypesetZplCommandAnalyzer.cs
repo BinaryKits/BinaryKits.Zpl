@@ -15,8 +15,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             int x = 0;
             int y = 0;
             bool useDefaultPosition = false;
-            // TODO: Field Justification
-            //int z = 0;
 
             // Handle missing coordinates - when coordinates are missing, use default positioning
             if (zplDataParts.Length == 0 || string.IsNullOrEmpty(zplDataParts[0]))
@@ -67,14 +65,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y += this.VirtualPrinter.LabelHomePosition.Y;
             }
 
-            if (useDefaultPosition)
-            {
-                this.VirtualPrinter.SetNextElementUseDefaultPosition(true);
-            }
-            else
-            {
-                this.VirtualPrinter.SetNextElementPosition(x, y, calculateFromBottom: true);
-            }
+            this.VirtualPrinter.SetNextElementPosition(x, y, true, useDefaultPosition);
 
             return null;
         }

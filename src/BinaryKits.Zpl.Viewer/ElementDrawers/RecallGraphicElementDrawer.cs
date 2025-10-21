@@ -40,6 +40,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 if (recallGraphic.FieldTypeset != null)
                 {
                     y -= bitmap.Height;
+                    if (y < 0)
+                    {
+                        y = 0;
+                    }
                 }
 
                 this._skCanvas.DrawBitmap(bitmap, x, y);

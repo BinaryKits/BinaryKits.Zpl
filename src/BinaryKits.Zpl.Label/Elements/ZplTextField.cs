@@ -41,8 +41,9 @@ namespace BinaryKits.Zpl.Label.Elements
             char? hexadecimalIndicator = null,
             bool reversePrint = false,
             bool bottomToTop = false,
-            FieldJustification fieldJustification = FieldJustification.None, bool useDefaultPosition = false)
-            : base(positionX, positionY, bottomToTop, fieldJustification,useDefaultPosition)
+            bool useDefaultPosition = false,
+            FieldJustification fieldJustification = FieldJustification.None)
+            : base(positionX, positionY, bottomToTop, useDefaultPosition, fieldJustification)
         {
             Text = text;
             Font = font;

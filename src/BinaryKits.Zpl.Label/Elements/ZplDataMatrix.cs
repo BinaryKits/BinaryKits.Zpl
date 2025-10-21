@@ -19,10 +19,11 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="positionX"></param>
         /// <param name="positionY"></param>
         /// <param name="height"></param>
+        /// <param name="qualityLevel"></param>
         /// <param name="fieldOrientation"></param>
         /// <param name="hexadecimalIndicator"></param>
         /// <param name="bottomToTop"></param>
-        /// <param name="qualityLevel"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplDataMatrix(
             string content,
             int positionX,
@@ -31,9 +32,9 @@ namespace BinaryKits.Zpl.Label.Elements
             QualityLevel qualityLevel = QualityLevel.ECC0,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
             char? hexadecimalIndicator = null,
-            bool bottomToTop = false
-           )
-            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop, useDefaultPosition)
         {
             Height = height;
             QualityLevel = qualityLevel;

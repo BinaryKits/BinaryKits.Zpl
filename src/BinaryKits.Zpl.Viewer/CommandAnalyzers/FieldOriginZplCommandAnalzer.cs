@@ -14,8 +14,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             int tmpint;
             int x = 0;
             int y = 0;
-            // TODO: Field Justification
-            //int z = 0;
 
             if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
             {

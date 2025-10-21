@@ -30,6 +30,7 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="printInterpretationLineAboveCode"></param>
         /// <param name="checkDigit"></param>
         /// <param name="bottomToTop"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplBarcodeAnsiCodabar(
             string content,
             char startCharacter,
@@ -44,7 +45,8 @@ namespace BinaryKits.Zpl.Label.Elements
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
             bool checkDigit = false,
-            bool bottomToTop = false)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
             : base(content,
                   positionX,
                   positionY,
@@ -55,7 +57,8 @@ namespace BinaryKits.Zpl.Label.Elements
                   hexadecimalIndicator,
                   printInterpretationLine,
                   printInterpretationLineAboveCode,
-                  bottomToTop)
+                  bottomToTop,
+                  useDefaultPosition)
         {
             if (!IsValidCharacter(startCharacter))
             {
