@@ -18,19 +18,19 @@ namespace BinaryKits.Zpl.Viewer.Symologies
         // detect Type-C as late as possible
         // ABC12345 -> START_B A B C 1 CODE_C 23 45 CHECK STOP
         // and not  -> START_B A B C CODE_C 12 34 CODE_B 5 CHECK STOP
-        private static readonly Regex swtichCRegex = new Regex(@"^\d\d(?:\d\d)+(?!\d)", RegexOptions.Compiled);
-        private static readonly Regex startCRegex = new Regex(@"^\d{4}", RegexOptions.Compiled);
-        private static readonly Regex digitPairRegex = new Regex(@"^\d\d", RegexOptions.Compiled);
+        private static readonly Regex swtichCRegex = new(@"^\d\d(?:\d\d)+(?!\d)", RegexOptions.Compiled);
+        private static readonly Regex startCRegex = new(@"^\d{4}", RegexOptions.Compiled);
+        private static readonly Regex digitPairRegex = new(@"^\d\d", RegexOptions.Compiled);
 
         // GS1 specific
-        private static readonly Regex gs1SwitchCRegex = new Regex(@"^\d\d(?:\d\d|>8)+(?!\d)", RegexOptions.Compiled);
-        private static readonly Regex gs1StartCRegex = new Regex(@"^(?:\d\d|>8){2}", RegexOptions.Compiled);
-        private static readonly Regex gs1DigitPairRegex = new Regex(@"^(?:\d\d|>8)", RegexOptions.Compiled);
-        private static readonly Regex fnc1Regex = new Regex(@"^>8", RegexOptions.Compiled);
+        private static readonly Regex gs1SwitchCRegex = new(@"^\d\d(?:\d\d|>8)+(?!\d)", RegexOptions.Compiled);
+        private static readonly Regex gs1StartCRegex = new(@"^(?:\d\d|>8){2}", RegexOptions.Compiled);
+        private static readonly Regex gs1DigitPairRegex = new(@"^(?:\d\d|>8)", RegexOptions.Compiled);
+        private static readonly Regex fnc1Regex = new(@"^>8", RegexOptions.Compiled);
 
-        private static readonly Regex startCodeRegex = new Regex(@"^(>[9:;])(.+)$", RegexOptions.Compiled);
+        private static readonly Regex startCodeRegex = new(@"^(>[9:;])(.+)$", RegexOptions.Compiled);
 
-        private static readonly Dictionary<string, int> invocationMap = new Dictionary<string, int>() {
+        private static readonly Dictionary<string, int> invocationMap = new() {
             { "><", 62 },
             { ">0", 30 },
             { ">=", 94 },
@@ -44,13 +44,13 @@ namespace BinaryKits.Zpl.Viewer.Symologies
             { ">8", 102 }
         };
 
-        private static readonly Dictionary<string, Code128CodeSet> startCodeMap = new Dictionary<string, Code128CodeSet>() {
+        private static readonly Dictionary<string, Code128CodeSet> startCodeMap = new() {
             { ">9", Code128CodeSet.Code128A },
             { ">:", Code128CodeSet.Code128B },
             { ">;", Code128CodeSet.Code128C }
         };
 
-        private static readonly Dictionary<Code128CodeSet, string> codeSetCodeMap = new Dictionary<Code128CodeSet, string>() {
+        private static readonly Dictionary<Code128CodeSet, string> codeSetCodeMap = new() {
             { Code128CodeSet.Code128A, CODE_A },
             { Code128CodeSet.Code128B, CODE_B },
             { Code128CodeSet.Code128C, CODE_C }
@@ -219,7 +219,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
 
         public static (bool[], string) Encode(string content, Code128CodeSet initialCodeSet, bool gs1)
         {
-            List<bool> result = new List<bool>();
+            List<bool> result = [];
             List<int> data;
             string interpretation;
             if (gs1)
@@ -265,21 +265,21 @@ namespace BinaryKits.Zpl.Viewer.Symologies
             return checksum % 103;
         }
 
-        private static IEnumerable<bool> IntToBitArray(int value)
+        private static bool[] IntToBitArray(int value)
         {
-            Stack<bool> stack = new Stack<bool>();
+            Stack<bool> stack = [];
             while (value > 0)
             {
                 stack.Push((value & 1) == 1);
                 value >>= 1;
             }
 
-            return stack;
+            return stack.ToArray();
         }
 
         private static (List<int>, string) Analyze(string content, Code128CodeSet initialCodeSet)
         {
-            List<int> data = new();
+            List<int> data = [];
             string interpretation = "";
             Code128CodeSet codeSet = initialCodeSet;
             Match startCodeMatch = startCodeRegex.Match(content);
@@ -290,7 +290,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                 startCodeMatch = startCodeRegex.Match(content);
             }
 
-            (var codeChars, var codeMap) = codeMaps[codeSet];
+            (string[] codeChars, Dictionary<string, int> codeMap) = codeMaps[codeSet];
 
             data.Add((int)codeSet);
             for (int i = 0; i < content.Length; i++)
@@ -300,9 +300,9 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                 {
                     i += 1;
                     symbol += content[i];
-                    if (invocationMap.ContainsKey(symbol))
+                    int value;
+                    if (invocationMap.TryGetValue(symbol, out value))
                     {
-                        int value = invocationMap[symbol];
                         data.Add(value);
                         string code = codeChars[value];
                         if (code == CODE_A)
@@ -321,12 +321,11 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                             (codeChars, codeMap) = codeMaps[codeSet];
                         }
                     }
-                    else if (startCodeMap.ContainsKey(symbol))
+                    else if (startCodeMap.TryGetValue(symbol, out Code128CodeSet newCodeSet))
                     {
-                        Code128CodeSet newCodeSet = startCodeMap[symbol];
                         if (newCodeSet != codeSet)
                         {
-                            int value = codeMap[codeSetCodeMap[newCodeSet]];
+                            value = codeMap[codeSetCodeMap[newCodeSet]];
                             data.Add(value);
                             codeSet = newCodeSet;
                             (codeChars, codeMap) = codeMaps[codeSet];
@@ -339,6 +338,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                 }
                 else
                 {
+                    int value;
                     if (codeSet == Code128CodeSet.Code128C)
                     {
                         if (i + 1 < content.Length)
@@ -348,18 +348,19 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                         }
                         else
                         {
-                            int value = codeMap[CODE_B];
+                            value = codeMap[CODE_B];
                             data.Add(value);
                             codeSet = Code128CodeSet.Code128B;
                             (codeChars, codeMap) = codeMaps[codeSet];
                         }
                     }
 
-                    if (!codeMap.ContainsKey(symbol)) {
+                    if (!codeMap.TryGetValue(symbol, out value))
+                    {
                         throw new Exception($"Invalid symbol for {codeSet}: {symbol}");
                     }
 
-                    data.Add(codeMap[symbol]);
+                    data.Add(value);
                     interpretation += symbol;
                 }
             }
@@ -369,15 +370,16 @@ namespace BinaryKits.Zpl.Viewer.Symologies
 
         private static (List<int>, string) AnalyzeAuto(string content)
         {
-            List<int> data = new List<int>();
+            List<int> data = [];
             string interpretation = "";
             Code128CodeSet codeSet = Code128CodeSet.Code128B;
-            var codeMap = codeBMap;
+            Dictionary<string, int> codeMap = codeBMap;
             if (startCRegex.IsMatch(content))
             {
                 codeSet = Code128CodeSet.Code128C;
                 codeMap = codeCMap;
             }
+
             data.Add((int)codeSet);
 
             while (content.Length > 0)
@@ -417,15 +419,16 @@ namespace BinaryKits.Zpl.Viewer.Symologies
 
         private static (List<int>, string) AnalyzeGS1(string content)
         {
-            List<int> data = new List<int>();
+            List<int> data = [];
             string interpretation = "";
             Code128CodeSet codeSet = Code128CodeSet.Code128B;
-            var codeMap = codeBMap;
+            Dictionary<string, int> codeMap = codeBMap;
             if (gs1StartCRegex.IsMatch(content))
             {
                 codeSet = Code128CodeSet.Code128C;
                 codeMap = codeCMap;
             }
+
             data.Add((int)codeSet);
 
             while (content.Length > 0)

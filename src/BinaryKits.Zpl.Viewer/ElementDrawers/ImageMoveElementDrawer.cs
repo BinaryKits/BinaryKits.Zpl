@@ -20,8 +20,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplImageMove imageMove)
             {
-                var imageData = this._printerStorage.GetFile(imageMove.StorageDevice, imageMove.ObjectName);
-                var image = SKBitmap.Decode(imageData);
+                byte[] imageData = this.printerStorage.GetFile(imageMove.StorageDevice, imageMove.ObjectName);
+                SKBitmap image = SKBitmap.Decode(imageData);
 
                 if (imageData.Length == 0)
                 {
@@ -37,7 +37,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y = currentPosition.Y;
                 }
 
-                var useFieldTypeset = imageMove.FieldTypeset != null;
+                bool useFieldTypeset = imageMove.FieldTypeset != null;
                 if (useFieldTypeset)
                 {
                     y -= image.Height;
@@ -47,7 +47,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
                 }
 
-                this._skCanvas.DrawBitmap(image, x, y);
+                this.skCanvas.DrawBitmap(image, x, y);
 
                 return this.CalculateNextDefaultPosition(x, y, image.Width, image.Height, imageMove.FieldOrigin != null, Label.FieldOrientation.Normal, currentPosition);
             }

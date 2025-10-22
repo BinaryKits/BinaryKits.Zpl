@@ -6,16 +6,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public abstract class ElementDrawerBase : IElementDrawer
     {
-        internal IPrinterStorage _printerStorage;
-        internal SKCanvas _skCanvas;
+        internal IPrinterStorage printerStorage;
+        internal SKCanvas skCanvas;
 
         ///<inheritdoc/>
         public void Prepare(
             IPrinterStorage printerStorage,
             SKCanvas skCanvas)
         {
-            this._printerStorage = printerStorage;
-            this._skCanvas = skCanvas;
+            this.printerStorage = printerStorage;
+            this.skCanvas = skCanvas;
         }
 
         ///<inheritdoc/>
@@ -48,13 +48,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         ///<inheritdoc/>
         public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
-            return Draw(element, options, currentPosition);
+            return this.Draw(element, options, currentPosition);
         }
 
         ///<inheritdoc/>
         public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
-            return Draw(element, options, currentPosition, internationalFont);
+            return this.Draw(element, options, currentPosition, internationalFont);
         }
 
         protected virtual SKPoint CalculateNextDefaultPosition(float x, float y, float elementWidth, float elementHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, SKPoint currentPosition)

@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using ZXing;
 using ZXing.Datamatrix;
 using ZXing.Datamatrix.Encoder;
-using ZXing.QrCode.Internal;
+using ZXing.Common;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -16,7 +16,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
     /// </summary>
     public class DataMatrixElementDrawer : BarcodeDrawerBase
     {
-        private static readonly Regex gs1Regex = new Regex(@"^_1(.+)$", RegexOptions.Compiled);
+        private static readonly Regex gs1Regex = new(@"^_1(.+)$", RegexOptions.Compiled);
 
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
@@ -30,10 +30,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             if (element is ZplDataMatrix dataMatrix)
             {
                 if (dataMatrix.Height == 0)
+                {
                     throw new System.Exception("Matrix Height is set to zero.");
+                }
 
                 if (string.IsNullOrWhiteSpace(dataMatrix.Content))
+                {
                     throw new System.Exception("Matrix Content is empty.");
+                }
 
                 float x = dataMatrix.PositionX;
                 float y = dataMatrix.PositionY;
@@ -44,7 +48,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y = currentPosition.Y;
                 }
 
-                var content = dataMatrix.Content;
+                string content = dataMatrix.Content;
                 if(dataMatrix.HexadecimalIndicator is char hexIndicator)
                 {
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
@@ -59,18 +63,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     gs1Mode = true;
                 }
 
-                var writer = new DataMatrixWriter();
-                var encodingOptions = new DatamatrixEncodingOptions()
+                DataMatrixWriter writer = new();
+                DatamatrixEncodingOptions encodingOptions = new()
                 {
                     SymbolShape = SymbolShapeHint.FORCE_SQUARE,
                     CompactEncoding = gs1Mode,
                     GS1Format = gs1Mode
                 };
-                var result = writer.encode(content, BarcodeFormat.DATA_MATRIX, 0, 0, encodingOptions.Hints);
+                BitMatrix result = writer.encode(content, BarcodeFormat.DATA_MATRIX, 0, 0, encodingOptions.Hints);
 
-                using var resizedImage = this.BitMatrixToSKBitmap(result, dataMatrix.Height);
+                using SKBitmap resizedImage = BitMatrixToSKBitmap(result, dataMatrix.Height);
                 {
-                    var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                    byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                     this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, dataMatrix.FieldOrigin != null, dataMatrix.FieldOrientation);
                 }
 

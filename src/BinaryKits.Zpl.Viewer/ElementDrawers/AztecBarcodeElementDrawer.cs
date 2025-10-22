@@ -5,7 +5,7 @@ using BinaryKits.Zpl.Viewer.Helpers;
 using SkiaSharp;
 
 using ZXing.Aztec;
-using ZXing.QrCode.Internal;
+using ZXing.Common;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -31,15 +31,15 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y = currentPosition.Y;
                 }
 
-                var content = aztecBarcode.Content;
+                string content = aztecBarcode.Content;
 
                 if (aztecBarcode.HexadecimalIndicator is char hexIndicator)
                 {
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
-                var writer = new AztecWriter();
-                var encodingOptions = new AztecEncodingOptions();
+                AztecWriter writer = new();
+                AztecEncodingOptions encodingOptions = new();
                 if (aztecBarcode.ErrorControl >= 1 && aztecBarcode.ErrorControl <= 99)
                 {
                     encodingOptions.ErrorCorrection = aztecBarcode.ErrorControl;
@@ -61,10 +61,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     // default options
                 }
 
-                var result = writer.encode(content, ZXing.BarcodeFormat.AZTEC, 0, 0, encodingOptions.Hints);
+                BitMatrix result = writer.encode(content, ZXing.BarcodeFormat.AZTEC, 0, 0, encodingOptions.Hints);
 
-                using var resizedImage = this.BitMatrixToSKBitmap(result, aztecBarcode.MagnificationFactor);
-                var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                using SKBitmap resizedImage = BitMatrixToSKBitmap(result, aztecBarcode.MagnificationFactor);
+                byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation);
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation, currentPosition);
             }

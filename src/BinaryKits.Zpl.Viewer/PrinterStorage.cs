@@ -5,21 +5,21 @@ namespace BinaryKits.Zpl.Viewer
 {
     public class PrinterStorage : IPrinterStorage
     {
-        private readonly ConcurrentDictionary<char, ConcurrentDictionary<string, byte[]>> _cache;
+        private readonly ConcurrentDictionary<char, ConcurrentDictionary<string, byte[]>> cache;
 
         public PrinterStorage()
         {
-            this._cache = new ConcurrentDictionary<char, ConcurrentDictionary<string, byte[]>>();
+            this.cache = new ConcurrentDictionary<char, ConcurrentDictionary<string, byte[]>>();
         }
 
         public void AddFile(char storageDevice, string fileName, byte[] data)
         {
-            if (!this._cache.ContainsKey(storageDevice))
+            if (!this.cache.ContainsKey(storageDevice))
             {
-                this._cache.TryAdd(storageDevice, new ConcurrentDictionary<string, byte[]>());
+                this.cache.TryAdd(storageDevice, new ConcurrentDictionary<string, byte[]>());
             }
 
-            if (this._cache.TryGetValue(storageDevice, out var files))
+            if (this.cache.TryGetValue(storageDevice, out ConcurrentDictionary<string, byte[]> files))
             {
                 files.TryAdd(fileName, data);
             }
@@ -27,18 +27,18 @@ namespace BinaryKits.Zpl.Viewer
 
         public byte[] GetFile(char storageDevice, string fileName)
         {
-            if (!this._cache.ContainsKey(storageDevice))
+            if (!this.cache.ContainsKey(storageDevice))
             {
-                return Array.Empty<byte>();
+                return [];
             }
 
-            if (this._cache.TryGetValue(storageDevice, out var files))
+            if (this.cache.TryGetValue(storageDevice, out ConcurrentDictionary<string, byte[]> files))
             {
-                files.TryGetValue(fileName, out var data);
-                return data ?? Array.Empty<byte>();
+                files.TryGetValue(fileName, out byte[] data);
+                return data ?? [];
             }
 
-            return Array.Empty<byte>();
+            return [];
         }
     }
 }

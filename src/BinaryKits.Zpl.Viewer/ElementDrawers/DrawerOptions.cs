@@ -1,12 +1,13 @@
 using SkiaSharp;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public class DrawerOptions
     {
-        public Func<string, SKTypeface> FontLoader { get; set; } = DefaultFontLoader;
+        public Func<string, SKTypeface> FontLoader { get; set; } = defaultFontLoader;
 
         public SKEncodedImageFormat RenderFormat { get; set; } = SKEncodedImageFormat.Png;
 
@@ -37,34 +38,34 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
     /// </summary>
     public bool Antialias { get; set; } = true;
 
-        private static readonly string[] fontStack0 = new string[] {
+        private static readonly string[] fontStack0 = [
             "Swis721 Cn BT",
             "Nimbus Sans",
             "Arial",
             "Helvetica Neue",
             "Roboto Condensed"
-        };
+        ];
 
-        private static readonly string[] fontStackA = new string[] {
+        private static readonly string[] fontStackA = [
             "DejaVu Sans Mono",
             "Cascadia Code",
             "Consolas",
             "SF Mono",
             "Droid Sans Mono"
-        };
+        ];
 
         private static readonly SKTypeface typeface0;
         private static readonly SKTypeface typefaceA;
 
         static DrawerOptions()
         {
-            var skFontManager = SKFontManager.Default;
-            var fontFamilies = skFontManager.FontFamilies;
+            SKFontManager skFontManager = SKFontManager.Default;
+            IEnumerable<string> fontFamilies = skFontManager.FontFamilies;
 
             typeface0 = SKTypeface.Default;
             typefaceA = SKTypeface.Default;
 
-            foreach (var familyName in fontStack0)
+            foreach (string familyName in fontStack0)
             {
                 if (fontFamilies.Contains(familyName))
                 {
@@ -78,7 +79,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
             }
 
-            foreach (var familyName in fontStackA)
+            foreach (string familyName in fontStackA)
             {
                 if (fontFamilies.Contains(familyName))
                 {
@@ -93,7 +94,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             }
         }
 
-        private static Func<string, SKTypeface> DefaultFontLoader = fontName => {
+        private static readonly Func<string, SKTypeface> defaultFontLoader = fontName => {
             if (fontName == "0")
             {
                 return typeface0;

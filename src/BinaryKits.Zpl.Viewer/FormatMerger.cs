@@ -15,14 +15,14 @@ namespace BinaryKits.Zpl.Viewer
         /// <inheritdoc />
         public List<LabelInfo> MergeFormats(List<LabelInfo> rawLabelInfos)
         {
-            var mergedLabelInfos = new List<LabelInfo>();
+            List<LabelInfo> mergedLabelInfos = [];
             // Format label infos indexed by download format name
-            var templateFormats = new Dictionary<string, LabelInfo>();
+            Dictionary<string, LabelInfo> templateFormats = [];
 
-            foreach (var rawLabelInfo in rawLabelInfos)
+            foreach (LabelInfo rawLabelInfo in rawLabelInfos)
             {
-                var elements = GetMergedElements(rawLabelInfo, templateFormats);
-                var labelInfo = new LabelInfo { ZplElements = elements.ToArray() };
+                List<ZplElementBase> elements = GetMergedElements(rawLabelInfo, templateFormats);
+                LabelInfo labelInfo = new() { ZplElements = elements.ToArray() };
 
                 if (rawLabelInfo.DownloadFormatName != null)
                 {
@@ -41,7 +41,7 @@ namespace BinaryKits.Zpl.Viewer
             LabelInfo rawLabelInfo,
             Dictionary<string, LabelInfo> templateFormats)
         {
-            var elements = new List<ZplElementBase>();
+            List<ZplElementBase> elements = [];
 
             foreach (ZplElementBase zplElement in rawLabelInfo.ZplElements)
             {
@@ -75,12 +75,12 @@ namespace BinaryKits.Zpl.Viewer
             Dictionary<string, LabelInfo> templateFormats)
         {
             string formatName = Path.GetFileNameWithoutExtension(recallFormat.FormatName);
-            if (!templateFormats.ContainsKey(formatName))
+            if (!templateFormats.TryGetValue(formatName, out LabelInfo value))
             {
                 throw new InvalidOperationException($"Could not find format {recallFormat.FormatName}");
             }
 
-            return templateFormats[formatName];
+            return value;
         }
 
         /// <summary>
@@ -92,13 +92,13 @@ namespace BinaryKits.Zpl.Viewer
             LabelInfo valuesLabelInfo,
             LabelInfo formatLabelInfo)
         {
-            foreach (var formatElement in formatLabelInfo.ZplElements)
+            foreach (ZplElementBase formatElement in formatLabelInfo.ZplElements)
             {
                 if (formatElement is ZplFieldNumber fieldNumber)
                 {
                     if (fieldNumber.FormatElement != null)
                     {
-                        var recallFieldNumber = (ZplRecallFieldNumber)valuesLabelInfo.ZplElements.FirstOrDefault(e =>
+                        ZplRecallFieldNumber recallFieldNumber = (ZplRecallFieldNumber)valuesLabelInfo.ZplElements.FirstOrDefault(e =>
                             (e as ZplRecallFieldNumber)?.Number == fieldNumber.Number);
                         if (recallFieldNumber != null)
                         {

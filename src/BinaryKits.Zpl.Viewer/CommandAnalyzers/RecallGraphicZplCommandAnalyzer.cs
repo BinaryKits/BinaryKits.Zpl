@@ -5,7 +5,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class RecallGraphicZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        private static readonly Regex commandRegex = new Regex(@"^\^XG(\w:)?(.*?\..+?)(?:,(\d*))?(?:,(\d*))?$", RegexOptions.Compiled);
+        private static readonly Regex commandRegex = new(@"^\^XG(\w:)?(.*?\..+?)(?:,(\d*))?(?:,(\d*))?$", RegexOptions.Compiled);
 
         public RecallGraphicZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^XG", virtualPrinter) { }
 
@@ -25,7 +25,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 useDefaultPosition = this.VirtualPrinter.NextElementPosition.UseDefaultPosition;
             }
 
-            var commandMatch = commandRegex.Match(zplCommand);
+            Match commandMatch = commandRegex.Match(zplCommand);
 
             if (commandMatch.Success)
             {

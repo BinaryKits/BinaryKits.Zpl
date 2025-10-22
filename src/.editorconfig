@@ -28,6 +28,8 @@ csharp_new_line_before_else = true
 csharp_new_line_before_members_in_object_initializers = true
 #require braces to be on a new line for methods, object_collection_array_initializers, control_blocks, and types (also known as "Allman" style)
 csharp_new_line_before_open_brace = methods, object_collection_array_initializers, control_blocks, types
+dotnet_style_allow_multiple_blank_lines_experimental = false:suggestion
+dotnet_style_allow_statement_immediately_after_block_experimental = false:suggestion
 
 #Formatting - organize using options
 
@@ -81,15 +83,16 @@ dotnet_style_predefined_type_for_member_access = true:suggestion
 
 #prefer objects to be initialized using object initializers when possible
 dotnet_style_object_initializer = true:suggestion
+dotnet_style_prefer_collection_expression = when_types_exactly_match
 
 #Style - implicit and explicit types
 
 #prefer var over explicit type in all cases, unless overridden by another code style rule
-csharp_style_var_elsewhere = true:suggestion
+csharp_style_var_elsewhere = false:warning
 #prefer var is used to declare variables with built-in system types such as int
-csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_for_built_in_types = false:warning
 #prefer var when the type is already mentioned on the right-hand side of a declaration expression
-csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_when_type_is_apparent = false:warning
 
 #Style - language keyword and framework type options
 
@@ -104,7 +107,7 @@ dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggest
 #Style - Modifier preferences
 
 #when this rule is set to a list of modifiers, prefer the specified ordering.
-csharp_preferred_modifier_order = public,private,protected,override,readonly,static,abstract:suggestion
+csharp_preferred_modifier_order = public,private,protected,internal,override,static,abstract,readonly:suggestion
 
 #Style - Pattern matching
 
@@ -113,9 +116,11 @@ csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
 
 #Style - qualification options
 
-#prefer fields not to be prefaced with this. or Me. in Visual Basic
-dotnet_style_qualification_for_field = false:suggestion
+#prefer fields to be prefaced with this. or Me. in Visual Basic
+dotnet_style_qualification_for_field = true:suggestion
 #prefer methods to be prefaced with this. in C# or Me. in Visual Basic
 dotnet_style_qualification_for_method = true:suggestion
 #prefer properties to be prefaced with this. in C# or Me. in Visual Basic
 dotnet_style_qualification_for_property = true:suggestion
+
+csharp_style_prefer_primary_constructors = false:suggestion

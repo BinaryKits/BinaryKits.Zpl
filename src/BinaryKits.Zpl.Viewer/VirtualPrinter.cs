@@ -35,7 +35,7 @@ namespace BinaryKits.Zpl.Viewer
         public VirtualPrinter()
         {
             this.BarcodeInfo = new BarcodeInfo();
-            this.Comments = new List<string>();
+            this.Comments =[];
         }
 
         public void SetNextElementPosition(int x, int y, bool calculateFromBottom = false, bool useDefaultPosition = false)

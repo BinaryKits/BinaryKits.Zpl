@@ -16,6 +16,6 @@ namespace BinaryKits.Zpl.Viewer
         /// </summary>
         /// <param name="rawLabelInfos">Raw label infos as read by ZplAnalyzer</param>
         /// <returns>Merged label info list</returns>
-        public List<LabelInfo> MergeFormats(List<LabelInfo> rawLabelInfos);
+        List<LabelInfo> MergeFormats(List<LabelInfo> rawLabelInfos);
     }
 }

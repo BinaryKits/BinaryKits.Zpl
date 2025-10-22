@@ -14,7 +14,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             int width = 1;
             int height = 1;
             int borderThickness = 1;
-            var lineColor = LineColor.Black;
+            LineColor lineColor = LineColor.Black;
             int cornerRounding = 0;
 
             int x = 0;
@@ -31,7 +31,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 useDefaultPosition = this.VirtualPrinter.NextElementPosition.UseDefaultPosition;
             }
 
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
             if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint)) {
                 width= tmpint;

@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
@@ -10,10 +11,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
-            var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
             int magnificationFactor = 2;
             bool extendedChannel = false;
             int errorControl = 0;
@@ -28,7 +29,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             if (zplDataParts.Length > 2)
             {
-                extendedChannel = ConvertBoolean(zplDataParts[2]);
+                extendedChannel = this.ConvertBoolean(zplDataParts[2]);
             }
 
             if (zplDataParts.Length > 3 && int.TryParse(zplDataParts[3], out tmpint))
@@ -38,7 +39,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             if (zplDataParts.Length > 4)
             {
-                menuSymbol = ConvertBoolean(zplDataParts[4]);
+                menuSymbol = this.ConvertBoolean(zplDataParts[4]);
             }
 
             if (zplDataParts.Length > 5 && int.TryParse(zplDataParts[5], out tmpint))

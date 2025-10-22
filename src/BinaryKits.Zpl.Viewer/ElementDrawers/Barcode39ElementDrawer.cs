@@ -33,28 +33,28 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y = currentPosition.Y;
                 }
 
-                var content = barcode.Content.Trim('*');
+                string content = barcode.Content.Trim('*');
                 if(barcode.HexadecimalIndicator is char hexIndicator)
                 {
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
-                var interpretation = string.Format("*{0}*", content);
+                string interpretation = string.Format("*{0}*", content);
 
-                var writer = new Code39Writer();
-                var result = writer.encode(content);
+                Code39Writer writer = new();
+                bool[] result = writer.encode(content);
                 int narrow = barcode.ModuleWidth;
                 int wide = (int)Math.Floor(barcode.WideBarToNarrowBarWidthRatio * narrow);
-                result = this.AdjustWidths(result, wide, narrow);
-                using var resizedImage = this.BoolArrayToSKBitmap(result, barcode.Height);
-                var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                result = AdjustWidths(result, wide, narrow);
+                using SKBitmap resizedImage = BoolArrayToSKBitmap(result, barcode.Height);
+                byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation);
 
                 if (barcode.PrintInterpretationLine)
                 {
                     float labelFontSize = Math.Min(barcode.ModuleWidth * 10f, 100f);
-                    var labelTypeFace = options.FontLoader("A");
-                    var labelFont = new SKFont(labelTypeFace, labelFontSize);
+                    SKTypeface labelTypeFace = options.FontLoader("A");
+                    SKFont labelFont = new(labelTypeFace, labelFontSize);
                     this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
                 }
 

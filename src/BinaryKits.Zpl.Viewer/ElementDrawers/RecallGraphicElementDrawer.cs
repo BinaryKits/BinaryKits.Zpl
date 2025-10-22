@@ -20,7 +20,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplRecallGraphic recallGraphic)
             {
-                var imageData = this._printerStorage.GetFile(recallGraphic.StorageDevice, recallGraphic.ImageName);
+                byte[] imageData = this.printerStorage.GetFile(recallGraphic.StorageDevice, recallGraphic.ImageName);
 
                 if (imageData.Length == 0)
                 {
@@ -36,7 +36,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y = currentPosition.Y;
                 }
 
-                var bitmap = SKBitmap.Decode(imageData);
+                SKBitmap bitmap = SKBitmap.Decode(imageData);
                 if (recallGraphic.FieldTypeset != null)
                 {
                     y -= bitmap.Height;
@@ -46,7 +46,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
                 }
 
-                this._skCanvas.DrawBitmap(bitmap, x, y);
+                this.skCanvas.DrawBitmap(bitmap, x, y);
 
                 float width = bitmap.Width;
                 float height = bitmap.Height;

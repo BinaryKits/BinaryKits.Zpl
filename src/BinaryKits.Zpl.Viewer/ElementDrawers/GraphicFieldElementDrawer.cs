@@ -21,8 +21,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplGraphicField graphicField)
             {
-                var imageData = ByteHelper.HexToBytes(graphicField.Data);
-                var image = SKBitmap.Decode(imageData);
+                byte[] imageData = ByteHelper.HexToBytes(graphicField.Data);
+                SKBitmap image = SKBitmap.Decode(imageData);
 
                 float x = graphicField.PositionX;
                 float y = graphicField.PositionY;
@@ -33,7 +33,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y = currentPosition.Y;
                 }
 
-                var useFieldTypeset = graphicField.FieldTypeset != null;
+                bool useFieldTypeset = graphicField.FieldTypeset != null;
                 if (useFieldTypeset)
                 {
                     y -= image.Height;
@@ -43,7 +43,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
                 }
 
-                this._skCanvas.DrawBitmap(image, x, y);
+                this.skCanvas.DrawBitmap(image, x, y);
                 return this.CalculateNextDefaultPosition(x, y, image.Width, image.Height, graphicField.FieldOrigin != null, Label.FieldOrientation.Normal, currentPosition);
             }
             
