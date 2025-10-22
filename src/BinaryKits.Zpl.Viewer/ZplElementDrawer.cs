@@ -174,7 +174,7 @@ namespace BinaryKits.Zpl.Viewer
                         skCanvasInvert.Clear(SKColors.Transparent);
 
                         drawer.Prepare(this._printerStorage, skCanvasInvert);
-                        currentDefaultPosition = drawer.Draw(element, _drawerOptions, internationalFont, currentDefaultPosition);
+                        currentDefaultPosition = drawer.Draw(element, _drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                         //save state before inverted draw
                         if (this._drawerOptions.PdfOutput == true)
@@ -196,7 +196,7 @@ namespace BinaryKits.Zpl.Viewer
                     }
 
                     drawer.Prepare(this._printerStorage, skCanvas);
-                    currentDefaultPosition = drawer.Draw(element, _drawerOptions, internationalFont, currentDefaultPosition);
+                    currentDefaultPosition = drawer.Draw(element, _drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                     continue;
                 }
@@ -309,7 +309,7 @@ namespace BinaryKits.Zpl.Viewer
                         skCanvasInvert.Clear(SKColors.Transparent);
 
                         drawer.Prepare(this._printerStorage, skCanvasInvert);
-                        currentDefaultPosition = drawer.Draw(element, _drawerOptions, internationalFont, currentDefaultPosition);
+                        currentDefaultPosition = drawer.Draw(element, _drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                         //use color inversion on an reverse draw white element
                         if (drawer.IsWhiteDraw(element))
@@ -325,7 +325,7 @@ namespace BinaryKits.Zpl.Viewer
                     }
 
                     drawer.Prepare(this._printerStorage, skCanvas);
-                    currentDefaultPosition = drawer.Draw(element, _drawerOptions, internationalFont, currentDefaultPosition);
+                    currentDefaultPosition = drawer.Draw(element, _drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                     continue;
                 }

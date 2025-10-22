@@ -13,7 +13,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
         Code128C = 105
     }
 
-    public class ZplCode128Symbology
+    public static class ZplCode128Symbology
     {
         // detect Type-C as late as possible
         // ABC12345 -> START_B A B C 1 CODE_C 23 45 CHECK STOP
@@ -217,7 +217,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
             };
         }
 
-        public static (List<bool>, string) Encode(string content, Code128CodeSet initialCodeSet, bool gs1)
+        public static (bool[], string) Encode(string content, Code128CodeSet initialCodeSet, bool gs1)
         {
             List<bool> result = new List<bool>();
             List<int> data;
@@ -251,7 +251,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
             // TODO: magic constant STOP
             result.AddRange(IntToBitArray(patterns[106]));
 
-            return (result, interpretation);
+            return (result.ToArray(), interpretation);
         }
 
         private static int ComputeChecksum(int[] data)
