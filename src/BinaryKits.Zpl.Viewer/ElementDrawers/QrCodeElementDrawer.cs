@@ -4,7 +4,6 @@ using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
 
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using ZXing;
@@ -58,7 +57,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 int verticalQuietZone = 10;
 
                 QRCodeWriter writer = new();
-                QrCodeEncodingOptions encodingOptions = new() {
+                QrCodeEncodingOptions encodingOptions = new()
+                {
                     ErrorCorrection = ConvertErrorCorrection(qrcode.ErrorCorrectionLevel),
                     QrMaskPattern = qrcode.MaskValue,
                     CharacterSet = "UTF-8",
@@ -73,7 +73,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 this.DrawBarcode(png, x, y + verticalQuietZone, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation);
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation, currentPosition);
             }
-            
+
             return currentPosition;
         }
 

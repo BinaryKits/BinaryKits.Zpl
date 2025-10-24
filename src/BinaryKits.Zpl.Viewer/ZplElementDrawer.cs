@@ -2,7 +2,9 @@ using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.ElementDrawers;
 using BinaryKits.Zpl.Viewer.Helpers;
+
 using SkiaSharp;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -116,9 +118,9 @@ namespace BinaryKits.Zpl.Viewer
             using SKCanvas pdfCanvas = document.BeginPage(
                 (float)(UnitsHelper.ConvertMillimetersToInches(labelWidth) * pdfDpi),
                 (float)(UnitsHelper.ConvertMillimetersToInches(labelHeight) * pdfDpi));
-            
+
             pdfCanvas.Scale(pdfScaleFactor, pdfScaleFactor);
-            
+
             if (this.drawerOptions.PdfOutput == true)
             {
                 skCanvas.AddCanvas(pdfCanvas);

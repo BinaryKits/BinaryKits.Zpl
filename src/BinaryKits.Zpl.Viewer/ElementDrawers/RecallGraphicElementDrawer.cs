@@ -1,5 +1,6 @@
 using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -52,7 +53,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float height = bitmap.Height;
                 return this.CalculateNextDefaultPosition(x, y, width, height, recallGraphic.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
             }
-            
+
             return currentPosition;
         }
     }

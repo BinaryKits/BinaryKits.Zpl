@@ -1,4 +1,4 @@
-﻿﻿using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using BinaryKits.Zpl.Viewer.Symologies;
@@ -61,7 +61,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
             // gutters
             float gX, gV;
-            
+
             // dark hex pattern
             SKPoint[] pattern;
             float xoff, yoff;

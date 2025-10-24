@@ -3,7 +3,9 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
+
 using System;
+
 using ZXing.OneD;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -31,7 +33,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 string content = barcode.Content;
-                if(barcode.HexadecimalIndicator is char hexIndicator)
+                if (barcode.HexadecimalIndicator is char hexIndicator)
                 {
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
@@ -52,7 +54,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, currentPosition);
             }
-            
+
             return currentPosition;
         }
     }

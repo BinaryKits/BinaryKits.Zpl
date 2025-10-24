@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using BinaryKits.Zpl.Viewer.Models;
+﻿using BinaryKits.Zpl.Viewer.Models;
+
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer
 {

@@ -31,7 +31,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 maximumNumberOfLinesInTextBlock = tmpint;
             }
 
-            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint)) {
+            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint))
+            {
                 addOrDeleteSpaceBetweenLines = tmpint;
             }
 
@@ -51,7 +52,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 }
             }
 
-            if (zplDataParts.Length > 4 && int.TryParse(zplDataParts[4], out tmpint)) {
+            if (zplDataParts.Length > 4 && int.TryParse(zplDataParts[4], out tmpint))
+            {
                 hangingIndentOfTheSecondAndRemainingLines = tmpint;
             }
 

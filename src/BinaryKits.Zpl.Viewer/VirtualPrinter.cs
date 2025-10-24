@@ -1,6 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
-using BinaryKits.Zpl.Viewer.Helpers;
 using BinaryKits.Zpl.Viewer.Models;
+
 using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer
@@ -35,7 +35,7 @@ namespace BinaryKits.Zpl.Viewer
         public VirtualPrinter()
         {
             this.BarcodeInfo = new BarcodeInfo();
-            this.Comments =[];
+            this.Comments = [];
         }
 
         public void SetNextElementPosition(int x, int y, bool calculateFromBottom = false, bool useDefaultPosition = false)
@@ -117,7 +117,8 @@ namespace BinaryKits.Zpl.Viewer
             this.LabelReverse = reverse;
         }
 
-        public void SetFieldOrientation(FieldOrientation fieldOrientation) {
+        public void SetFieldOrientation(FieldOrientation fieldOrientation)
+        {
             this.FieldOrientation = fieldOrientation;
             if (this.NextFont != null)
             {

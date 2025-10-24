@@ -1,5 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Helpers;
-using System;
+
 using System.Text.RegularExpressions;
 
 namespace BinaryKits.Zpl.Viewer.Helpers

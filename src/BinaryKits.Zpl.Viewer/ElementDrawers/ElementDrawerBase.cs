@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -26,13 +27,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             return false;
         }
-        
+
         ///<inheritdoc/>
         public virtual bool IsWhiteDraw(ZplElementBase element)
         {
             return false;
         }
-        
+
         ///<inheritdoc/>
         public virtual bool ForceBitmapDraw(ZplElementBase element)
         {
@@ -87,7 +88,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         return new SKPoint(x, y - elementWidth);
                 }
             }
-            
+
             return currentPosition;
         }
 

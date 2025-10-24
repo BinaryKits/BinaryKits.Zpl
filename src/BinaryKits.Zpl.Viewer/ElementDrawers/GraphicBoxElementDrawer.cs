@@ -1,6 +1,8 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+
 using SkiaSharp;
+
 using System;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -67,7 +69,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 {
                     border1 = (int)Math.Ceiling((float)width1 / 2);
                 }
-                
+
                 if (border1 > height1 / 2 && height1 <= width1)
                 {
                     border1 = (int)Math.Ceiling((float)height1 / 2);
@@ -97,7 +99,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     {
                         continue;
                     }
-                    
+
                     lastPrintedBorder = border2;
 
                     float offsetX = border2 / 2.0f;
@@ -142,7 +144,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         {
                             skPaint.BlendMode = SKBlendMode.Xor;
                         }
-                        
+
                         this.skCanvas.DrawRect(x, y, width, height, skPaint);
                         // Calculate next position based on box dimensions
                         return this.CalculateNextDefaultPosition(baseX, baseY, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
@@ -154,7 +156,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 // Calculate next position based on box dimensions
                 return this.CalculateNextDefaultPosition(baseX, baseY, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
             }
-            
+
             return currentPosition;
         }
     }

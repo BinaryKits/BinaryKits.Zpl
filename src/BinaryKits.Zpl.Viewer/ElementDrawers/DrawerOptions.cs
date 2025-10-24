@@ -1,7 +1,8 @@
 using SkiaSharp;
+
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -33,10 +34,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// </summary>
         public bool ReplaceUnderscoreWithEnSpace { get; set; } = false;
 
-    /// <summary>
-    /// Gets or sets a value indicating whether antialiasing is enabled.
-    /// </summary>
-    public bool Antialias { get; set; } = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether antialiasing is enabled.
+        /// </summary>
+        public bool Antialias { get; set; } = true;
 
         private static readonly string[] fontStack0 = [
             "Swis721 Cn BT",

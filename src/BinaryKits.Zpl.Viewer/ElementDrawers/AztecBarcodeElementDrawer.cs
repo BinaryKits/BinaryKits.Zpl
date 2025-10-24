@@ -68,7 +68,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation);
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation, currentPosition);
             }
-            
+
             return currentPosition;
         }
     }

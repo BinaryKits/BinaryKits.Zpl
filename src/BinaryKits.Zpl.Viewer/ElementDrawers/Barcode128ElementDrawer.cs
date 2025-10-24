@@ -84,7 +84,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, currentPosition);
             }
-            
+
             return currentPosition;
         }
 

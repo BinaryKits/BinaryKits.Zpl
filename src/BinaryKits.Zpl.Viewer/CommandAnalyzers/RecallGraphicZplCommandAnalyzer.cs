@@ -1,4 +1,5 @@
 using BinaryKits.Zpl.Label.Elements;
+
 using System.Text.RegularExpressions;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers

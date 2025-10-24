@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -11,7 +12,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             return element is ZplGraphicCircle;
         }
-        
+
         public override bool IsReverseDraw(ZplElementBase element)
         {
             if (element is ZplGraphicCircle graphicCircle)
@@ -21,7 +22,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
             return false;
         }
-        
+
         public override bool IsWhiteDraw(ZplElementBase element)
         {
             if (element is ZplGraphicCircle graphicCircle)
@@ -84,7 +85,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         y = radius;
                     }
                 }
-                
+
                 if (graphicCircle.ReversePrint)
                 {
                     skPaint.BlendMode = SKBlendMode.Xor;
@@ -93,7 +94,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 this.skCanvas.DrawCircle(x, y, radiusMinusBorder, skPaint);
                 return this.CalculateNextDefaultPosition(baseX, baseY, graphicCircle.Diameter, graphicCircle.Diameter, graphicCircle.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
             }
-            
+
             return currentPosition;
         }
     }

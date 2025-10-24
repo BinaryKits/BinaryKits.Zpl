@@ -3,7 +3,9 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
+
 using System;
+
 using ZXing.OneD;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -34,7 +36,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 string content = barcode.Content.Trim('*');
-                if(barcode.HexadecimalIndicator is char hexIndicator)
+                if (barcode.HexadecimalIndicator is char hexIndicator)
                 {
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
@@ -58,9 +60,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
                 }
 
-                return this.CalculateNextDefaultPosition(x,y,resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, currentPosition);
+                return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, currentPosition);
             }
-            
+
             return currentPosition;
         }
     }

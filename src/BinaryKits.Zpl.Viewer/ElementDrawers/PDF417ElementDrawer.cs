@@ -36,7 +36,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 string content = pdf417.Content;
-                if (pdf417.HexadecimalIndicator is char hexIndicator) {
+                if (pdf417.HexadecimalIndicator is char hexIndicator)
+                {
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
@@ -115,12 +116,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, pdf417.FieldOrigin != null, pdf417.FieldOrientation, currentPosition);
             }
-            
+
             return currentPosition;
         }
 
         // bitmatrix scaling instead of bitmap
-        private static BitMatrix ProportionalUpscale(BitMatrix old, int scale) {
+        private static BitMatrix ProportionalUpscale(BitMatrix old, int scale)
+        {
             if (scale == 0 || scale == 1)
             {
                 return old;
@@ -150,7 +152,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         //  - we can only set the height in zpl in points, not the width
         //  - each bar is ^BY "points" thick
         //  - because we have PDF417_ASPECT_RATIO set to 3, the height of a single bar is now 3 * ^BY
-        private static BitMatrix VerticalScale(BitMatrix old_matrix, int new_bar_height, int old_bar_height) {
+        private static BitMatrix VerticalScale(BitMatrix old_matrix, int new_bar_height, int old_bar_height)
+        {
             int width = old_matrix.Width;
             int rows = old_matrix.Height / old_bar_height; // logical rows;
 

@@ -1,6 +1,7 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Label.Helpers;
+
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -46,7 +47,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 this.skCanvas.DrawBitmap(image, x, y);
                 return this.CalculateNextDefaultPosition(x, y, image.Width, image.Height, graphicField.FieldOrigin != null, Label.FieldOrientation.Normal, currentPosition);
             }
-            
+
             return currentPosition;
         }
     }

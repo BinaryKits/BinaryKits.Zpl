@@ -9,6 +9,6 @@
     // Subsequent labels only require FV to draw the variable parts.
     public class FieldVariableZplCommandAnalyzer : FieldDataZplCommandAnalyzer
     {
-        public FieldVariableZplCommandAnalyzer(VirtualPrinter virtualPrinter): base(virtualPrinter, "^FV") { }
+        public FieldVariableZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base(virtualPrinter, "^FV") { }
     }
 }

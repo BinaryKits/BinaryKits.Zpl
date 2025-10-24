@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Models;
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using BinaryKits.Zpl.Label.Elements;
-using BinaryKits.Zpl.Viewer.Models;
 
 namespace BinaryKits.Zpl.Viewer
 {
@@ -52,7 +53,7 @@ namespace BinaryKits.Zpl.Viewer
                 }
                 else if (zplElement is ZplRecallFieldNumber recallFieldNumber)
                 {
-                    for(int i = 0; i < elements.Count; i++)
+                    for (int i = 0; i < elements.Count; i++)
                     {
                         if (elements[i] is ZplFieldNumber fieldNumber && fieldNumber.Number == recallFieldNumber.Number)
                         {

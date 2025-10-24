@@ -29,7 +29,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             */
 
             FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
-            
+
             int height = this.VirtualPrinter.BarcodeInfo.Height;
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
@@ -63,7 +63,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             {
                 rows = tmpint;
             }
-            
+
             bool compact = false;
             if (zplDataParts.Length > 5)
             {

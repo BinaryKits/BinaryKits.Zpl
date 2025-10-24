@@ -3,11 +3,13 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
+
 using System.Text.RegularExpressions;
+
 using ZXing;
+using ZXing.Common;
 using ZXing.Datamatrix;
 using ZXing.Datamatrix.Encoder;
-using ZXing.Common;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -49,7 +51,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 string content = dataMatrix.Content;
-                if(dataMatrix.HexadecimalIndicator is char hexIndicator)
+                if (dataMatrix.HexadecimalIndicator is char hexIndicator)
                 {
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
@@ -80,7 +82,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, dataMatrix.FieldOrigin != null, dataMatrix.FieldOrientation, currentPosition);
             }
-            
+
             return currentPosition;
         }
     }

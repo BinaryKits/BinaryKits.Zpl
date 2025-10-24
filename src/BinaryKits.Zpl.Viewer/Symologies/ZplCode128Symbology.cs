@@ -88,7 +88,8 @@ namespace BinaryKits.Zpl.Viewer.Symologies
         /// <summary>
         /// <see href="https://en.wikipedia.org/wiki/Code_128#Bar_code_widths"/>
         /// </summary>
-        static ZplCode128Symbology() {
+        static ZplCode128Symbology()
+        {
             var codeSetTable = new[]
             {
                 new { Value = 0, A = " ", B = " ", C = "00", Pattern = 0b11011001100 },
