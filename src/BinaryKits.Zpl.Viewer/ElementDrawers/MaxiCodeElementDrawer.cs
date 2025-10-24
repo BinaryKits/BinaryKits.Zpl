@@ -1,19 +1,17 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
+using BinaryKits.Zpl.Viewer.Symologies;
+
 using SkiaSharp;
+
 using System;
-using System.IO;
-using BinaryKits.Zpl.Label;
-#if WINDOWS
-using CoelWu.Zint.Net;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-#endif
+using System.Collections;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     /// <summary>
-    /// Drawer for MaxiCode Barcode Elements. Only Supported on Windows Platforms. 
+    /// Drawer for MaxiCode Barcode Elements.
     /// </summary>
     public class MaxiCodeElementDrawer : BarcodeDrawerBase
     {
@@ -24,178 +22,189 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
             if (element is ZplMaxiCode maxiCode)
             {
-#if WINDOWS
-                return DrawMaxiCode(maxiCode, internationalFont, currentPosition);
-#else
-                return currentPosition;
-#endif
+                float x = maxiCode.PositionX;
+                float y = maxiCode.PositionY;
+
+                if (maxiCode.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
+
+                var content = maxiCode.Content;
+                if (maxiCode.HexadecimalIndicator is char hexIndicator)
+                {
+                    content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
+                }
+
+                bool[] data = MaxiCodeSymbology.Encode(content, maxiCode.Mode);
+
+                var image = this.DrawMaxiCode(data, printDensityDpmm);
+                var png = image.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                this.DrawBarcode(png, x, y, image.Width, image.Height, maxiCode.FieldOrigin != null, maxiCode.FieldOrientation);
+                return this.CalculateNextDefaultPosition(x, y, image.Width, image.Height, maxiCode.FieldOrigin != null, maxiCode.FieldOrientation, currentPosition);
             }
-            
+
             return currentPosition;
         }
 
-#if WINDOWS
-private SKPoint DrawMaxiCode(ZplMaxiCode maxiCode, InternationalFont internationalFont, SKPoint currentPosition)
-{
-    float x = maxiCode.PositionX;
-    float y = maxiCode.PositionY;
-
-    if (maxiCode.UseDefaultPosition)
-    {
-        x = currentPosition.X;
-        y = currentPosition.Y;
-    }
-
-    var maxiBarcode = new ZintNetLib();
-    maxiBarcode.MaxicodeMode = ConvertMaxiCodeMode(maxiCode.Mode);
-    var content = maxiCode.Content;
-            
-    try
-    {
-        //replace hex items before mode 2 and mode 3 specific string manipulation 
-        if (maxiCode.HexadecimalIndicator is char hexIndicator)
+        private SKBitmap DrawMaxiCode(bool[] data, int dpmm)
         {
-            content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
-        }
-                
-                if (maxiCode.Mode == 2)
-                {
-                    //ZPL mode 2:
-                    //^FD[aaa][bbb][ccccc][dddd]_5B)>_1E[ee]_1D[ff]1Z
-                    //^FD002840100450000_5B)>_1E01_1D961Z
-                    //<hpm> = aaabbbcccccdddd
-                    // aaa = three-digit class of service
-                    // bbb = three-digit country code
-                    // ccccc = five-digit zip code
-                    // dddd = four-digit zip code extension (if none exists, four zeros (0000) must be entered)
-                    // ee = 01
-                    // ff = year number
-                    //ZintNetLib structure:
-                    //^FD_5B)>_1E[ee]_1D[ff][ccccc][dddd]_1D[bbb]_1D[aaa]_1D1Z
-                    //^FD_5B)>_1E01_1D96100450000_1D840_1D002_1D1Z
-                    //Note: Country code 630 is not allowed in this library for mode 2 
+            // ISO/IEC 16023:2000 pp. 16, 38-40
+            // fundamental dimensions
+            float L, H, W, V, X, Y;
 
-                    var replace = content.Substring(0, 24);
-                    var aaa = content.Substring(0, 3);
-                    var bbb = content.Substring(3, 3);
-                    var ccccc = content.Substring(6, 5);
-                    var dddd = content.Substring(11, 4);
-                    var ee = content.Substring(19, 2);
-                    var ff = content.Substring(22, 2);
-                    var newString = $"\x5B)>\x1E{ee}\x1D{ff}{ccccc}{dddd}\x1D{bbb}\x1D{aaa}\x1D";
-                    content = content.Replace(replace, newString);
-                }
-                else if (maxiCode.Mode == 3)
-                {
-                    //ZPL mode 3:
-                    //^FD[aaa][bbb][cccccc]_5B)>_1E[ee]_1D[ff]1Z
-                    //^FD066826RS19  _5B)>_1E01_1D961Z
-                    //<hpm> = aaabbbcccccc
-                    // aaa = three-digit class of service
-                    // bbb = three-digit country code
-                    // ccccc = six-digit zip code (A through Z or 0 to 9)
-                    // ee = 01
-                    // ff = year number
-                    //ZintNetLib structure:
-                    //^FD_5B)>_1E[ee]_1D[ff][cccccc]_1D[bbb]_1D[aaa]_1D1Z
-                    //^FD_5B)>_1E01_1D96RS19  _1D826_1D066_1D1Z
-                    
-                    var replace = content.Substring(0, 21);
-                    var aaa = content.Substring(0, 3);
-                    var bbb = content.Substring(3, 3);
-                    var cccccc = content.Substring(6, 6);
-                    var ee = content.Substring(16, 2);
-                    var ff = content.Substring(19, 2);
-                    var newString = $"\x5B)>\x1E{ee}\x1D{ff}{cccccc}\x1D{bbb}\x1D{aaa}\x1D";
-                    content = content.Replace(replace, newString);
-                }
-                
-                maxiBarcode.CreateBarcode("Maxicode(ISO 16023)", content);
-            }
-            catch
-            {
-                // Do nothing
-            }
-
-            //^BD2,1,1
-            if (maxiBarcode.IsValid)
-            {
-                var bitmap = new Bitmap(1000, 1000);
-                var graphics = Graphics.FromImage(bitmap);
-                graphics.Clear(Color.White);
-
-                maxiBarcode.Rotation = 0;
-                maxiBarcode.Multiplier = 2;
-                //Note: Position and Total are not supported in this MaxiCode library
-                maxiBarcode.DrawBarcode(graphics, new Point(-6, -6));
-                
-                //Linux container fix, redraw the circles (variation of: CoelWu.Zint.Net.ZintNetLib.DrawBarcode)
-                graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                float num3 = 13.64f * 7f;
-                float num4 = 13.43f * 7f;
-                float num5 = 0.85f * 7f;
-                float num6 = 2.2f * 7f;
-                float num7 = 3.54f * 7f;
-                Pen pen = new Pen(Color.Black, 0.67f * 7f);
-                graphics.DrawEllipse(pen, new RectangleF(num3 - num5 + 1, num4 - num5 + 1, num5 * 2.12f, num5 * 2.12f));
-                graphics.DrawEllipse(pen, new RectangleF(num3 - num6 + 0.5f, num4 - num6 + 0.5f, num6 * 2.12f, num6 * 2.12f));
-                graphics.DrawEllipse(pen, new RectangleF(num3 - num7, num4 - num7, num7 * 2.12f, num7 * 2.12f));
-
-                Size symbolSize;
-                var section = Rectangle.Empty;
-                symbolSize = maxiBarcode.SymbolSize(graphics);
-                section.Width = symbolSize.Width - 12;
-                section.Height = symbolSize.Height - 12;
-
-                var newBitmap = new Bitmap(section.Width, section.Height);
-                var newGraphics = Graphics.FromImage(newBitmap);
-                newGraphics.DrawImage(bitmap, 0, 0, section, GraphicsUnit.Pixel);
-
-                byte[] data = null;
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    newBitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                    data = ms.ToArray();
-
-                    this.DrawBarcode(
-                        data,
-                        x,
-                        y,
-                        section.Width,
-                        section.Height,
-                        true,
-                        Label.FieldOrientation.Normal
-                    );
-                }
-
-                return this.CalculateNextDefaultPosition(
-                    x,
-                    y,
-                    section.Width,
-                    section.Height,
-                    true,
-                    Label.FieldOrientation.Normal,
-                    currentPosition
-                );
-            }
+            // gutters
+            float gX, gV;
             
-            return currentPosition;
-        }
-        private MaxicodeMode ConvertMaxiCodeMode(int mode)
-        {
-            return mode switch {
-                2 => MaxicodeMode.Mode2,
-                3 => MaxicodeMode.Mode3,
-                4 => MaxicodeMode.Mode4,
-                5 => MaxicodeMode.Mode5,
-                6 => MaxicodeMode.Mode6,
-                _ => MaxicodeMode.Mode2,
+            // dark hex pattern
+            SKPoint[] pattern;
+            float xoff, yoff;
+
+            if (dpmm == 8)
+            {
+                W = 7;
+                V = 8;
+                X = W;
+                Y = 6;
+
+                gX = 1;
+                gV = 1;
+
+                xoff = 4f;
+                yoff = 2f;
+                pattern = [
+                    new SKPoint(0f, 3f),
+                    new SKPoint(2f, 2f),
+                    new SKPoint(1.5f, 0f),
+                    new SKPoint(2f, -2f),
+                    new SKPoint(0f, -3f),
+                    new SKPoint(-2f, -2f),
+                    new SKPoint(-1.5f, 0f)
+                ];
+
+                L = 29 * W;
+                H = 32 * Y;
+            }
+            else if (dpmm == 12)
+            {
+                W = 10;
+                V = 12;
+                X = W;
+                Y = 9;
+
+                gX = 2;
+                gV = 2;
+
+                xoff = 5f;
+                yoff = 3f;
+                pattern = [
+                    new SKPoint(0f, 4f),
+                    new SKPoint(3f, 3f),
+                    new SKPoint(1.5f, 0f),
+                    new SKPoint(3f, -3f),
+                    new SKPoint(0f, -4f),
+                    new SKPoint(-3f, -3f),
+                    new SKPoint(-1.5f, 0f)
+                ];
+
+                L = 29 * W;
+                H = 32 * Y;
+            }
+            else
+            {
+                L = 25.50f * dpmm;
+
+                W = L / 29;
+                V = 1.1547f * W; // (2/Math.Sqrt(3)) * W
+                X = W;
+                Y = 0.866f * W; // (Math.Sqrt(3)/2) * W
+
+                H = 32 * Y;
+
+                gX = dpmm / 6f;
+                gV = 1.1547f * gX;
+
+                xoff = W / 2;
+                yoff = (V - gV) / 4;
+
+                // drawn hexagon dimensions
+                float hexW = (X - gX) / 2; // half width
+                float hexH = (V - gV) / 4; // quarter height
+
+                pattern = [
+                    new SKPoint(0f, hexH * 2),
+                    new SKPoint(hexW, hexH),
+                    new SKPoint(hexW, -hexH),
+                    new SKPoint(0f, -hexH * 2),
+                    new SKPoint(-hexW, -hexH)
+                ];
+            }
+
+            // finder radii
+            float R1 = 0.51f * dpmm;
+            float R2 = 1.18f * dpmm;
+            float R3 = 1.86f * dpmm;
+            float R4 = 2.53f * dpmm;
+            float R5 = 3.20f * dpmm;
+            float R6 = 3.87f * dpmm;
+
+            using var image = new SKBitmap((int)Math.Ceiling(L + X - gX), (int)Math.Ceiling(H + V - gV));
+            using var skCanvas = new SKCanvas(image);
+            using var skPaint = new SKPaint()
+            {
+                IsAntialias = false,
+                Color = SKColors.Black,
+                Style = SKPaintStyle.Fill,
             };
+
+            SKPath path = new SKPath();
+            IEnumerator dataEnum = data.GetEnumerator();
+            for (int j = 0; j < 33; j++)
+            {
+                for (int i = 0; i < 30 - j % 2; i++)
+                {
+                    dataEnum.MoveNext();
+                    if ((bool)dataEnum.Current)
+                    {
+                        path.MoveTo(i * W + j % 2 * xoff, j * Y + yoff);
+                        foreach (SKPoint point in pattern)
+                        {
+                            path.RLineTo(point);
+                        }
+
+                        path.Close();
+                    }
+                }
+            }
+
+            float finderX = 14 * W + (X - gX) / 2;
+            float finderY = 16 * Y + (V - gV) / 2;
+
+            path.AddCircle(finderX, finderY, R1, SKPathDirection.CounterClockwise);
+            path.AddCircle(finderX, finderY, R2, SKPathDirection.Clockwise);
+            path.Close();
+            path.AddCircle(finderX, finderY, R3, SKPathDirection.CounterClockwise);
+            path.AddCircle(finderX, finderY, R4, SKPathDirection.Clockwise);
+            path.Close();
+            path.AddCircle(finderX, finderY, R5, SKPathDirection.CounterClockwise);
+            path.AddCircle(finderX, finderY, R6, SKPathDirection.Clockwise);
+            path.Close();
+
+            skCanvas.DrawPath(path, skPaint);
+
+            // labelary
+            //return image.Resize(new SKSizeI(200, 193), SKFilterQuality.High); //  8dpmm
+            //return image.Resize(new SKSizeI(300, 289), SKFilterQuality.High); // 12dpmm
+            //return image.Resize(new SKSizeI(600, 579), SKFilterQuality.High); // 24dpmm
+
+            // ISO
+            return image.Copy();
         }
-#endif
+
     }
 }

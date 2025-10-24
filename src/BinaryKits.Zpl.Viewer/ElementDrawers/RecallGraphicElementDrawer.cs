@@ -16,7 +16,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, InternationalFont internationalFont, SKPoint currentPosition)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplRecallGraphic recallGraphic)
             {
@@ -50,7 +50,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 float width = bitmap.Width;
                 float height = bitmap.Height;
-                return this.CalculateNextDefaultPosition(x, y, width, height, recallGraphic.FieldOrigin != null, Label.FieldOrientation.Normal, currentPosition);
+                return this.CalculateNextDefaultPosition(x, y, width, height, recallGraphic.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
             }
             
             return currentPosition;
