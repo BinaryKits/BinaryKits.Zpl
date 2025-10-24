@@ -2,7 +2,9 @@ using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.ElementDrawers;
 using BinaryKits.Zpl.Viewer.Helpers;
+
 using SkiaSharp;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,24 +14,19 @@ namespace BinaryKits.Zpl.Viewer
 {
     public class ZplElementDrawer
     {
-        private const int PdfDpi = 72;
-        private const float ZplDpi = 203.2f;
-        private const float PdfScaleFactor = PdfDpi / ZplDpi;
+        private static readonly int pdfDpi = 72;
+        private static readonly float zplDpi = 203.2f;
+        private static readonly float pdfScaleFactor = pdfDpi / zplDpi;
 
-        private readonly DrawerOptions _drawerOptions;
-        private readonly IPrinterStorage _printerStorage;
-        private readonly IElementDrawer[] _elementDrawers;
+        private readonly DrawerOptions drawerOptions;
+        private readonly IPrinterStorage printerStorage;
+        private readonly IElementDrawer[] elementDrawers;
 
         public ZplElementDrawer(IPrinterStorage printerStorage, DrawerOptions drawerOptions = null)
         {
-            if (drawerOptions == null)
-            {
-                drawerOptions = new DrawerOptions();
-            }
-            this._drawerOptions = drawerOptions;
-            this._printerStorage = printerStorage;
-            this._elementDrawers = new IElementDrawer[]
-            {
+            this.drawerOptions = drawerOptions ?? new DrawerOptions();
+            this.printerStorage = printerStorage;
+            this.elementDrawers = [
                 new AztecBarcodeElementDrawer(),
                 new Barcode128ElementDrawer(),
                 new Barcode39ElementDrawer(),
@@ -48,7 +45,7 @@ namespace BinaryKits.Zpl.Viewer
                 new RecallGraphicElementDrawer(),
                 new TextFieldElementDrawer(),
                 new BarcodeAnsiCodabarElementDrawer(),
-            };
+            ];
         }
 
         /// <summary>
@@ -99,32 +96,32 @@ namespace BinaryKits.Zpl.Viewer
             double labelHeight = 152.4,
             int printDensityDpmm = 8)
         {
-            var result = new List<byte[]>();
-            var imageHistory = new List<SKImage>();
-            var labelImageWidth = Convert.ToInt32(labelWidth * printDensityDpmm);
-            var labelImageHeight = Convert.ToInt32(labelHeight * printDensityDpmm);
+            List<byte[]> result = [];
+            List<SKImage> imageHistory = [];
+            int labelImageWidth = Convert.ToInt32(labelWidth * printDensityDpmm);
+            int labelImageHeight = Convert.ToInt32(labelHeight * printDensityDpmm);
 
             //use SKNWayCanvas to be able to draw on multiple canvases
-            using var skCanvas = new SKNWayCanvas(labelImageWidth, labelImageHeight);
+            using SKNWayCanvas skCanvas = new(labelImageWidth, labelImageHeight);
 
             //add Bitmap canvas
-            var info = new SKImageInfo(labelImageWidth, labelImageHeight);
-            var surface = SKSurface.Create(info);
-            using var skImageCanvas = surface.Canvas;
+            SKImageInfo info = new(labelImageWidth, labelImageHeight);
+            SKSurface surface = SKSurface.Create(info);
+            using SKCanvas skImageCanvas = surface.Canvas;
             skCanvas.AddCanvas(skImageCanvas);
 
             //add PDF canvas
             // - When drawing PDF we need the Bitmap as well to fix inverted coloring
             Stream pdfStream = new MemoryStream();
-            using var document = SKDocument.CreatePdf(pdfStream);
+            using SKDocument document = SKDocument.CreatePdf(pdfStream);
 
-            using var pdfCanvas = document.BeginPage(
-                (float)(UnitsHelper.ConvertMillimetersToInches(labelWidth) * PdfDpi),
-                (float)(UnitsHelper.ConvertMillimetersToInches(labelHeight) * PdfDpi));
-            
-            pdfCanvas.Scale(PdfScaleFactor, PdfScaleFactor);
-            
-            if (this._drawerOptions.PdfOutput == true)
+            using SKCanvas pdfCanvas = document.BeginPage(
+                (float)(UnitsHelper.ConvertMillimetersToInches(labelWidth) * pdfDpi),
+                (float)(UnitsHelper.ConvertMillimetersToInches(labelHeight) * pdfDpi));
+
+            pdfCanvas.Scale(pdfScaleFactor, pdfScaleFactor);
+
+            if (this.drawerOptions.PdfOutput == true)
             {
                 skCanvas.AddCanvas(pdfCanvas);
             }
@@ -132,9 +129,9 @@ namespace BinaryKits.Zpl.Viewer
             //make sure to have a transparent canvas for SKBlendMode.Xor to work properly
             skCanvas.Clear(SKColors.Transparent);
             InternationalFont internationalFont = InternationalFont.ZCP850;
-            SKPoint currentDefaultPosition = new SKPoint(0, 0);
+            SKPoint currentDefaultPosition = SKPoint.Empty;
 
-            foreach (var element in elements)
+            foreach (ZplElementBase element in elements)
             {
                 if (element is ZplChangeInternationalFont changeFont)
                 {
@@ -142,7 +139,7 @@ namespace BinaryKits.Zpl.Viewer
                     continue;
                 }
 
-                var drawer = this._elementDrawers.SingleOrDefault(o => o.CanDraw(element));
+                IElementDrawer drawer = this.elementDrawers.SingleOrDefault(o => o.CanDraw(element));
                 if (drawer == null)
                 {
                     continue;
@@ -161,7 +158,7 @@ namespace BinaryKits.Zpl.Viewer
                         && !drawer.ForceBitmapDraw(element))
                     {
                         //save state before inverted draw
-                        if (this._drawerOptions.PdfOutput == true)
+                        if (this.drawerOptions.PdfOutput == true)
                         {
                             imageHistory.Add(surface.Snapshot());
                         }
@@ -169,15 +166,15 @@ namespace BinaryKits.Zpl.Viewer
                     else if (drawer.IsReverseDraw(element))
                     {
                         //basically only ZplGraphicBox/Circle depending on requirements
-                        using var skBitmapInvert = new SKBitmap(labelImageWidth, labelImageHeight);
-                        using var skCanvasInvert = new SKCanvas(skBitmapInvert);
+                        using SKBitmap skBitmapInvert = new(labelImageWidth, labelImageHeight);
+                        using SKCanvas skCanvasInvert = new(skBitmapInvert);
                         skCanvasInvert.Clear(SKColors.Transparent);
 
-                        drawer.Prepare(this._printerStorage, skCanvasInvert);
-                        currentDefaultPosition = drawer.Draw(element, _drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
+                        drawer.Prepare(this.printerStorage, skCanvasInvert);
+                        currentDefaultPosition = drawer.Draw(element, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                         //save state before inverted draw
-                        if (this._drawerOptions.PdfOutput == true)
+                        if (this.drawerOptions.PdfOutput == true)
                         {
                             imageHistory.Add(surface.Snapshot());
                         }
@@ -185,27 +182,31 @@ namespace BinaryKits.Zpl.Viewer
                         //use color inversion on an reverse draw white element
                         if (drawer.IsWhiteDraw(element))
                         {
-                            this.InvertDrawWhite(skCanvas, skBitmapInvert);
+                            InvertDrawWhite(skCanvas, skBitmapInvert);
                         }
                         else
                         {
-                            this.InvertDraw(skCanvas, skBitmapInvert);
+                            InvertDraw(skCanvas, skBitmapInvert);
                         }
 
                         continue;
                     }
 
-                    drawer.Prepare(this._printerStorage, skCanvas);
-                    currentDefaultPosition = drawer.Draw(element, _drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
+                    drawer.Prepare(this.printerStorage, skCanvas);
+                    currentDefaultPosition = drawer.Draw(element, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                     continue;
                 }
                 catch (Exception ex)
                 {
                     if (element is ZplBarcode barcodeElement)
+                    {
                         throw new Exception($"Error on zpl element \"{barcodeElement.Content}\": {ex.Message}", ex);
+                    }
                     else if (element is ZplDataMatrix dataMatrixElement)
+                    {
                         throw new Exception($"Error on zpl element \"{dataMatrixElement.Content}\": {ex.Message}", ex);
+                    }
                     else
                     {
                         throw;
@@ -214,33 +215,35 @@ namespace BinaryKits.Zpl.Viewer
             }
 
             //check if we need to set a white background
-            var image = surface.Snapshot();
-            if (this._drawerOptions.OpaqueBackground == true)
+            SKImage image = surface.Snapshot();
+            if (this.drawerOptions.OpaqueBackground == true)
             {
-                using var surfaceWhiteBg = SKSurface.Create(info);
-                using var skImageCanvasWhiteBg = surfaceWhiteBg.Canvas;
+                using SKSurface surfaceWhiteBg = SKSurface.Create(info);
+                using SKCanvas skImageCanvasWhiteBg = surfaceWhiteBg.Canvas;
                 skImageCanvasWhiteBg.Clear(SKColors.White);
 
-                var surfaceImage = surface.Snapshot();
-                var paint = new SKPaint();
-                paint.BlendMode = SKBlendMode.SrcOver;
+                SKImage surfaceImage = surface.Snapshot();
+                SKPaint paint = new()
+                {
+                    BlendMode = SKBlendMode.SrcOver
+                };
                 skImageCanvasWhiteBg.DrawImage(surfaceImage, 0f, 0f, paint);
 
                 image = surfaceWhiteBg.Snapshot();
             }
 
-            var imageData = image.Encode(_drawerOptions.RenderFormat, _drawerOptions.RenderQuality);
+            SKData imageData = image.Encode(this.drawerOptions.RenderFormat, this.drawerOptions.RenderQuality);
             result.Add(imageData.ToArray());
 
             //only return image
-            if (this._drawerOptions.PdfOutput == false)
+            if (this.drawerOptions.PdfOutput == false)
             {
                 result.Add(null);
                 return result;
             }
 
             //Fix the PDF blend
-            this.FixPdfInvertDraw(info, imageHistory, surface, skCanvas);
+            FixPdfInvertDraw(info, imageHistory, surface, skCanvas);
 
             //close the PDF document
             document.EndPage();
@@ -274,18 +277,18 @@ namespace BinaryKits.Zpl.Viewer
             double labelHeight = 152.4,
             int printDensityDpmm = 8)
         {
-            var result = new List<byte[]>();
-            var imageHistory = new List<SKImage>();
-            var labelImageWidth = Convert.ToInt32(labelWidth * printDensityDpmm);
-            var labelImageHeight = Convert.ToInt32(labelHeight * printDensityDpmm);
+            List<byte[]> result = [];
+            List<SKImage> imageHistory = [];
+            int labelImageWidth = Convert.ToInt32(labelWidth * printDensityDpmm);
+            int labelImageHeight = Convert.ToInt32(labelHeight * printDensityDpmm);
 
-            var skCanvas = surface.Canvas;
+            SKCanvas skCanvas = surface.Canvas;
             //This has an issue with AvaloniaUI making the window transparent. 
             skCanvas.Clear(SKColors.Transparent);
             InternationalFont internationalFont = InternationalFont.ZCP850;
-            SKPoint currentDefaultPosition = new SKPoint(0, 0);
+            SKPoint currentDefaultPosition = SKPoint.Empty;
 
-            foreach (var element in elements)
+            foreach (ZplElementBase element in elements)
             {
                 if (element is ZplChangeInternationalFont changeFont)
                 {
@@ -293,7 +296,7 @@ namespace BinaryKits.Zpl.Viewer
                     continue;
                 }
 
-                var drawer = this._elementDrawers.SingleOrDefault(o => o.CanDraw(element));
+                IElementDrawer drawer = this.elementDrawers.SingleOrDefault(o => o.CanDraw(element));
                 if (drawer == null)
                 {
                     continue;
@@ -304,37 +307,41 @@ namespace BinaryKits.Zpl.Viewer
                     if (drawer.IsReverseDraw(element))
                     {
                         //basically only ZplGraphicBox/Circle depending on requirements
-                        using var skBitmapInvert = new SKBitmap(labelImageWidth, labelImageHeight);
-                        using var skCanvasInvert = new SKCanvas(skBitmapInvert);
+                        using SKBitmap skBitmapInvert = new(labelImageWidth, labelImageHeight);
+                        using SKCanvas skCanvasInvert = new(skBitmapInvert);
                         skCanvasInvert.Clear(SKColors.Transparent);
 
-                        drawer.Prepare(this._printerStorage, skCanvasInvert);
-                        currentDefaultPosition = drawer.Draw(element, _drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
+                        drawer.Prepare(this.printerStorage, skCanvasInvert);
+                        currentDefaultPosition = drawer.Draw(element, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                         //use color inversion on an reverse draw white element
                         if (drawer.IsWhiteDraw(element))
                         {
-                            this.InvertDrawWhite(skCanvas, skBitmapInvert);
+                            InvertDrawWhite(skCanvas, skBitmapInvert);
                         }
                         else
                         {
-                            this.InvertDraw(skCanvas, skBitmapInvert);
+                            InvertDraw(skCanvas, skBitmapInvert);
                         }
 
                         continue;
                     }
 
-                    drawer.Prepare(this._printerStorage, skCanvas);
-                    currentDefaultPosition = drawer.Draw(element, _drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
+                    drawer.Prepare(this.printerStorage, skCanvas);
+                    currentDefaultPosition = drawer.Draw(element, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                     continue;
                 }
                 catch (Exception ex)
                 {
                     if (element is ZplBarcode barcodeElement)
+                    {
                         throw new Exception($"Error on zpl element \"{barcodeElement.Content}\": {ex.Message}", ex);
+                    }
                     else if (element is ZplDataMatrix dataMatrixElement)
+                    {
                         throw new Exception($"Error on zpl element \"{dataMatrixElement.Content}\": {ex.Message}", ex);
+                    }
                     else
                     {
                         throw;
@@ -349,61 +356,65 @@ namespace BinaryKits.Zpl.Viewer
          * This function extracts all the pixels that are removed in the draw process
          * Then that is used to make a white image as overlay in the PDF to get the same effect as SKBlendMode.Xor
          */
-        private void FixPdfInvertDraw(SKImageInfo info, List<SKImage> imageHistory, SKSurface surface, SKCanvas skCanvas)
+        private static void FixPdfInvertDraw(SKImageInfo info, List<SKImage> imageHistory, SKSurface surface, SKCanvas skCanvas)
         {
             //fix inverted colors
-            using var surfacePdfInvertColorFix = SKSurface.Create(info);
-            using var skImageCanvasPdfInvertColorFix = surfacePdfInvertColorFix.Canvas;
+            using SKSurface surfacePdfInvertColorFix = SKSurface.Create(info);
+            using SKCanvas skImageCanvasPdfInvertColorFix = surfacePdfInvertColorFix.Canvas;
             skImageCanvasPdfInvertColorFix.Clear(SKColors.Transparent);
 
             //make an image of everything that was once colored
-            foreach (var imageHistoryState in imageHistory)
+            foreach (SKImage imageHistoryState in imageHistory)
             {
-                var pdfPaint = new SKPaint();
-                pdfPaint.BlendMode = SKBlendMode.SrcOver;
+                SKPaint pdfPaint = new()
+                {
+                    BlendMode = SKBlendMode.SrcOver
+                };
                 skImageCanvasPdfInvertColorFix.DrawImage(imageHistoryState, 0f, 0f, pdfPaint);
             }
 
             //subtract the parts that are transparent in the final image
-            var finalSurfaceImage = surface.Snapshot();
-            var pdfFinalPaint = new SKPaint();
-            pdfFinalPaint.BlendMode = SKBlendMode.DstOut;
+            SKImage finalSurfaceImage = surface.Snapshot();
+            SKPaint pdfFinalPaint = new()
+            {
+                BlendMode = SKBlendMode.DstOut
+            };
             skImageCanvasPdfInvertColorFix.DrawImage(finalSurfaceImage, 0f, 0f, pdfFinalPaint);
 
             //now invert the colors of the pixels that should be white place it on the canvas
-            var pdfTransparentPartsImage = surfacePdfInvertColorFix.Snapshot();
-            var pdfTransparentPartsBitmap = SKBitmap.FromImage(pdfTransparentPartsImage);
-            var pdfFinalPaintInverted = new SKPaint();
-            var inverter = new float[20] {
+            SKImage pdfTransparentPartsImage = surfacePdfInvertColorFix.Snapshot();
+            SKBitmap pdfTransparentPartsBitmap = SKBitmap.FromImage(pdfTransparentPartsImage);
+            SKPaint pdfFinalPaintInverted = new();
+            float[] inverter = [
                 -1f,  0f,  0f, 0f, 1f,
                 0f, -1f,  0f, 0f, 1f,
                 0f,  0f, -1f, 0f, 1f,
                 0f,  0f,  0f, 1f, 0f
-            };
+            ];
             pdfFinalPaintInverted.ColorFilter = SKColorFilter.CreateColorMatrix(inverter);
             pdfFinalPaintInverted.BlendMode = SKBlendMode.SrcOver;
             skCanvas.DrawBitmap(pdfTransparentPartsBitmap, 0, 0, pdfFinalPaintInverted);
         }
 
-        private void InvertDraw(SKCanvas baseCanvas, SKBitmap bmToInvert)
+        private static void InvertDraw(SKCanvas baseCanvas, SKBitmap bmToInvert)
         {
-            using (SKPaint paint = new SKPaint())
+            using (SKPaint paint = new())
             {
                 paint.BlendMode = SKBlendMode.Xor;
                 baseCanvas.DrawBitmap(bmToInvert, 0, 0, paint);
             }
         }
 
-        private void InvertDrawWhite(SKCanvas baseCanvas, SKBitmap bmToInvert)
+        private static void InvertDrawWhite(SKCanvas baseCanvas, SKBitmap bmToInvert)
         {
-            using (SKPaint paint = new SKPaint())
+            using (SKPaint paint = new())
             {
-                var inverter = new float[20] {
+                float[] inverter = [
                     -1f,  0f,  0f, 0f, 1f,
                     0f, -1f,  0f, 0f, 1f,
                     0f,  0f, -1f, 0f, 1f,
                     0f,  0f,  0f, 1f, 0f
-                };
+                ];
                 paint.ColorFilter = SKColorFilter.CreateColorMatrix(inverter);
                 paint.BlendMode = SKBlendMode.Xor;
                 baseCanvas.DrawBitmap(bmToInvert, 0, 0, paint);

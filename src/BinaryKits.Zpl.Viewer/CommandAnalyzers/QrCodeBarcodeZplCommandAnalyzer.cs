@@ -11,14 +11,14 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
-            var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
 
             int tmpint;
             int model = 2;
             int magnificationFactor = 3;
-            var errorCorrection = ErrorCorrectionLevel.HighReliability;
+            ErrorCorrectionLevel errorCorrection = ErrorCorrectionLevel.HighReliability;
             int maskValue = 7;
 
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))

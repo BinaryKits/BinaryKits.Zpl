@@ -31,7 +31,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 useDefaultPosition = this.VirtualPrinter.NextElementPosition.UseDefaultPosition;
             }
 
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
             char compressionType = zplDataParts[0][0];
 
@@ -56,8 +56,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             byte[] grfImageData = ImageHelper.GetImageBytes(dataHex, bytesPerRow);
 
-            var converter = new ImageSharpImageConverter();
-            var imageData = converter.ConvertImage(grfImageData, bytesPerRow);
+            ImageSharpImageConverter converter = new();
+            byte[] imageData = converter.ConvertImage(grfImageData, bytesPerRow);
             dataHex = ByteHelper.BytesToHex(imageData);
 
             return new ZplGraphicField(x, y, binaryByteCount, graphicFieldCount, bytesPerRow, dataHex, bottomToTop, useDefaultPosition, compressionType);

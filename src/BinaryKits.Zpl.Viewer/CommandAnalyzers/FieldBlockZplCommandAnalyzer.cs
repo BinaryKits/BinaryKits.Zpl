@@ -12,13 +12,13 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
             int widthOfTextBlockLine = 0;
             int maximumNumberOfLinesInTextBlock = 1;
             int addOrDeleteSpaceBetweenLines = 0;
-            var textJustification = TextJustification.Left;
+            TextJustification textJustification = TextJustification.Left;
             int hangingIndentOfTheSecondAndRemainingLines = 0;
 
             if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
@@ -31,7 +31,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 maximumNumberOfLinesInTextBlock = tmpint;
             }
 
-            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint)) {
+            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint))
+            {
                 addOrDeleteSpaceBetweenLines = tmpint;
             }
 
@@ -51,7 +52,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 }
             }
 
-            if (zplDataParts.Length > 4 && int.TryParse(zplDataParts[4], out tmpint)) {
+            if (zplDataParts.Length > 4 && int.TryParse(zplDataParts[4], out tmpint))
+            {
                 hangingIndentOfTheSecondAndRemainingLines = tmpint;
             }
 

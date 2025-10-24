@@ -1,8 +1,8 @@
 ﻿namespace BinaryKits.Zpl.Viewer.Helpers
 {
-    static internal class UnitsHelper
+    internal static class UnitsHelper
     {
-        static internal double ConvertMillimetersToInches(double labelWidth)
+        internal static double ConvertMillimetersToInches(double labelWidth)
         {
             return labelWidth / 25.4;
         }

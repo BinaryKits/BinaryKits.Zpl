@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using BinaryKits.Zpl.Viewer.Models;
+﻿using BinaryKits.Zpl.Viewer.Models;
+
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer
 {
@@ -16,6 +17,6 @@ namespace BinaryKits.Zpl.Viewer
         /// </summary>
         /// <param name="rawLabelInfos">Raw label infos as read by ZplAnalyzer</param>
         /// <returns>Merged label info list</returns>
-        public List<LabelInfo> MergeFormats(List<LabelInfo> rawLabelInfos);
+        List<LabelInfo> MergeFormats(List<LabelInfo> rawLabelInfos);
     }
 }

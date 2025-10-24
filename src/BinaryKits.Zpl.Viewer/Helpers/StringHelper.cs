@@ -9,7 +9,7 @@ namespace BinaryKits.Zpl.Viewer.Helpers
 {
     public static class StringHelper
     {
-        private static readonly Regex hexDigits = new Regex(@"^[0-9A-Fa-f]{2}$", RegexOptions.Compiled);
+        private static readonly Regex hexDigits = new(@"^[0-9A-Fa-f]{2}$", RegexOptions.Compiled);
 
         static StringHelper()
         {
@@ -26,7 +26,7 @@ namespace BinaryKits.Zpl.Viewer.Helpers
         public static string ReplaceHexEscapes(this string text, char hexIndicator, InternationalFont internationalFont)
         {
             Encoding charset = GetCharset(internationalFont);
-            List<byte> bytes = new List<byte>();
+            List<byte> bytes = [];
             for (int i = 0; i < text.Length; i++)
             {
                 char c = text[i];
@@ -49,29 +49,19 @@ namespace BinaryKits.Zpl.Viewer.Helpers
 
         private static Encoding GetCharset(InternationalFont internationalFont)
         {
-            switch (internationalFont)
+            return internationalFont switch
             {
-                case InternationalFont.UTF8:
-                    return Encoding.UTF8;
-                case InternationalFont.UTF16_BE:
-                    return Encoding.BigEndianUnicode;
-                case InternationalFont.UTF16_LE:
-                    return Encoding.Unicode;
-                case InternationalFont.ZCP1250:
-                    return Encoding.GetEncoding(1250);
-                case InternationalFont.ZCP1251:
-                    return Encoding.GetEncoding(1251);
-                case InternationalFont.ZCP1252:
-                    return Encoding.GetEncoding(1252);
-                case InternationalFont.ZCP1253:
-                    return Encoding.GetEncoding(1253);
-                case InternationalFont.ZCP1254:
-                    return Encoding.GetEncoding(1254);
-                case InternationalFont.ZCP1255:
-                    return Encoding.GetEncoding(1255);
-                default:
-                    return Encoding.GetEncoding(850);
-            }
+                InternationalFont.UTF8 => Encoding.UTF8,
+                InternationalFont.UTF16_BE => Encoding.BigEndianUnicode,
+                InternationalFont.UTF16_LE => Encoding.Unicode,
+                InternationalFont.ZCP1250 => Encoding.GetEncoding(1250),
+                InternationalFont.ZCP1251 => Encoding.GetEncoding(1251),
+                InternationalFont.ZCP1252 => Encoding.GetEncoding(1252),
+                InternationalFont.ZCP1253 => Encoding.GetEncoding(1253),
+                InternationalFont.ZCP1254 => Encoding.GetEncoding(1254),
+                InternationalFont.ZCP1255 => Encoding.GetEncoding(1255),
+                _ => Encoding.GetEncoding(850),
+            };
         }
     }
 }

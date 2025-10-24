@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -9,7 +10,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
             int x = 0;
@@ -27,7 +28,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             if (zplDataParts.Length > 2)
             {
-                var fieldJustification = ConvertFieldJustification(zplDataParts[2]);
+                FieldJustification fieldJustification = this.ConvertFieldJustification(zplDataParts[2]);
                 this.VirtualPrinter.SetNextElementFieldJustification(fieldJustification);
             }
 

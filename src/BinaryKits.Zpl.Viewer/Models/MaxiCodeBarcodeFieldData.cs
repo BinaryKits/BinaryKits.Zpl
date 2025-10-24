@@ -1,6 +1,4 @@
-﻿using BinaryKits.Zpl.Label;
-
-namespace BinaryKits.Zpl.Viewer.Models
+﻿namespace BinaryKits.Zpl.Viewer.Models
 {
     public class MaxiCodeBarcodeFieldData : FieldDataBase
     {

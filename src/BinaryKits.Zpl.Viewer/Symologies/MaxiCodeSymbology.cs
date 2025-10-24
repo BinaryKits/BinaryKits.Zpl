@@ -7,17 +7,17 @@ namespace BinaryKits.Zpl.Viewer.Symologies
 {
     public static class MaxiCodeSymbology
     {
-        private static readonly Regex mode2Regex = new Regex(@"^(?<preamble>)(?<service>\d{3})(?<country>\d{3})(?<zip>\d{1,9})", RegexOptions.Compiled);
-        private static readonly Regex mode2GsRegex = new Regex(@"^(?<preamble>\[\)>\x1e01\x1d(?<year>\d\d))(?<zip>\d{1,9})\x1d(?<country>\d{3})\x1d(?<service>\d{3})\x1d", RegexOptions.Compiled);
-        private static readonly Regex mode3Regex = new Regex(@"^(?<preamble>)(?<service>\d{3})(?<country>\d{3})(?<zip>[ 0-9A-Z]{1,6})", RegexOptions.Compiled);
-        private static readonly Regex mode3GsRegex = new Regex(@"^(?<preamble>\[\)>\x1e01\x1d(?<year>\d\d))(?<zip>[ 0-9A-Z]{1,6})\x1d(?<country>\d{3})\x1d(?<service>\d{3})\x1d", RegexOptions.Compiled);
+        private static readonly Regex mode2Regex = new(@"^(?<preamble>)(?<service>\d{3})(?<country>\d{3})(?<zip>\d{1,9})", RegexOptions.Compiled);
+        private static readonly Regex mode2GsRegex = new(@"^(?<preamble>\[\)>\x1e01\x1d(?<year>\d\d))(?<zip>\d{1,9})\x1d(?<country>\d{3})\x1d(?<service>\d{3})\x1d", RegexOptions.Compiled);
+        private static readonly Regex mode3Regex = new(@"^(?<preamble>)(?<service>\d{3})(?<country>\d{3})(?<zip>[ 0-9A-Z]{1,6})", RegexOptions.Compiled);
+        private static readonly Regex mode3GsRegex = new(@"^(?<preamble>\[\)>\x1e01\x1d(?<year>\d\d))(?<zip>[ 0-9A-Z]{1,6})\x1d(?<country>\d{3})\x1d(?<service>\d{3})\x1d", RegexOptions.Compiled);
 
-        private static readonly Regex numericShiftRegex = new Regex(@"^\d{9}", RegexOptions.Compiled);
-        private static readonly Regex codeARegex = new Regex(@"^[\r\x1c-\x1e ""-:A-Z]+", RegexOptions.Compiled);
-        private static readonly Regex codeBRegex = new Regex(@"^[\x1c-\x1e !,./:-@\[-\x7f]+", RegexOptions.Compiled);
-        //private static readonly Regex codeCRegex = new Regex(@"^[\x1c-\x1e \x80-\x89\xaa\xac\xb1-\xb3\xb5\xb9\xba\xbc-\xbe\xc0-\xdf]+", RegexOptions.Compiled);
-        //private static readonly Regex codeDRegex = new Regex(@"^[\x1c-\x1e \x8a-\x94\xa1\xa8\xab\xaf\xb0\xb4\xb7\xb8\xbb\xbf\xe0-\xff]+", RegexOptions.Compiled);
-        //private static readonly Regex codeERegex = new Regex(@"^[\x00- \x95-\xa0\xa2-\xa7\xa9\xad\xae\xb6]+", RegexOptions.Compiled);
+        private static readonly Regex numericShiftRegex = new(@"^\d{9}", RegexOptions.Compiled);
+        private static readonly Regex codeARegex = new(@"^[\r\x1c-\x1e ""-:A-Z]+", RegexOptions.Compiled);
+        private static readonly Regex codeBRegex = new(@"^[\x1c-\x1e !,./:-@\[-\x7f]+", RegexOptions.Compiled);
+        //private static readonly Regex codeCRegex = new(@"^[\x1c-\x1e \x80-\x89\xaa\xac\xb1-\xb3\xb5\xb9\xba\xbc-\xbe\xc0-\xdf]+", RegexOptions.Compiled);
+        //private static readonly Regex codeDRegex = new(@"^[\x1c-\x1e \x8a-\x94\xa1\xa8\xab\xaf\xb0\xb4\xb7\xb8\xbb\xbf\xe0-\xff]+", RegexOptions.Compiled);
+        //private static readonly Regex codeERegex = new(@"^[\x00- \x95-\xa0\xa2-\xa7\xa9\xad\xae\xb6]+", RegexOptions.Compiled);
 
         private static readonly int[] ec10Poly = [1, 31, 28, 39, 42, 57, 2, 3, 49, 44, 46];
         private static readonly int[] ec20Poly = [1, 23, 44, 11, 33, 27, 8, 22, 37, 57, 36, 15, 48, 22, 17, 38, 33, 31, 19, 23, 59];
@@ -42,12 +42,12 @@ namespace BinaryKits.Zpl.Viewer.Symologies
 
         private struct Codeword
         {
-            public CodewordType Type;
-            public int Msb;
-            public int[] Offsets;
+            public CodewordType type;
+            public int msb;
+            public int[] offsets;
         };
 
-        private static readonly Dictionary<CodewordType, int[]> offsets = new Dictionary<CodewordType, int[]> {
+        private static readonly Dictionary<CodewordType, int[]> offsets = new() {
             { CodewordType.Right, [0, -1, 30, 29, 59, 58] },
             { CodewordType.Left, [0, -1, 29, 28, 59, 58] },
             { CodewordType.Down, [0, 30, 29, 59, 89, 88] }
@@ -71,164 +71,164 @@ namespace BinaryKits.Zpl.Viewer.Symologies
         private static readonly Codeword[] codewords = [
             // primary message
             // 1-9
-            new Codeword { Type = CodewordType.Irregular, Msb = 462, Offsets = [0, 59, -180, -151, -120, -121] },
-            new Codeword { Type = CodewordType.Irregular, Msb = 662, Offsets = [0, -1, 30, 29, -25, 3] },
-            new Codeword { Type = CodewordType.Irregular, Msb = 279, Offsets = [0, -1, 29, 28, 85, 321] },
-            new Codeword { Type = CodewordType.Irregular, Msb = 608, Offsets = [0, -235, -236, -205, -206, -176] },
-            new Codeword { Type = CodewordType.Irregular, Msb = 694, Offsets = [0, -1, -144, -114, -115, -85] },
-            new Codeword { Type = CodewordType.Irregular, Msb = 451, Offsets = [0, 59, 179, 239, 213, 212] },
-            new Codeword { Type = CodewordType.Irregular, Msb = 281, Offsets = [0, -1, 29, 28, 24, 54] },
-            new Codeword { Type = CodewordType.Irregular, Msb = 523, Offsets = [0, -238, -239, -209, -179, -180] },
-            new Codeword { Type = CodewordType.Irregular, Msb = 449, Offsets = [0, 29, 60, 59, 15, 14] },
+            new Codeword { type = CodewordType.Irregular, msb = 462, offsets = [0, 59, -180, -151, -120, -121] },
+            new Codeword { type = CodewordType.Irregular, msb = 662, offsets = [0, -1, 30, 29, -25, 3] },
+            new Codeword { type = CodewordType.Irregular, msb = 279, offsets = [0, -1, 29, 28, 85, 321] },
+            new Codeword { type = CodewordType.Irregular, msb = 608, offsets = [0, -235, -236, -205, -206, -176] },
+            new Codeword { type = CodewordType.Irregular, msb = 694, offsets = [0, -1, -144, -114, -115, -85] },
+            new Codeword { type = CodewordType.Irregular, msb = 451, offsets = [0, 59, 179, 239, 213, 212] },
+            new Codeword { type = CodewordType.Irregular, msb = 281, offsets = [0, -1, 29, 28, 24, 54] },
+            new Codeword { type = CodewordType.Irregular, msb = 523, offsets = [0, -238, -239, -209, -179, -180] },
+            new Codeword { type = CodewordType.Irregular, msb = 449, offsets = [0, 29, 60, 59, 15, 14] },
             // 10-20
-            new Codeword { Type = CodewordType.Right, Msb = 363 },
-            new Codeword { Type = CodewordType.Right, Msb = 540 },
-            new Codeword { Type = CodewordType.Left, Msb = 639 },
-            new Codeword { Type = CodewordType.Left, Msb = 629 },
-            new Codeword { Type = CodewordType.Left, Msb = 275 },
-            new Codeword { Type = CodewordType.Right, Msb = 375 },
-            new Codeword { Type = CodewordType.Right, Msb = 552 },
-            new Codeword { Type = CodewordType.Right, Msb = 538 },
-            new Codeword { Type = CodewordType.Right, Msb = 361 },
-            new Codeword { Type = CodewordType.Left, Msb = 287 },
-            new Codeword { Type = CodewordType.Left, Msb = 641 },
+            new Codeword { type = CodewordType.Right, msb = 363 },
+            new Codeword { type = CodewordType.Right, msb = 540 },
+            new Codeword { type = CodewordType.Left, msb = 639 },
+            new Codeword { type = CodewordType.Left, msb = 629 },
+            new Codeword { type = CodewordType.Left, msb = 275 },
+            new Codeword { type = CodewordType.Right, msb = 375 },
+            new Codeword { type = CodewordType.Right, msb = 552 },
+            new Codeword { type = CodewordType.Right, msb = 538 },
+            new Codeword { type = CodewordType.Right, msb = 361 },
+            new Codeword { type = CodewordType.Left, msb = 287 },
+            new Codeword { type = CodewordType.Left, msb = 641 },
             // secondary message
             // 21-34
-            new Codeword { Type = CodewordType.Right, Msb = 1 },
-            new Codeword { Type = CodewordType.Right, Msb = 3 },
-            new Codeword { Type = CodewordType.Right, Msb = 5 },
-            new Codeword { Type = CodewordType.Right, Msb = 7 },
-            new Codeword { Type = CodewordType.Right, Msb = 9 },
-            new Codeword { Type = CodewordType.Right, Msb = 11 },
-            new Codeword { Type = CodewordType.Right, Msb = 13 },
-            new Codeword { Type = CodewordType.Right, Msb = 15 },
-            new Codeword { Type = CodewordType.Right, Msb = 17 },
-            new Codeword { Type = CodewordType.Right, Msb = 19 },
-            new Codeword { Type = CodewordType.Right, Msb = 21 },
-            new Codeword { Type = CodewordType.Right, Msb = 23 },
-            new Codeword { Type = CodewordType.Right, Msb = 25 },
-            new Codeword { Type = CodewordType.Right, Msb = 27 },
+            new Codeword { type = CodewordType.Right, msb = 1 },
+            new Codeword { type = CodewordType.Right, msb = 3 },
+            new Codeword { type = CodewordType.Right, msb = 5 },
+            new Codeword { type = CodewordType.Right, msb = 7 },
+            new Codeword { type = CodewordType.Right, msb = 9 },
+            new Codeword { type = CodewordType.Right, msb = 11 },
+            new Codeword { type = CodewordType.Right, msb = 13 },
+            new Codeword { type = CodewordType.Right, msb = 15 },
+            new Codeword { type = CodewordType.Right, msb = 17 },
+            new Codeword { type = CodewordType.Right, msb = 19 },
+            new Codeword { type = CodewordType.Right, msb = 21 },
+            new Codeword { type = CodewordType.Right, msb = 23 },
+            new Codeword { type = CodewordType.Right, msb = 25 },
+            new Codeword { type = CodewordType.Right, msb = 27 },
             // 35-48
-            new Codeword { Type = CodewordType.Left, Msb = 116 },
-            new Codeword { Type = CodewordType.Left, Msb = 114 },
-            new Codeword { Type = CodewordType.Left, Msb = 112 },
-            new Codeword { Type = CodewordType.Left, Msb = 110 },
-            new Codeword { Type = CodewordType.Left, Msb = 108 },
-            new Codeword { Type = CodewordType.Left, Msb = 106 },
-            new Codeword { Type = CodewordType.Left, Msb = 104 },
-            new Codeword { Type = CodewordType.Left, Msb = 102 },
-            new Codeword { Type = CodewordType.Left, Msb = 100 },
-            new Codeword { Type = CodewordType.Left, Msb = 98 },
-            new Codeword { Type = CodewordType.Left, Msb = 96 },
-            new Codeword { Type = CodewordType.Left, Msb = 94 },
-            new Codeword { Type = CodewordType.Left, Msb = 92 },
-            new Codeword { Type = CodewordType.Left, Msb = 90 },
+            new Codeword { type = CodewordType.Left, msb = 116 },
+            new Codeword { type = CodewordType.Left, msb = 114 },
+            new Codeword { type = CodewordType.Left, msb = 112 },
+            new Codeword { type = CodewordType.Left, msb = 110 },
+            new Codeword { type = CodewordType.Left, msb = 108 },
+            new Codeword { type = CodewordType.Left, msb = 106 },
+            new Codeword { type = CodewordType.Left, msb = 104 },
+            new Codeword { type = CodewordType.Left, msb = 102 },
+            new Codeword { type = CodewordType.Left, msb = 100 },
+            new Codeword { type = CodewordType.Left, msb = 98 },
+            new Codeword { type = CodewordType.Left, msb = 96 },
+            new Codeword { type = CodewordType.Left, msb = 94 },
+            new Codeword { type = CodewordType.Left, msb = 92 },
+            new Codeword { type = CodewordType.Left, msb = 90 },
             // 49-62
-            new Codeword { Type = CodewordType.Right, Msb = 178 },
-            new Codeword { Type = CodewordType.Right, Msb = 180 },
-            new Codeword { Type = CodewordType.Right, Msb = 182 },
-            new Codeword { Type = CodewordType.Right, Msb = 184 },
-            new Codeword { Type = CodewordType.Right, Msb = 186 },
-            new Codeword { Type = CodewordType.Right, Msb = 188 },
-            new Codeword { Type = CodewordType.Right, Msb = 190 },
-            new Codeword { Type = CodewordType.Right, Msb = 192 },
-            new Codeword { Type = CodewordType.Right, Msb = 194 },
-            new Codeword { Type = CodewordType.Right, Msb = 196 },
-            new Codeword { Type = CodewordType.Right, Msb = 198 },
-            new Codeword { Type = CodewordType.Right, Msb = 200 },
-            new Codeword { Type = CodewordType.Right, Msb = 202 },
-            new Codeword { Type = CodewordType.Right, Msb = 204 },
+            new Codeword { type = CodewordType.Right, msb = 178 },
+            new Codeword { type = CodewordType.Right, msb = 180 },
+            new Codeword { type = CodewordType.Right, msb = 182 },
+            new Codeword { type = CodewordType.Right, msb = 184 },
+            new Codeword { type = CodewordType.Right, msb = 186 },
+            new Codeword { type = CodewordType.Right, msb = 188 },
+            new Codeword { type = CodewordType.Right, msb = 190 },
+            new Codeword { type = CodewordType.Right, msb = 192 },
+            new Codeword { type = CodewordType.Right, msb = 194 },
+            new Codeword { type = CodewordType.Right, msb = 196 },
+            new Codeword { type = CodewordType.Right, msb = 198 },
+            new Codeword { type = CodewordType.Right, msb = 200 },
+            new Codeword { type = CodewordType.Right, msb = 202 },
+            new Codeword { type = CodewordType.Right, msb = 204 },
             // 63-69
-            new Codeword { Type = CodewordType.Left, Msb = 293 },
-            new Codeword { Type = CodewordType.Left, Msb = 291 },
-            new Codeword { Type = CodewordType.Left, Msb = 289 },
-            new Codeword { Type = CodewordType.Left, Msb = 273 },
-            new Codeword { Type = CodewordType.Left, Msb = 271 },
-            new Codeword { Type = CodewordType.Left, Msb = 269 },
-            new Codeword { Type = CodewordType.Left, Msb = 267 },
+            new Codeword { type = CodewordType.Left, msb = 293 },
+            new Codeword { type = CodewordType.Left, msb = 291 },
+            new Codeword { type = CodewordType.Left, msb = 289 },
+            new Codeword { type = CodewordType.Left, msb = 273 },
+            new Codeword { type = CodewordType.Left, msb = 271 },
+            new Codeword { type = CodewordType.Left, msb = 269 },
+            new Codeword { type = CodewordType.Left, msb = 267 },
             // 70-75
-            new Codeword { Type = CodewordType.Right, Msb = 355 },
-            new Codeword { Type = CodewordType.Right, Msb = 357 },
-            new Codeword { Type = CodewordType.Right, Msb = 359 },
-            new Codeword { Type = CodewordType.Right, Msb = 377 },
-            new Codeword { Type = CodewordType.Right, Msb = 379 },
-            new Codeword { Type = CodewordType.Right, Msb = 381 },
+            new Codeword { type = CodewordType.Right, msb = 355 },
+            new Codeword { type = CodewordType.Right, msb = 357 },
+            new Codeword { type = CodewordType.Right, msb = 359 },
+            new Codeword { type = CodewordType.Right, msb = 377 },
+            new Codeword { type = CodewordType.Right, msb = 379 },
+            new Codeword { type = CodewordType.Right, msb = 381 },
             // 76-81
-            new Codeword { Type = CodewordType.Left, Msb = 470 },
-            new Codeword { Type = CodewordType.Left, Msb = 468 },
-            new Codeword { Type = CodewordType.Left, Msb = 466 },
-            new Codeword { Type = CodewordType.Left, Msb = 448 },
-            new Codeword { Type = CodewordType.Left, Msb = 446 },
-            new Codeword { Type = CodewordType.Left, Msb = 444 },
+            new Codeword { type = CodewordType.Left, msb = 470 },
+            new Codeword { type = CodewordType.Left, msb = 468 },
+            new Codeword { type = CodewordType.Left, msb = 466 },
+            new Codeword { type = CodewordType.Left, msb = 448 },
+            new Codeword { type = CodewordType.Left, msb = 446 },
+            new Codeword { type = CodewordType.Left, msb = 444 },
             // 82-87
-            new Codeword { Type = CodewordType.Right, Msb = 532 },
-            new Codeword { Type = CodewordType.Right, Msb = 534 },
-            new Codeword { Type = CodewordType.Right, Msb = 536 },
-            new Codeword { Type = CodewordType.Right, Msb = 554 },
-            new Codeword { Type = CodewordType.Right, Msb = 556 },
-            new Codeword { Type = CodewordType.Right, Msb = 558 },
+            new Codeword { type = CodewordType.Right, msb = 532 },
+            new Codeword { type = CodewordType.Right, msb = 534 },
+            new Codeword { type = CodewordType.Right, msb = 536 },
+            new Codeword { type = CodewordType.Right, msb = 554 },
+            new Codeword { type = CodewordType.Right, msb = 556 },
+            new Codeword { type = CodewordType.Right, msb = 558 },
             // 88-94
-            new Codeword { Type = CodewordType.Left, Msb = 647 },
-            new Codeword { Type = CodewordType.Left, Msb = 645 },
-            new Codeword { Type = CodewordType.Left, Msb = 643 },
-            new Codeword { Type = CodewordType.Left, Msb = 627 },
-            new Codeword { Type = CodewordType.Left, Msb = 625 },
-            new Codeword { Type = CodewordType.Left, Msb = 623 },
-            new Codeword { Type = CodewordType.Left, Msb = 621 },
+            new Codeword { type = CodewordType.Left, msb = 647 },
+            new Codeword { type = CodewordType.Left, msb = 645 },
+            new Codeword { type = CodewordType.Left, msb = 643 },
+            new Codeword { type = CodewordType.Left, msb = 627 },
+            new Codeword { type = CodewordType.Left, msb = 625 },
+            new Codeword { type = CodewordType.Left, msb = 623 },
+            new Codeword { type = CodewordType.Left, msb = 621 },
             // 95-108
-            new Codeword { Type = CodewordType.Right, Msb = 709 },
-            new Codeword { Type = CodewordType.Right, Msb = 711 },
-            new Codeword { Type = CodewordType.Right, Msb = 713 },
-            new Codeword { Type = CodewordType.Right, Msb = 715 },
-            new Codeword { Type = CodewordType.Right, Msb = 717 },
-            new Codeword { Type = CodewordType.Right, Msb = 719 },
-            new Codeword { Type = CodewordType.Right, Msb = 721 },
-            new Codeword { Type = CodewordType.Right, Msb = 723 },
-            new Codeword { Type = CodewordType.Right, Msb = 725 },
-            new Codeword { Type = CodewordType.Right, Msb = 727 },
-            new Codeword { Type = CodewordType.Right, Msb = 729 },
-            new Codeword { Type = CodewordType.Right, Msb = 731 },
-            new Codeword { Type = CodewordType.Right, Msb = 733 },
-            new Codeword { Type = CodewordType.Right, Msb = 735 },
+            new Codeword { type = CodewordType.Right, msb = 709 },
+            new Codeword { type = CodewordType.Right, msb = 711 },
+            new Codeword { type = CodewordType.Right, msb = 713 },
+            new Codeword { type = CodewordType.Right, msb = 715 },
+            new Codeword { type = CodewordType.Right, msb = 717 },
+            new Codeword { type = CodewordType.Right, msb = 719 },
+            new Codeword { type = CodewordType.Right, msb = 721 },
+            new Codeword { type = CodewordType.Right, msb = 723 },
+            new Codeword { type = CodewordType.Right, msb = 725 },
+            new Codeword { type = CodewordType.Right, msb = 727 },
+            new Codeword { type = CodewordType.Right, msb = 729 },
+            new Codeword { type = CodewordType.Right, msb = 731 },
+            new Codeword { type = CodewordType.Right, msb = 733 },
+            new Codeword { type = CodewordType.Right, msb = 735 },
             // 109-122
-            new Codeword { Type = CodewordType.Left, Msb = 824 },
-            new Codeword { Type = CodewordType.Left, Msb = 822 },
-            new Codeword { Type = CodewordType.Left, Msb = 820 },
-            new Codeword { Type = CodewordType.Left, Msb = 818 },
-            new Codeword { Type = CodewordType.Left, Msb = 816 },
-            new Codeword { Type = CodewordType.Left, Msb = 814 },
-            new Codeword { Type = CodewordType.Left, Msb = 812 },
-            new Codeword { Type = CodewordType.Left, Msb = 810 },
-            new Codeword { Type = CodewordType.Left, Msb = 808 },
-            new Codeword { Type = CodewordType.Left, Msb = 806 },
-            new Codeword { Type = CodewordType.Left, Msb = 804 },
-            new Codeword { Type = CodewordType.Left, Msb = 802 },
-            new Codeword { Type = CodewordType.Left, Msb = 800 },
-            new Codeword { Type = CodewordType.Left, Msb = 798 },
+            new Codeword { type = CodewordType.Left, msb = 824 },
+            new Codeword { type = CodewordType.Left, msb = 822 },
+            new Codeword { type = CodewordType.Left, msb = 820 },
+            new Codeword { type = CodewordType.Left, msb = 818 },
+            new Codeword { type = CodewordType.Left, msb = 816 },
+            new Codeword { type = CodewordType.Left, msb = 814 },
+            new Codeword { type = CodewordType.Left, msb = 812 },
+            new Codeword { type = CodewordType.Left, msb = 810 },
+            new Codeword { type = CodewordType.Left, msb = 808 },
+            new Codeword { type = CodewordType.Left, msb = 806 },
+            new Codeword { type = CodewordType.Left, msb = 804 },
+            new Codeword { type = CodewordType.Left, msb = 802 },
+            new Codeword { type = CodewordType.Left, msb = 800 },
+            new Codeword { type = CodewordType.Left, msb = 798 },
             // 123-136
-            new Codeword { Type = CodewordType.Right, Msb = 886 },
-            new Codeword { Type = CodewordType.Right, Msb = 888 },
-            new Codeword { Type = CodewordType.Right, Msb = 890 },
-            new Codeword { Type = CodewordType.Right, Msb = 892 },
-            new Codeword { Type = CodewordType.Right, Msb = 894 },
-            new Codeword { Type = CodewordType.Right, Msb = 896 },
-            new Codeword { Type = CodewordType.Right, Msb = 898 },
-            new Codeword { Type = CodewordType.Right, Msb = 900 },
-            new Codeword { Type = CodewordType.Right, Msb = 902 },
-            new Codeword { Type = CodewordType.Right, Msb = 904 },
-            new Codeword { Type = CodewordType.Right, Msb = 906 },
-            new Codeword { Type = CodewordType.Right, Msb = 908 },
-            new Codeword { Type = CodewordType.Right, Msb = 910 },
-            new Codeword { Type = CodewordType.Right, Msb = 912 },
+            new Codeword { type = CodewordType.Right, msb = 886 },
+            new Codeword { type = CodewordType.Right, msb = 888 },
+            new Codeword { type = CodewordType.Right, msb = 890 },
+            new Codeword { type = CodewordType.Right, msb = 892 },
+            new Codeword { type = CodewordType.Right, msb = 894 },
+            new Codeword { type = CodewordType.Right, msb = 896 },
+            new Codeword { type = CodewordType.Right, msb = 898 },
+            new Codeword { type = CodewordType.Right, msb = 900 },
+            new Codeword { type = CodewordType.Right, msb = 902 },
+            new Codeword { type = CodewordType.Right, msb = 904 },
+            new Codeword { type = CodewordType.Right, msb = 906 },
+            new Codeword { type = CodewordType.Right, msb = 908 },
+            new Codeword { type = CodewordType.Right, msb = 910 },
+            new Codeword { type = CodewordType.Right, msb = 912 },
             // 137-144
-            new Codeword { Type = CodewordType.Down, Msb = 58 },
-            new Codeword { Type = CodewordType.Down, Msb = 176 },
-            new Codeword { Type = CodewordType.Down, Msb = 294 },
-            new Codeword { Type = CodewordType.Down, Msb = 412 },
-            new Codeword { Type = CodewordType.Down, Msb = 530 },
-            new Codeword { Type = CodewordType.Down, Msb = 648 },
-            new Codeword { Type = CodewordType.Down, Msb = 766 },
-            new Codeword { Type = CodewordType.Down, Msb = 884 },
+            new Codeword { type = CodewordType.Down, msb = 58 },
+            new Codeword { type = CodewordType.Down, msb = 176 },
+            new Codeword { type = CodewordType.Down, msb = 294 },
+            new Codeword { type = CodewordType.Down, msb = 412 },
+            new Codeword { type = CodewordType.Down, msb = 530 },
+            new Codeword { type = CodewordType.Down, msb = 648 },
+            new Codeword { type = CodewordType.Down, msb = 766 },
+            new Codeword { type = CodewordType.Down, msb = 884 },
         ];
 
         private const string ECI = "ECI";
@@ -349,28 +349,27 @@ namespace BinaryKits.Zpl.Viewer.Symologies
             foreach ((int val, int idx) in data.Select((v, i) => (v, i)))
             {
                 Codeword codeword = codewords[idx];
-                int[] offs = codeword.Offsets;
-                if (codeword.Type != CodewordType.Irregular)
+                int[] offs = codeword.offsets;
+                if (codeword.type != CodewordType.Irregular)
                 {
-                    offs = offsets[codeword.Type];
+                    offs = offsets[codeword.type];
                 }
 
                 for (int i = 0; i < 6; i++)
                 {
-                    result[codeword.Msb + offs[i]] = (val & (1 << 5 - i)) > 0;
+                    result[codeword.msb + offs[i]] = (val & (1 << 5 - i)) > 0;
                 }
             }
 
             return result;
         }
 
-
         private static List<int> Analyze(string content, int mode)
         {
-            List<int> data = new List<int>();
+            List<int> data = [];
             bool eec = false;
             MaxiCodeCodeSet codeSet = MaxiCodeCodeSet.CodeSetA;
-            var codeMap = codeAMap;
+            Dictionary<string, int> codeMap = codeAMap;
 
             if (mode == 2)
             {
@@ -386,7 +385,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                     // invalid mode 2 data, convert to mode 4
                     return Analyze(content, 4);
                 }
-  
+
                 int service = int.Parse(mode2Match.Groups["service"].Value);
                 int country = int.Parse(mode2Match.Groups["country"].Value);
                 string zip = mode2Match.Groups["zip"].Value;
@@ -397,7 +396,6 @@ namespace BinaryKits.Zpl.Viewer.Symologies
 
                 int ziplen = zip.Length;
                 int zipval = int.Parse(zip);
-
 
                 // ISO/IEC 12023:2000 pp. 26
                 data.Add(((zipval & 3) << 4) | mode); // 1-6
@@ -487,8 +485,9 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                 }
                 else
                 {
+                    int value;
                     string c = StringInfo.GetNextTextElement(content);
-                    StringInfo stringInfo = new StringInfo(content);
+                    StringInfo stringInfo = new(content);
                     if (stringInfo.LengthInTextElements > 1)
                     {
                         content = stringInfo.SubstringByTextElements(1);
@@ -498,9 +497,9 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                         content = string.Empty;
                     }
 
-                    if (codeMap.ContainsKey(c))
+                    if (codeMap.TryGetValue(c, out value))
                     {
-                        data.Add(codeMap[c]);
+                        data.Add(value);
                     }
                     else if (codeSet == MaxiCodeCodeSet.CodeSetA && codeBMap.ContainsKey(c))
                     {
@@ -551,23 +550,23 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                             data.Add(codeAMap[c]);
                         }
                     }
-                    else if (codeCMap.ContainsKey(c))
+                    else if (codeCMap.TryGetValue(c, out value))
                     {
                         // TODO: lock in if more than one character
                         data.Add(codeMap[SHIFT_C]);
-                        data.Add(codeCMap[c]);
+                        data.Add(value);
                     }
-                    else if (codeDMap.ContainsKey(c))
+                    else if (codeDMap.TryGetValue(c, out value))
                     {
                         // TODO: lock in if more than one character
                         data.Add(codeMap[SHIFT_D]);
-                        data.Add(codeDMap[c]);
+                        data.Add(value);
                     }
-                    else if (codeEMap.ContainsKey(c))
+                    else if (codeEMap.TryGetValue(c, out value))
                     {
                         // TODO: lock in if more than one character
                         data.Add(codeMap[SHIFT_E]);
-                        data.Add(codeEMap[c]);
+                        data.Add(value);
                     }
                     else
                     {
@@ -608,7 +607,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                 }
             }
 
-            if(!eec)
+            if (!eec)
             {
                 if (data.Count <= 104)
                 {
@@ -622,16 +621,16 @@ namespace BinaryKits.Zpl.Viewer.Symologies
 
             }
 
-            List<int> odds = new List<int>();
-            List<int> evens = new List<int>();
+            List<int> odds = [];
+            List<int> evens = [];
             for (int i = 20; i < data.Count; i += 2)
             {
                 odds.Add(data[i]);
                 evens.Add(data[i + 1]);
             }
 
-            int[] oddCorrection = [];
-            int[] evenCorrection = [];
+            List<int> oddCorrection;
+            List<int> evenCorrection;
             if (eec)
             {
                 oddCorrection = ComputeReadSolomon(odds, ec28Poly);
@@ -643,7 +642,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                 evenCorrection = ComputeReadSolomon(evens, ec20Poly);
             }
 
-            for (int i = 0; i < oddCorrection.Length; i++)
+            for (int i = 0; i < oddCorrection.Count; i++)
             {
                 data.Add(oddCorrection[i]);
                 data.Add(evenCorrection[i]);
@@ -652,33 +651,32 @@ namespace BinaryKits.Zpl.Viewer.Symologies
             return data;
         }
 
-        private static int[] ComputeReadSolomon(List<int> data, int[] ecPoly)
+        private static List<int> ComputeReadSolomon(List<int> data, int[] ecPoly)
         {
             int ecLen = ecPoly.Length - 1;
-            List<int> quotient = GF64PolynomalDivision(data.Concat(Enumerable.Repeat(0, ecLen)).ToArray(), ecPoly);
-            return quotient.GetRange(quotient.Count - ecLen, ecLen).ToArray();
+            List<int> quotient = GF64PolynomalDivision([.. data, .. Enumerable.Repeat(0, ecLen)], ecPoly);
+            return quotient.GetRange(quotient.Count - ecLen, ecLen);
         }
 
-        private static List<int> GF64PolynomalDivision(int[] dividend, int[] divisor)
+        private static List<int> GF64PolynomalDivision(List<int> dividend, int[] divisor)
         {
-            List<int> result = new List<int>(dividend);
             int normalizer = divisor[0];
 
-            for (int i = 0; i < dividend.Length - (divisor.Length - 1); i++)
+            for (int i = 0; i < dividend.Count - (divisor.Length - 1); i++)
             {
-                result[i] /= normalizer;
+                dividend[i] /= normalizer;
 
-                int coeff = result[i];
+                int coeff = dividend[i];
                 if (coeff != 0)
                 {
                     for (int j = 1; j < divisor.Length; j++)
                     {
-                        result[i + j] ^= GF64Multiply(divisor[j], coeff);
+                        dividend[i + j] ^= GF64Multiply(divisor[j], coeff);
                     }
                 }
             }
 
-            return result;
+            return dividend;
         }
 
         private static int GF64Multiply(int a, int b)
