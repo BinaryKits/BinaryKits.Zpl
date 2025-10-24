@@ -12,18 +12,23 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
-            int tmpint;
+            decimal tmpdec;
             int x = 0;
             int y = 0;
 
-            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
+            if (zplDataParts.Length > 0 &&
+                decimal.TryParse(zplDataParts[0], out tmpdec) &&
+                int.MinValue <= tmpdec && tmpdec <= int.MaxValue)
             {
-                x = tmpint;
+                x = decimal.ToInt32(tmpdec);
             }
 
-            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
+
+            if (zplDataParts.Length > 1 &&
+                decimal.TryParse(zplDataParts[1], out tmpdec) &&
+                int.MinValue <= tmpdec && tmpdec <= int.MaxValue)
             {
-                y = tmpint;
+                y = decimal.ToInt32(tmpdec);
             }
 
             if (zplDataParts.Length > 2)
