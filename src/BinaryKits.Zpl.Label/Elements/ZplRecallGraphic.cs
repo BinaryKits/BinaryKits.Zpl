@@ -21,8 +21,9 @@ namespace BinaryKits.Zpl.Label.Elements
             string imageName,
             int magnificationFactorX = 1,
             int magnificationFactorY = 1,
-            bool bottomToTop = false)
-            : base(positionX, positionY, bottomToTop)
+            bool bottomToTop = false,
+            bool useDefaultPosition = true)
+            : base(positionX, positionY, bottomToTop, useDefaultPosition)
         {
             if (imageName.Length > 8)
             {

@@ -14,11 +14,6 @@
         /// </summary>
         public bool AddDefaultLabelHome { get; set; }
 
-        /// <summary>
-        /// ^CI
-        /// </summary>
-        public string ChangeInternationalFontEncoding { get; set; }
-
         public bool DisplayComments { get; set; }
 
         public bool AddEmptyLineBeforeElementStart { get; set; }
@@ -53,7 +48,6 @@
         {
             AddStartEndFormat = true;
             AddDefaultLabelHome = true;
-            ChangeInternationalFontEncoding = ZplConstants.InternationalFontEncoding.CI28;
             SourcePrintDpi = TargetPrintDpi = 203;
         }
     }

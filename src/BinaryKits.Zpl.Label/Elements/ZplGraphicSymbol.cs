@@ -38,8 +38,10 @@ namespace BinaryKits.Zpl.Label.Elements
             int positionY,
             int width,
             int height,
-            FieldOrientation fieldOrientation = FieldOrientation.Normal)
-            : base(positionX, positionY)
+            FieldOrientation fieldOrientation = FieldOrientation.Normal,
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(positionX, positionY, bottomToTop, useDefaultPosition)
         {
             Character = character;
             FieldOrientation = fieldOrientation;

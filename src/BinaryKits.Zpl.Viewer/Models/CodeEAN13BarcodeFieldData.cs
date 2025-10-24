@@ -8,6 +8,6 @@ namespace BinaryKits.Zpl.Viewer.Models
         public int Height { get; set; }
         public bool PrintInterpretationLine { get; set; }
         public bool PrintInterpretationLineAboveCode { get; set; }
-      
+
     }
 }

@@ -16,6 +16,7 @@ namespace BinaryKits.Zpl.Label.Elements
     {
         public int PositionX { get; protected set; }
         public int PositionY { get; protected set; }
+        public bool UseDefaultPosition { get; private set; }
         public FieldJustification FieldJustification { get; protected set; }
 
         /// <summary>
@@ -24,17 +25,29 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="positionX">X Position (0-32000)</param>
         /// <param name="positionY">Y Position (0-32000)</param>
         /// <param name="fieldJustification"></param>
-        public ZplFieldTypeset(int positionX, int positionY, FieldJustification fieldJustification = FieldJustification.None)
+        /// <param name="useDefaultPosition"></param>
+        public ZplFieldTypeset(int positionX, int positionY, FieldJustification fieldJustification = FieldJustification.None, bool useDefaultPosition = false)
         {
             this.PositionX = positionX;
             this.PositionY = positionY;
             this.FieldJustification = fieldJustification;
+            this.UseDefaultPosition = useDefaultPosition;
         }
 
         ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
-            //^FO50,50
+            // When UseDefaultPosition is true, we don't output coordinates in ^FT command
+            if (UseDefaultPosition)
+            {
+                if (FieldJustification != FieldJustification.None)
+                {
+                    return new string[] { $"^FT,,{RenderFieldJustification(this.FieldJustification)}" };
+                }
+                return new string[] { "^FT" };
+            }
+
+            // Normal rendering with coordinates
             return new string[] { $"^FT{context.Scale(this.PositionX)},{context.Scale(this.PositionY)},{RenderFieldJustification(this.FieldJustification)}".TrimEnd(',') };
         }
 

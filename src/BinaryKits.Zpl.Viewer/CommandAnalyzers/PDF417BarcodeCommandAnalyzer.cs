@@ -1,6 +1,7 @@
 using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
+
 using System;
 using System.Globalization;
 
@@ -12,7 +13,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
             // reusable buffer
             int tmpint;
@@ -27,8 +28,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
              * compact
             */
 
-            var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
-            
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+
             int height = this.VirtualPrinter.BarcodeInfo.Height;
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
@@ -37,8 +38,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             else if (zplDataParts.Length > 1)
             {
                 //Sometimes a decimal is given, this works around that.
-                var tempDecimal = Convert.ToDecimal(zplDataParts[1], new CultureInfo("en-US"));
-                var tempHeight = (int)Math.Floor(tempDecimal);
+                decimal tempDecimal = Convert.ToDecimal(zplDataParts[1], new CultureInfo("en-US"));
+                int tempHeight = (int)Math.Floor(tempDecimal);
                 if (tempHeight > 0)
                 {
                     height = tempHeight;
@@ -62,11 +63,11 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             {
                 rows = tmpint;
             }
-            
+
             bool compact = false;
             if (zplDataParts.Length > 5)
             {
-                compact = ConvertBoolean(zplDataParts[5]);
+                compact = this.ConvertBoolean(zplDataParts[5]);
             }
 
             //The field data are processing in the FieldDataZplCommandAnalyzer

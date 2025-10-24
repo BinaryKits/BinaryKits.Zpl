@@ -27,8 +27,17 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="storageDevice"></param>
         /// <param name="objectName"></param>
         /// <param name="extension"></param>
-        public ZplImageMove(int positionX, int positionY, char storageDevice, string objectName, string extension)
-            : base(positionX, positionY)
+        /// <param name="bottomToTop"></param>
+        /// <param name="useDefaultPosition"></param>
+        public ZplImageMove(
+            int positionX, 
+            int positionY, 
+            char storageDevice, 
+            string objectName, 
+            string extension, 
+            bool bottomToTop = false, 
+            bool useDefaultPosition = false)
+            : base(positionX, positionY, bottomToTop, useDefaultPosition)
         {
             StorageDevice = storageDevice;
             ObjectName = objectName;

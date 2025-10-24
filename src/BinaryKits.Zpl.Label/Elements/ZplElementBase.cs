@@ -61,6 +61,27 @@ namespace BinaryKits.Zpl.Label.Elements
             throw new NotImplementedException("Unknown Field Orientation");
         }
 
+        public string RenderQualityLevel(QualityLevel qualityLevel)
+        {
+            switch (qualityLevel)
+            {
+                case QualityLevel.ECC0:
+                    return "0";
+                case QualityLevel.ECC50:
+                    return "50";
+                case QualityLevel.ECC80:
+                    return "80";
+                case QualityLevel.ECC100:
+                    return "100";
+                case QualityLevel.ECC140:
+                    return "140";
+                case QualityLevel.ECC200:
+                    return "200";
+            }
+
+            throw new NotImplementedException("Unknown Quality Level");
+        }
+
         public string RenderFieldJustification(FieldJustification fieldJustification)
         {
             switch (fieldJustification)

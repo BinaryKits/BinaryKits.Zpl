@@ -44,10 +44,10 @@ namespace BinaryKits.Zpl.Viewer.UnitTest
             List<LabelInfo> merged = formatMerger.MergeFormats(rawLabels);
 
             // Then
-            Assert.AreEqual(1, merged.Count);
+            Assert.HasCount(1, merged);
             ZplElementBase[] zplElements = merged[0].ZplElements;
 
-            Assert.AreEqual(3, zplElements.Length);
+            Assert.HasCount(3, zplElements);
             Assert.AreEqual("one", ((ZplTextField)zplElements[0]).Text);
             Assert.AreEqual("two", ((ZplTextField)zplElements[1]).Text);
             Assert.AreEqual("three", ((ZplTextField)zplElements[2]).Text);
@@ -67,7 +67,7 @@ namespace BinaryKits.Zpl.Viewer.UnitTest
 
             FormatMerger formatMerger = new FormatMerger();
 
-            Assert.ThrowsException<InvalidOperationException>(() => formatMerger.MergeFormats(rawLabels));
+            Assert.Throws<InvalidOperationException>(() => formatMerger.MergeFormats(rawLabels));
         }
     }
 }

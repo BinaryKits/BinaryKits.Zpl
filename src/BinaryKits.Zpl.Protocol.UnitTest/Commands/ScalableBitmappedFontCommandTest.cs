@@ -39,17 +39,17 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidCharacterHeight_Exception()
         {
-            new ScalableBitmappedFontCommand('A', Orientation.Normal, characterHeight: 0);
+            Assert.Throws<ArgumentException>(() => 
+                new ScalableBitmappedFontCommand('A', Orientation.Normal, characterHeight: 0));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_InvalidWidth_Exception()
         {
-            new ScalableBitmappedFontCommand('A', Orientation.Normal, width: 0);
+            Assert.Throws<ArgumentException>(() => 
+                new ScalableBitmappedFontCommand('A', Orientation.Normal, width: 0));
         }
 
         [TestMethod]

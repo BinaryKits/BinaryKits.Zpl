@@ -37,7 +37,21 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 "R" => FieldOrientation.Rotated90,
                 "I" => FieldOrientation.Rotated180,
                 "B" => FieldOrientation.Rotated270,
-                 _  => this.VirtualPrinter.FieldOrientation,
+                _ => this.VirtualPrinter.FieldOrientation,
+            };
+        }
+
+        protected QualityLevel ConvertQualityLevel(string qualityLevel)
+        {
+            return qualityLevel switch
+            {
+                "0" => QualityLevel.ECC0,
+                "50" => QualityLevel.ECC50,
+                "80" => QualityLevel.ECC80,
+                "100" => QualityLevel.ECC100,
+                "140" => QualityLevel.ECC140,
+                "200" => QualityLevel.ECC200,
+                _ => QualityLevel.ECC0
             };
         }
 
@@ -60,7 +74,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 "Q" => ErrorCorrectionLevel.HighReliability,
                 "M" => ErrorCorrectionLevel.Standard,
                 "L" => ErrorCorrectionLevel.HighDensity,
-                 _  => ErrorCorrectionLevel.Standard,
+                _ => ErrorCorrectionLevel.Standard,
             };
         }
 

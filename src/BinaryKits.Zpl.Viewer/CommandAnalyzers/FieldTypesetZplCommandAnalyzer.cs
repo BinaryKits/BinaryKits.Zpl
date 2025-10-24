@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -9,27 +10,53 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
             int x = 0;
             int y = 0;
-            // TODO: Field Justification
-            //int z = 0;
+            bool useDefaultPosition = false;
 
-            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
+            // Handle missing coordinates - when coordinates are missing, use default positioning
+            if (zplDataParts.Length == 0 || string.IsNullOrEmpty(zplDataParts[0]))
             {
-                x = tmpint;
+                // No coordinates specified - use default position
+                useDefaultPosition = true;
+            }
+            else
+            {
+                if (int.TryParse(zplDataParts[0], out tmpint))
+                {
+                    x = tmpint;
+                }
+                else
+                {
+                    // Empty or invalid x coordinate - use default position
+                    useDefaultPosition = true;
+                }
             }
 
-            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
+            if (zplDataParts.Length > 1 && !string.IsNullOrEmpty(zplDataParts[1]))
             {
-                y = tmpint;
+                if (int.TryParse(zplDataParts[1], out tmpint))
+                {
+                    y = tmpint;
+                }
+                else if (!useDefaultPosition)
+                {
+                    // Invalid y coordinate but x was valid - use default position
+                    useDefaultPosition = true;
+                }
+            }
+            else if (zplDataParts.Length > 1)
+            {
+                // Empty y coordinate - use default position
+                useDefaultPosition = true;
             }
 
             if (zplDataParts.Length > 2)
             {
-                var fieldJustification = ConvertFieldJustification(zplDataParts[2]);
+                FieldJustification fieldJustification = this.ConvertFieldJustification(zplDataParts[2]);
                 this.VirtualPrinter.SetNextElementFieldJustification(fieldJustification);
             }
 
@@ -39,7 +66,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y += this.VirtualPrinter.LabelHomePosition.Y;
             }
 
-            this.VirtualPrinter.SetNextElementPosition(x, y, calculateFromBottom: true);
+            this.VirtualPrinter.SetNextElementPosition(x, y, true, useDefaultPosition);
 
             return null;
         }

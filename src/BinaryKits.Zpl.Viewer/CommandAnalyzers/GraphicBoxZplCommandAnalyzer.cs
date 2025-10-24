@@ -14,12 +14,13 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             int width = 1;
             int height = 1;
             int borderThickness = 1;
-            var lineColor = LineColor.Black;
+            LineColor lineColor = LineColor.Black;
             int cornerRounding = 0;
 
             int x = 0;
             int y = 0;
             bool bottomToTop = false;
+            bool useDefaultPosition = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
@@ -27,15 +28,18 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y = this.VirtualPrinter.NextElementPosition.Y;
 
                 bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
+                useDefaultPosition = this.VirtualPrinter.NextElementPosition.UseDefaultPosition;
             }
 
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
-            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint)) {
-                width= tmpint;
+            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
+            {
+                width = tmpint;
             }
 
-            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint)) {
+            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
+            {
                 height = tmpint;
             }
 
@@ -57,7 +61,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             bool reversePrint = this.VirtualPrinter.NextElementFieldReverse || this.VirtualPrinter.LabelReverse;
 
-            return new ZplGraphicBox(x, y, width, height, borderThickness, lineColor, cornerRounding, reversePrint, bottomToTop);
+            return new ZplGraphicBox(x, y, width, height, borderThickness, lineColor, cornerRounding, reversePrint, bottomToTop, useDefaultPosition);
         }
     }
 }

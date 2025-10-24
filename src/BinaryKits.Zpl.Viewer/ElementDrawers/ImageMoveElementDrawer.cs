@@ -1,4 +1,6 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
+
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -15,22 +17,43 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplImageMove imageMove)
             {
-                var imageData = this._printerStorage.GetFile(imageMove.StorageDevice, imageMove.ObjectName);
+                byte[] imageData = this.printerStorage.GetFile(imageMove.StorageDevice, imageMove.ObjectName);
+                SKBitmap image = SKBitmap.Decode(imageData);
 
                 if (imageData.Length == 0)
                 {
-                    return;
+                    return currentPosition;
                 }
 
-                var x = imageMove.PositionX;
-                var y = imageMove.PositionY;
+                float x = imageMove.PositionX;
+                float y = imageMove.PositionY;
 
-                this._skCanvas.DrawBitmap(SKBitmap.Decode(imageData), x, y);
+                if (imageMove.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
+
+                bool useFieldTypeset = imageMove.FieldTypeset != null;
+                if (useFieldTypeset)
+                {
+                    y -= image.Height;
+                    if (y < 0)
+                    {
+                        y = 0;
+                    }
+                }
+
+                this.skCanvas.DrawBitmap(image, x, y);
+
+                return this.CalculateNextDefaultPosition(x, y, image.Width, image.Height, imageMove.FieldOrigin != null, Label.FieldOrientation.Normal, currentPosition);
             }
+
+            return currentPosition;
         }
     }
 }

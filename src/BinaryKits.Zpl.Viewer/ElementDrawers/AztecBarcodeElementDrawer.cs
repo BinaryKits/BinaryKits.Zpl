@@ -1,9 +1,11 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
 
 using ZXing.Aztec;
+using ZXing.Common;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -16,49 +18,58 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplAztecBarcode aztecBarcode)
             {
                 float x = aztecBarcode.PositionX;
                 float y = aztecBarcode.PositionY;
 
-                var content = aztecBarcode.Content;
-
-                if (aztecBarcode.UseHexadecimalIndicator)
+                if (aztecBarcode.UseDefaultPosition)
                 {
-                    content = content.ReplaceHexEscapes();
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
                 }
 
-                var writer = new AztecWriter();
-                var options = new AztecEncodingOptions();
+                string content = aztecBarcode.Content;
+
+                if (aztecBarcode.HexadecimalIndicator is char hexIndicator)
+                {
+                    content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
+                }
+
+                AztecWriter writer = new();
+                AztecEncodingOptions encodingOptions = new();
                 if (aztecBarcode.ErrorControl >= 1 && aztecBarcode.ErrorControl <= 99)
                 {
-                    options.ErrorCorrection = aztecBarcode.ErrorControl;
+                    encodingOptions.ErrorCorrection = aztecBarcode.ErrorControl;
                 }
                 else if (aztecBarcode.ErrorControl >= 101 && aztecBarcode.ErrorControl <= 104)
                 {
-                    options.Layers = 100 - aztecBarcode.ErrorControl;
+                    encodingOptions.Layers = 100 - aztecBarcode.ErrorControl;
                 }
                 else if (aztecBarcode.ErrorControl >= 201 && aztecBarcode.ErrorControl <= 232)
                 {
-                    options.Layers = aztecBarcode.ErrorControl - 200;
+                    encodingOptions.Layers = aztecBarcode.ErrorControl - 200;
                 }
                 else if (aztecBarcode.ErrorControl == 300)
                 {
-                    options.PureBarcode = true;
+                    encodingOptions.PureBarcode = true;
                 }
                 else
                 {
                     // default options
                 }
 
-                var result = writer.encode(content, ZXing.BarcodeFormat.AZTEC, 0, 0, options.Hints);
+                BitMatrix result = writer.encode(content, ZXing.BarcodeFormat.AZTEC, 0, 0, encodingOptions.Hints);
 
-                using var resizedImage = this.BitMatrixToSKBitmap(result, aztecBarcode.MagnificationFactor);
-                var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                using SKBitmap resizedImage = BitMatrixToSKBitmap(result, aztecBarcode.MagnificationFactor);
+                byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation);
+                return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation, currentPosition);
             }
+
+            return currentPosition;
         }
     }
 }

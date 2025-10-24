@@ -6,5 +6,6 @@ namespace BinaryKits.Zpl.Viewer.Models
     {
         public FieldOrientation FieldOrientation { get; set; }
         public int Height { get; set; }
+        public QualityLevel QualityLevel { get; set; }
     }
 }

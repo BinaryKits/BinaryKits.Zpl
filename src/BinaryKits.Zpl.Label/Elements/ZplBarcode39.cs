@@ -19,10 +19,12 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="moduleWidth"></param>
         /// <param name="wideBarToNarrowBarWidthRatio"></param>
         /// <param name="fieldOrientation"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
         /// <param name="mod43CheckDigit"></param>
         /// <param name="bottomToTop"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplBarcode39(
             string content,
             int positionX,
@@ -31,10 +33,12 @@ namespace BinaryKits.Zpl.Label.Elements
             int moduleWidth = 2,
             double wideBarToNarrowBarWidthRatio = 3,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
+            char? hexadecimalIndicator = null,
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
             bool mod43CheckDigit = false,
-            bool bottomToTop = false)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
             : base(content,
                   positionX,
                   positionY,
@@ -42,9 +46,11 @@ namespace BinaryKits.Zpl.Label.Elements
                   moduleWidth,
                   wideBarToNarrowBarWidthRatio,
                   fieldOrientation,
+                  hexadecimalIndicator,
                   printInterpretationLine,
                   printInterpretationLineAboveCode,
-                  bottomToTop)
+                  bottomToTop,
+                  useDefaultPosition)
         {
             Mod43CheckDigit = mod43CheckDigit;
         }
@@ -58,8 +64,8 @@ namespace BinaryKits.Zpl.Label.Elements
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
             result.Add(RenderModuleWidth());
-            result.Add($"^B3{RenderFieldOrientation()},{(Mod43CheckDigit ? "Y" : "N")},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()}");
-            result.Add($"^FD{Content}^FS");
+            result.Add($"^B3{RenderFieldOrientation()},{RenderBoolean(Mod43CheckDigit)},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()}");
+            result.Add(RenderFieldDataSection());
 
             return result;
         }
