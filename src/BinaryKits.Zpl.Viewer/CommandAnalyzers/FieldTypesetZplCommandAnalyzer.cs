@@ -12,7 +12,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
-            int tmpint;
+            decimal tmpdec;
             int x = 0;
             int y = 0;
             bool useDefaultPosition = false;
@@ -25,9 +25,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
             else
             {
-                if (int.TryParse(zplDataParts[0], out tmpint))
+                if (decimal.TryParse(zplDataParts[0], out tmpdec) &&
+                    int.MinValue <= tmpdec && tmpdec <= int.MaxValue)
                 {
-                    x = tmpint;
+                    x = decimal.ToInt32(tmpdec);
                 }
                 else
                 {
@@ -38,9 +39,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             if (zplDataParts.Length > 1 && !string.IsNullOrEmpty(zplDataParts[1]))
             {
-                if (int.TryParse(zplDataParts[1], out tmpint))
+                if (decimal.TryParse(zplDataParts[1], out tmpdec) &&
+                    int.MinValue <= tmpdec && tmpdec <= int.MaxValue)
                 {
-                    y = tmpint;
+                    y = decimal.ToInt32(tmpdec);
                 }
                 else if (!useDefaultPosition)
                 {
