@@ -385,7 +385,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                     // invalid mode 2 data, convert to mode 4
                     return Analyze(content, 4);
                 }
-  
+
                 int service = int.Parse(mode2Match.Groups["service"].Value);
                 int country = int.Parse(mode2Match.Groups["country"].Value);
                 string zip = mode2Match.Groups["zip"].Value;
@@ -607,7 +607,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                 }
             }
 
-            if(!eec)
+            if (!eec)
             {
                 if (data.Count <= 104)
                 {
@@ -629,8 +629,8 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                 evens.Add(data[i + 1]);
             }
 
-            int[] oddCorrection;
-            int[] evenCorrection;
+            List<int> oddCorrection;
+            List<int> evenCorrection;
             if (eec)
             {
                 oddCorrection = ComputeReadSolomon(odds, ec28Poly);
@@ -642,7 +642,7 @@ namespace BinaryKits.Zpl.Viewer.Symologies
                 evenCorrection = ComputeReadSolomon(evens, ec20Poly);
             }
 
-            for (int i = 0; i < oddCorrection.Length; i++)
+            for (int i = 0; i < oddCorrection.Count; i++)
             {
                 data.Add(oddCorrection[i]);
                 data.Add(evenCorrection[i]);
@@ -651,33 +651,32 @@ namespace BinaryKits.Zpl.Viewer.Symologies
             return data;
         }
 
-        private static int[] ComputeReadSolomon(List<int> data, int[] ecPoly)
+        private static List<int> ComputeReadSolomon(List<int> data, int[] ecPoly)
         {
             int ecLen = ecPoly.Length - 1;
-            List<int> quotient = GF64PolynomalDivision(data.Concat(Enumerable.Repeat(0, ecLen)).ToArray(), ecPoly);
-            return quotient.GetRange(quotient.Count - ecLen, ecLen).ToArray();
+            List<int> quotient = GF64PolynomalDivision([.. data, .. Enumerable.Repeat(0, ecLen)], ecPoly);
+            return quotient.GetRange(quotient.Count - ecLen, ecLen);
         }
 
-        private static List<int> GF64PolynomalDivision(int[] dividend, int[] divisor)
+        private static List<int> GF64PolynomalDivision(List<int> dividend, int[] divisor)
         {
-            List<int> result = new(dividend);
             int normalizer = divisor[0];
 
-            for (int i = 0; i < dividend.Length - (divisor.Length - 1); i++)
+            for (int i = 0; i < dividend.Count - (divisor.Length - 1); i++)
             {
-                result[i] /= normalizer;
+                dividend[i] /= normalizer;
 
-                int coeff = result[i];
+                int coeff = dividend[i];
                 if (coeff != 0)
                 {
                     for (int j = 1; j < divisor.Length; j++)
                     {
-                        result[i + j] ^= GF64Multiply(divisor[j], coeff);
+                        dividend[i + j] ^= GF64Multiply(divisor[j], coeff);
                     }
                 }
             }
 
-            return result;
+            return dividend;
         }
 
         private static int GF64Multiply(int a, int b)

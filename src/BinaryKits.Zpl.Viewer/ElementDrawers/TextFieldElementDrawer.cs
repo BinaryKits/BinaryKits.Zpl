@@ -53,7 +53,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 SKTypeface typeface = options.FontLoader(font.FontName);
 
                 SKFont skFont = new(typeface, fontSize, scaleX);
-                using SKPaint skPaint = new(skFont)
+                using SKPaint skPaint = new()
                 {
                     IsAntialias = options.Antialias
                 };
@@ -69,14 +69,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     displayText = displayText.Replace("-", " \u2013 ");
                 }
 
-                if(options.ReplaceUnderscoreWithEnSpace) {
+                if (options.ReplaceUnderscoreWithEnSpace)
+                {
                     displayText = displayText.Replace('_', '\u2002');
                 }
 
-                SKRect textBounds = new();
-                SKRect textBoundBaseline = new();
-                skPaint.MeasureText("X", ref textBoundBaseline);
-                float totalWidth = skPaint.MeasureText(displayText, ref textBounds);
+                skFont.MeasureText("X", out SKRect textBoundBaseline);
+                float totalWidth = skFont.MeasureText(displayText, out SKRect textBounds);
 
                 using (new SKAutoCanvasRestore(this.skCanvas))
                 {
@@ -136,32 +135,33 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         skPaint.BlendMode = SKBlendMode.Xor;
                     }
 
-                    if (fieldJustification == Label.FieldJustification.Left)
+                    SKTextAlign textAlign = SKTextAlign.Left;
+                    if (fieldJustification == FieldJustification.Left)
                     {
-                        skPaint.TextAlign = SKTextAlign.Left;
+                        textAlign = SKTextAlign.Left;
                     }
-                    else if (fieldJustification == Label.FieldJustification.Right)
+                    else if (fieldJustification == FieldJustification.Right)
                     {
-                        skPaint.TextAlign = SKTextAlign.Right;
+                        textAlign = SKTextAlign.Right;
                     }
-                    else if (fieldJustification == Label.FieldJustification.Auto)
+                    else if (fieldJustification == FieldJustification.Auto)
                     {
                         HarfBuzzSharp.Buffer buffer = new();
                         buffer.AddUtf16(displayText);
                         buffer.GuessSegmentProperties();
                         if (buffer.Direction == HarfBuzzSharp.Direction.RightToLeft)
                         {
-                            skPaint.TextAlign = SKTextAlign.Right;
+                            textAlign = SKTextAlign.Right;
                         }
                     }
 
-                    this.skCanvas.DrawShapedText(displayText, x, y, skPaint);
+                    this.skCanvas.DrawShapedText(displayText, x, y, textAlign, skFont, skPaint);
 
                     // Update the next default field position after rendering
                     return this.CalculateNextDefaultPosition(x, y, totalWidth, textBounds.Height, false, textField.Font.FieldOrientation, currentPosition);
                 }
             }
-            
+
             return currentPosition;
         }
     }

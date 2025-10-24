@@ -66,13 +66,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 SKFont skFont = new(typeface, fontSize, scaleX);
-                using SKPaint skPaint = new(skFont)
+                using SKPaint skPaint = new()
                 {
                     IsAntialias = options.Antialias
                 };
 
-                SKRect textBoundBaseline = new();
-                skPaint.MeasureText("X", ref textBoundBaseline);
+                skFont.MeasureText("X", out SKRect textBoundBaseline);
 
                 float x = fieldBlock.PositionX;
                 float y = fieldBlock.PositionY + textBoundBaseline.Height;
@@ -148,8 +147,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     {
                         x = fieldBlock.PositionX + hangingIndent;
 
-                        SKRect textBounds = new();
-                        skPaint.MeasureText(textLine, ref textBounds);
+                        skFont.MeasureText(textLine, out SKRect textBounds);
                         float diff = fieldBlock.Width - textBounds.Width;
 
                         switch (fieldBlock.TextJustification)
@@ -173,21 +171,20 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                             skPaint.BlendMode = SKBlendMode.Xor;
                         }
 
-                        this.skCanvas.DrawShapedText(textLine, x, y, skPaint);
+                        this.skCanvas.DrawShapedText(textLine, x, y, skFont, skPaint);
                         y += lineHeight;
                     }
 
                     return this.CalculateNextDefaultPosition(fieldBlock.PositionX, fieldBlock.PositionY, fieldBlock.Width, totalHeight, fieldBlock.FieldOrigin != null, fieldBlock.Font.FieldOrientation, currentPosition);
                 }
             }
-            
+
             return currentPosition;
         }
 
         private static List<string> WordWrap(string text, SKFont font, int maxWidth)
         {
-            using SKPaint tmpPaint = new(font);
-            float spaceWidth = tmpPaint.MeasureText(" ");
+            float spaceWidth = font.MeasureText(" ");
             List<string> lines = [];
 
             Stack<string> words = new(text.Split([' '], StringSplitOptions.None).Reverse());
@@ -201,7 +198,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     string[] subwords = word.Split([@"\&"], 2, StringSplitOptions.None);
                     word = subwords[0];
                     words.Push(subwords[1]);
-                    float wordWidth = tmpPaint.MeasureText(word);
+                    float wordWidth = font.MeasureText(word);
                     if (width + wordWidth <= maxWidth)
                     {
                         line.Append(word);
@@ -223,7 +220,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
                 else
                 {
-                    float wordWidth = tmpPaint.MeasureText(word);
+                    float wordWidth = font.MeasureText(word);
                     if (width + wordWidth <= maxWidth)
                     {
                         line.Append(word + " ");

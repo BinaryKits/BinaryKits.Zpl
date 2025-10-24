@@ -1,6 +1,7 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.CommandAnalyzers;
 using BinaryKits.Zpl.Viewer.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace BinaryKits.Zpl.Viewer
 
         public AnalyzeInfo Analyze(string zplData)
         {
-            string[] zplCommands = this.SplitZplCommands(zplData);
+            string[] zplCommands = SplitZplCommands(zplData);
             List<string> unknownCommands = [];
             List<string> errors = [];
 
@@ -128,9 +129,11 @@ namespace BinaryKits.Zpl.Viewer
         }
 
         // When adding new commands: 1 per line, always upper case, comment why if possible
-        private readonly string[] ignoredCommands = [];
+        private static readonly HashSet<string> ignoredCommands = new(StringComparer.OrdinalIgnoreCase)
+        {
+        };
 
-        private string[] SplitZplCommands(string zplData)
+        private static string[] SplitZplCommands(string zplData)
         {
             if (string.IsNullOrWhiteSpace(zplData))
             {
@@ -142,7 +145,6 @@ namespace BinaryKits.Zpl.Viewer
             char tilde = '~';
             List<string> results = new(200);
             StringBuilder buffer = new(2000);
-            HashSet<string> ignoredCommandsHS = new(this.ignoredCommands);
             for (int i = 0; i < cleanZpl.Length; i++)
             {
                 char c = cleanZpl[i];
@@ -154,7 +156,7 @@ namespace BinaryKits.Zpl.Viewer
                     // all commands have at least 3 chars, even ^A because of required font parameter
                     if (command.Length > 2)
                     {
-                        this.PatchCommand(ref command, caret, tilde);
+                        PatchCommand(ref command, caret, tilde);
 
                         string commandLetters = command.Substring(1, 2).ToUpper();
 
@@ -166,7 +168,7 @@ namespace BinaryKits.Zpl.Viewer
                         {
                             caret = command.Length > 3 ? command[3] : c;
                         }
-                        else if (!ignoredCommandsHS.Contains(commandLetters))
+                        else if (!ignoredCommands.Contains(commandLetters))
                         {
                             results.Add(command);
                         }
@@ -185,14 +187,14 @@ namespace BinaryKits.Zpl.Viewer
             string lastCommand = buffer.ToString();
             if (lastCommand.Length > 0)
             {
-                this.PatchCommand(ref lastCommand, caret, tilde);
+                PatchCommand(ref lastCommand, caret, tilde);
                 results.Add(lastCommand);
             }
 
             return results.ToArray();
         }
 
-        private void PatchCommand(ref string command, char caret, char tilde)
+        private static void PatchCommand(ref string command, char caret, char tilde)
         {
             if (caret != '^' && command[0] == caret)
             {

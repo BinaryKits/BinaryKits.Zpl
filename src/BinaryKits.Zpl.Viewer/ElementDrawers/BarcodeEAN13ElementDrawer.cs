@@ -3,7 +3,9 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
+
 using System;
+
 using ZXing.OneD;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -83,7 +85,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, currentPosition);
             }
-            
+
             return currentPosition;
         }
 
@@ -101,8 +103,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             using (new SKAutoCanvasRestore(this.skCanvas))
             {
-                using SKPaint skPaint = new(skFont);
-                skPaint.IsAntialias = options.Antialias;
+                using SKPaint skPaint = new()
+                {
+                    IsAntialias = options.Antialias
+                };
 
                 SKMatrix matrix = GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
 
@@ -113,8 +117,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     this.skCanvas.SetMatrix(concatMatrix);
                 }
 
-                SKRect textBounds = new();
-                skPaint.MeasureText(interpretation, ref textBounds);
+                skFont.MeasureText(interpretation, out SKRect textBounds);
 
                 if (!useFieldOrigin)
                 {
@@ -135,9 +138,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 for (int i = 0; i < interpretation.Length; i++)
                 {
                     string digit = interpretation[i].ToString();
-                    SKRect digitBounds = new();
-                    skPaint.MeasureText(digit, ref digitBounds);
-                    this.skCanvas.DrawText(digit, x - (spacing + digitBounds.Width) / 2 - moduleWidth, y + barcodeHeight + textBounds.Height + margin, skPaint);
+                    skFont.MeasureText(digit, out SKRect digitBounds);
+                    this.skCanvas.DrawText(digit, x - (spacing + digitBounds.Width) / 2 - moduleWidth, y + barcodeHeight + textBounds.Height + margin, skFont, skPaint);
                     x += spacing;
                     if (i == 0 || i == 6)
                     {

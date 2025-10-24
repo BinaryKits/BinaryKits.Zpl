@@ -1,10 +1,11 @@
 using SkiaSharp;
 using SkiaSharp.HarfBuzz;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using ZXing.Common;
-using ZXing.QrCode.Internal;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -45,16 +46,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             using (new SKAutoCanvasRestore(this.skCanvas))
             {
-                using SKPaint skPaint = new(skFont);
-                skPaint.IsAntialias = options.Antialias;
+                using SKPaint skPaint = new()
+                {
+                    IsAntialias = options.Antialias
+                };
+
                 SKMatrix matrix = GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
                 if (matrix != SKMatrix.Empty)
                 {
                     this.skCanvas.Concat(matrix);
                 }
 
-                SKRect textBounds = new();
-                skPaint.MeasureText(interpretation, ref textBounds);
+                skFont.MeasureText(interpretation, out SKRect textBounds);
                 x += (barcodeWidth - textBounds.Width) / 2;
                 if (!useFieldOrigin)
                 {
@@ -68,12 +71,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float margin = Math.Max((skFont.Spacing - textBounds.Height) / 2, MIN_LABEL_MARGIN);
                 if (printInterpretationLineAboveCode)
                 {
-                    this.skCanvas.DrawShapedText(interpretation, x, y - margin, skPaint);
+                    this.skCanvas.DrawShapedText(interpretation, x, y - margin, skFont, skPaint);
                 }
                 else
                 {
                     this.skCanvas
-                        .DrawShapedText(interpretation, x, y + barcodeHeight + textBounds.Height + margin, skPaint);
+                        .DrawShapedText(interpretation, x, y + barcodeHeight + textBounds.Height + margin, skFont, skPaint);
                 }
             }
         }
@@ -128,7 +131,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 image.SetPixel(col, 0, color);
             }
 
-            return image.Resize(new SKSizeI(image.Width * moduleWidth, height), SKFilterQuality.None);
+            SKSamplingOptions sampling = new(SKFilterMode.Nearest);
+            return image.Resize(new SKSizeI(image.Width * moduleWidth, height), sampling);
         }
 
         protected static SKBitmap BitMatrixToSKBitmap(BitMatrix matrix, int pixelScale)
@@ -143,7 +147,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
             }
 
-            return image.Resize(new SKSizeI(image.Width * pixelScale, image.Height * pixelScale), SKFilterQuality.None);
+            SKSamplingOptions sampling = new(SKFilterMode.Nearest);
+            return image.Resize(new SKSizeI(image.Width * pixelScale, image.Height * pixelScale), sampling);
         }
 
         protected static bool[] AdjustWidths(bool[] array, int wide, int narrow)
