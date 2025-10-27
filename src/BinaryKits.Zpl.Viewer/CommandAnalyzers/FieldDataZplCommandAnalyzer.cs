@@ -89,6 +89,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                     // N.B.: always pass Field Orientation Normal to QR codes; the ZPL II standard does not allow rotation
                     return new ZplQrCode(parsedText, x, y, qrCode.Model, qrCode.MagnificationFactor, errorCorrection, qrCode.MaskValue, FieldOrientation.Normal, hexadecimalIndicator, bottomToTop, useDefaultPosition);
                 }
+                else if (this.VirtualPrinter.NextElementFieldData is UpcABarcodeFieldData upcA)
+                {
+                    return new ZplBarcodeUpcA(text, x, y, upcA.Height, moduleWidth, wideBarToNarrowBarWidthRatio, upcA.FieldOrientation, hexadecimalIndicator, upcA.PrintInterpretationLine, upcA.PrintInterpretationLineAboveCode, upcA.PrintCheckDigit, bottomToTop, useDefaultPosition);
+                }
                 else if (this.VirtualPrinter.NextElementFieldData is PDF417FieldData pdf147)
                 {
                     return new ZplPDF417(text, x, y, pdf147.Height, moduleWidth, pdf147.Columns, pdf147.Rows, pdf147.Compact, pdf147.SecurityLevel, pdf147.FieldOrientation, hexadecimalIndicator, bottomToTop, useDefaultPosition);

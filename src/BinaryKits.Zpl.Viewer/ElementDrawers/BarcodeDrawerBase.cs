@@ -135,6 +135,19 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return image.Resize(new SKSizeI(image.Width * moduleWidth, height), sampling);
         }
 
+        protected static SKBitmap BoolArrayWithMaskToSKBitmap(bool[] array, bool[] mask, int height, int moduleWidth = 1)
+        {
+            using SKBitmap image = new(array.Length, 1);
+            for (int col = 0; col < array.Length; col++)
+            {
+                SKColor color = array[col] && mask[col] ? SKColors.Black : SKColors.Transparent;
+                image.SetPixel(col, 0, color);
+            }
+
+            SKSamplingOptions sampling = new(SKFilterMode.Nearest);
+            return image.Resize(new SKSizeI(image.Width * moduleWidth, height), sampling);
+        }
+
         protected static SKBitmap BitMatrixToSKBitmap(BitMatrix matrix, int pixelScale)
         {
             using SKBitmap image = new(matrix.Width, matrix.Height);
