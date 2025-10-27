@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
     /// <summary>
-    /// Code 93 Barcode
+    /// UPC-A Barcode
     /// </summary>
-    public class ZplBarcode93 : ZplBarcode
+    public class ZplBarcodeUpcA : ZplBarcode
     {
-        public bool CheckDigit { get; private set; }
+        public bool PrintCheckDigit { get; private set; }
 
         /// <summary>
-        /// Code 93 Barcode
+        /// UPC-A Barcode
         /// </summary>
         /// <param name="content"></param>
         /// <param name="positionX"></param>
@@ -22,10 +23,10 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="hexadecimalIndicator"></param>
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
-        /// <param name="checkDigit"></param>
+        /// <param name="printCheckDigit"></param>
         /// <param name="bottomToTop"></param>
         /// <param name="useDefaultPosition"></param>
-        public ZplBarcode93(
+        public ZplBarcodeUpcA(
             string content,
             int positionX,
             int positionY,
@@ -36,7 +37,7 @@ namespace BinaryKits.Zpl.Label.Elements
             char? hexadecimalIndicator = null,
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
-            bool checkDigit = false,
+            bool printCheckDigit = true,
             bool bottomToTop = false,
             bool useDefaultPosition = false)
             : base(content,
@@ -52,21 +53,16 @@ namespace BinaryKits.Zpl.Label.Elements
                   bottomToTop,
                   useDefaultPosition)
         {
-            this.CheckDigit = checkDigit;
+            this.PrintCheckDigit = printCheckDigit;
         }
 
         ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
-            //TODO:Add 'mode'
-
-            //^FO100,100 ^ BY3
-            //^BAN,100,Y,N,N
-            //^FD123456 ^ FS
-            var result = new List<string>();
+            List<string> result = new List<string>();
             result.AddRange(RenderPosition(context));
             result.Add(RenderModuleWidth());
-            result.Add($"^BA{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{RenderBoolean(CheckDigit)}");
+            result.Add($"^BU{RenderFieldOrientation()},{context.Scale(this.Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{RenderBoolean(this.PrintCheckDigit)}");
             result.Add(RenderFieldDataSection());
 
             return result;
