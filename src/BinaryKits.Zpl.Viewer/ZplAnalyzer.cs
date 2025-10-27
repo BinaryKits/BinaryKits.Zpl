@@ -68,6 +68,7 @@ namespace BinaryKits.Zpl.Viewer
                 new MaxiCodeBarcodeZplCommandAnalyzer(this.virtualPrinter),
                 new QrCodeBarcodeZplCommandAnalyzer(this.virtualPrinter),
                 new UpcABarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new UpcEBarcodeZplCommandAnalyzer(this.virtualPrinter),
                 new PDF417ZplCommandAnalyzer(this.virtualPrinter),
                 new RecallFormatCommandAnalyzer(this.virtualPrinter),
                 new RecallGraphicZplCommandAnalyzer(this.virtualPrinter),
