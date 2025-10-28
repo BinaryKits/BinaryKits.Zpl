@@ -10,21 +10,13 @@ using ZXing.OneD;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
-    public class BarcodeUpcAElementDrawer : BarcodeDrawerBase
+    public class BarcodeUpcEElementDrawer : BarcodeDrawerBase
     {
-        private static readonly bool[] guards = new bool[95];
+        private static readonly bool[] guards = new bool[51];
 
-        static BarcodeUpcAElementDrawer()
+        static BarcodeUpcEElementDrawer()
         {
-            int[] guardIndicies = [
-                0, 2,
-                4, 5, 6, 7, 8, 9,
-                46, 48,
-                85, 86, 87, 88, 89, 90,
-                92, 94
-            ];
-
-            foreach (int idx in guardIndicies)
+            foreach (int idx in new int[] { 0, 2, 46, 48, 50 })
             {
                 guards[idx] = true;
             }
@@ -33,13 +25,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
-            return element is ZplBarcodeUpcA;
+            return element is ZplBarcodeUpcE;
         }
 
         ///<inheritdoc/>
         public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
-            if (element is ZplBarcodeUpcA barcode)
+            if (element is ZplBarcodeUpcE barcode)
             {
                 float x = barcode.PositionX;
                 float y = barcode.PositionY;
@@ -56,23 +48,69 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
-                content = content.PadLeft(11, '0').Substring(0, 11);
+                // [S]DDDDDD[C]
+                if (content.Length < 7)
+                {
+                    // number system 0
+                    content = content.PadLeft(7, '0');
+                }
+                else if (content.Length <= 8)
+                {
+                    // ignore user provided checksum
+                    content = content.Substring(0, 7);
+                }
+                else
+                {
+                    // UPC-A to UPC-E
+                    string numberSystem = "0";
+                    content = content.PadRight(10, '0');
+                    if (content.Length > 10)
+                    {
+                        numberSystem = content.Substring(0, 1);
+                        content = content.Substring(1, 10);
+                    }
+
+                    int manufacturer = int.Parse(content.Substring(0, 5));
+                    int product = int.Parse(content.Substring(5, 5));
+
+                    if (manufacturer % 100 == 0)
+                    {
+                        int trail = manufacturer / 100 % 10;
+                        if (trail <= 2)
+                        {
+                            content = $"{numberSystem}{manufacturer / 1000:D2}{product % 1000:D3}{trail}";
+                        }
+                        else
+                        {
+                            content = $"{numberSystem}{manufacturer / 100:D3}{product % 100:D2}{3}";
+                        }
+                    }
+                    else if (manufacturer % 10 == 0)
+                    {
+                        content = $"{numberSystem}{manufacturer / 10:D4}{product % 10:D1}{4}";
+                    }
+                    else
+                    {
+                        content = $"{numberSystem}{manufacturer:D5}{Math.Max(product % 10, 5):D1}";
+                    }
+                }
+
                 string interpretation = content;
 
                 if (barcode.PrintCheckDigit)
                 {
+                    string expanded = UPCEReader.convertUPCEtoUPCA(content);
                     int checksum = 0;
                     for (int i = 0; i < 11; i++)
                     {
-                        checksum += (content[i] - 48) * (i % 2 * 2 + 7);
+                        checksum += (expanded[i] - 48) * (i % 2 * 2 + 7);
                     }
 
                     interpretation = string.Format("{0}{1}", interpretation, checksum % 10);
                 }
 
-
-                EAN13Writer writer = new();
-                bool[] result = writer.encode(content.PadLeft(12, '0'));
+                UPCEWriter writer = new();
+                bool[] result = writer.encode(content);
                 using SKBitmap resizedImage = BoolArrayToSKBitmap(result, barcode.Height, barcode.ModuleWidth);
                 byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation);
@@ -88,7 +126,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
                     else
                     {
-                        this.DrawUpcAInterpretationLine(result, interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.ModuleWidth, options);
+                        this.DrawUpcEInterpretationLine(result, interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.ModuleWidth, options);
                     }
                 }
 
@@ -98,7 +136,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return currentPosition;
         }
 
-        private void DrawUpcAInterpretationLine(
+        private void DrawUpcEInterpretationLine(
             bool[] data,
             string interpretation,
             SKFont skFont,
@@ -152,13 +190,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     this.skCanvas.DrawText(digit, x - (spacing + digitBounds.Width) / 2 - moduleWidth, y + barcodeHeight + textBounds.Height + margin, skFont, skPaint);
                     x += spacing;
 
-                    if (i == 0 || i == 10)
-                    {
-                        x += moduleWidth * 11;
-                    }
-                    else if (i == 5)
+                    if (i == 0)
                     {
                         x += moduleWidth * 4;
+                    }
+                    else if (i == 6)
+                    {
+                        x += moduleWidth * 6;
                     }
                 }
             }
