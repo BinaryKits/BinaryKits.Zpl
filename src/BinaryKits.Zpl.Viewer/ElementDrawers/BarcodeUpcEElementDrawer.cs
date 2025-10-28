@@ -179,7 +179,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float margin = Math.Max((skFont.Spacing - textBounds.Height) / 2, MIN_LABEL_MARGIN);
                 int spacing = moduleWidth * 7;
 
-                using SKBitmap guardImage = BoolArrayWithMaskToSKBitmap(data, guards, (int)(margin + textBounds.Height / 2), moduleWidth);
+                using SKBitmap guardImage = BoolArrayToSKBitmap(guards, (int)(margin + textBounds.Height / 2), moduleWidth);
                 byte[] guardPng = guardImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.skCanvas.DrawBitmap(SKBitmap.Decode(guardPng), x, y + barcodeHeight);
 
