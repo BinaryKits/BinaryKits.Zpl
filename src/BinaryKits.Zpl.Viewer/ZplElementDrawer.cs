@@ -34,6 +34,7 @@ namespace BinaryKits.Zpl.Viewer
                 new BarcodeEAN13ElementDrawer(),
                 new BarcodeUpcAElementDrawer(),
                 new BarcodeUpcEElementDrawer(),
+                new BarcodeUpcExtensionElementDrawer(),
                 new DataMatrixElementDrawer(),
                 new FieldBlockElementDrawer(),
                 new GraphicBoxElementDrawer(),
