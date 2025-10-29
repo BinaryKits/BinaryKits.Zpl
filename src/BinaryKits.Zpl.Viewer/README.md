@@ -1,3 +1,89 @@
+# BinaryKits.Zpl.Viewer
+
+## Supported Barcode Formats
+
+### 1D Barcodes
+- [x] Code 39 (^B3)
+- [x] Code 93 (^BA)
+- [x] Code 128 (^BC)
+- [x] EAN-13 (^BE)
+- [x] UPC-A (^BU)
+- [x] UPC-E (^B9)
+- [x] UPC Extension (^BS)
+- [x] Interleaved 2 of 5 (^B2)
+- [x] ANSI Codabar (^BK)
+
+### 2D Barcodes
+- [x] QR Code (^BQ)
+- [x] Data Matrix (^BX)
+- [x] PDF417 (^B7)
+- [x] Aztec (^B0)
+- [x] MaxiCode (^BD)
+
+## Unsupported Barcode Formats
+
+### 1D Barcodes
+- [ ] MSI (^BM): Supported by ZXing.NET
+- [ ] Databar/RSS-14 (^BR): Not supported by ZXing.NET
+- [ ] Code 11 (^B1): Not supported by ZXing.NET, [simple to implement](https://web.archive.org/web/20070202060711/http://www.barcodeisland.com/code11.phtml)
+- [ ] POSTNET (^BB): Not supported by ZXing.NET
+- [ ] PLANET (^B8): Not supported by ZXing.NET
+- [ ] Composite (^BC): Not supported by ZXing.NET, simple to implement
+  - **Note:** Shares command with Code 128 - requires special handling
+
+### 2D Barcodes
+- [ ] Micro PDF417 (^B7): Not supported by ZXing.NET
+  - ASCII data only
+  - Appears to be a subset of PDF417
+  - **Note:** Shares command with PDF417 - differentiated by mode parameter
+- [ ] Micro QR Code (^BQ): Not supported by ZXing.NET
+  - Appears to be a subset of QR Code
+  - **Note:** Shares command with QR Code - differentiated by model parameter
+
+## Supported Label Elements
+
+### Text Elements
+- [x] Text Field (^FD with ^A or ^CF)
+- [x] Field Block (^FB) - Multi-line text with justification
+- [x] Field Typeset (^FT) - Typeset field positioning
+- [x] Scalable/Bitmapped Font (^A, ^CF)
+- [x] Change International Font (^CI)
+- [x] Hexadecimal Indicator (^FH)
+- [x] Field Reverse Print (^FR)
+- [x] Field Number (^FN) - Variable field for templates
+- [x] Recall Field Number - Variable field data
+
+### Graphic Elements
+- [x] Graphic Box (^GB) - Rectangle with optional fill
+- [x] Graphic Circle (^GC)
+- [x] Graphic Field (^GF) - Raster graphics
+- [x] Image Move (^IM) - Recall stored image
+- [x] Recall Graphic (^XG) - Recall stored graphic with scaling
+
+### Positioning & Layout
+- [x] Field Origin (^FO) - Set field position
+- [x] Field Separator (^FS)
+- [x] Field Orientation (^FW) - Rotate fields
+- [x] Label Home (^LH) - Set label home position
+- [x] Label Reverse Print (^LR) - Reverse entire label
+
+### Storage & Templates
+- [x] Download Graphics (~DG) - Store graphic to memory
+- [x] Download Objects (~DY) - Store objects/fonts to memory
+- [x] Download Format (^DF) - Store label template
+- [x] Recall Format (^XF) - Recall label template
+
+### Control Elements
+- [x] Comment (^FX)
+- [x] Barcode Field Default (^BY) - Set barcode module width
+
+## Unsupported Label Elements
+
+### Graphic Elements
+- [ ] Graphic Ellipse (^GE): Implemented in Label project, missing drawer
+- [ ] Graphic Symbol (^GS): Implemented in Label project, missing drawer
+- [ ] Graphic Diagonal Line (^GD): Implemented in Label project, missing drawer
+
 # Open Tasks
 
 - Barcodes scaling
@@ -25,24 +111,6 @@ foreach (var labelInfo in analyzeInfo.LabelInfos)
 
 # Adding Barcode support
 Also applies to other "drawables", like shapes and graphics.
-
-## Common barcodes still missing support
-### 1D
-- [ ] Code 93: Supported by Xzing.net
-- [ ] MSI: Supported by Xzing.net
-- [ ] Codabar/NW7: Supported by Xzing.net
-- [ ] Databar/RSS-14: Not supported by Xzing.net
-- [ ] [Code 11](https://web.archive.org/web/20070202060711/http://www.barcodeisland.com/code11.phtml): Not supported by Xzing.net, simple to implement
-
-### 2D
-- [ ] Maxicode: Not supported by Xzing.net, required for UPS labels
-- [ ] Aztec: Supported by Xzing.net
-- [ ] Micro pdf417: Not supported by Xzing.net
-	- ascii data only
-	- appears to be a subset of pdf417
-- [ ] Micro QrCode: Not supported by Xzing.net
-	- appears to be a subset of QrCode
-- [ ] Composite: Not supported by Xzing.net, simple to implement
 
 ## Examples
 - [EAN Barcode](https://github.com/BinaryKits/BinaryKits.Zpl/commit/3fac409732e19be9e047ee71f942ba1f68c6fa5c)
