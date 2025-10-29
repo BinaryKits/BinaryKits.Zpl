@@ -1,9 +1,13 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Helpers;
+
 using SkiaSharp;
-using System.Collections.Generic;
+
 using System.Text.RegularExpressions;
+
 using ZXing;
+using ZXing.Common;
 using ZXing.QrCode;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -13,7 +17,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
     /// </summary>
     public class QrCodeElementDrawer : BarcodeDrawerBase
     {
-        private static readonly Regex gs1Regex = new Regex(@"^>;>8(.+)$", RegexOptions.Compiled);
+        private static readonly Regex gs1Regex = new(@"^>;>8(.+)$", RegexOptions.Compiled);
 
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
@@ -22,17 +26,27 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override void Draw(ZplElementBase element)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplQrCode qrcode)
             {
                 float x = qrcode.PositionX;
                 float y = qrcode.PositionY;
-                
+
+                if (qrcode.UseDefaultPosition)
+                {
+                    x = currentPosition.X;
+                    y = currentPosition.Y;
+                }
+
+                string content = qrcode.Content;
+                if (qrcode.HexadecimalIndicator is char hexIndicator)
+                {
+                    content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
+                }
+
                 // support hand-rolled GS1
                 bool gs1Mode = false;
-                var content = qrcode.Content;
-
                 Match gs1Match = gs1Regex.Match(content);
                 if (gs1Match.Success)
                 {
@@ -42,25 +56,28 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 int verticalQuietZone = 10;
 
-                var writer = new QRCodeWriter();
-                // TODO: use QrCodeEncodingOptions in next version of ZXing.NET
-                var hints = new Dictionary<EncodeHintType, object> {
-                    { EncodeHintType.ERROR_CORRECTION, CovertErrorCorrection(qrcode.ErrorCorrectionLevel) },
-                    { EncodeHintType.QR_MASK_PATTERN, qrcode.MaskValue },
-                    { EncodeHintType.CHARACTER_SET, "UTF-8" },
-                    { EncodeHintType.MARGIN, 0 },
-                    { EncodeHintType.GS1_FORMAT, gs1Mode }
+                QRCodeWriter writer = new();
+                QrCodeEncodingOptions encodingOptions = new()
+                {
+                    ErrorCorrection = ConvertErrorCorrection(qrcode.ErrorCorrectionLevel),
+                    QrMaskPattern = qrcode.MaskValue,
+                    CharacterSet = "UTF-8",
+                    Margin = 0,
+                    GS1Format = gs1Mode
                 };
-                var result = writer.encode(content, BarcodeFormat.QR_CODE, 0, 0, hints);
+                BitMatrix result = writer.encode(content, BarcodeFormat.QR_CODE, 0, 0, encodingOptions.Hints);
 
-                using var resizedImage = this.BitMatrixToSKBitmap(result, qrcode.MagnificationFactor);
+                using SKBitmap resizedImage = BitMatrixToSKBitmap(result, qrcode.MagnificationFactor);
 
-                var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y + verticalQuietZone, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation);
+                return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation, currentPosition);
             }
+
+            return currentPosition;
         }
 
-        private ZXing.QrCode.Internal.ErrorCorrectionLevel CovertErrorCorrection(ErrorCorrectionLevel errorCorrectionLevel)
+        private static ZXing.QrCode.Internal.ErrorCorrectionLevel ConvertErrorCorrection(ErrorCorrectionLevel errorCorrectionLevel)
         {
             return errorCorrectionLevel switch
             {

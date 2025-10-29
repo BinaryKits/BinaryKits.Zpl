@@ -13,20 +13,23 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             int tmpint;
             int circleDiameter = 3;
             int borderThickness = 1;
-            var lineColor = LineColor.Black;
+            LineColor lineColor = LineColor.Black;
 
             int x = 0;
             int y = 0;
             bool bottomToTop = false;
+            bool useDefaultPosition = false;
 
             if (this.VirtualPrinter.NextElementPosition != null)
             {
                 x = this.VirtualPrinter.NextElementPosition.X;
                 y = this.VirtualPrinter.NextElementPosition.Y;
+
                 bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
+                useDefaultPosition = this.VirtualPrinter.NextElementPosition.UseDefaultPosition;
             }
 
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
             if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
             {
@@ -45,8 +48,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
 
             bool reversePrint = this.VirtualPrinter.NextElementFieldReverse || this.VirtualPrinter.LabelReverse;
-            
-            return new ZplGraphicCircle(x, y, circleDiameter, borderThickness, lineColor, reversePrint, bottomToTop);
+
+            return new ZplGraphicCircle(x, y, circleDiameter, borderThickness, lineColor, reversePrint, bottomToTop, useDefaultPosition);
         }
     }
 }

@@ -19,6 +19,11 @@
         public int Y { get; private set; } = 0;
 
         /// <summary>
+        /// Field justification (0=left, 1=right, 2=auto)
+        /// </summary>
+        public int? FieldJustification { get; private set; }
+
+        /// <summary>
         /// Field Typeset
         /// </summary>
         public FieldTypesetCommand() : base("^FT")
@@ -29,9 +34,11 @@
         /// </summary>
         /// <param name="x">x-axis location (0 to 32000)</param>
         /// <param name="y">y-axis location (0 to 32000)</param>
+        /// <param name="fieldJustification">field justification (0=left, 1=right, 2=auto)</param>
         public FieldTypesetCommand(
             int? x = null,
-            int? y = null)
+            int? y = null,
+            int? fieldJustification = null)
             : this()
         {
             if (this.ValidateIntParameter(nameof(x), x, 0, 32000))
@@ -43,11 +50,20 @@
             {
                 this.Y = y.Value;
             }
+
+            if (this.ValidateIntParameter(nameof(fieldJustification), fieldJustification, 0, 2))
+            {
+                this.FieldJustification = fieldJustification.Value;
+            }
         }
 
         ///<inheritdoc/>
         public override string ToZpl()
         {
+            if (FieldJustification.HasValue)
+            {
+                return $"{this.CommandPrefix}{this.X},{this.Y},{this.FieldJustification}";
+            }
             return $"{this.CommandPrefix}{this.X},{this.Y}";
         }
 
@@ -69,6 +85,14 @@
                 if (int.TryParse(zplDataParts[1], out var y))
                 {
                     this.Y = y;
+                }
+            }
+
+            if (zplDataParts.Length > 2)
+            {
+                if (int.TryParse(zplDataParts[2], out var fieldJustification))
+                {
+                    this.FieldJustification = fieldJustification;
                 }
             }
         }

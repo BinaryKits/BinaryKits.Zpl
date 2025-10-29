@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -9,11 +10,17 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
             if (zplDataParts.Length > 0)
             {
-                var fieldOrientation = ConvertFieldOrientation(zplDataParts[0]);
+                FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
                 this.VirtualPrinter.SetFieldOrientation(fieldOrientation);
+            }
+
+            if (zplDataParts.Length > 1)
+            {
+                FieldJustification fieldJustification = this.ConvertFieldJustification(zplDataParts[1]);
+                this.VirtualPrinter.SetFieldJustification(fieldJustification);
             }
 
             return null;

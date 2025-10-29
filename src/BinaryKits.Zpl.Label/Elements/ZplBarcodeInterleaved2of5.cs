@@ -20,10 +20,12 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="moduleWidth"></param>
         /// <param name="wideBarToNarrowBarWidthRatio"></param>
         /// <param name="fieldOrientation"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
         /// <param name="mod10CheckDigit"></param>
         /// <param name="bottomToTop"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplBarcodeInterleaved2of5(
             string content,
             int positionX,
@@ -32,10 +34,12 @@ namespace BinaryKits.Zpl.Label.Elements
             int moduleWidth = 2,
             double wideBarToNarrowBarWidthRatio = 3,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
+            char? hexadecimalIndicator = null,
             bool printInterpretationLine = true,
             bool printInterpretationLineAboveCode = false,
             bool mod10CheckDigit = false,
-            bool bottomToTop = false)
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
             : base(content,
                   positionX,
                   positionY,
@@ -43,15 +47,12 @@ namespace BinaryKits.Zpl.Label.Elements
                   moduleWidth,
                   wideBarToNarrowBarWidthRatio,
                   fieldOrientation,
+                  hexadecimalIndicator,
                   printInterpretationLine,
                   printInterpretationLineAboveCode,
-                  bottomToTop)
+                  bottomToTop,
+                  useDefaultPosition)
         {
-            if (!IsDigitsOnly(content))
-            {
-                throw new ArgumentException("Interleaved 2 of 5 Barcode allow only digits", nameof(content));
-            }
-
             Mod10CheckDigit = mod10CheckDigit;
         }
 
@@ -62,7 +63,7 @@ namespace BinaryKits.Zpl.Label.Elements
             result.AddRange(RenderPosition(context));
             result.Add(RenderModuleWidth());
             result.Add($"^B2{RenderFieldOrientation()},{context.Scale(Height)},{RenderPrintInterpretationLine()},{RenderPrintInterpretationLineAboveCode()},{(Mod10CheckDigit ? "Y" : "N")}");
-            result.Add($"^FD{Content}^FS");
+            result.Add(RenderFieldDataSection());
 
             return result;
         }

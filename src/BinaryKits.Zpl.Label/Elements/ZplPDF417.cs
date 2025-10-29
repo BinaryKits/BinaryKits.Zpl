@@ -5,13 +5,10 @@ namespace BinaryKits.Zpl.Label.Elements
     /// <summary>
     /// PDF417 Barcode ^B7o,h,s,c,r,t
     /// </summary>
-    public class ZplPDF417 : ZplPositionedElementBase, IFormatElement
+    public class ZplPDF417 : ZplFieldDataElementBase
     {
-
         public int Height { get; protected set; }
         public int ModuleWidth { get; protected set; }
-        public string Content { get; protected set; }
-        public FieldOrientation FieldOrientation { get; protected set; }
         public int? Columns { get; protected set; }
         public int? Rows { get; protected set; }
         public bool Compact { get; protected set; }
@@ -28,9 +25,11 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="columns">1-30: Number of data columns to encode. Default will auto balance 1:2 row to column</param>
         /// <param name="rows">3-90. Number of data columns to encode. Default will auto balance 1:2 row to column</param>
         /// <param name="compact">Truncate right row indicators and stop pattern</param>
-        /// <param name="fieldOrientation"></param>
         /// <param name="securityLevel">1-8 This determines the number of error detection and correction code-words to be generated for the symbol.The default level (0) provides only error detection without correction.Increasing the security level adds increasing levels of error correction and increases the symbol size.</param>
+        /// <param name="fieldOrientation"></param>
+        /// <param name="hexadecimalIndicator"></param>
         /// <param name="bottomToTop"></param>
+        /// <param name="useDefaultPosition"></param>
         public ZplPDF417(
             string content,
             int positionX,
@@ -42,24 +41,17 @@ namespace BinaryKits.Zpl.Label.Elements
             bool compact = false,
             int securityLevel = 0,
             FieldOrientation fieldOrientation = FieldOrientation.Normal,
-            bool bottomToTop = false
-            )
-            : base(positionX, positionY, bottomToTop)
+            char? hexadecimalIndicator = null,
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(content, positionX, positionY, fieldOrientation, hexadecimalIndicator, bottomToTop, useDefaultPosition)
         {
-            FieldOrientation = fieldOrientation;
             Height = height;
             ModuleWidth = moduleWidth;
             Columns = columns;
             Rows = rows;
             Compact = compact;
             SecurityLevel = securityLevel;
-            Content = content;
-        }
-
-        
-        protected string RenderFieldOrientation()
-        {
-            return RenderFieldOrientation(FieldOrientation);
         }
 
         ///<inheritdoc/>
@@ -71,15 +63,9 @@ namespace BinaryKits.Zpl.Label.Elements
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
             result.Add($"^BX{RenderFieldOrientation()},{context.Scale(Height)}");
-            result.Add($"^FD{Content}^FS");
+            result.Add(RenderFieldDataSection());
 
             return result;
-        }
-
-        /// <inheritdoc />
-        public void SetTemplateContent(string content)
-        {
-            Content = content;
         }
     }
 }

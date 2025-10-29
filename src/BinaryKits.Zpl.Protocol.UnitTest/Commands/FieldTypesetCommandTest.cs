@@ -39,17 +39,17 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_XMinus10Y0_Exception()
         {
-            new FieldTypesetCommand(-10, 0);
+            Assert.Throws<ArgumentException>(() => 
+                new FieldTypesetCommand(-10, 0));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Constructor_X0YMinus10_Exception()
         {
-            new FieldTypesetCommand(0, -10);
+            Assert.Throws<ArgumentException>(() => 
+                new FieldTypesetCommand(0, -10));
         }
 
         [TestMethod]
@@ -93,6 +93,51 @@ namespace BinaryKits.Zpl.Protocol.Commands.UnitTest
             command.ParseCommand("^FT,10");
             Assert.AreEqual(0, command.X);
             Assert.AreEqual(10, command.Y);
+        }
+
+        [TestMethod]
+        public void ToZpl_WithFieldJustification_Successful()
+        {
+            var command = new FieldTypesetCommand(10, 20, 1);
+            var zplCommand = command.ToZpl();
+            Assert.AreEqual("^FT10,20,1", zplCommand);
+        }
+
+        [TestMethod]
+        public void ParseCommand_WithFieldJustification_Successful()
+        {
+            var command = new FieldTypesetCommand();
+            command.ParseCommand("^FT10,20,2");
+            Assert.AreEqual(10, command.X);
+            Assert.AreEqual(20, command.Y);
+            Assert.AreEqual(2, command.FieldJustification);
+        }
+
+        [TestMethod]
+        public void ParseCommand_WithOnlyFieldJustification_Successful()
+        {
+            var command = new FieldTypesetCommand();
+            command.ParseCommand("^FT,,1");
+            Assert.AreEqual(0, command.X);
+            Assert.AreEqual(0, command.Y);
+            Assert.AreEqual(1, command.FieldJustification);
+        }
+
+        [TestMethod]
+        public void ParseCommand_EmptyCommand_DefaultValues()
+        {
+            var command = new FieldTypesetCommand();
+            command.ParseCommand("^FT");
+            Assert.AreEqual(0, command.X);
+            Assert.AreEqual(0, command.Y);
+            Assert.IsNull(command.FieldJustification);
+        }
+
+        [TestMethod]
+        public void Constructor_FieldJustificationInvalid_Exception()
+        {
+            Assert.Throws<ArgumentException>(() => 
+                new FieldTypesetCommand(10, 10, 3));
         }
     }
 }

@@ -4,12 +4,12 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class FieldSeparatorZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        private ZplCommandAnalyzerBase _fieldDataAnalyzer;
+        private readonly ZplCommandAnalyzerBase fieldDataAnalyzer;
 
         public FieldSeparatorZplCommandAnalyzer(VirtualPrinter virtualPrinter, ZplCommandAnalyzerBase fieldDataAnalyzer)
             : base("^FS", virtualPrinter)
         {
-            _fieldDataAnalyzer = fieldDataAnalyzer;
+            this.fieldDataAnalyzer = fieldDataAnalyzer;
         }
 
         ///<inheritdoc/>
@@ -22,7 +22,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             if (fieldNumber.HasValue)
             {
                 this.VirtualPrinter.ClearNextFieldNumber();
-                ZplElementBase dataElement = _fieldDataAnalyzer.Analyze(zplCommand);
+                ZplElementBase dataElement = this.fieldDataAnalyzer.Analyze(zplCommand);
                 element = new ZplFieldNumber(fieldNumber.Value, dataElement);
             }
 
@@ -30,7 +30,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             this.VirtualPrinter.ClearNextElementFieldBlock();
             this.VirtualPrinter.ClearNextElementFieldData();
             this.VirtualPrinter.ClearNextElementFieldReverse();
-            this.VirtualPrinter.ClearNextElementFieldUseHexadecimalIndicator();
+            this.VirtualPrinter.ClearNextElementFieldHexadecimalIndicator();
+            this.VirtualPrinter.ClearNextElementFieldJustification();
             this.VirtualPrinter.ClearNextFont();
             this.VirtualPrinter.ClearComments();
 

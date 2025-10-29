@@ -307,3 +307,4 @@ foreach (var labelInfo in analyzeInfo.LabelInfos)
 | JavaScript | [JSZPL](https://github.com/DanieLeeuwner/JSZPL) |
 | .NET | [sharpzebra](https://github.com/rkone/sharpzebra) |
 | .NET | [PDFtoZPL](https://github.com/sungaila/PDFtoZPL) |
+| .NET | [ZPL2PDF](https://github.com/brunoleocam/ZPL2PDF) |

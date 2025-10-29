@@ -14,14 +14,14 @@ namespace BinaryKits.Zpl.Label.UnitTest
             var output = new ZplFieldNumber(100, textField).ToZplString();
 
             Assert.IsNotNull(output);
-            Assert.AreEqual("^A0N,30,30\n^FO50,100\n^FH\n^FN100^FS", output);
+            Assert.AreEqual("^A0N,30,30\n^FO50,100\n^FD^FS\n^FN100^FS", output);
         }
 
         [TestMethod]
         public void WrongTypeElement()
         {
             var data = new ZplReferenceGrid();
-            Assert.ThrowsException<ArgumentException>(() => new ZplFieldNumber(100, data).ToZplString());
+            Assert.Throws<ArgumentException>(() => new ZplFieldNumber(100, data).ToZplString());
         }
     }
 }

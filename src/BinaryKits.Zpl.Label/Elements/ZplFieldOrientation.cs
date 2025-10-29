@@ -8,16 +8,23 @@ namespace BinaryKits.Zpl.Label.Elements
     public class ZplFieldOrientation : ZplElementBase
     {
         public FieldOrientation FieldOrientation { get; private set; }
+        public FieldJustification FieldJustification { get; private set; }
 
-        public ZplFieldOrientation(FieldOrientation fieldOrientation)
+        /// <summary>
+        /// Field Orientation
+        /// </summary>
+        /// <param name="fieldOrientation"></param>
+        /// <param name="fieldJustification"></param>
+        public ZplFieldOrientation(FieldOrientation fieldOrientation, FieldJustification fieldJustification = FieldJustification.None)
         {
             this.FieldOrientation = fieldOrientation;
+            this.FieldJustification = fieldJustification;
         }
 
         ///<inheritdoc/>
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
-            return new[] { $"^FW{RenderFieldOrientation(this.FieldOrientation)}" };
+            return new[] { $"^FW{RenderFieldOrientation(this.FieldOrientation)},{RenderFieldJustification(this.FieldJustification)}".TrimEnd(',') };
         }
 
     }

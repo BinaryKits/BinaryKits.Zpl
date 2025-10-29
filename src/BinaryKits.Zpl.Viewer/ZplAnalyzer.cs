@@ -1,103 +1,107 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.CommandAnalyzers;
 using BinaryKits.Zpl.Viewer.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Application.UseCase.ZplToPdf;
 
 namespace BinaryKits.Zpl.Viewer
 {
     public class ZplAnalyzer : IZplAnalyzer
     {
-        private static readonly Regex verticalWhitespaceRegex = new Regex(@"[\n\v\f\r]", RegexOptions.Compiled);
+        private static readonly Regex verticalWhitespaceRegex = new(@"[\n\v\f\r]", RegexOptions.Compiled);
 
-        private readonly VirtualPrinter _virtualPrinter;
-        private readonly IPrinterStorage _printerStorage;
-        private readonly IFormatMerger _formatMerger;
-        private readonly string _labelStartCommand = "^XA";
-        private readonly string _labelEndCommand = "^XZ";
+        private readonly VirtualPrinter virtualPrinter;
+        private readonly IPrinterStorage printerStorage;
+        private readonly IFormatMerger formatMerger;
+        private readonly string labelStartCommand = "^XA";
+        private readonly string labelEndCommand = "^XZ";
 
         public ZplAnalyzer(IPrinterStorage printerStorage, IFormatMerger formatMerger = null)
         {
-            this._printerStorage = printerStorage;
-            this._formatMerger = formatMerger ?? new FormatMerger();
-            this._virtualPrinter = new VirtualPrinter();
+            this.printerStorage = printerStorage;
+            this.formatMerger = formatMerger ?? new FormatMerger();
+            this.virtualPrinter = new VirtualPrinter();
         }
 
         public AnalyzeInfo Analyze(string zplData)
         {
-            var zplCommands = this.SplitZplCommands(zplData);
-            var unknownCommands = new List<string>();
-            var errors = new List<string>();
+            string[] zplCommands = SplitZplCommands(zplData);
+            List<string> unknownCommands = [];
+            List<string> errors = [];
 
-            var fieldDataAnalyzer = new FieldDataZplCommandAnalyzer(this._virtualPrinter);
-            var elementAnalyzers = new List<IZplCommandAnalyzer>
-            {
+            FieldDataZplCommandAnalyzer fieldDataAnalyzer = new(this.virtualPrinter);
+            List<IZplCommandAnalyzer> elementAnalyzers = [
                 fieldDataAnalyzer,
-                new BarCodeFieldDefaultZplCommandAnalyzer(this._virtualPrinter),
-                new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this._virtualPrinter),
-                new Code39BarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new Code93BarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new Code128BarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new CodeEAN13BarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new CommentZplCommandAnalyzer(this._virtualPrinter),
-                new DataMatrixZplCommandAnalyzer(this._virtualPrinter),
-                new DownloadFormatCommandAnalyzer(this._virtualPrinter),
-                new DownloadGraphicsZplCommandAnalyzer(this._virtualPrinter, this._printerStorage),
-                new DownloadObjectsZplCommandAnaylzer(this._virtualPrinter, this._printerStorage),
-                new FieldBlockZplCommandAnalyzer(this._virtualPrinter),
-                new FieldHexadecimalZplCommandAnalyzer(this._virtualPrinter),
-                new FieldOrientationZplCommandAnalyzer(this._virtualPrinter),
-                new FieldNumberCommandAnalyzer(this._virtualPrinter),
-                new FieldVariableZplCommandAnalyzer(this._virtualPrinter),
-                new FieldReversePrintZplCommandAnalyzer(this._virtualPrinter),
-                new LabelReversePrintZplCommandAnalyzer(this._virtualPrinter),
-                new FieldSeparatorZplCommandAnalyzer(this._virtualPrinter, fieldDataAnalyzer),
-                new FieldTypesetZplCommandAnalyzer(this._virtualPrinter),
-                new FieldOriginZplCommandAnalzer(this._virtualPrinter),
-                new GraphicBoxZplCommandAnalyzer(this._virtualPrinter),
-                new GraphicCircleZplCommandAnalyzer(this._virtualPrinter),
-                new GraphicFieldZplCommandAnalyzer(this._virtualPrinter),
-                new Interleaved2of5BarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new ImageMoveZplCommandAnalyzer(this._virtualPrinter),
-                new LabelHomeZplCommandAnalyzer(this._virtualPrinter),
-                new MaxiCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new QrCodeBarcodeZplCommandAnalyzer(this._virtualPrinter),
-                new PDF417ZplCommandAnalyzer(this._virtualPrinter),
-                new RecallFormatCommandAnalyzer(this._virtualPrinter),
-                new RecallGraphicZplCommandAnalyzer(this._virtualPrinter),
-                new ScalableBitmappedFontZplCommandAnalyzer(this._virtualPrinter),
+                new AztecBarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new BarCodeFieldDefaultZplCommandAnalyzer(this.virtualPrinter),
+                new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this.virtualPrinter),
+                new ChangeInternationalFontCommandAnalyzer(this.virtualPrinter),
+                new Code39BarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new Code93BarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new Code128BarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new CodeEAN13BarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new CommentZplCommandAnalyzer(this.virtualPrinter),
+                new DataMatrixZplCommandAnalyzer(this.virtualPrinter),
+                new DownloadFormatCommandAnalyzer(this.virtualPrinter),
+                new DownloadGraphicsZplCommandAnalyzer(this.virtualPrinter, this.printerStorage),
+                new DownloadObjectsZplCommandAnaylzer(this.virtualPrinter, this.printerStorage),
+                new FieldBlockZplCommandAnalyzer(this.virtualPrinter),
+                new FieldHexadecimalZplCommandAnalyzer(this.virtualPrinter),
+                new FieldOrientationZplCommandAnalyzer(this.virtualPrinter),
+                new FieldNumberCommandAnalyzer(this.virtualPrinter),
+                new FieldVariableZplCommandAnalyzer(this.virtualPrinter),
+                new FieldReversePrintZplCommandAnalyzer(this.virtualPrinter),
+                new LabelReversePrintZplCommandAnalyzer(this.virtualPrinter),
+                new FieldSeparatorZplCommandAnalyzer(this.virtualPrinter, fieldDataAnalyzer),
+                new FieldTypesetZplCommandAnalyzer(this.virtualPrinter),
+                new FieldOriginZplCommandAnalzer(this.virtualPrinter),
+                new GraphicBoxZplCommandAnalyzer(this.virtualPrinter),
+                new GraphicCircleZplCommandAnalyzer(this.virtualPrinter),
+                new GraphicFieldZplCommandAnalyzer(this.virtualPrinter),
+                new Interleaved2of5BarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new ImageMoveZplCommandAnalyzer(this.virtualPrinter),
+                new LabelHomeZplCommandAnalyzer(this.virtualPrinter),
+                new MaxiCodeBarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new QrCodeBarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new UpcABarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new UpcEBarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new UpcExtensionBarcodeZplCommandAnalyzer(this.virtualPrinter),
+                new PDF417ZplCommandAnalyzer(this.virtualPrinter),
+                new RecallFormatCommandAnalyzer(this.virtualPrinter),
+                new RecallGraphicZplCommandAnalyzer(this.virtualPrinter),
+                new ScalableBitmappedFontZplCommandAnalyzer(this.virtualPrinter),
+                new AnsiCodabarBarcodeZplCommandAnalyzer(this.virtualPrinter),
+            ];
 
-            };
+            List<LabelInfo> labelInfos = [];
 
-            var labelInfos = new List<LabelInfo>();
-
-            var elements = new List<ZplElementBase>();
-            for (var i = 0; i < zplCommands.Length; i++)
+            List<ZplElementBase> elements = [];
+            for (int i = 0; i < zplCommands.Length; i++)
             {
-                var currentCommand = zplCommands[i];
+                string currentCommand = zplCommands[i];
 
-                if (this._labelStartCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
+                if (this.labelStartCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     elements.Clear();
-                    _virtualPrinter.ClearNextDownloadFormatName();
+                    this.virtualPrinter.ClearNextDownloadFormatName();
                     continue;
                 }
 
-                if (this._labelEndCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
+                if (this.labelEndCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     labelInfos.Add(new LabelInfo
                     {
-                        DownloadFormatName = _virtualPrinter.NextDownloadFormatName,
+                        DownloadFormatName = this.virtualPrinter.NextDownloadFormatName,
                         ZplElements = elements.ToArray()
                     });
                     continue;
                 }
 
-                var validAnalyzers = elementAnalyzers.Where(o => o.CanAnalyze(currentCommand));
+                IEnumerable<IZplCommandAnalyzer> validAnalyzers = elementAnalyzers.Where(o => o.CanAnalyze(currentCommand));
 
                 if (!validAnalyzers.Any())
                 {
@@ -115,9 +119,9 @@ namespace BinaryKits.Zpl.Viewer
                 }
             }
 
-            labelInfos = _formatMerger.MergeFormats(labelInfos);
+            labelInfos = this.formatMerger.MergeFormats(labelInfos);
 
-            var analyzeInfo = new AnalyzeInfo
+            AnalyzeInfo analyzeInfo = new()
             {
                 LabelInfos = labelInfos.ToArray(),
                 UnknownCommands = unknownCommands.ToArray(),
@@ -128,23 +132,22 @@ namespace BinaryKits.Zpl.Viewer
         }
 
         // When adding new commands: 1 per line, always upper case, comment why if possible
-        private string[] ignoredCommands = {
-            "CI", // may be implemented in the future, but for now always set to CI128
+        private static readonly HashSet<string> ignoredCommands = new(StringComparer.OrdinalIgnoreCase)
+        {
         };
 
-        private string[] SplitZplCommands(string zplData)
+        private static string[] SplitZplCommands(string zplData)
         {
             if (string.IsNullOrWhiteSpace(zplData))
             {
-                return Array.Empty<string>();
+                return [];
             }
 
-            var cleanZpl = verticalWhitespaceRegex.Replace(zplData, string.Empty);
+            string cleanZpl = verticalWhitespaceRegex.Replace(zplData, string.Empty);
             char caret = '^';
             char tilde = '~';
             List<string> results = new(200);
             StringBuilder buffer = new(2000);
-            HashSet<string> ignoredCommandsHS = new HashSet<string>(ignoredCommands);
             for (int i = 0; i < cleanZpl.Length; i++)
             {
                 char c = cleanZpl[i];
@@ -156,19 +159,19 @@ namespace BinaryKits.Zpl.Viewer
                     // all commands have at least 3 chars, even ^A because of required font parameter
                     if (command.Length > 2)
                     {
-                        PatchCommand(ref command, ref caret, ref tilde);
+                        PatchCommand(ref command, caret, tilde);
 
-                        var commandLetters = command.Substring(1, 2).ToUpper();
+                        string commandLetters = command.Substring(1, 2).ToUpper();
 
                         if (commandLetters == "CT")
                         {
-                            tilde = command[3];
+                            tilde = command.Length > 3 ? command[3] : c;
                         }
                         else if (commandLetters == "CC")
                         {
-                            caret = command[3];
+                            caret = command.Length > 3 ? command[3] : c;
                         }
-                        else if (!ignoredCommandsHS.Contains(commandLetters))
+                        else if (!ignoredCommands.Contains(commandLetters))
                         {
                             results.Add(command);
                         }
@@ -180,26 +183,30 @@ namespace BinaryKits.Zpl.Viewer
                     }
                     // no else case, multiple ^ or ~ in a row should not be valid commands to be processed
                 }
+
                 buffer.Append(c);
             }
+
             string lastCommand = buffer.ToString();
             if (lastCommand.Length > 0)
             {
-                PatchCommand(ref lastCommand, ref caret, ref tilde);
+                PatchCommand(ref lastCommand, caret, tilde);
                 results.Add(lastCommand);
             }
+
             return results.ToArray();
         }
 
-        private void PatchCommand(ref string command, ref char caret, ref char tilde)
+        private static void PatchCommand(ref string command, char caret, char tilde)
         {
             if (caret != '^' && command[0] == caret)
             {
-                command = '^' + command.Remove(0, 1);
+                command = '^' + command.Substring(1);
             }
+
             if (tilde != '~' && command[0] == tilde)
             {
-                command = '~' + command.Remove(0, 1);
+                command = '~' + command.Substring(1);
             }
         }
     }

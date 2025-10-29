@@ -1,4 +1,5 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -9,22 +10,31 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
-            int tmpint;
+            decimal tmpdec;
             int x = 0;
             int y = 0;
-            // TODO: Field Justification
-            //int z = 0;
 
-            if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
+            if (zplDataParts.Length > 0 &&
+                decimal.TryParse(zplDataParts[0], out tmpdec) &&
+                int.MinValue <= tmpdec && tmpdec <= int.MaxValue)
             {
-                x = tmpint;
+                x = decimal.ToInt32(tmpdec);
             }
 
-            if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
+
+            if (zplDataParts.Length > 1 &&
+                decimal.TryParse(zplDataParts[1], out tmpdec) &&
+                int.MinValue <= tmpdec && tmpdec <= int.MaxValue)
             {
-                y = tmpint;
+                y = decimal.ToInt32(tmpdec);
+            }
+
+            if (zplDataParts.Length > 2)
+            {
+                FieldJustification fieldJustification = this.ConvertFieldJustification(zplDataParts[2]);
+                this.VirtualPrinter.SetNextElementFieldJustification(fieldJustification);
             }
 
             if (this.VirtualPrinter.LabelHomePosition != null)

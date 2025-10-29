@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Viewer.Models;
+
 using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer
@@ -11,6 +12,7 @@ namespace BinaryKits.Zpl.Viewer
         public FieldDataBase NextElementFieldData { get; private set; }
         public FieldBlock NextElementFieldBlock { get; private set; }
         public FieldOrientation FieldOrientation { get; private set; } = FieldOrientation.Normal;
+        public FieldJustification FieldJustification { get; private set; } = FieldJustification.None;
         public int FontWidth { get; private set; } = 0;
         public int FontHeight { get; private set; } = 10;
         public string FontName { get; private set; } = "0";
@@ -22,7 +24,8 @@ namespace BinaryKits.Zpl.Viewer
         public FontInfo NextFont { get; private set; }
 
         public bool NextElementFieldReverse { get; private set; }
-        public bool NextElementFieldUseHexadecimalIndicator { get; private set; }
+        public char? NextElementFieldHexadecimalIndicator { get; private set; }
+        public FieldJustification NextElementFieldJustification { get; private set; } = FieldJustification.None;
         public bool LabelReverse { get; private set; }
         public BarcodeInfo BarcodeInfo { get; private set; }
 
@@ -32,17 +35,17 @@ namespace BinaryKits.Zpl.Viewer
         public VirtualPrinter()
         {
             this.BarcodeInfo = new BarcodeInfo();
-            this.Comments = new List<string>();
+            this.Comments = [];
         }
 
-        public void SetNextElementPosition(int x, int y, bool calculateFromBottom = false)
+        public void SetNextElementPosition(int x, int y, bool calculateFromBottom = false, bool useDefaultPosition = false)
         {
-            this.NextElementPosition = new LabelPosition(x, y, calculateFromBottom);
+            this.NextElementPosition = new LabelPosition(x, y, calculateFromBottom, useDefaultPosition);
         }
 
         public void ClearNextElementPosition()
         {
-            this.NextElementPosition = new LabelPosition(0, 0, false);
+            this.NextElementPosition = new LabelPosition(0, 0, false, false);
         }
 
         public void SetNextElementFieldData(FieldDataBase fieldData)
@@ -84,9 +87,29 @@ namespace BinaryKits.Zpl.Viewer
             this.NextElementFieldReverse = true;
         }
 
-        public void SetNextElementFieldUseHexadecimalIndicator()
+        public void ClearNextElementFieldReverse()
         {
-            this.NextElementFieldUseHexadecimalIndicator = true;
+            this.NextElementFieldReverse = false;
+        }
+
+        public void SetNextElementFieldHexadecimalIndicator(char replaceChar)
+        {
+            this.NextElementFieldHexadecimalIndicator = replaceChar;
+        }
+
+        public void ClearNextElementFieldHexadecimalIndicator()
+        {
+            this.NextElementFieldHexadecimalIndicator = null;
+        }
+
+        public void SetNextElementFieldJustification(FieldJustification fieldJustification)
+        {
+            this.NextElementFieldJustification = fieldJustification;
+        }
+
+        public void ClearNextElementFieldJustification()
+        {
+            this.NextElementFieldJustification = FieldJustification.None;
         }
 
         public void SetLabelReverse(bool reverse)
@@ -94,22 +117,18 @@ namespace BinaryKits.Zpl.Viewer
             this.LabelReverse = reverse;
         }
 
-        public void ClearNextElementFieldReverse()
+        public void SetFieldOrientation(FieldOrientation fieldOrientation)
         {
-            this.NextElementFieldReverse = false;
-        }
-
-        public void ClearNextElementFieldUseHexadecimalIndicator()
-        {
-            this.NextElementFieldUseHexadecimalIndicator = false;
-        }
-
-        public void SetFieldOrientation(FieldOrientation fieldOrientation) {
             this.FieldOrientation = fieldOrientation;
             if (this.NextFont != null)
             {
                 this.SetNextFont(this.NextFont.FontName, fieldOrientation, this.NextFont.FontWidth, this.NextFont.FontHeight);
             }
+        }
+
+        public void SetFieldJustification(FieldJustification fieldJustification)
+        {
+            this.FieldJustification = fieldJustification;
         }
 
         public void SetFontWidth(int fontWidth)

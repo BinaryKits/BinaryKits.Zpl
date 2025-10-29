@@ -41,6 +41,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
         [TestMethod]
         [DeploymentItem(@"ZplData/Zpl.png")]
         [DeploymentItem(@"ZplData/DownloadGraphicsZ64.txt")]
+        [DeploymentItem(@"ZplData/DownloadGraphicsZ64_net472.txt")]
         public void DownloadGraphicsZ64()
         {
             var imageData = File.ReadAllBytes("Zpl.png");
@@ -63,7 +64,11 @@ namespace BinaryKits.Zpl.Label.UnitTest
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
 
+#if NET5_0_OR_GREATER
             var zplData = File.ReadAllText("DownloadGraphicsZ64.txt");
+#else
+            var zplData = File.ReadAllText("DownloadGraphicsZ64_net472.txt");
+#endif
             Assert.AreEqual(zplData, output);
         }
         [TestMethod]

@@ -1,20 +1,22 @@
-﻿using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label;
+using BinaryKits.Zpl.Label.Elements;
+
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public abstract class ElementDrawerBase : IElementDrawer
     {
-        internal IPrinterStorage _printerStorage;
-        internal SKCanvas _skCanvas;
+        internal IPrinterStorage printerStorage;
+        internal SKCanvas skCanvas;
 
         ///<inheritdoc/>
         public void Prepare(
             IPrinterStorage printerStorage,
             SKCanvas skCanvas)
         {
-            this._printerStorage = printerStorage;
-            this._skCanvas = skCanvas;
+            this.printerStorage = printerStorage;
+            this.skCanvas = skCanvas;
         }
 
         ///<inheritdoc/>
@@ -25,13 +27,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             return false;
         }
-        
+
         ///<inheritdoc/>
         public virtual bool IsWhiteDraw(ZplElementBase element)
         {
             return false;
         }
-        
+
         ///<inheritdoc/>
         public virtual bool ForceBitmapDraw(ZplElementBase element)
         {
@@ -39,15 +41,56 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public virtual void Draw(ZplElementBase element)
+        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition)
         {
-            Draw(element, new DrawerOptions());
+            return currentPosition;
         }
 
         ///<inheritdoc/>
-        public virtual void Draw(ZplElementBase element, DrawerOptions options = null)
+        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
-            Draw(element);  // Most element just ignore the context
+            return this.Draw(element, options, currentPosition);
         }
+
+        ///<inheritdoc/>
+        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
+        {
+            return this.Draw(element, options, currentPosition, internationalFont);
+        }
+
+        protected virtual SKPoint CalculateNextDefaultPosition(float x, float y, float elementWidth, float elementHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, SKPoint currentPosition)
+        {
+            if (useFieldOrigin)
+            {
+                switch (fieldOrientation)
+                {
+                    case Label.FieldOrientation.Normal:
+                        return new SKPoint(x + elementWidth, y + elementHeight);
+                    case Label.FieldOrientation.Rotated90:
+                        return new SKPoint(x, y + elementHeight);
+                    case Label.FieldOrientation.Rotated180:
+                        return new SKPoint(x - elementWidth, y);
+                    case Label.FieldOrientation.Rotated270:
+                        return new SKPoint(x, y - elementHeight);
+                }
+            }
+            else
+            {
+                switch (fieldOrientation)
+                {
+                    case Label.FieldOrientation.Normal:
+                        return new SKPoint(x + elementWidth, y);
+                    case Label.FieldOrientation.Rotated90:
+                        return new SKPoint(x, y + elementWidth);
+                    case Label.FieldOrientation.Rotated180:
+                        return new SKPoint(x - elementWidth, y);
+                    case Label.FieldOrientation.Rotated270:
+                        return new SKPoint(x, y - elementWidth);
+                }
+            }
+
+            return currentPosition;
+        }
+
     }
 }

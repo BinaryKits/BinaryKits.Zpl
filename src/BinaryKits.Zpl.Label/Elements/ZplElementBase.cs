@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
@@ -8,7 +8,7 @@ namespace BinaryKits.Zpl.Label.Elements
         public List<string> Comments { get; protected set; }
 
         /// <summary>
-        /// Indicate the rendering process whether this elemenet can be skipped
+        /// Indicate the rendering process whether this element can be skipped
         /// </summary>
         public bool IsEnabled { get; set; }
 
@@ -61,6 +61,44 @@ namespace BinaryKits.Zpl.Label.Elements
             throw new NotImplementedException("Unknown Field Orientation");
         }
 
+        public string RenderQualityLevel(QualityLevel qualityLevel)
+        {
+            switch (qualityLevel)
+            {
+                case QualityLevel.ECC0:
+                    return "0";
+                case QualityLevel.ECC50:
+                    return "50";
+                case QualityLevel.ECC80:
+                    return "80";
+                case QualityLevel.ECC100:
+                    return "100";
+                case QualityLevel.ECC140:
+                    return "140";
+                case QualityLevel.ECC200:
+                    return "200";
+            }
+
+            throw new NotImplementedException("Unknown Quality Level");
+        }
+
+        public string RenderFieldJustification(FieldJustification fieldJustification)
+        {
+            switch (fieldJustification)
+            {
+                case FieldJustification.None:
+                    return string.Empty;
+                case FieldJustification.Left:
+                    return "0";
+                case FieldJustification.Right:
+                    return "1";
+                case FieldJustification.Auto:
+                    return "2";
+            }
+
+            throw new NotImplementedException("Unknown Field Justification");
+        }
+
         public string RenderLineColor(LineColor lineColor)
         {
             switch (lineColor)
@@ -89,6 +127,16 @@ namespace BinaryKits.Zpl.Label.Elements
             }
 
             throw new NotImplementedException("Unknown Error Correction Level");
+        }
+
+        /// <summary>
+        /// Render Zpl char for boolean
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public string RenderBoolean(bool value)
+        {
+            return value ? "Y" : "N";
         }
 
         public string ToZplString()

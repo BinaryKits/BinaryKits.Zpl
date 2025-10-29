@@ -6,7 +6,7 @@ namespace BinaryKits.Zpl.Label.Elements
     {
         public int PositionX { get; private set; }
         public int PositionY { get; private set; }
-
+        public bool UseDefaultPosition { get; private set; }
         public ZplFieldOrigin FieldOrigin { get; private set; }
         public ZplFieldTypeset FieldTypeset { get; private set; }
 
@@ -16,17 +16,21 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="positionX"></param>
         /// <param name="positionY"></param>
         /// <param name="bottomToTop">Use FieldTypeset</param>
-        public ZplPositionedElementBase(int positionX, int positionY, bool bottomToTop = false) : base()
+        /// <param name="fieldJustification"></param>
+        /// <param name="useDefaultPosition"></param>
+        public ZplPositionedElementBase(int positionX, int positionY, bool bottomToTop, bool useDefaultPosition, FieldJustification fieldJustification = FieldJustification.None) : base()
         {
+            this.UseDefaultPosition = useDefaultPosition;
+            
             if (bottomToTop)
             {
-                FieldTypeset = new ZplFieldTypeset(positionX, positionY);
+                FieldTypeset = new ZplFieldTypeset(positionX, positionY, fieldJustification, useDefaultPosition);
                 PositionX = positionX;
                 PositionY = positionY;
                 return;
             }
 
-            FieldOrigin = new ZplFieldOrigin(positionX, positionY);
+            FieldOrigin = new ZplFieldOrigin(positionX, positionY, fieldJustification);
             PositionX = positionX;
             PositionY = positionY;
         }

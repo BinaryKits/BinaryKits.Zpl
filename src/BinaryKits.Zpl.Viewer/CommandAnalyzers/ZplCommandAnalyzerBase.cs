@@ -26,7 +26,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         protected string[] SplitCommand(string zplCommand, int dataStartIndex = 0)
         {
             string zplCommandData = zplCommand.Substring(this.PrinterCommandPrefix.Length + dataStartIndex);
-            return zplCommandData.TrimStart().Split(',');
+            return zplCommandData.Trim().Split(',');
         }
 
         protected FieldOrientation ConvertFieldOrientation(string fieldOrientation)
@@ -37,7 +37,32 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 "R" => FieldOrientation.Rotated90,
                 "I" => FieldOrientation.Rotated180,
                 "B" => FieldOrientation.Rotated270,
-                 _  => this.VirtualPrinter.FieldOrientation,
+                _ => this.VirtualPrinter.FieldOrientation,
+            };
+        }
+
+        protected QualityLevel ConvertQualityLevel(string qualityLevel)
+        {
+            return qualityLevel switch
+            {
+                "0" => QualityLevel.ECC0,
+                "50" => QualityLevel.ECC50,
+                "80" => QualityLevel.ECC80,
+                "100" => QualityLevel.ECC100,
+                "140" => QualityLevel.ECC140,
+                "200" => QualityLevel.ECC200,
+                _ => QualityLevel.ECC0
+            };
+        }
+
+        protected FieldJustification ConvertFieldJustification(string fieldJustification)
+        {
+            return fieldJustification switch
+            {
+                "0" => FieldJustification.Left,
+                "1" => FieldJustification.Right,
+                "2" => FieldJustification.Auto,
+                _ => this.VirtualPrinter.FieldJustification,
             };
         }
 
@@ -49,7 +74,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 "Q" => ErrorCorrectionLevel.HighReliability,
                 "M" => ErrorCorrectionLevel.Standard,
                 "L" => ErrorCorrectionLevel.HighDensity,
-                 _  => ErrorCorrectionLevel.Standard,
+                _ => ErrorCorrectionLevel.Standard,
             };
         }
 

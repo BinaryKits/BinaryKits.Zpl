@@ -1,6 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
-using System;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -11,15 +10,15 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int mode = 2;
             int position = 1;
             int total = 1;
-            
+
             if (zplDataParts[0] != "")
             {
-                mode = Int32.Parse(zplDataParts[0]);
+                mode = int.Parse(zplDataParts[0]);
             }
 
             int tmpint;
@@ -33,8 +32,11 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 total = tmpint;
             }
 
-            this.VirtualPrinter.SetNextElementFieldData(new MaxiCodeBarcodeFieldData {
-                Mode = mode, Position = position, Total = total,
+            this.VirtualPrinter.SetNextElementFieldData(new MaxiCodeBarcodeFieldData
+            {
+                Mode = mode,
+                Position = position,
+                Total = total,
             });
 
             return null;

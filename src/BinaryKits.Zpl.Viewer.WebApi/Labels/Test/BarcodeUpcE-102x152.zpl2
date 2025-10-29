@@ -1,0 +1,33 @@
+﻿^XA
+
+^BY2
+
+^FX short, system 0
+^FO60,30
+^B9N,100,Y,N,Y
+^FD981231^FS
+
+^FX short, system 1
+^FO60,190
+^B9N,100,Y,N,Y
+^FD1981231^FS
+
+^FX long, system 0
+^FO60,350
+^B9N,100,Y,N,Y
+^FD9810000123^FS
+
+^FX long, system 1
+^FO60,510
+^B9N,100,Y,N,Y
+^FD19810000123^FS
+
+^BY3
+^FO60,670
+^B9N,137
+^FD7000002198^FS
+^FO240,690
+^BSN,117
+^FD04^FS
+
+^XZ
