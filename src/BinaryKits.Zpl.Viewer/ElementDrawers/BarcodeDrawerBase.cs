@@ -1,10 +1,11 @@
 using SkiaSharp;
 using SkiaSharp.HarfBuzz;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using ZXing.Common;
-using ZXing.QrCode.Internal;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -20,9 +21,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
         protected void DrawBarcode(byte[] barcodeImageData, float x, float y, int barcodeWidth, int barcodeHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation)
         {
-            using (new SKAutoCanvasRestore(this._skCanvas))
+            using (new SKAutoCanvasRestore(this.skCanvas))
             {
-                SKMatrix matrix = this.GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
+                SKMatrix matrix = GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
                 if (!useFieldOrigin)
                 {
                     y -= barcodeHeight;
@@ -31,27 +32,32 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         y = 0;
                     }
                 }
+
                 if (matrix != SKMatrix.Empty)
                 {
-                    this._skCanvas.Concat(matrix);
+                    this.skCanvas.Concat(matrix);
                 }
-                this._skCanvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y);
+
+                this.skCanvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y);
             }
         }
 
         protected void DrawInterpretationLine(string interpretation, SKFont skFont, float x, float y, int barcodeWidth, int barcodeHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, bool printInterpretationLineAboveCode, DrawerOptions options)
         {
-            using (new SKAutoCanvasRestore(this._skCanvas))
+            using (new SKAutoCanvasRestore(this.skCanvas))
             {
-                using var skPaint = new SKPaint(skFont);
-                skPaint.IsAntialias = options.Antialias;
-                SKMatrix matrix = this.GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
+                using SKPaint skPaint = new()
+                {
+                    IsAntialias = options.Antialias
+                };
+
+                SKMatrix matrix = GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
                 if (matrix != SKMatrix.Empty)
                 {
-                    this._skCanvas.Concat(matrix);
+                    this.skCanvas.Concat(matrix);
                 }
-                var textBounds = new SKRect();
-                skPaint.MeasureText(interpretation, ref textBounds);
+
+                skFont.MeasureText(interpretation, out SKRect textBounds);
                 x += (barcodeWidth - textBounds.Width) / 2;
                 if (!useFieldOrigin)
                 {
@@ -61,20 +67,21 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         y = 0;
                     }
                 }
+
                 float margin = Math.Max((skFont.Spacing - textBounds.Height) / 2, MIN_LABEL_MARGIN);
                 if (printInterpretationLineAboveCode)
                 {
-                    this._skCanvas.DrawShapedText(interpretation, x, y - margin, skPaint);
+                    this.skCanvas.DrawShapedText(interpretation, x, y - margin, skFont, skPaint);
                 }
                 else
                 {
-                    this._skCanvas
-                        .DrawShapedText(interpretation, x, y + barcodeHeight + textBounds.Height + margin, skPaint);
+                    this.skCanvas
+                        .DrawShapedText(interpretation, x, y + barcodeHeight + textBounds.Height + margin, skFont, skPaint);
                 }
             }
         }
 
-        protected SKMatrix GetRotationMatrix(float x, float y, int width, int height, bool useFieldOrigin, Label.FieldOrientation fieldOrientation)
+        protected static SKMatrix GetRotationMatrix(float x, float y, int width, int height, bool useFieldOrigin, Label.FieldOrientation fieldOrientation)
         {
             SKMatrix matrix = SKMatrix.Empty;
             if (useFieldOrigin)
@@ -111,50 +118,70 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         break;
                 }
             }
+
             return matrix;
         }
 
-        protected SKBitmap BoolArrayToSKBitmap(bool[] array, int height, int moduleWidth = 1)
+        protected static SKBitmap BoolArrayToSKBitmap(bool[] array, int height, int moduleWidth = 1)
         {
-            using var image = new SKBitmap(array.Length, 1);
+            using SKBitmap image = new(array.Length, 1);
             for (int col = 0; col < array.Length; col++)
             {
-                var color = array[col] ? SKColors.Black : SKColors.Transparent;
+                SKColor color = array[col] ? SKColors.Black : SKColors.Transparent;
                 image.SetPixel(col, 0, color);
             }
-            return image.Resize(new SKSizeI(image.Width * moduleWidth, height), SKFilterQuality.None);
+
+            SKSamplingOptions sampling = new(SKFilterMode.Nearest);
+            return image.Resize(new SKSizeI(image.Width * moduleWidth, height), sampling);
         }
 
-        protected SKBitmap BitMatrixToSKBitmap(BitMatrix matrix, int pixelScale)
+        protected static SKBitmap BoolArrayWithMaskToSKBitmap(bool[] array, bool[] mask, int height, int moduleWidth = 1)
         {
-            using var image = new SKBitmap(matrix.Width, matrix.Height);
+            using SKBitmap image = new(array.Length, 1);
+            for (int col = 0; col < array.Length; col++)
+            {
+                SKColor color = array[col] && mask[col] ? SKColors.Black : SKColors.Transparent;
+                image.SetPixel(col, 0, color);
+            }
+
+            SKSamplingOptions sampling = new(SKFilterMode.Nearest);
+            return image.Resize(new SKSizeI(image.Width * moduleWidth, height), sampling);
+        }
+
+        protected static SKBitmap BitMatrixToSKBitmap(BitMatrix matrix, int pixelScale)
+        {
+            using SKBitmap image = new(matrix.Width, matrix.Height);
             for (int row = 0; row < matrix.Height; row++)
             {
                 for (int col = 0; col < matrix.Width; col++)
                 {
-                    var color = matrix[col, row] ? SKColors.Black : SKColors.Transparent;
+                    SKColor color = matrix[col, row] ? SKColors.Black : SKColors.Transparent;
                     image.SetPixel(col, row, color);
                 }
             }
-            return image.Resize(new SKSizeI(image.Width * pixelScale, image.Height * pixelScale), SKFilterQuality.None);
+
+            SKSamplingOptions sampling = new(SKFilterMode.Nearest);
+            return image.Resize(new SKSizeI(image.Width * pixelScale, image.Height * pixelScale), sampling);
         }
 
-        protected bool[] AdjustWidths(bool[] array, int wide, int narrow)
+        protected static bool[] AdjustWidths(bool[] array, int wide, int narrow)
         {
-            List<bool> result = new List<bool>();
-            var last = true;
-            var count = 0;
-            foreach (var current in array)
+            List<bool> result = [];
+            bool last = true;
+            int count = 0;
+            foreach (bool current in array)
             {
                 if (current != last)
                 {
-                    result.AddRange(Enumerable.Repeat<bool>(last, count == 1 ? narrow : wide));
+                    result.AddRange(Enumerable.Repeat(last, count == 1 ? narrow : wide));
                     last = current;
                     count = 0;
                 }
+
                 count += 1;
             }
-            result.AddRange(Enumerable.Repeat<bool>(last, narrow));
+
+            result.AddRange(Enumerable.Repeat(last, narrow));
             return result.ToArray();
         }
     }

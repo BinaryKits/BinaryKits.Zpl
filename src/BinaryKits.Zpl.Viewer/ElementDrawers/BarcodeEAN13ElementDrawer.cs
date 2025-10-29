@@ -3,7 +3,9 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
+
 using System;
+
 using ZXing.OneD;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -43,33 +45,34 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y = currentPosition.Y;
                 }
 
-                var content = barcode.Content;
+                string content = barcode.Content;
                 if (barcode.HexadecimalIndicator is char hexIndicator)
                 {
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
                 content = content.PadLeft(12, '0').Substring(0, 12);
-                var interpretation = content;
+                string interpretation = content;
 
                 int checksum = 0;
                 for (int i = 0; i < 12; i++)
                 {
                     checksum += (content[i] - 48) * (9 - i % 2 * 2);
                 }
+
                 interpretation = string.Format("{0}{1}", interpretation, checksum % 10);
 
-                var writer = new EAN13Writer();
-                var result = writer.encode(content);
-                using var resizedImage = this.BoolArrayToSKBitmap(result, barcode.Height, barcode.ModuleWidth);
-                var png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                EAN13Writer writer = new();
+                bool[] result = writer.encode(content);
+                using SKBitmap resizedImage = BoolArrayToSKBitmap(result, barcode.Height, barcode.ModuleWidth);
+                byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation);
 
                 if (barcode.PrintInterpretationLine)
                 {
                     float labelFontSize = Math.Min(barcode.ModuleWidth * 10f, 100f);
-                    var labelTypeFace = options.FontLoader("A");
-                    var labelFont = new SKFont(labelTypeFace, labelFontSize);
+                    SKTypeface labelTypeFace = options.FontLoader("A");
+                    SKFont labelFont = new(labelTypeFace, labelFontSize);
                     if (barcode.PrintInterpretationLineAboveCode)
                     {
                         this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, true, options);
@@ -82,7 +85,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, currentPosition);
             }
-            
+
             return currentPosition;
         }
 
@@ -94,26 +97,27 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             int barcodeWidth,
             int barcodeHeight,
             bool useFieldOrigin,
-            Label.FieldOrientation fieldOrientation,
+            FieldOrientation fieldOrientation,
             int moduleWidth,
             DrawerOptions options)
         {
-            using (new SKAutoCanvasRestore(this._skCanvas))
+            using (new SKAutoCanvasRestore(this.skCanvas))
             {
-                using var skPaint = new SKPaint(skFont);
-                skPaint.IsAntialias = options.Antialias;
+                using SKPaint skPaint = new()
+                {
+                    IsAntialias = options.Antialias
+                };
 
-                SKMatrix matrix = this.GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
+                SKMatrix matrix = GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
 
                 if (matrix != SKMatrix.Empty)
                 {
-                    var currentMatrix = _skCanvas.TotalMatrix;
-                    var concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
-                    this._skCanvas.SetMatrix(concatMatrix);
+                    SKMatrix currentMatrix = this.skCanvas.TotalMatrix;
+                    SKMatrix concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
+                    this.skCanvas.SetMatrix(concatMatrix);
                 }
 
-                var textBounds = new SKRect();
-                skPaint.MeasureText(interpretation, ref textBounds);
+                skFont.MeasureText(interpretation, out SKRect textBounds);
 
                 if (!useFieldOrigin)
                 {
@@ -127,16 +131,15 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float margin = Math.Max((skFont.Spacing - textBounds.Height) / 2, MIN_LABEL_MARGIN);
                 int spacing = moduleWidth * 7;
 
-                using var guardImage = this.BoolArrayToSKBitmap(guards, (int)(margin + textBounds.Height / 2), moduleWidth);
-                var guardPng = guardImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                this._skCanvas.DrawBitmap(SKBitmap.Decode(guardPng), x, y + barcodeHeight);
+                using SKBitmap guardImage = BoolArrayToSKBitmap(guards, (int)(margin + textBounds.Height / 2), moduleWidth);
+                byte[] guardPng = guardImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                this.skCanvas.DrawBitmap(SKBitmap.Decode(guardPng), x, y + barcodeHeight);
 
                 for (int i = 0; i < interpretation.Length; i++)
                 {
                     string digit = interpretation[i].ToString();
-                    var digitBounds = new SKRect();
-                    skPaint.MeasureText(digit, ref digitBounds);
-                    this._skCanvas.DrawText(digit, x - (spacing + digitBounds.Width) / 2 - moduleWidth, y + barcodeHeight + textBounds.Height + margin, skPaint);
+                    skFont.MeasureText(digit, out SKRect digitBounds);
+                    this.skCanvas.DrawText(digit, x - (spacing + digitBounds.Width) / 2 - moduleWidth, y + barcodeHeight + textBounds.Height + margin, skFont, skPaint);
                     x += spacing;
                     if (i == 0 || i == 6)
                     {

@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+
 using SkiaSharp;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -11,7 +12,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             return element is ZplGraphicCircle;
         }
-        
+
         public override bool IsReverseDraw(ZplElementBase element)
         {
             if (element is ZplGraphicCircle graphicCircle)
@@ -21,7 +22,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
             return false;
         }
-        
+
         public override bool IsWhiteDraw(ZplElementBase element)
         {
             if (element is ZplGraphicCircle graphicCircle)
@@ -37,15 +38,15 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplGraphicCircle graphicCircle)
             {
-                var radius = graphicCircle.Diameter / 2.0f;
-                var border = (float)graphicCircle.BorderThickness;
+                float radius = graphicCircle.Diameter / 2.0f;
+                float border = graphicCircle.BorderThickness;
 
                 if (border > radius)
                 {
                     border = radius;
                 }
 
-                using var skPaint = new SKPaint()
+                using SKPaint skPaint = new()
                 {
                     IsAntialias = options.Antialias,
                     Style = SKPaintStyle.Stroke,
@@ -57,10 +58,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     skPaint.Color = SKColors.White;
                 }
 
-                var halfBorderThickness = border / 2.0f;
+                float halfBorderThickness = border / 2.0f;
 
-                var radiusMinusBorder = radius - halfBorderThickness;
-                var offset = halfBorderThickness + radiusMinusBorder;
+                float radiusMinusBorder = radius - halfBorderThickness;
+                float offset = halfBorderThickness + radiusMinusBorder;
 
                 float baseX = graphicCircle.PositionX;
                 float baseY = graphicCircle.PositionY;
@@ -71,8 +72,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     baseY = currentPosition.Y;
                 }
 
-                var x = baseX + offset;
-                var y = baseY + offset;
+                float x = baseX + offset;
+                float y = baseY + offset;
 
                 if (graphicCircle.FieldTypeset != null)
                 {
@@ -84,16 +85,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         y = radius;
                     }
                 }
-                
+
                 if (graphicCircle.ReversePrint)
                 {
                     skPaint.BlendMode = SKBlendMode.Xor;
                 }
 
-                this._skCanvas.DrawCircle(x, y, radiusMinusBorder, skPaint);
+                this.skCanvas.DrawCircle(x, y, radiusMinusBorder, skPaint);
                 return this.CalculateNextDefaultPosition(baseX, baseY, graphicCircle.Diameter, graphicCircle.Diameter, graphicCircle.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
             }
-            
+
             return currentPosition;
         }
     }

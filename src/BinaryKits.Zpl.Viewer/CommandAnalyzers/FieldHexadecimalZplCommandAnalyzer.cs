@@ -1,5 +1,4 @@
 ﻿using BinaryKits.Zpl.Label.Elements;
-using BinaryKits.Zpl.Viewer.Helpers;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
@@ -11,7 +10,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public override ZplElementBase Analyze(string zplCommand)
         {
             char indicator = '_';
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
             if (zplDataParts.Length > 0 && zplDataParts[0].Length > 0)
             {
                 indicator = zplDataParts[0][0];

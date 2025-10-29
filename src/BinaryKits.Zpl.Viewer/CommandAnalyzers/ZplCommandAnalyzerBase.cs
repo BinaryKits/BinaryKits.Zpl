@@ -37,7 +37,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 "R" => FieldOrientation.Rotated90,
                 "I" => FieldOrientation.Rotated180,
                 "B" => FieldOrientation.Rotated270,
-                 _  => this.VirtualPrinter.FieldOrientation,
+                _ => this.VirtualPrinter.FieldOrientation,
             };
         }
 
@@ -74,7 +74,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 "Q" => ErrorCorrectionLevel.HighReliability,
                 "M" => ErrorCorrectionLevel.Standard,
                 "L" => ErrorCorrectionLevel.HighDensity,
-                 _  => ErrorCorrectionLevel.Standard,
+                _ => ErrorCorrectionLevel.Standard,
             };
         }
 

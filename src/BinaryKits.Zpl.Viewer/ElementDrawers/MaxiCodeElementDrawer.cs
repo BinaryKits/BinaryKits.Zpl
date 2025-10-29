@@ -1,4 +1,4 @@
-﻿﻿using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 using BinaryKits.Zpl.Viewer.Symologies;
@@ -35,7 +35,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y = currentPosition.Y;
                 }
 
-                var content = maxiCode.Content;
+                string content = maxiCode.Content;
                 if (maxiCode.HexadecimalIndicator is char hexIndicator)
                 {
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
@@ -43,8 +43,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 bool[] data = MaxiCodeSymbology.Encode(content, maxiCode.Mode);
 
-                var image = this.DrawMaxiCode(data, printDensityDpmm);
-                var png = image.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+                SKBitmap image = DrawMaxiCode(data, printDensityDpmm);
+                byte[] png = image.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y, image.Width, image.Height, maxiCode.FieldOrigin != null, maxiCode.FieldOrientation);
                 return this.CalculateNextDefaultPosition(x, y, image.Width, image.Height, maxiCode.FieldOrigin != null, maxiCode.FieldOrientation, currentPosition);
             }
@@ -52,7 +52,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return currentPosition;
         }
 
-        private SKBitmap DrawMaxiCode(bool[] data, int dpmm)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Match documentation.", Scope = "member")]
+        private static SKBitmap DrawMaxiCode(bool[] data, int dpmm)
         {
             // ISO/IEC 16023:2000 pp. 16, 38-40
             // fundamental dimensions
@@ -60,7 +61,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
             // gutters
             float gX, gV;
-            
+
             // dark hex pattern
             SKPoint[] pattern;
             float xoff, yoff;
@@ -153,16 +154,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             float R5 = 3.20f * dpmm;
             float R6 = 3.87f * dpmm;
 
-            using var image = new SKBitmap((int)Math.Ceiling(L + X - gX), (int)Math.Ceiling(H + V - gV));
-            using var skCanvas = new SKCanvas(image);
-            using var skPaint = new SKPaint()
+            using SKBitmap image = new((int)Math.Ceiling(L + X - gX), (int)Math.Ceiling(H + V - gV));
+            using SKCanvas skCanvas = new(image);
+            using SKPaint skPaint = new()
             {
                 IsAntialias = false,
                 Color = SKColors.Black,
                 Style = SKPaintStyle.Fill,
             };
 
-            SKPath path = new SKPath();
+            SKPath path = new();
             IEnumerator dataEnum = data.GetEnumerator();
             for (int j = 0; j < 33; j++)
             {

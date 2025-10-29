@@ -1,3 +1,4 @@
+using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
 
@@ -10,7 +11,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
-            var zplDataParts = this.SplitCommand(zplCommand);
+            string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
             bool mod43CheckDigit = false;
@@ -18,7 +19,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             bool printInterpretationLine = true;
             bool printInterpretationLineAboveCode = false;
 
-            var fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
             if (zplDataParts.Length > 1)
             {
                 mod43CheckDigit = this.ConvertBoolean(zplDataParts[1]);

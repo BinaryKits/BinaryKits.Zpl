@@ -1,6 +1,8 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+
 using SkiaSharp;
+
 using System;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -48,9 +50,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         {
             if (element is ZplGraphicBox graphicBox)
             {
-                var border1 = graphicBox.BorderThickness;
-                var width1 = graphicBox.Width;
-                var height1 = graphicBox.Height;
+                int border1 = graphicBox.BorderThickness;
+                int width1 = graphicBox.Width;
+                int height1 = graphicBox.Height;
 
                 if (border1 > width1)
                 {
@@ -63,12 +65,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 //border cant be bigger or equal to width or height
-                if (border1 > (width1 / 2) && width1 <= height1)
+                if (border1 > width1 / 2 && width1 <= height1)
                 {
                     border1 = (int)Math.Ceiling((float)width1 / 2);
                 }
-                
-                if (border1 > (height1 / 2) && height1 <= width1)
+
+                if (border1 > height1 / 2 && height1 <= width1)
                 {
                     border1 = (int)Math.Ceiling((float)height1 / 2);
                 }
@@ -89,22 +91,22 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 //if the border is thick, the rounding is off, so we need to build that for each increment
-                var lastPrintedBorder = border1;
-                for (var border2 = border1; border2 >= 1; border2--)
+                int lastPrintedBorder = border1;
+                for (int border2 = border1; border2 >= 1; border2--)
                 {
                     //skip the parts that have overlap from the previous draw
-                    if (border2 != 1 && border2 != lastPrintedBorder && border2 > (lastPrintedBorder / 2))
+                    if (border2 != 1 && border2 != lastPrintedBorder && border2 > lastPrintedBorder / 2)
                     {
                         continue;
                     }
-                    
+
                     lastPrintedBorder = border2;
 
-                    var offsetX = border2 / 2.0f;
-                    var offsetY = border2 / 2.0f;
+                    float offsetX = border2 / 2.0f;
+                    float offsetY = border2 / 2.0f;
 
-                    var x = baseX + offsetX;
-                    var y = baseY + offsetY;
+                    float x = baseX + offsetX;
+                    float y = baseY + offsetY;
 
                     if (graphicBox.FieldTypeset != null)
                     {
@@ -117,10 +119,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         }
                     }
 
-                    var width = width1 - border2;
-                    var height = height1 - border2;
+                    int width = width1 - border2;
+                    int height = height1 - border2;
 
-                    using var skPaint = new SKPaint()
+                    using SKPaint skPaint = new()
                     {
                         IsAntialias = options.Antialias,
                         Style = SKPaintStyle.Stroke,
@@ -134,7 +136,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         skPaint.Color = SKColors.White;
                     }
 
-                    var cornerRadius = (graphicBox.CornerRounding / 8.0f) * (Math.Min(width1, height1) / 2.0f);
+                    float cornerRadius = (graphicBox.CornerRounding / 8.0f) * (Math.Min(width1, height1) / 2.0f);
 
                     if (cornerRadius == 0)
                     {
@@ -142,19 +144,19 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         {
                             skPaint.BlendMode = SKBlendMode.Xor;
                         }
-                        
-                        this._skCanvas.DrawRect(x, y, width, height, skPaint);
+
+                        this.skCanvas.DrawRect(x, y, width, height, skPaint);
                         // Calculate next position based on box dimensions
                         return this.CalculateNextDefaultPosition(baseX, baseY, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
                     }
 
-                    this._skCanvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, skPaint);
+                    this.skCanvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, skPaint);
                 }
 
                 // Calculate next position based on box dimensions
                 return this.CalculateNextDefaultPosition(baseX, baseY, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
             }
-            
+
             return currentPosition;
         }
     }

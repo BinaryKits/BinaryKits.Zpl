@@ -22,8 +22,8 @@ namespace BinaryKits.Zpl.Label.Elements
         /// <param name="hexadecimalIndicator"></param>
         /// <param name="printInterpretationLine"></param>
         /// <param name="printInterpretationLineAboveCode"></param>
-        /// <param name="bottomToTop"></param>
         /// <param name="checkDigit"></param>
+        /// <param name="bottomToTop"></param>
         /// <param name="useDefaultPosition"></param>
         public ZplBarcode93(
             string content,
