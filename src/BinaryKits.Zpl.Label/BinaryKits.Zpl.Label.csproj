@@ -24,7 +24,7 @@
   <Choose>
     <When Condition="'$(TargetFramework)' == 'net8.0'">
       <ItemGroup>
-        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
       </ItemGroup>
     </When>
     <Otherwise>
