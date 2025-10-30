@@ -41,7 +41,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
         private static readonly string[] fontStack0 = [
             "Swis721 Cn BT",
-            "Nimbus Sans",
+            "Nimbus Sans Narrow",
             "Arial",
             "Helvetica Neue",
             "Roboto Condensed"
