@@ -43,7 +43,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 bool[] data = MaxiCodeSymbology.Encode(content, maxiCode.Mode);
 
-                SKBitmap image = DrawMaxiCode(data, printDensityDpmm);
+                using SKBitmap image = DrawMaxiCode(data, printDensityDpmm, options.Antialias);
                 byte[] png = image.Encode(SKEncodedImageFormat.Png, 100).ToArray();
                 this.DrawBarcode(png, x, y, image.Width, image.Height, maxiCode.FieldOrigin != null, maxiCode.FieldOrientation);
                 return this.CalculateNextDefaultPosition(x, y, image.Width, image.Height, maxiCode.FieldOrigin != null, maxiCode.FieldOrientation, currentPosition);
@@ -53,7 +53,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Match documentation.", Scope = "member")]
-        private static SKBitmap DrawMaxiCode(bool[] data, int dpmm)
+        private static SKBitmap DrawMaxiCode(bool[] data, int dpmm, bool antialias)
         {
             // ISO/IEC 16023:2000 pp. 16, 38-40
             // fundamental dimensions
@@ -158,7 +158,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             using SKCanvas skCanvas = new(image);
             using SKPaint skPaint = new()
             {
-                IsAntialias = false,
+                IsAntialias = antialias,
                 Color = SKColors.Black,
                 Style = SKPaintStyle.Fill,
             };
