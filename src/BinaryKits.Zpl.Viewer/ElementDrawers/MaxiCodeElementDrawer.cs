@@ -66,7 +66,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             SKPoint[] pattern;
             float xoff, yoff;
 
-            if (dpmm == 8)
+            if (dpmm == 8 && !antialias)
             {
                 W = 7;
                 V = 8;
@@ -91,7 +91,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 L = 29 * W;
                 H = 32 * Y;
             }
-            else if (dpmm == 12)
+            else if (dpmm == 12 && !antialias)
             {
                 W = 10;
                 V = 12;
@@ -198,13 +198,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
             skCanvas.DrawPath(path, skPaint);
 
-            // labelary
-            //return image.Resize(new SKSizeI(200, 193), SKFilterQuality.High); //  8dpmm
-            //return image.Resize(new SKSizeI(300, 289), SKFilterQuality.High); // 12dpmm
-            //return image.Resize(new SKSizeI(600, 579), SKFilterQuality.High); // 24dpmm
-
-            // ISO
-            return image.Copy();
+            if (antialias)
+            {
+                // labelary
+                return image.Resize(new SKSizeI(25 * dpmm, (int)Math.Ceiling(24.125 * dpmm)), SKFilterQuality.High);
+            }
+            else
+            {
+                // ISO
+                return image.Copy();
+            }
         }
 
     }
