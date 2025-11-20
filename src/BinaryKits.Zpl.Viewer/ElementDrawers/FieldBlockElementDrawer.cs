@@ -187,7 +187,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             float spaceWidth = font.MeasureText(" ");
             List<string> lines = [];
 
-            Stack<string> words = new(text.Split([' '], StringSplitOptions.None).Reverse());
+            Stack<string> words = new(text.Split([' '], StringSplitOptions.None).AsEnumerable().Reverse());
             StringBuilder line = new();
             float width = 0;
             while (words.Count != 0)
