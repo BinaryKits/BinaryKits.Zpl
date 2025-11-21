@@ -52,6 +52,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 SKTypeface typeface = options.FontLoader(font.FontName);
 
+                if (typeface.IsFixedPitch)
+                {
+                    scaleX *= 2;
+                }
+
                 SKFont skFont = new(typeface, fontSize, scaleX);
                 using SKPaint skPaint = new()
                 {
