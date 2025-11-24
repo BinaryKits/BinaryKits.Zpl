@@ -154,7 +154,7 @@ namespace BinaryKits.Zpl.Viewer.Helpers
 
             if (fontWidth != 0 && fontWidth != fontSize)
             {
-                scaleX *= fontWidth / fontSize;
+                scaleX = fontWidth / fontSize;
             }
 
             return (fontSize, scaleX);
