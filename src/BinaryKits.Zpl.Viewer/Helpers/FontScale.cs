@@ -3,86 +3,84 @@ using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer.Helpers
 {
-    // Offset is Intercharacter Gap (in dots), 0 if proportional for details see
-    // https://docs.zebra.com/us/en/printers/software/zpl-pg/c-zpl-font-barcodes-fonts-andbar-codes/r-zpl-font-barcodes-proportional-fixed-spacing.html
-    using FontScaleDictionary = Dictionary<string, (int height, int width, int offset)>;
+    using FontScaleDictionary = Dictionary<string, (int height, int width)>;
 
     internal static class FontScale
     {
         private static readonly FontScaleDictionary fontScales6mm = new()
         {
-            ["A"] = (9, 5, 1),
-            ["B"] = (11, 7, 2),
-            ["C"] = (18, 10, 2),
-            ["D"] = (18, 10, 2),
-            ["E"] = (21, 10, 5),
-            ["F"] = (26, 13, 3),
-            ["G"] = (60, 40, 8),
-            ["H"] = (17, 11, 6),
-            ["GS"] = (24, 24, 0)
+            ["A"] = (9, 5),
+            ["B"] = (11, 7),
+            ["C"] = (18, 10),
+            ["D"] = (18, 10),
+            ["E"] = (21, 10),
+            ["F"] = (26, 13),
+            ["G"] = (60, 40),
+            ["H"] = (17, 11),
+            ["GS"] = (24, 24)
         };
 
         private static readonly FontScaleDictionary fontScales8mm = new()
         {
-            ["A"] = (9, 5, 1),
-            ["B"] = (11, 7, 2),
-            ["C"] = (18, 10, 2),
-            ["D"] = (18, 10, 2),
-            ["E"] = (21, 10, 5),
-            ["F"] = (26, 13, 3),
-            ["G"] = (60, 40, 8),
-            ["H"] = (17, 11, 6),
-            ["GS"] = (24, 24, 0),
-            ["P"] = (20, 18, 0),
-            ["Q"] = (28, 24, 0),
-            ["R"] = (35, 31, 0),
-            ["S"] = (40, 35, 0),
-            ["T"] = (48, 42, 0),
-            ["U"] = (59, 53, 0),
-            ["V"] = (80, 71, 0)
+            ["A"] = (9, 5),
+            ["B"] = (11, 7),
+            ["C"] = (18, 10),
+            ["D"] = (18, 10),
+            ["E"] = (28, 15),
+            ["F"] = (26, 13),
+            ["G"] = (60, 40),
+            ["H"] = (21, 13),
+            ["GS"] = (24, 24),
+            ["P"] = (20, 18),
+            ["Q"] = (28, 24),
+            ["R"] = (35, 31),
+            ["S"] = (40, 35),
+            ["T"] = (48, 42),
+            ["U"] = (59, 53),
+            ["V"] = (80, 71)
         };
 
         private static readonly FontScaleDictionary fontScales12mm = new()
         {
-            ["A"] = (9, 5, 1),
-            ["B"] = (11, 7, 2),
-            ["C"] = (18, 10, 2),
-            ["D"] = (18, 10, 2),
-            ["E"] = (21, 10, 5),
-            ["F"] = (26, 13, 3),
-            ["G"] = (60, 40, 8),
-            ["H"] = (17, 11, 6),
-            ["GS"] = (24, 24, 0),
-            ["P"] = (20, 18, 0),
-            ["Q"] = (28, 24, 0),
-            ["R"] = (35, 31, 0),
-            ["S"] = (40, 35, 0),
-            ["T"] = (48, 42, 0),
-            ["U"] = (59, 53, 0),
-            ["V"] = (80, 71, 0)
+            ["A"] = (9, 5),
+            ["B"] = (11, 7),
+            ["C"] = (18, 10),
+            ["D"] = (18, 10),
+            ["E"] = (42, 20),
+            ["F"] = (26, 13),
+            ["G"] = (60, 40),
+            ["H"] = (34, 22),
+            ["GS"] = (24, 24),
+            ["P"] = (20, 18),
+            ["Q"] = (28, 24),
+            ["R"] = (35, 31),
+            ["S"] = (40, 35),
+            ["T"] = (48, 42),
+            ["U"] = (59, 53),
+            ["V"] = (80, 71)
         };
 
         private static readonly FontScaleDictionary fontScales24mm = new()
         {
-            ["A"] = (9, 5, 1),
-            ["B"] = (11, 7, 2),
-            ["C"] = (18, 10, 2),
-            ["D"] = (18, 10, 2),
-            ["E"] = (21, 10, 5),
-            ["F"] = (26, 13, 3),
-            ["G"] = (60, 40, 8),
-            ["H"] = (17, 11, 6),
-            ["GS"] = (24, 24, 0),
-            ["P"] = (20, 18, 0),
-            ["Q"] = (28, 24, 0),
-            ["R"] = (35, 31, 0),
-            ["S"] = (40, 35, 0),
-            ["T"] = (48, 42, 0),
-            ["U"] = (59, 53, 0),
-            ["V"] = (80, 71, 0)
+            ["A"] = (9, 5),
+            ["B"] = (11, 7),
+            ["C"] = (18, 10),
+            ["D"] = (18, 10),
+            ["E"] = (42, 20),
+            ["F"] = (26, 13),
+            ["G"] = (60, 40),
+            ["H"] = (34, 22),
+            ["GS"] = (24, 24),
+            ["P"] = (20, 18),
+            ["Q"] = (28, 24),
+            ["R"] = (35, 31),
+            ["S"] = (40, 35),
+            ["T"] = (48, 42),
+            ["U"] = (59, 53),
+            ["V"] = (80, 71)
         };
 
-        private static (int height, int width, int offset)? GetFontScale(string fontName, int printDensityDpmm)
+        private static (int height, int width)? GetFontScale(string fontName, int printDensityDpmm)
         {
             FontScaleDictionary dict;
             switch (printDensityDpmm)
@@ -103,7 +101,7 @@ namespace BinaryKits.Zpl.Viewer.Helpers
                     return null;
             }
 
-            if (dict.TryGetValue(fontName, out (int height, int width, int offset) value))
+            if (dict.TryGetValue(fontName, out (int height, int width) value))
             {
                 return value;
             }
@@ -111,20 +109,23 @@ namespace BinaryKits.Zpl.Viewer.Helpers
             return null;
         }
 
-        private static (int height, int width) defaultScalingFontScale = (15, 12);
+        private static readonly (int height, int width) defaultScalingFontScale = (15, 12);
+
+        // This is a corrective used to match labelary.com scale for text fields' font size
+        private const float heightScale = 1.1f;
 
         public static (float fontSize, float scaleX) GetFontScaling(string fontName, int fontHeight, int fontWidth, int printDensityDpmm)
         {
-            (int height, int width, int offset)? fontScale = GetFontScale(fontName, printDensityDpmm);
+            (int height, int width)? fontScale = GetFontScale(fontName, printDensityDpmm);
 
             if (fontScale != null)
             {
-                (int height, int width, int offset) = fontScale.Value;
+                (int height, int width) = fontScale.Value;
                 if (fontHeight > 0)
                 {
                     double heightRatio = (double)fontHeight / height;
                     int intHeightRatio = (int)Math.Max(1, Math.Round(heightRatio));
-                    float emSize = (height + offset) * intHeightRatio;
+                    float emSize = height * intHeightRatio * heightScale;
 
                     if (fontWidth == 0)
                     {
@@ -141,11 +142,11 @@ namespace BinaryKits.Zpl.Viewer.Helpers
                     double widthRatio = (double)fontWidth / width;
                     int intWidthRatio = (int)Math.Max(1, Math.Round(widthRatio));
 
-                    return ((height + offset) * intWidthRatio, 1.0f);
+                    return (height * intWidthRatio * heightScale, 1.0f);
                 }
                 else
                 {
-                    return (height + offset, 1.0f);
+                    return (height * heightScale, 1.0f);
                 }
             }
 
