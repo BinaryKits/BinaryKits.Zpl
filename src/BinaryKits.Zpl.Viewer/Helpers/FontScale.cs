@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Viewer.Helpers
 {
-    // Offset is Intercharacter Gap (in dots), 0 if proportional
+    // Offset is Intercharacter Gap (in dots), 0 if proportional for details see
+    // https://docs.zebra.com/us/en/printers/software/zpl-pg/c-zpl-font-barcodes-fonts-andbar-codes/r-zpl-font-barcodes-proportional-fixed-spacing.html
     using FontScaleDictionary = Dictionary<string, (int height, int width, int offset)>;
 
     internal static class FontScale
@@ -114,8 +115,6 @@ namespace BinaryKits.Zpl.Viewer.Helpers
 
         public static (float fontSize, float scaleX) GetFontScaling(string fontName, int fontHeight, int fontWidth, int printDensityDpmm)
         {
-            float fontSize, scaleX;
-
             (int height, int width, int offset)? fontScale = GetFontScale(fontName, printDensityDpmm);
 
             if (fontScale != null)
@@ -124,33 +123,34 @@ namespace BinaryKits.Zpl.Viewer.Helpers
                 if (fontHeight > 0)
                 {
                     double heightRatio = (double)fontHeight / height;
-                    int intHeightRatio = (int)Math.Round(heightRatio);
-                    fontSize = (height + offset) * Math.Max(1, intHeightRatio);
+                    int intHeightRatio = (int)Math.Max(1, Math.Round(heightRatio));
+                    float emSize = (height + offset) * intHeightRatio;
 
                     if (fontWidth == 0)
                     {
-                        return (fontSize, 1.0f);
+                        return (emSize, 1.0f);
                     }
 
                     double widthRatio = (double)fontWidth / width;
-                    int intWidthRatio = (int)Math.Round(widthRatio);
+                    int intWidthRatio = (int)Math.Max(1, Math.Round(widthRatio));
 
-                    scaleX = (float)intWidthRatio / intHeightRatio;
-                    return (fontSize, scaleX);
+                    return (emSize, (float)intWidthRatio / intHeightRatio);
                 }
                 else if (fontWidth > 0)
                 {
                     double widthRatio = (double)fontWidth / width;
-                    int intWidthRatio = (int)Math.Round(widthRatio);
-                    fontSize = (height + offset) * Math.Max(1, intWidthRatio);
+                    int intWidthRatio = (int)Math.Max(1, Math.Round(widthRatio));
 
-                    return (fontSize, 1.0f);
-
+                    return ((height + offset) * intWidthRatio, 1.0f);
+                }
+                else
+                {
+                    return (height + offset, 1.0f);
                 }
             }
 
-            fontSize = fontHeight > 0 ? fontHeight : fontWidth > 0 ? fontWidth : defaultScalingFontScale.height;
-            scaleX = 1.0f;
+            float fontSize = fontHeight > 0 ? fontHeight : fontWidth > 0 ? fontWidth : defaultScalingFontScale.height;
+            float scaleX = 1.0f;
 
             if (fontWidth != 0 && fontWidth != fontSize)
             {
