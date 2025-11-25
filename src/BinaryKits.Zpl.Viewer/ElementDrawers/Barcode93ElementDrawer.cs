@@ -19,7 +19,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
             if (element is ZplBarcode93 barcode)
             {
@@ -46,7 +46,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 if (barcode.PrintInterpretationLine)
                 {
-                    float labelFontSize = Math.Min(barcode.ModuleWidth * 10f, 100f);
+                    float labelFontSize = FontScale.GetBitmappedFontSize("A", Math.Min(barcode.ModuleWidth, 10), printDensityDpmm).Value;
                     SKTypeface labelTypeFace = options.FontLoader("A");
                     SKFont labelFont = new(labelTypeFace, labelFontSize);
                     this.DrawInterpretationLine(content, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);

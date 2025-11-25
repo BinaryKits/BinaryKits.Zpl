@@ -114,6 +114,11 @@ namespace BinaryKits.Zpl.Viewer.Helpers
         // This is a corrective used to match labelary.com scale for text fields' font size
         private const float heightScale = 1.1f;
 
+        public static float? GetBitmappedFontSize(string fontName, int scalingFactor, int printDensityDpmm)
+        {
+            return GetFontScale(fontName, printDensityDpmm)?.height * scalingFactor * heightScale;
+        }
+
         public static (float fontSize, float scaleX) GetFontScaling(string fontName, int fontHeight, int fontWidth, int printDensityDpmm)
         {
             (int height, int width)? fontScale = GetFontScale(fontName, printDensityDpmm);
