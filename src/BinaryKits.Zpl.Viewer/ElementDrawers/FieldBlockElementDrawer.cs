@@ -35,18 +35,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
             if (element is ZplFieldBlock fieldBlock)
             {
                 ZplFont font = fieldBlock.Font;
 
-                float fontSize = font.FontHeight > 0 ? font.FontHeight : font.FontWidth;
-                float scaleX = 1.00f;
-                if (font.FontWidth != 0 && font.FontWidth != fontSize)
-                {
-                    scaleX *= (float)font.FontWidth / fontSize;
-                }
+                (float fontSize, float scaleX) = FontScale.GetFontScaling(font.FontName, font.FontHeight, font.FontWidth, printDensityDpmm);
 
                 SKTypeface typeface = options.FontLoader(font.FontName);
                 string text = fieldBlock.Text;
