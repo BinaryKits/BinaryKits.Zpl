@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
@@ -27,7 +27,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
             if (element is ZplTextField textField)
             {
@@ -43,12 +43,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 ZplFont font = textField.Font;
 
-                float fontSize = font.FontHeight > 0 ? font.FontHeight : font.FontWidth;
-                float scaleX = 1.00f;
-                if (font.FontWidth != 0 && font.FontWidth != fontSize)
-                {
-                    scaleX *= (float)font.FontWidth / fontSize;
-                }
+                (float fontSize, float scaleX) = FontScale.GetFontScaling(font.FontName, font.FontHeight, font.FontWidth, printDensityDpmm);
 
                 SKTypeface typeface = options.FontLoader(font.FontName);
 

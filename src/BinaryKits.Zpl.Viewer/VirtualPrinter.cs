@@ -14,8 +14,8 @@ namespace BinaryKits.Zpl.Viewer
         public FieldOrientation FieldOrientation { get; private set; } = FieldOrientation.Normal;
         public FieldJustification FieldJustification { get; private set; } = FieldJustification.None;
         public int FontWidth { get; private set; } = 0;
-        public int FontHeight { get; private set; } = 10;
-        public string FontName { get; private set; } = "0";
+        public int FontHeight { get; private set; } = 0;
+        public string FontName { get; private set; } = "A";
         public List<string> Comments { get; private set; }
 
         /// <summary>
