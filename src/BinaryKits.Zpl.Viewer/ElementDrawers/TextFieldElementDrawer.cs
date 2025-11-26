@@ -7,6 +7,9 @@ using SkiaSharp.HarfBuzz;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
+    /// <summary>
+    /// Drawer for Text Field elements
+    /// </summary>
     public class TextFieldElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>
@@ -33,7 +36,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             {
                 float x = textField.PositionX;
                 float y = textField.PositionY;
-                FieldJustification fieldJustification = Label.FieldJustification.None;
+                FieldJustification fieldJustification = FieldJustification.None;
 
                 if (textField.UseDefaultPosition)
                 {
