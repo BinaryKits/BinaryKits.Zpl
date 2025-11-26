@@ -39,6 +39,7 @@ namespace BinaryKits.Zpl.Viewer
                 new FieldBlockElementDrawer(),
                 new GraphicBoxElementDrawer(),
                 new GraphicCircleElementDrawer(),
+                new GraphicDiagonalLineElementDrawer(),
                 new GraphicFieldElementDrawer(),
                 new ImageMoveElementDrawer(),
                 new Interleaved2of5BarcodeDrawer(),
