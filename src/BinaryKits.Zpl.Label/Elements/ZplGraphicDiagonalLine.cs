@@ -2,8 +2,11 @@ using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
-    public class ZplGraphicDiagonalLine : ZplGraphicBox
+    public class ZplGraphicDiagonalLine : ZplGraphicElement
     {
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
         public bool RightLeaningDiagonal { get; private set; }
 
         public ZplGraphicDiagonalLine(
@@ -12,10 +15,16 @@ namespace BinaryKits.Zpl.Label.Elements
             int width,
             int height,
             int borderThickness = 1,
-            bool rightLeaningDiagonal = false,
-            LineColor lineColor = LineColor.Black)
-            : base(positionX, positionY, width, height, borderThickness, lineColor, 0)
+            LineColor lineColor = LineColor.Black,
+            bool rightLeaningDiagonal = true,
+            bool reversePrint = false,
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(positionX, positionY, borderThickness, lineColor, reversePrint, bottomToTop, useDefaultPosition)
         {
+            Width = width;
+            Height = height;
+            
             RightLeaningDiagonal = rightLeaningDiagonal;
         }
 
