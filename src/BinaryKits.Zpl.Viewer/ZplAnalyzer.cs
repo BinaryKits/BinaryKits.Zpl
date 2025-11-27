@@ -62,6 +62,7 @@ namespace BinaryKits.Zpl.Viewer
                 new GraphicBoxZplCommandAnalyzer(this.virtualPrinter),
                 new GraphicCircleZplCommandAnalyzer(this.virtualPrinter),
                 new GraphicDiagonalLineZplCommandAnalyzer(this.virtualPrinter),
+                new GraphicEllipseZplCommandAnalyzer(this.virtualPrinter),
                 new GraphicFieldZplCommandAnalyzer(this.virtualPrinter),
                 new Interleaved2of5BarcodeZplCommandAnalyzer(this.virtualPrinter),
                 new ImageMoveZplCommandAnalyzer(this.virtualPrinter),
