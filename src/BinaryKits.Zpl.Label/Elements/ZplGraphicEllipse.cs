@@ -2,17 +2,25 @@ using System.Collections.Generic;
 
 namespace BinaryKits.Zpl.Label.Elements
 {
-    public class ZplGraphicEllipse : ZplGraphicBox
+    public class ZplGraphicEllipse : ZplGraphicElement
     {
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
         public ZplGraphicEllipse(
             int positionX,
             int positionY,
             int width,
             int height,
             int borderThickness = 1,
-            LineColor lineColor = LineColor.Black)
-            : base(positionX, positionY, width, height, borderThickness, lineColor, 0)
+            LineColor lineColor = LineColor.Black,
+            bool reversePrint = false,
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(positionX, positionY, borderThickness, lineColor, reversePrint, bottomToTop, useDefaultPosition)
         {
+            Width = width;
+            Height = height;
         }
 
         ///<inheritdoc/>

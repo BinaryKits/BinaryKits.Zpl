@@ -11,8 +11,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         public override ZplElementBase Analyze(string zplCommand)
         {
             int tmpint;
-            int width = 1;
-            int height = 1;
+            int width = 3;
+            int height = 3;
             int borderThickness = 1;
             LineColor lineColor = LineColor.Black;
             bool rightLeaningDiagonal = true;
@@ -33,6 +33,14 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
+            // thickness is the default for width and height, parse it first
+            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint))
+            {
+                borderThickness = tmpint;
+                width = borderThickness;
+                height = borderThickness;
+            }
+
             if (zplDataParts.Length > 0 && int.TryParse(zplDataParts[0], out tmpint))
             {
                 width = tmpint;
@@ -41,11 +49,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
                 height = tmpint;
-            }
-
-            if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint))
-            {
-                borderThickness = tmpint;
             }
 
             if (zplDataParts.Length > 3)
