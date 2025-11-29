@@ -8,32 +8,33 @@ namespace BinaryKits.Zpl.Label.Elements
         public int Width { get; private set; }
         public int Height { get; private set; }
 
-        public GraphicSymbolCharacter Character { get; private set; }
+        public GraphicSymbolCharacter? Character { get; private set; }
 
-        string CharacterLetter
+        public ZplGraphicSymbol(
+            string text,
+            int positionX,
+            int positionY,
+            int width,
+            int height,
+            FieldOrientation fieldOrientation = FieldOrientation.Normal,
+            bool bottomToTop = false,
+            bool useDefaultPosition = false)
+            : base(positionX, positionY, bottomToTop, useDefaultPosition)
         {
-            get
+            GraphicSymbolCharacter? character = default;
+            if (!string.IsNullOrEmpty(text))
             {
-                switch (Character)
-                {
-                    case GraphicSymbolCharacter.RegisteredTradeMark:
-                        return "A";
-                    case GraphicSymbolCharacter.Copyright:
-                        return "B";
-                    case GraphicSymbolCharacter.TradeMark:
-                        return "C";
-                    case GraphicSymbolCharacter.UnderwritersLaboratoriesApproval:
-                        return "D";
-                    case GraphicSymbolCharacter.CanadianStandardsAssociationApproval:
-                        return "E";
-                    default:
-                        return "";
-                }
+                character = (GraphicSymbolCharacter)text[0];
             }
+
+            Character = character;
+            FieldOrientation = fieldOrientation;
+            Width = width;
+            Height = height;
         }
 
         public ZplGraphicSymbol(
-            GraphicSymbolCharacter character,
+            GraphicSymbolCharacter? character,
             int positionX,
             int positionY,
             int width,
@@ -55,7 +56,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^GSo,h,w
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
-            result.Add($"^GS{RenderFieldOrientation(FieldOrientation)},{context.Scale(Height)},{context.Scale(Width)}^FD{CharacterLetter}^FS");
+            result.Add($"^GS{RenderFieldOrientation(FieldOrientation)},{context.Scale(Height)},{context.Scale(Width)}^FD{(char)Character}^FS");
 
             return result;
         }

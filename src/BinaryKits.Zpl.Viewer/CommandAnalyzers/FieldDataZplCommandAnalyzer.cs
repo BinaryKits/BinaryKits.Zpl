@@ -113,6 +113,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 {
                     return new ZplBarcodeAnsiCodabar(text, codabar.StartCharacter, codabar.StopCharacter, x, y, codabar.Height, moduleWidth, wideBarToNarrowBarWidthRatio, codabar.FieldOrientation, hexadecimalIndicator, codabar.PrintInterpretationLine, codabar.PrintInterpretationLineAboveCode, codabar.CheckDigit, bottomToTop, useDefaultPosition);
                 }
+                else if(this.VirtualPrinter.NextElementFieldData is GraphicSymbolFieldData graphicSymbol)
+                {
+                    return new ZplGraphicSymbol(text, x, y, graphicSymbol.Width, graphicSymbol.Height, graphicSymbol.FieldOrientation, bottomToTop, useDefaultPosition);
+                }
             }
 
             ZplFont font = this.GetFontFromVirtualPrinter();

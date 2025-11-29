@@ -42,6 +42,7 @@ namespace BinaryKits.Zpl.Viewer
                 new GraphicDiagonalLineElementDrawer(),
                 new GraphicEllipseElementDrawer(),
                 new GraphicFieldElementDrawer(),
+                new GraphicSymbolElementDrawer(),
                 new ImageMoveElementDrawer(),
                 new Interleaved2of5BarcodeDrawer(),
                 new MaxiCodeElementDrawer(),

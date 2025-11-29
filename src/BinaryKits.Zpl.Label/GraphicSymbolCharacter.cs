@@ -8,22 +8,22 @@
         /// <summary>
         /// Registered Trade Mark
         /// </summary>
-        RegisteredTradeMark,
+        RegisteredTradeMark = 'A',
         /// <summary>
         /// Copyright
         /// </summary>
-        Copyright,
+        Copyright = 'B',
         /// <summary>
         /// Trade Mark
         /// </summary>
-        TradeMark,
+        TradeMark = 'C',
         /// <summary>
         /// Underwriters Laboratories Approval
         /// </summary>
-        UnderwritersLaboratoriesApproval,
+        UnderwritersLaboratoriesApproval = 'D', 
         /// <summary>
         /// Canadian Standards Association Approval
         /// </summary>
-        CanadianStandardsAssociationApproval
+        CanadianStandardsAssociationApproval = 'E'
     }
 }
