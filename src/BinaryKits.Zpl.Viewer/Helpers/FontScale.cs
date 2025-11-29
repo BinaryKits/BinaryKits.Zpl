@@ -112,6 +112,7 @@ namespace BinaryKits.Zpl.Viewer.Helpers
         private static readonly (int height, int width) defaultScalingFontScale = (15, 12);
 
         // This is a corrective used to match labelary.com scale for text fields' font size
+        // TODO: implement a proper solution based on font metrics
         private const float heightScale = 1.1f;
 
         public static float? GetBitmappedFontSize(string fontName, int scalingFactor, int printDensityDpmm)

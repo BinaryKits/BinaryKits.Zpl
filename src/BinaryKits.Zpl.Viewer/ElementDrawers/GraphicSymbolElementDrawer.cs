@@ -3,13 +3,6 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
-using SkiaSharp.HarfBuzz;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
@@ -41,6 +34,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                (float fontSize, float scaleX) = FontScale.GetFontScaling("GS", graphicSymbol.Height, graphicSymbol.Width, printDensityDpmm);
 
+                // remove incorrect scaling
                 fontSize /= 1.1f;
 
                 SKTypeface typeface = DrawerOptions.TypefaceGS;
@@ -116,18 +110,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     {
                         textAlign = SKTextAlign.Right;
                     }
-                    else if (fieldJustification == FieldJustification.Auto)
-                    {
-                        HarfBuzzSharp.Buffer buffer = new();
-                        buffer.AddUtf16(displayText);
-                        buffer.GuessSegmentProperties();
-                        if (buffer.Direction == HarfBuzzSharp.Direction.RightToLeft)
-                        {
-                            textAlign = SKTextAlign.Right;
-                        }
-                    }
 
-                    this.skCanvas.DrawShapedText(displayText, x, y, textAlign, skFont, skPaint);
+                    this.skCanvas.DrawText(displayText, x, y, textAlign, skFont, skPaint);
 
                     // Update the next default field position after rendering
                     return this.CalculateNextDefaultPosition(x, y, totalWidth, textBounds.Height, false, graphicSymbol.FieldOrientation, currentPosition);
