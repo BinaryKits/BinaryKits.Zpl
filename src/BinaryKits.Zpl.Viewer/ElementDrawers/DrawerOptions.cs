@@ -1,7 +1,10 @@
+using BinaryKits.Zpl.Viewer.Properties;
+
 using SkiaSharp;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
@@ -58,6 +61,8 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         private static readonly SKTypeface typeface0;
         private static readonly SKTypeface typefaceA;
 
+        internal static SKTypeface TypefaceGS { get; private set; }
+
         static DrawerOptions()
         {
             SKFontManager skFontManager = SKFontManager.Default;
@@ -65,6 +70,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
             typeface0 = SKTypeface.Default;
             typefaceA = SKTypeface.Default;
+            TypefaceGS = SKTypeface.FromStream(new MemoryStream(Resources.ZplGS));
 
             foreach (string familyName in fontStack0)
             {
