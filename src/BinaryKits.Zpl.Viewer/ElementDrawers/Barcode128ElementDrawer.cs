@@ -77,7 +77,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 {
                     // TODO: use font 0, auto scale for Mode D
                     float labelFontSize = FontScale.GetBitmappedFontSize("A", Math.Min(barcode.ModuleWidth, 10), printDensityDpmm).Value;
-                    SKTypeface labelTypeFace = options.FontLoader("A");
+                    SKTypeface labelTypeFace = options.FontManager.FontLoader("A");
                     SKFont labelFont = new(labelTypeFace, labelFontSize);
                     this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
                 }

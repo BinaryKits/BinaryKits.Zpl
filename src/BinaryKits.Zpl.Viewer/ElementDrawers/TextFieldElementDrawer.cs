@@ -48,7 +48,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 (float fontSize, float scaleX) = FontScale.GetFontScaling(font.FontName, font.FontHeight, font.FontWidth, printDensityDpmm);
 
-                SKTypeface typeface = options.FontLoader(font.FontName);
+                SKTypeface typeface = options.FontManager.FontLoader(font.FontName);
 
                 SKFont skFont = new(typeface, fontSize, scaleX);
                 using SKPaint skPaint = new()
@@ -62,14 +62,17 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     displayText = displayText.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
-                if (options.ReplaceDashWithEnDash)
+                if (font.FontName == "0")
                 {
-                    displayText = displayText.Replace("-", " \u2013 ");
-                }
+                    if (options.ReplaceDashWithEnDash)
+                    {
+                        displayText = displayText.Replace("-", " \u2013 ");
+                    }
 
-                if (options.ReplaceUnderscoreWithEnSpace)
-                {
-                    displayText = displayText.Replace('_', '\u2002');
+                    if (options.ReplaceUnderscoreWithEnSpace)
+                    {
+                        displayText = displayText.Replace('_', '\u2002');
+                    }
                 }
 
                 skFont.MeasureText("X", out SKRect textBoundBaseline);

@@ -71,7 +71,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 if (barcode.PrintInterpretationLine)
                 {
                     float labelFontSize = FontScale.GetBitmappedFontSize("A", Math.Min(barcode.ModuleWidth, 10), printDensityDpmm).Value;
-                    SKTypeface labelTypeFace = options.FontLoader("A");
+                    SKTypeface labelTypeFace = options.FontManager.FontLoader("A");
                     SKFont labelFont = new(labelTypeFace, labelFontSize);
                     if (barcode.PrintInterpretationLineAboveCode)
                     {
