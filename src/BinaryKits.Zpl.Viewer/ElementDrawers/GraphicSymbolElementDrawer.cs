@@ -37,7 +37,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 // remove incorrect scaling
                 fontSize /= 1.1f;
 
-                SKTypeface typeface = DrawerOptions.TypefaceGS;
+                SKTypeface typeface = options.FontManager.TypefaceGS;
 
                 SKFont skFont = new(typeface, fontSize * 1.25f, scaleX);
                 using SKPaint skPaint = new()

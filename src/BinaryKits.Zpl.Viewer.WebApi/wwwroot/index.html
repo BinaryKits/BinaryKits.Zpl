@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>BinaryKits.Zpl.Viewer.WebApi</title>
-    <script src="https://unpkg.com/vue@3.4.25/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.global.prod.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/bootstrap/dist/js/bootstrap.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.css" />
@@ -168,7 +168,7 @@
             },
             async created() {
                 await this.loadLabelData()
-                await this.changeZplData(this.templateLabels[0].content)
+                //await this.changeZplData(this.templateLabels[0].content)
             },
             methods: {
                 async labelFormatChange() {

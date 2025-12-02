@@ -43,21 +43,24 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 (float fontSize, float scaleX) = FontScale.GetFontScaling(font.FontName, font.FontHeight, font.FontWidth, printDensityDpmm);
 
-                SKTypeface typeface = options.FontLoader(font.FontName);
+                SKTypeface typeface = options.FontManager.FontLoader(font.FontName);
                 string text = fieldBlock.Text;
                 if (fieldBlock.HexadecimalIndicator is char hexIndicator)
                 {
                     text = text.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
-                if (options.ReplaceDashWithEnDash)
+                if (font.FontName == "0")
                 {
-                    text = text.Replace("-", " \u2013 ");
-                }
+                    if (options.ReplaceDashWithEnDash)
+                    {
+                        text = text.Replace("-", " \u2013 ");
+                    }
 
-                if (options.ReplaceUnderscoreWithEnSpace)
-                {
-                    text = text.Replace('_', '\u2002');
+                    if (options.ReplaceUnderscoreWithEnSpace)
+                    {
+                        text = text.Replace('_', '\u2002');
+                    }
                 }
 
                 SKFont skFont = new(typeface, fontSize, scaleX);
