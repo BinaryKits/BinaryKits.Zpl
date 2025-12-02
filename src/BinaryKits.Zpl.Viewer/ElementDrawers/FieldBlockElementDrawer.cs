@@ -35,34 +35,32 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
             if (element is ZplFieldBlock fieldBlock)
             {
                 ZplFont font = fieldBlock.Font;
 
-                float fontSize = font.FontHeight > 0 ? font.FontHeight : font.FontWidth;
-                float scaleX = 1.00f;
-                if (font.FontWidth != 0 && font.FontWidth != fontSize)
-                {
-                    scaleX *= (float)font.FontWidth / fontSize;
-                }
+                (float fontSize, float scaleX) = FontScale.GetFontScaling(font.FontName, font.FontHeight, font.FontWidth, printDensityDpmm);
 
-                SKTypeface typeface = options.FontLoader(font.FontName);
+                SKTypeface typeface = options.FontManager.FontLoader(font.FontName);
                 string text = fieldBlock.Text;
                 if (fieldBlock.HexadecimalIndicator is char hexIndicator)
                 {
                     text = text.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
-                if (options.ReplaceDashWithEnDash)
+                if (font.FontName == "0")
                 {
-                    text = text.Replace("-", " \u2013 ");
-                }
+                    if (options.ReplaceDashWithEnDash)
+                    {
+                        text = text.Replace("-", " \u2013 ");
+                    }
 
-                if (options.ReplaceUnderscoreWithEnSpace)
-                {
-                    text = text.Replace('_', '\u2002');
+                    if (options.ReplaceUnderscoreWithEnSpace)
+                    {
+                        text = text.Replace('_', '\u2002');
+                    }
                 }
 
                 SKFont skFont = new(typeface, fontSize, scaleX);
@@ -187,7 +185,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             float spaceWidth = font.MeasureText(" ");
             List<string> lines = [];
 
-            Stack<string> words = new(text.Split([' '], StringSplitOptions.None).Reverse());
+            Stack<string> words = new(text.Split([' '], StringSplitOptions.None).AsEnumerable().Reverse());
             StringBuilder line = new();
             float width = 0;
             while (words.Count != 0)

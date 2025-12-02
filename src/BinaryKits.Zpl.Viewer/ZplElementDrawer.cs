@@ -39,7 +39,10 @@ namespace BinaryKits.Zpl.Viewer
                 new FieldBlockElementDrawer(),
                 new GraphicBoxElementDrawer(),
                 new GraphicCircleElementDrawer(),
+                new GraphicDiagonalLineElementDrawer(),
+                new GraphicEllipseElementDrawer(),
                 new GraphicFieldElementDrawer(),
+                new GraphicSymbolElementDrawer(),
                 new ImageMoveElementDrawer(),
                 new Interleaved2of5BarcodeDrawer(),
                 new MaxiCodeElementDrawer(),
@@ -60,7 +63,7 @@ namespace BinaryKits.Zpl.Viewer
         /// <param name="printDensityDpmm">Dots per millimeter</param>
         /// <returns></returns>
         public byte[] Draw(
-            ZplElementBase[] elements,
+            IEnumerable<ZplElementBase> elements,
             double labelWidth = 101.6,
             double labelHeight = 152.4,
             int printDensityDpmm = 8)
@@ -77,7 +80,7 @@ namespace BinaryKits.Zpl.Viewer
         /// <param name="printDensityDpmm">Dots per millimeter</param>
         /// <returns></returns>
         public byte[] DrawPdf(
-            ZplElementBase[] elements,
+            IEnumerable<ZplElementBase> elements,
             double labelWidth = 101.6,
             double labelHeight = 152.4,
             int printDensityDpmm = 8)
@@ -94,7 +97,7 @@ namespace BinaryKits.Zpl.Viewer
         /// <param name="printDensityDpmm">Dots per millimeter</param>
         /// <returns></returns>
         public List<byte[]> DrawMulti(
-            ZplElementBase[] elements,
+            IEnumerable<ZplElementBase> elements,
             double labelWidth = 101.6,
             double labelHeight = 152.4,
             int printDensityDpmm = 8)
@@ -275,7 +278,7 @@ namespace BinaryKits.Zpl.Viewer
         /// <param name="printDensityDpmm">Dots per millimeter</param>
         /// <returns></returns>
         public void DrawSurface(SKSurface surface,
-            ZplElementBase[] elements,
+            IEnumerable<ZplElementBase> elements,
             double labelWidth = 101.6,
             double labelHeight = 152.4,
             int printDensityDpmm = 8)

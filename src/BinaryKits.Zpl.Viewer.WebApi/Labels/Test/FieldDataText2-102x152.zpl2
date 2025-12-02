@@ -1,38 +1,43 @@
 ﻿^XA
 
-^LH0,0
-^FWI
+^FO10,10^A0N,20^FDFont0 Demo Text 1^FS
+^FO10,40^A0N,,20^FDFont0 Demo Text 2^FS
+^FO10,70^A0N,20,20^FDFont0 Demo Text 3^FS
 
-^A0,50,0
-^FO10,0
-^FDFont1 Demo Text^FS
+^FO10,110^A1N,20^FDFont1 Demo Text 1^FS
+^FO10,140^A1N,,20^FDFont1 Demo Text 2^FS
+^FO10,170^A1N,20,20^FDFont1 Demo Text 3^FS
 
-^A1,50,0
-^FO10,100
-^FDFont2 Demo Text^FS
+^FO10,210^AAN,20^FDFontA Demo Text 1^FS
+^FO10,240^AAN,,20^FDFontA Demo Text 2^FS
+^FO10,270^AAN,20,20^FDFontA Demo Text 3^FS
 
-^AA,80,0
-^FO10,200
-^FDFont3 Demo Text^FS
+^FO10,310^ABN,20^FDFontB Demo Text 1^FS
+^FO10,340^ABN,,20^FDFontB Demo Text 2^FS
+^FO10,370^ABN,20,20^FDFontB Demo Text 3^FS
 
-^AB,50,0
-^FO10,300
-^FDFont4 Demo Text^FS
+^FO10,410^ACN,20^FDFontC Demo Text 1^FS
+^FO10,440^ACN,,20^FDFontC Demo Text 2^FS
+^FO10,470^ACN,20,20^FDFontC Demo Text 3^FS
 
-^AC,20,0
-^FO10,400
-^FDFont5 Demo Text^FS
+^FO10,510^ADN,20^FDFontD Demo Text 1^FS
+^FO10,540^ADN,,20^FDFontD Demo Text 2^FS
+^FO10,570^ADN,20,20^FDFontD Demo Text 3^FS
 
-^AD,0,20
-^FO10,500
-^FDFont6 Demo Text^FS
+^FO10,610^AEN,20^FDFontE Demo Text 1^FS
+^FO10,640^AEN,,20^FDFontE Demo Text 2^FS
+^FO10,670^AEN,20,20^FDFontE Demo Text 3^FS
 
-^AD,20,20
-^FO10,600
-^FDFont7 Demo Text^FS
+^FO10,710^AFN,20^FDFontF Demo Text 1^FS
+^FO10,740^AFN,,20^FDFontF Demo Text 2^FS
+^FO10,770^AFN,20,20^FDFontF Demo Text 3^FS
 
-^ADR,0,20
-^FO800,10
-^FDFont8 Demo Text^FS
+^FO10,810^AGN,20^FDFontG Demo Text 1^FS
+^FO10,840^AGN,,20^FDFontG Demo Text 2^FS
+^FO10,870^AGN,20,20^FDFontG Demo Text 3^FS
+
+^FO10,910^AHN,20^FDFontH Demo Text 1^FS
+^FO10,940^AHN,,20^FDFontH Demo Text 2^FS
+^FO10,970^AHN,20,20^FDFontH Demo Text 3^FS
 
 ^XZ

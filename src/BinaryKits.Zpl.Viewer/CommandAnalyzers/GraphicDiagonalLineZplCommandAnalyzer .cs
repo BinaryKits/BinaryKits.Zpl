@@ -3,19 +3,19 @@ using BinaryKits.Zpl.Label.Elements;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
-    public class GraphicBoxZplCommandAnalyzer : ZplCommandAnalyzerBase
+    public class GraphicDiagonalLineZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public GraphicBoxZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GB", virtualPrinter) { }
+        public GraphicDiagonalLineZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GD", virtualPrinter) { }
 
         ///<inheritdoc/>
         public override ZplElementBase Analyze(string zplCommand)
         {
             int tmpint;
-            int width = 1;
-            int height = 1;
+            int width = 3;
+            int height = 3;
             int borderThickness = 1;
             LineColor lineColor = LineColor.Black;
-            int cornerRounding = 0;
+            bool rightLeaningDiagonal = true;
 
             int x = 0;
             int y = 0;
@@ -57,14 +57,18 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 lineColor = lineColorTemp == "W" ? LineColor.White : LineColor.Black;
             }
 
-            if (zplDataParts.Length > 4 && int.TryParse(zplDataParts[4], out tmpint))
+            if (zplDataParts.Length > 4)
             {
-                cornerRounding = tmpint;
+                string orientationTemp = zplDataParts[4];
+                if(orientationTemp == "L" || orientationTemp == "\\")
+                {
+                    rightLeaningDiagonal = false;
+                }
             }
 
             bool reversePrint = this.VirtualPrinter.NextElementFieldReverse || this.VirtualPrinter.LabelReverse;
 
-            return new ZplGraphicBox(x, y, width, height, borderThickness, lineColor, cornerRounding, reversePrint, bottomToTop, useDefaultPosition);
+            return new ZplGraphicDiagonalLine(x, y, width, height, borderThickness, lineColor, rightLeaningDiagonal, reversePrint, bottomToTop, useDefaultPosition);
         }
     }
 }

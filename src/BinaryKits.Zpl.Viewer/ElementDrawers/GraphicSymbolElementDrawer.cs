@@ -3,88 +3,58 @@ using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
-using SkiaSharp.HarfBuzz;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     /// <summary>
     /// Drawer for Text Field elements
     /// </summary>
-    public class TextFieldElementDrawer : ElementDrawerBase
+    public class GraphicSymbolElementDrawer : ElementDrawerBase
     {
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
-            return element.GetType() == typeof(ZplTextField);
-        }
-
-        ///<inheritdoc/>
-        public override bool IsReverseDraw(ZplElementBase element)
-        {
-            if (element is ZplTextField textField)
-            {
-                return textField.ReversePrint;
-            }
-
-            return false;
+            return element.GetType() == typeof(ZplGraphicSymbol);
         }
 
         ///<inheritdoc/>
         public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
-            if (element is ZplTextField textField)
+            if (element is ZplGraphicSymbol graphicSymbol)
             {
-                float x = textField.PositionX;
-                float y = textField.PositionY;
+                float x = graphicSymbol.PositionX;
+                float y = graphicSymbol.PositionY;
                 FieldJustification fieldJustification = FieldJustification.None;
 
-                if (textField.UseDefaultPosition)
+                if (graphicSymbol.UseDefaultPosition)
                 {
                     x = currentPosition.X;
                     y = currentPosition.Y;
                 }
 
-                ZplFont font = textField.Font;
+               (float fontSize, float scaleX) = FontScale.GetFontScaling("GS", graphicSymbol.Height, graphicSymbol.Width, printDensityDpmm);
 
-                (float fontSize, float scaleX) = FontScale.GetFontScaling(font.FontName, font.FontHeight, font.FontWidth, printDensityDpmm);
+                // remove incorrect scaling
+                fontSize /= 1.1f;
 
-                SKTypeface typeface = options.FontManager.FontLoader(font.FontName);
+                SKTypeface typeface = options.FontManager.TypefaceGS;
 
-                SKFont skFont = new(typeface, fontSize, scaleX);
+                SKFont skFont = new(typeface, fontSize * 1.25f, scaleX);
                 using SKPaint skPaint = new()
                 {
                     IsAntialias = options.Antialias
                 };
 
-                string displayText = textField.Text;
-                if (textField.HexadecimalIndicator is char hexIndicator)
-                {
-                    displayText = displayText.ReplaceHexEscapes(hexIndicator, internationalFont);
-                }
-
-                if (font.FontName == "0")
-                {
-                    if (options.ReplaceDashWithEnDash)
-                    {
-                        displayText = displayText.Replace("-", " \u2013 ");
-                    }
-
-                    if (options.ReplaceUnderscoreWithEnSpace)
-                    {
-                        displayText = displayText.Replace('_', '\u2002');
-                    }
-                }
-
-                skFont.MeasureText("X", out SKRect textBoundBaseline);
+                string displayText = $"{(char)graphicSymbol.Character}";
                 float totalWidth = skFont.MeasureText(displayText, out SKRect textBounds);
 
                 using (new SKAutoCanvasRestore(this.skCanvas))
                 {
                     SKMatrix matrix = SKMatrix.Empty;
 
-                    if (textField.FieldOrigin != null)
+                    if (graphicSymbol.FieldOrigin != null)
                     {
-                        switch (textField.Font.FieldOrientation)
+                        switch (graphicSymbol.FieldOrientation)
                         {
                             case FieldOrientation.Rotated90:
                                 matrix = SKMatrix.CreateRotationDegrees(90, x + fontSize / 2, y + fontSize / 2);
@@ -99,11 +69,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                                 break;
                         }
 
-                        fieldJustification = textField.FieldOrigin.FieldJustification;
+                        fieldJustification = graphicSymbol.FieldOrigin.FieldJustification;
                     }
                     else
                     {
-                        switch (textField.Font.FieldOrientation)
+                        switch (graphicSymbol.FieldOrientation)
                         {
                             case FieldOrientation.Rotated90:
                                 matrix = SKMatrix.CreateRotationDegrees(90, x, y);
@@ -118,7 +88,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                                 break;
                         }
 
-                        fieldJustification = textField.FieldTypeset.FieldJustification;
+                        fieldJustification = graphicSymbol.FieldTypeset.FieldJustification;
                     }
 
                     if (matrix != SKMatrix.Empty)
@@ -126,14 +96,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         this.skCanvas.Concat(matrix);
                     }
 
-                    if (textField.FieldTypeset == null)
+                    if (graphicSymbol.FieldTypeset == null)
                     {
-                        y += textBoundBaseline.Height;
-                    }
-
-                    if (textField.ReversePrint)
-                    {
-                        skPaint.BlendMode = SKBlendMode.Xor;
+                        y += fontSize;
                     }
 
                     SKTextAlign textAlign = SKTextAlign.Left;
@@ -145,25 +110,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     {
                         textAlign = SKTextAlign.Right;
                     }
-                    else if (fieldJustification == FieldJustification.Auto)
-                    {
-                        HarfBuzzSharp.Buffer buffer = new();
-                        buffer.AddUtf16(displayText);
-                        buffer.GuessSegmentProperties();
-                        if (buffer.Direction == HarfBuzzSharp.Direction.RightToLeft)
-                        {
-                            textAlign = SKTextAlign.Right;
-                        }
-                    }
 
-                    this.skCanvas.DrawShapedText(displayText, x, y, textAlign, skFont, skPaint);
+                    this.skCanvas.DrawText(displayText, x, y, textAlign, skFont, skPaint);
 
                     // Update the next default field position after rendering
-                    return this.CalculateNextDefaultPosition(x, y, totalWidth, textBounds.Height, false, textField.Font.FieldOrientation, currentPosition);
+                    return this.CalculateNextDefaultPosition(x, y, totalWidth, textBounds.Height, false, graphicSymbol.FieldOrientation, currentPosition);
                 }
             }
 
             return currentPosition;
         }
+
     }
 }

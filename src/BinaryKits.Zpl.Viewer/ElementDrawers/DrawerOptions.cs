@@ -1,17 +1,22 @@
 using SkiaSharp;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public class DrawerOptions
     {
-        public Func<string, SKTypeface> FontLoader { get; set; } = defaultFontLoader;
+        [Obsolete("Use FontManager.FontLoader instead.")]
+        public Func<string, SKTypeface> FontLoader { get; set; }
 
+        /// <summary>
+        /// Gets or sets the image format used when rendering output.
+        /// </summary>
         public SKEncodedImageFormat RenderFormat { get; set; } = SKEncodedImageFormat.Png;
 
+        /// <summary>
+        /// Gets or sets the quality level used when rendering images in formats that support lossy compression.
+        /// </summary>
         public int RenderQuality { get; set; } = 80;
 
         /// <summary>
@@ -39,69 +44,14 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// </summary>
         public bool Antialias { get; set; } = true;
 
-        private static readonly string[] fontStack0 = [
-            "Swis721 Cn BT",
-            "Nimbus Sans Narrow",
-            "Arial",
-            "Helvetica Neue",
-            "Roboto Condensed"
-        ];
+        public FontManager FontManager { get; private set; }
 
-        private static readonly string[] fontStackA = [
-            "DejaVu Sans Mono",
-            "Cascadia Code",
-            "Consolas",
-            "SF Mono",
-            "Droid Sans Mono"
-        ];
+        public DrawerOptions() : this(new FontManager()) { }
 
-        private static readonly SKTypeface typeface0;
-        private static readonly SKTypeface typefaceA;
-
-        static DrawerOptions()
+        public DrawerOptions(FontManager fontManager)
         {
-            SKFontManager skFontManager = SKFontManager.Default;
-            IEnumerable<string> fontFamilies = skFontManager.FontFamilies;
-
-            typeface0 = SKTypeface.Default;
-            typefaceA = SKTypeface.Default;
-
-            foreach (string familyName in fontStack0)
-            {
-                if (fontFamilies.Contains(familyName))
-                {
-                    typeface0 = SKTypeface.FromFamilyName(
-                        familyName,
-                        SKFontStyleWeight.Bold,
-                        SKFontStyleWidth.SemiCondensed,
-                        SKFontStyleSlant.Upright
-                    );
-                    break;
-                }
-            }
-
-            foreach (string familyName in fontStackA)
-            {
-                if (fontFamilies.Contains(familyName))
-                {
-                    typefaceA = SKTypeface.FromFamilyName(
-                        familyName,
-                        SKFontStyleWeight.Normal,
-                        SKFontStyleWidth.Normal,
-                        SKFontStyleSlant.Upright
-                    );
-                    break;
-                }
-            }
+            this.FontManager = fontManager;
+            this.FontLoader = fontManager.FontLoader;
         }
-
-        private static readonly Func<string, SKTypeface> defaultFontLoader = fontName => {
-            if (fontName == "0")
-            {
-                return typeface0;
-            }
-
-            return typefaceA;
-        };
     }
 }

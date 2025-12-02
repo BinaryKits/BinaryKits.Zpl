@@ -1,10 +1,17 @@
 ﻿using BinaryKits.Zpl.Viewer.ElementDrawers;
 using BinaryKits.Zpl.Viewer.WebApi.Models;
+using BinaryKits.Zpl.Viewer.WebApi.Properties;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
+using SkiaSharp;
+
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
 {
@@ -28,14 +35,28 @@ namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                StringBuilder builder = new StringBuilder();
+                while (ex is Exception) {
+                    builder.AppendLine(ex.Message);
+                    builder.AppendLine(ex.StackTrace);
+                    ex = ex.InnerException;
+                }
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, builder.ToString());
             }
         }
 
         private ActionResult<RenderResponseDto> RenderZpl(RenderRequestDto request)
         {
             IPrinterStorage printerStorage = new PrinterStorage();
-            var drawerOptions = new DrawerOptions();
+
+            var fontManager = new FontManager();
+            //register default fonts
+            fontManager.RegisterTypeface(SKTypeface.FromStream(new MemoryStream(Resources.TeX_Gyre_Heros_Cn_Bold)));
+            fontManager.RegisterTypeface(SKTypeface.FromStream(new MemoryStream(Resources.DejaVu_Sans_Mono)));
+
+            var drawerOptions = new DrawerOptions(fontManager);
+
             drawerOptions.OpaqueBackground = true; //set white background for viewer requests
 
             //PDF mode (image mode is default)
