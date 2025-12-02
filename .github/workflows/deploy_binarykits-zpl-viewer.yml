@@ -1,42 +1,71 @@
-# Docs for the Azure Web Apps Deploy action: https://go.microsoft.com/fwlink/?linkid=2134798
-# More GitHub Actions for Azure: https://go.microsoft.com/fwlink/?linkid=2135048
-
-name: Azure App Service - BinaryKits-Zpl-Viewer(Production), Build and deploy DotnetCore app
+name: Github Registry - Build and push Viewer API
 
 on:
   push:
     branches:
       - master
 
+env:
+  PROJECT_NAME: "ZplViewerApi"
+  REGISTRY: ghcr.io
+  GHA_IMAGE_NAME: ghcr.io/ZplViewerApi
+  CONTAINER_REGISTRY_USER: ${{ vars.CONTAINER_REGISTRY_USER }}
+  CONTAINER_REGISTRY_TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+  ALLVARS: ${{ toJSON(vars) }}
+  ALLSECRETS: ${{ toJSON(secrets) }}
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
-    if: github.repository_owner == 'BinaryKits'
+    runs-on: ubuntu-latest
 
     steps:
     # checkout the repo
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v1
+    - name: Log into GHCR
+      uses: docker/login-action@v2
       with:
-        dotnet-version: '8.0.x'
-
-    - name: Build with dotnet
-      working-directory: ./src/BinaryKits.Zpl.Viewer.WebApi
-      run: dotnet build --configuration Release
-
-    - name: dotnet publish
-      working-directory: ./src/BinaryKits.Zpl.Viewer.WebApi
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-    - name: Run Azure webapp deploy action using publish profile credentials
-      uses: azure/webapps-deploy@v2
+        registry: ${{ env.REGISTRY }}
+        username: ${{ env.CONTAINER_REGISTRY_USER }}
+        password: ${{ env.CONTAINER_REGISTRY_TOKEN }}
+    
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v3
       with:
-        app-name: BinaryKits-Zpl-Viewer
-        slot-name: Production
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8E401BBFE31840EAAC5260CBDD5A2341 }}
-        package: ${{env.DOTNET_ROOT}}/myapp
+        images: ${{ env.GHA_IMAGE_NAME }}
+        flavor: |
+          latest=false
+    - name: Build Docker image
+      id: build-and-push
+      uses: docker/build-push-action@v4
+      with:
+        platforms: linux/amd64
+        context: src/BinaryKits.Zpl.Viewer.WebApi
+        build-args: |
+          REQUIREMENTS_TYPE=run
+          NOVALIX_ENV=${{ env.GHA_NOVALIX_ENV }}
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.tags }}
+        cache-from: type=local,src=/tmp/.buildx-back-cache-${{ env.PROJECT_NAME }}
+        cache-to: type=local,dest=/tmp/.buildx-back-cache-${{ env.PROJECT_NAME }}-new,mode=max
+    - # Temp fixs
+      # https://github.com/docker/build-push-action/issues/252
+      # https://github.com/moby/buildkit/issues/1896
+      name: Move cache
+      run: |
+        rm -rf /tmp/.buildx-back-cache-${PROJECT_NAME}
+        mv /tmp/.buildx-back-cache-${PROJECT_NAME}-new /tmp/.buildx-back-cache-${PROJECT_NAME}
+    - name: Remove Docker image
+      run: docker rmi $(docker images -q --filter=reference="${{ steps.build-and-push.outputs.digest }}") || true
 
