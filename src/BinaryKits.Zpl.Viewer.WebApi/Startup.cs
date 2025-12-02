@@ -53,9 +53,12 @@ namespace BinaryKits.Zpl.Viewer.WebApi
 
             app.UseCors();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BinaryKits.Zpl.Viewer.WebApi v1"));
-
+            if (env.EnvironmentName != "prod")
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BinaryKits.Zpl.Viewer.WebApi v1"));
+            }
+            
             app.UseRouting();
 
             app.UseDefaultFiles();
