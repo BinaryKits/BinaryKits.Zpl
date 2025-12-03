@@ -45,7 +45,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     IsAntialias = options.Antialias
                 };
 
-                string displayText = $"{(char)graphicSymbol.Character}";
+                string displayText = $"{(char?)graphicSymbol.Character}";
                 float totalWidth = skFont.MeasureText(displayText, out SKRect textBounds);
 
                 using (new SKAutoCanvasRestore(this.skCanvas))
