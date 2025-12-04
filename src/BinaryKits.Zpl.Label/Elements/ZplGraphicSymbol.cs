@@ -56,7 +56,7 @@ namespace BinaryKits.Zpl.Label.Elements
             //^GSo,h,w
             var result = new List<string>();
             result.AddRange(RenderPosition(context));
-            result.Add($"^GS{RenderFieldOrientation(FieldOrientation)},{context.Scale(Height)},{context.Scale(Width)}^FD{(char)Character}^FS");
+            result.Add($"^GS{RenderFieldOrientation(FieldOrientation)},{context.Scale(Height)},{context.Scale(Width)}^FD{(char?)Character}^FS");
 
             return result;
         }
