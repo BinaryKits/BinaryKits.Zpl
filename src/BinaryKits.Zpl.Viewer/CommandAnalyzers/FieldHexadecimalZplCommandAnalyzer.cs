@@ -4,10 +4,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class FieldHexadecimalZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public FieldHexadecimalZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FH", virtualPrinter) { }
+        public FieldHexadecimalZplCommandAnalyzer() : base("^FH") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             char indicator = '_';
             string[] zplDataParts = this.SplitCommand(zplCommand);
@@ -16,7 +16,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 indicator = zplDataParts[0][0];
             }
 
-            this.VirtualPrinter.SetNextElementFieldHexadecimalIndicator(indicator);
+            virtualPrinter.SetNextElementFieldHexadecimalIndicator(indicator);
 
             return null;
         }

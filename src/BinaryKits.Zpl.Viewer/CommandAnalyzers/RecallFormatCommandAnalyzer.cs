@@ -4,10 +4,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class RecallFormatCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public RecallFormatCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^XF", virtualPrinter) { }
+        public RecallFormatCommandAnalyzer() : base("^XF") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string formatName = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 

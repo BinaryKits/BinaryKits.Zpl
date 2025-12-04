@@ -5,10 +5,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class FieldOriginZplCommandAnalzer : ZplCommandAnalyzerBase
     {
-        public FieldOriginZplCommandAnalzer(VirtualPrinter virtualPrinter) : base("^FO", virtualPrinter) { }
+        public FieldOriginZplCommandAnalzer() : base("^FO") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
@@ -23,7 +23,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 x = decimal.ToInt32(tmpdec);
             }
 
-
             if (zplDataParts.Length > 1 &&
                 decimal.TryParse(zplDataParts[1], out tmpdec) &&
                 int.MinValue <= tmpdec && tmpdec <= int.MaxValue)
@@ -33,17 +32,17 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             if (zplDataParts.Length > 2)
             {
-                FieldJustification fieldJustification = this.ConvertFieldJustification(zplDataParts[2]);
-                this.VirtualPrinter.SetNextElementFieldJustification(fieldJustification);
+                FieldJustification fieldJustification = this.ConvertFieldJustification(zplDataParts[2], virtualPrinter);
+                virtualPrinter.SetNextElementFieldJustification(fieldJustification);
             }
 
-            if (this.VirtualPrinter.LabelHomePosition != null)
+            if (virtualPrinter.LabelHomePosition != null)
             {
-                x += this.VirtualPrinter.LabelHomePosition.X;
-                y += this.VirtualPrinter.LabelHomePosition.Y;
+                x += virtualPrinter.LabelHomePosition.X;
+                y += virtualPrinter.LabelHomePosition.Y;
             }
 
-            this.VirtualPrinter.SetNextElementPosition(x, y);
+            virtualPrinter.SetNextElementPosition(x, y);
 
             return null;
         }

@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label.Elements;
+﻿using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Label.ImageConverters;
 using BinaryKits.Zpl.Viewer.Helpers;
 
@@ -10,16 +10,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
     {
         private static readonly Regex commandRegex = new(@"^~DG(\w:)?(.*?\..+?),(\d+),(\d+),(.+)$", RegexOptions.Compiled);
 
-        private readonly IPrinterStorage printerStorage;
-
-        public DownloadGraphicsZplCommandAnalyzer(VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
-            : base("~DG", virtualPrinter)
-        {
-            this.printerStorage = printerStorage;
-        }
+        public DownloadGraphicsZplCommandAnalyzer() : base("~DG") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             Match commandMatch = commandRegex.Match(zplCommand);
             if (commandMatch.Success)
@@ -37,7 +31,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 ImageSharpImageConverter converter = new();
                 byte[] imageData = converter.ConvertImage(grfImageData, numberOfBytesPerRow);
 
-                this.printerStorage.AddFile(storageDevice, imageName, imageData);
+                printerStorage.AddFile(storageDevice, imageName, imageData);
             }
 
             return null;

@@ -4,36 +4,32 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class FieldSeparatorZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        private readonly ZplCommandAnalyzerBase fieldDataAnalyzer;
+        private static readonly FieldDataZplCommandAnalyzer fieldDataAnalyzer = new();
 
-        public FieldSeparatorZplCommandAnalyzer(VirtualPrinter virtualPrinter, ZplCommandAnalyzerBase fieldDataAnalyzer)
-            : base("^FS", virtualPrinter)
-        {
-            this.fieldDataAnalyzer = fieldDataAnalyzer;
-        }
+        public FieldSeparatorZplCommandAnalyzer() : base("^FS") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             // If next field number has been set and was not consumed by a field data
             // it has to be stored as a command so that it is handled when merging formats
             ZplElementBase element = null;
-            int? fieldNumber = this.VirtualPrinter.NextFieldNumber;
+            int? fieldNumber = virtualPrinter.NextFieldNumber;
             if (fieldNumber.HasValue)
             {
-                this.VirtualPrinter.ClearNextFieldNumber();
-                ZplElementBase dataElement = this.fieldDataAnalyzer.Analyze(zplCommand);
+                virtualPrinter.ClearNextFieldNumber();
+                ZplElementBase dataElement = fieldDataAnalyzer.Analyze(zplCommand, virtualPrinter, printerStorage);
                 element = new ZplFieldNumber(fieldNumber.Value, dataElement);
             }
 
-            this.VirtualPrinter.ClearNextElementPosition();
-            this.VirtualPrinter.ClearNextElementFieldBlock();
-            this.VirtualPrinter.ClearNextElementFieldData();
-            this.VirtualPrinter.ClearNextElementFieldReverse();
-            this.VirtualPrinter.ClearNextElementFieldHexadecimalIndicator();
-            this.VirtualPrinter.ClearNextElementFieldJustification();
-            this.VirtualPrinter.ClearNextFont();
-            this.VirtualPrinter.ClearComments();
+            virtualPrinter.ClearNextElementPosition();
+            virtualPrinter.ClearNextElementFieldBlock();
+            virtualPrinter.ClearNextElementFieldData();
+            virtualPrinter.ClearNextElementFieldReverse();
+            virtualPrinter.ClearNextElementFieldHexadecimalIndicator();
+            virtualPrinter.ClearNextElementFieldJustification();
+            virtualPrinter.ClearNextFont();
+            virtualPrinter.ClearComments();
 
             return element;
         }

@@ -6,11 +6,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class FieldBlockZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public FieldBlockZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FB", virtualPrinter)
-        { }
+        public FieldBlockZplCommandAnalyzer() : base("^FB")        { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
@@ -57,7 +56,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 hangingIndentOfTheSecondAndRemainingLines = tmpint;
             }
 
-            this.VirtualPrinter.SetNextElementFieldBlock(new FieldBlock
+            virtualPrinter.SetNextElementFieldBlock(new FieldBlock
             {
                 WidthOfTextBlockLine = widthOfTextBlockLine,
                 MaximumNumberOfLinesInTextBlock = maximumNumberOfLinesInTextBlock,

@@ -5,16 +5,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class DownloadObjectsZplCommandAnaylzer : ZplCommandAnalyzerBase
     {
-        private readonly IPrinterStorage printerStorage;
-
-        public DownloadObjectsZplCommandAnaylzer(VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
-            : base("~DY", virtualPrinter)
-        {
-            this.printerStorage = printerStorage;
-        }
+        public DownloadObjectsZplCommandAnaylzer() : base("~DY") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             char storageDevice = zplCommand[this.PrinterCommandPrefix.Length];
 
@@ -29,7 +23,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             // TODO: Handle case when .GRF data is downloaded using the ~DY command
             string dataHex = zplDataParts[5];
 
-            this.printerStorage.AddFile(storageDevice, objectName, ByteHelper.HexToBytes(dataHex));
+            printerStorage.AddFile(storageDevice, objectName, ByteHelper.HexToBytes(dataHex));
 
             return null;
         }

@@ -4,10 +4,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class LabelHomeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public LabelHomeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^LH", virtualPrinter) { }
+        public LabelHomeZplCommandAnalyzer() : base("^LH") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
@@ -25,7 +25,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 y = tmpint;
             }
 
-            this.VirtualPrinter.SetLabelHome(x, y);
+            virtualPrinter.SetLabelHome(x, y);
 
             return null;
         }
