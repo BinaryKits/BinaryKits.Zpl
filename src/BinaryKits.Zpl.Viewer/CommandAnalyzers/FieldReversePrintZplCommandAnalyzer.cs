@@ -4,12 +4,12 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class FieldReversePrintZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public FieldReversePrintZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FR", virtualPrinter) { }
+        public FieldReversePrintZplCommandAnalyzer() : base("^FR") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
-            this.VirtualPrinter.SetNextElementFieldReverse();
+            virtualPrinter.SetNextElementFieldReverse();
 
             return null;
         }

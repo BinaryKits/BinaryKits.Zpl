@@ -5,10 +5,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class MaxiCodeBarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public MaxiCodeBarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BD", virtualPrinter) { }
+        public MaxiCodeBarcodeZplCommandAnalyzer() : base("^BD") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
@@ -32,7 +32,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 total = tmpint;
             }
 
-            this.VirtualPrinter.SetNextElementFieldData(new MaxiCodeBarcodeFieldData
+            virtualPrinter.SetNextElementFieldData(new MaxiCodeBarcodeFieldData
             {
                 Mode = mode,
                 Position = position,

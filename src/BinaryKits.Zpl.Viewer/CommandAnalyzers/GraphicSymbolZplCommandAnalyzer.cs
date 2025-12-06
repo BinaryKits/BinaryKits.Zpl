@@ -6,18 +6,18 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class GraphicSymbolZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public GraphicSymbolZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GS", virtualPrinter) { }
+        public GraphicSymbolZplCommandAnalyzer() : base("^GS") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
-            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
 
             int tmpint;
-            int height = this.VirtualPrinter.FontHeight;
-            int width = this.VirtualPrinter.FontWidth;
+            int height = virtualPrinter.FontHeight;
+            int width = virtualPrinter.FontWidth;
 
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
@@ -30,7 +30,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
 
             //The field data are processing in the FieldDataZplCommandAnalyzer
-            this.VirtualPrinter.SetNextElementFieldData(new GraphicSymbolFieldData
+            virtualPrinter.SetNextElementFieldData(new GraphicSymbolFieldData
             {
                 FieldOrientation = fieldOrientation,
                 Height = height,

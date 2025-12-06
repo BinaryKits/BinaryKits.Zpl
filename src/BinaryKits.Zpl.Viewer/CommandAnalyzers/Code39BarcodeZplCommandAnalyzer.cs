@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
 
@@ -6,20 +6,20 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class Code39BarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public Code39BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^B3", virtualPrinter) { }
+        public Code39BarcodeZplCommandAnalyzer() : base("^B3") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
             bool mod43CheckDigit = false;
-            int height = this.VirtualPrinter.BarcodeInfo.Height;
+            int height = virtualPrinter.BarcodeInfo.Height;
             bool printInterpretationLine = true;
             bool printInterpretationLineAboveCode = false;
 
-            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
             if (zplDataParts.Length > 1)
             {
                 mod43CheckDigit = this.ConvertBoolean(zplDataParts[1]);
@@ -41,7 +41,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
 
             //The field data are processing in the FieldDataZplCommandAnalyzer
-            this.VirtualPrinter.SetNextElementFieldData(new Code39BarcodeFieldData
+            virtualPrinter.SetNextElementFieldData(new Code39BarcodeFieldData
             {
                 FieldOrientation = fieldOrientation,
                 Height = height,

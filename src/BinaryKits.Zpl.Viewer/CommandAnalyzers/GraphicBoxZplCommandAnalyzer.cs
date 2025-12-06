@@ -5,10 +5,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class GraphicBoxZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public GraphicBoxZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GB", virtualPrinter) { }
+        public GraphicBoxZplCommandAnalyzer() : base("^GB") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             int tmpint;
             int width = 1;
@@ -22,13 +22,13 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             bool bottomToTop = false;
             bool useDefaultPosition = false;
 
-            if (this.VirtualPrinter.NextElementPosition != null)
+            if (virtualPrinter.NextElementPosition != null)
             {
-                x = this.VirtualPrinter.NextElementPosition.X;
-                y = this.VirtualPrinter.NextElementPosition.Y;
+                x = virtualPrinter.NextElementPosition.X;
+                y = virtualPrinter.NextElementPosition.Y;
 
-                bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
-                useDefaultPosition = this.VirtualPrinter.NextElementPosition.UseDefaultPosition;
+                bottomToTop = virtualPrinter.NextElementPosition.CalculateFromBottom;
+                useDefaultPosition = virtualPrinter.NextElementPosition.UseDefaultPosition;
             }
 
             string[] zplDataParts = this.SplitCommand(zplCommand);
@@ -62,7 +62,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 cornerRounding = tmpint;
             }
 
-            bool reversePrint = this.VirtualPrinter.NextElementFieldReverse || this.VirtualPrinter.LabelReverse;
+            bool reversePrint = virtualPrinter.NextElementFieldReverse || virtualPrinter.LabelReverse;
 
             return new ZplGraphicBox(x, y, width, height, borderThickness, lineColor, cornerRounding, reversePrint, bottomToTop, useDefaultPosition);
         }

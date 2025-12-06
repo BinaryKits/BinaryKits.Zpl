@@ -5,10 +5,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class GraphicDiagonalLineZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public GraphicDiagonalLineZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^GD", virtualPrinter) { }
+        public GraphicDiagonalLineZplCommandAnalyzer() : base("^GD") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             int tmpint;
             int width = 3;
@@ -22,13 +22,13 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             bool bottomToTop = false;
             bool useDefaultPosition = false;
 
-            if (this.VirtualPrinter.NextElementPosition != null)
+            if (virtualPrinter.NextElementPosition != null)
             {
-                x = this.VirtualPrinter.NextElementPosition.X;
-                y = this.VirtualPrinter.NextElementPosition.Y;
+                x = virtualPrinter.NextElementPosition.X;
+                y = virtualPrinter.NextElementPosition.Y;
 
-                bottomToTop = this.VirtualPrinter.NextElementPosition.CalculateFromBottom;
-                useDefaultPosition = this.VirtualPrinter.NextElementPosition.UseDefaultPosition;
+                bottomToTop = virtualPrinter.NextElementPosition.CalculateFromBottom;
+                useDefaultPosition = virtualPrinter.NextElementPosition.UseDefaultPosition;
             }
 
             string[] zplDataParts = this.SplitCommand(zplCommand);
@@ -66,7 +66,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 }
             }
 
-            bool reversePrint = this.VirtualPrinter.NextElementFieldReverse || this.VirtualPrinter.LabelReverse;
+            bool reversePrint = virtualPrinter.NextElementFieldReverse || virtualPrinter.LabelReverse;
 
             return new ZplGraphicDiagonalLine(x, y, width, height, borderThickness, lineColor, rightLeaningDiagonal, reversePrint, bottomToTop, useDefaultPosition);
         }

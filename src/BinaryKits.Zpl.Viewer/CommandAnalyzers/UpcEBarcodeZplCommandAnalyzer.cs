@@ -6,20 +6,20 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class UpcEBarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public UpcEBarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^B9", virtualPrinter) { }
+        public UpcEBarcodeZplCommandAnalyzer() : base("^B9") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
-            int height = this.VirtualPrinter.BarcodeInfo.Height;
+            int height = virtualPrinter.BarcodeInfo.Height;
             bool printInterpretationLine = true;
             bool printInterpretationLineAboveCode = false;
             bool printCheckDigit = true;
 
-            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
                 height = tmpint;
@@ -40,7 +40,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 printCheckDigit = this.ConvertBoolean(zplDataParts[4]);
             }
 
-            this.VirtualPrinter.SetNextElementFieldData(new UpcEBarcodeFieldData
+            virtualPrinter.SetNextElementFieldData(new UpcEBarcodeFieldData
             {
                 FieldOrientation = fieldOrientation,
                 Height = height,

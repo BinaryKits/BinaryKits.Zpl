@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 
 namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
@@ -6,12 +6,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
     public abstract class ZplCommandAnalyzerBase : IZplCommandAnalyzer
     {
         public string PrinterCommandPrefix { get; private set; }
-        public VirtualPrinter VirtualPrinter { get; private set; }
 
-        public ZplCommandAnalyzerBase(string prefix, VirtualPrinter virtualPrinter)
+        public ZplCommandAnalyzerBase(string prefix)
         {
             this.PrinterCommandPrefix = prefix;
-            this.VirtualPrinter = virtualPrinter;
         }
 
         ///<inheritdoc/>
@@ -21,7 +19,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         }
 
         ///<inheritdoc/>
-        public abstract ZplElementBase Analyze(string zplCommand);
+        public abstract ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage);
 
         protected string[] SplitCommand(string zplCommand, int dataStartIndex = 0)
         {
@@ -29,7 +27,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             return zplCommandData.Trim().Split(',');
         }
 
-        protected FieldOrientation ConvertFieldOrientation(string fieldOrientation)
+        protected FieldOrientation ConvertFieldOrientation(string fieldOrientation, VirtualPrinter virtualPrinter)
         {
             return fieldOrientation switch
             {
@@ -37,7 +35,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 "R" => FieldOrientation.Rotated90,
                 "I" => FieldOrientation.Rotated180,
                 "B" => FieldOrientation.Rotated270,
-                _ => this.VirtualPrinter.FieldOrientation,
+                _ => virtualPrinter.FieldOrientation,
             };
         }
 
@@ -55,14 +53,14 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             };
         }
 
-        protected FieldJustification ConvertFieldJustification(string fieldJustification)
+        protected FieldJustification ConvertFieldJustification(string fieldJustification,VirtualPrinter virtualPrinter)
         {
             return fieldJustification switch
             {
                 "0" => FieldJustification.Left,
                 "1" => FieldJustification.Right,
                 "2" => FieldJustification.Auto,
-                _ => this.VirtualPrinter.FieldJustification,
+                _ => virtualPrinter.FieldJustification,
             };
         }
 

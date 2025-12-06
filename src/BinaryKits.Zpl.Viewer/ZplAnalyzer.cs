@@ -14,11 +14,60 @@ namespace BinaryKits.Zpl.Viewer
     {
         private static readonly Regex verticalWhitespaceRegex = new(@"[\n\v\f\r]", RegexOptions.Compiled);
 
+        /// <summary>
+        /// The array of <see cref="IZplCommandAnalyzer"/> to analyze ZPL text
+        /// </summary>
+        public static IZplCommandAnalyzer[] Analyzers { get; } = [
+            new FieldDataZplCommandAnalyzer(),
+            new AztecBarcodeZplCommandAnalyzer(),
+            new BarCodeFieldDefaultZplCommandAnalyzer(),
+            new ChangeAlphanumericDefaultFontZplCommandAnalyzer(),
+            new ChangeInternationalFontCommandAnalyzer(),
+            new Code39BarcodeZplCommandAnalyzer(),
+            new Code93BarcodeZplCommandAnalyzer(),
+            new Code128BarcodeZplCommandAnalyzer(),
+            new CodeEAN13BarcodeZplCommandAnalyzer(),
+            new CommentZplCommandAnalyzer(),
+            new DataMatrixZplCommandAnalyzer(),
+            new DownloadFormatCommandAnalyzer(),
+            new DownloadGraphicsZplCommandAnalyzer(),
+            new DownloadObjectsZplCommandAnaylzer(),
+            new FieldBlockZplCommandAnalyzer(),
+            new FieldHexadecimalZplCommandAnalyzer(),
+            new FieldOrientationZplCommandAnalyzer(),
+            new FieldNumberCommandAnalyzer(),
+            new FieldVariableZplCommandAnalyzer(),
+            new FieldReversePrintZplCommandAnalyzer(),
+            new LabelReversePrintZplCommandAnalyzer(),
+            new FieldSeparatorZplCommandAnalyzer(),
+            new FieldTypesetZplCommandAnalyzer(),
+            new FieldOriginZplCommandAnalzer(),
+            new GraphicBoxZplCommandAnalyzer(),
+            new GraphicCircleZplCommandAnalyzer(),
+            new GraphicDiagonalLineZplCommandAnalyzer(),
+            new GraphicEllipseZplCommandAnalyzer(),
+            new GraphicFieldZplCommandAnalyzer(),
+            new GraphicSymbolZplCommandAnalyzer(),
+            new Interleaved2of5BarcodeZplCommandAnalyzer(),
+            new ImageMoveZplCommandAnalyzer(),
+            new LabelHomeZplCommandAnalyzer(),
+            new MaxiCodeBarcodeZplCommandAnalyzer(),
+            new QrCodeBarcodeZplCommandAnalyzer(),
+            new UpcABarcodeZplCommandAnalyzer(),
+            new UpcEBarcodeZplCommandAnalyzer(),
+            new UpcExtensionBarcodeZplCommandAnalyzer(),
+            new PDF417ZplCommandAnalyzer(),
+            new RecallFormatCommandAnalyzer(),
+            new RecallGraphicZplCommandAnalyzer(),
+            new ScalableBitmappedFontZplCommandAnalyzer(),
+            new AnsiCodabarBarcodeZplCommandAnalyzer(),
+        ];
+
         private readonly VirtualPrinter virtualPrinter;
         private readonly IPrinterStorage printerStorage;
         private readonly IFormatMerger formatMerger;
-        private readonly string labelStartCommand = "^XA";
-        private readonly string labelEndCommand = "^XZ";
+        private const string labelStartCommand = "^XA";
+        private const string labelEndCommand = "^XZ";
 
         public ZplAnalyzer(IPrinterStorage printerStorage, IFormatMerger formatMerger = null)
         {
@@ -33,53 +82,6 @@ namespace BinaryKits.Zpl.Viewer
             List<string> unknownCommands = [];
             List<string> errors = [];
 
-            FieldDataZplCommandAnalyzer fieldDataAnalyzer = new(this.virtualPrinter);
-            List<IZplCommandAnalyzer> elementAnalyzers = [
-                fieldDataAnalyzer,
-                new AztecBarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new BarCodeFieldDefaultZplCommandAnalyzer(this.virtualPrinter),
-                new ChangeAlphanumericDefaultFontZplCommandAnalyzer(this.virtualPrinter),
-                new ChangeInternationalFontCommandAnalyzer(this.virtualPrinter),
-                new Code39BarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new Code93BarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new Code128BarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new CodeEAN13BarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new CommentZplCommandAnalyzer(this.virtualPrinter),
-                new DataMatrixZplCommandAnalyzer(this.virtualPrinter),
-                new DownloadFormatCommandAnalyzer(this.virtualPrinter),
-                new DownloadGraphicsZplCommandAnalyzer(this.virtualPrinter, this.printerStorage),
-                new DownloadObjectsZplCommandAnaylzer(this.virtualPrinter, this.printerStorage),
-                new FieldBlockZplCommandAnalyzer(this.virtualPrinter),
-                new FieldHexadecimalZplCommandAnalyzer(this.virtualPrinter),
-                new FieldOrientationZplCommandAnalyzer(this.virtualPrinter),
-                new FieldNumberCommandAnalyzer(this.virtualPrinter),
-                new FieldVariableZplCommandAnalyzer(this.virtualPrinter),
-                new FieldReversePrintZplCommandAnalyzer(this.virtualPrinter),
-                new LabelReversePrintZplCommandAnalyzer(this.virtualPrinter),
-                new FieldSeparatorZplCommandAnalyzer(this.virtualPrinter, fieldDataAnalyzer),
-                new FieldTypesetZplCommandAnalyzer(this.virtualPrinter),
-                new FieldOriginZplCommandAnalzer(this.virtualPrinter),
-                new GraphicBoxZplCommandAnalyzer(this.virtualPrinter),
-                new GraphicCircleZplCommandAnalyzer(this.virtualPrinter),
-                new GraphicDiagonalLineZplCommandAnalyzer(this.virtualPrinter),
-                new GraphicEllipseZplCommandAnalyzer(this.virtualPrinter),
-                new GraphicFieldZplCommandAnalyzer(this.virtualPrinter),
-                new GraphicSymbolZplCommandAnalyzer(this.virtualPrinter),
-                new Interleaved2of5BarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new ImageMoveZplCommandAnalyzer(this.virtualPrinter),
-                new LabelHomeZplCommandAnalyzer(this.virtualPrinter),
-                new MaxiCodeBarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new QrCodeBarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new UpcABarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new UpcEBarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new UpcExtensionBarcodeZplCommandAnalyzer(this.virtualPrinter),
-                new PDF417ZplCommandAnalyzer(this.virtualPrinter),
-                new RecallFormatCommandAnalyzer(this.virtualPrinter),
-                new RecallGraphicZplCommandAnalyzer(this.virtualPrinter),
-                new ScalableBitmappedFontZplCommandAnalyzer(this.virtualPrinter),
-                new AnsiCodabarBarcodeZplCommandAnalyzer(this.virtualPrinter),
-            ];
-
             List<LabelInfo> labelInfos = [];
 
             List<ZplElementBase> elements = [];
@@ -87,14 +89,14 @@ namespace BinaryKits.Zpl.Viewer
             {
                 string currentCommand = zplCommands[i];
 
-                if (this.labelStartCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
+                if (labelStartCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     elements.Clear();
                     this.virtualPrinter.ClearNextDownloadFormatName();
                     continue;
                 }
 
-                if (this.labelEndCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
+                if (labelEndCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     labelInfos.Add(new LabelInfo
                     {
@@ -104,7 +106,7 @@ namespace BinaryKits.Zpl.Viewer
                     continue;
                 }
 
-                IEnumerable<IZplCommandAnalyzer> validAnalyzers = elementAnalyzers.Where(o => o.CanAnalyze(currentCommand));
+                IEnumerable<IZplCommandAnalyzer> validAnalyzers = Analyzers.Where(o => o.CanAnalyze(currentCommand));
 
                 if (!validAnalyzers.Any())
                 {
@@ -114,7 +116,7 @@ namespace BinaryKits.Zpl.Viewer
 
                 try
                 {
-                    elements.AddRange(validAnalyzers.Select(analyzer => analyzer.Analyze(currentCommand)).Where(o => o != null));
+                    elements.AddRange(validAnalyzers.Select(analyzer => analyzer.Analyze(currentCommand, this.virtualPrinter, this.printerStorage)).Where(o => o != null));
                 }
                 catch (Exception exception)
                 {

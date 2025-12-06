@@ -8,9 +8,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
     public class ChangeInternationalFontCommandAnalyzer : ZplCommandAnalyzerBase
     {
 
-        public ChangeInternationalFontCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^CI", virtualPrinter) { }
+        public ChangeInternationalFontCommandAnalyzer() : base("^CI") { }
 
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string charSet = zplCommand.Substring(this.PrinterCommandPrefix.Length);
 
