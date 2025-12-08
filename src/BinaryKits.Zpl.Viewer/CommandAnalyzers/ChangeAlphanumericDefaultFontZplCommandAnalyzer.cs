@@ -4,14 +4,14 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class ChangeAlphanumericDefaultFontZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public ChangeAlphanumericDefaultFontZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^CF", virtualPrinter) { }
+        public ChangeAlphanumericDefaultFontZplCommandAnalyzer() : base("^CF") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
-            this.VirtualPrinter.SetFontName(zplDataParts[0]);
+            virtualPrinter.SetFontName(zplDataParts[0]);
 
             int tmpint;
             int fontHeight = 9;
@@ -27,8 +27,8 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 fontWidth = tmpint;
             }
 
-            this.VirtualPrinter.SetFontHeight(fontHeight);
-            this.VirtualPrinter.SetFontWidth(fontWidth);
+            virtualPrinter.SetFontHeight(fontHeight);
+            virtualPrinter.SetFontWidth(fontWidth);
 
             return null;
         }

@@ -8,10 +8,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
     {
         private static readonly Regex commandRegex = new(@"^\^DF(\w:)?(.*?)?(\..+?)?$", RegexOptions.Compiled);
 
-        public DownloadFormatCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^DF", virtualPrinter) { }
+        public DownloadFormatCommandAnalyzer() : base("^DF") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             Match commandMatch = commandRegex.Match(zplCommand);
             if (commandMatch.Success)
@@ -19,7 +19,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 char storageDevice = commandMatch.Groups[1].Success ? commandMatch.Groups[1].Value[0] : 'R';
                 string formatName = commandMatch.Groups[2].Value;
 
-                this.VirtualPrinter.SetNextDownloadFormatName(formatName);
+                virtualPrinter.SetNextDownloadFormatName(formatName);
             }
 
             return null;

@@ -18,7 +18,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         /// Analyzes the command a returns the corresponding ZPL Element.
         /// </summary>
         /// <param name="zplCommand">The command to analyze.</param>
+        /// <param name="virtualPrinter">The <see cref="VirtualPrinter"/>.</param>
+        /// <param name="printerStorage">The <see cref="IPrinterStorage"/>.</param>
         /// <returns></returns>
-        ZplElementBase Analyze(string zplCommand);
+        ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage);
     }
 }

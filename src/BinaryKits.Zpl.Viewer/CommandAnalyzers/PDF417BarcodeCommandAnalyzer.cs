@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
 
@@ -9,9 +9,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class PDF417ZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public PDF417ZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^B7", virtualPrinter) { }
+        public PDF417ZplCommandAnalyzer() : base("^B7") { }
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
@@ -28,9 +28,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
              * compact
             */
 
-            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
 
-            int height = this.VirtualPrinter.BarcodeInfo.Height;
+            int height = virtualPrinter.BarcodeInfo.Height;
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
                 height = tmpint;
@@ -71,7 +71,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
 
             //The field data are processing in the FieldDataZplCommandAnalyzer
-            this.VirtualPrinter.SetNextElementFieldData(new PDF417FieldData
+            virtualPrinter.SetNextElementFieldData(new PDF417FieldData
             {
                 FieldOrientation = fieldOrientation,
                 Height = height,

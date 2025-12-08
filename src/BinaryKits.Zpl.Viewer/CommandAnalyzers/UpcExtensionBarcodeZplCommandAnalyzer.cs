@@ -6,19 +6,19 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class UpcExtensionBarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public UpcExtensionBarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BS", virtualPrinter) { }
+        public UpcExtensionBarcodeZplCommandAnalyzer() : base("^BS") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
-            int height = this.VirtualPrinter.BarcodeInfo.Height;
+            int height = virtualPrinter.BarcodeInfo.Height;
             bool printInterpretationLine = true;
             bool printInterpretationLineAboveCode = true;
 
-            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
                 height = tmpint;
@@ -34,7 +34,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 printInterpretationLineAboveCode = this.ConvertBoolean(zplDataParts[3], "Y");
             }
 
-            this.VirtualPrinter.SetNextElementFieldData(new UpcExtensionBarcodeFieldData
+            virtualPrinter.SetNextElementFieldData(new UpcExtensionBarcodeFieldData
             {
                 FieldOrientation = fieldOrientation,
                 Height = height,

@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Models;
 
@@ -6,17 +6,17 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class Interleaved2of5BarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public Interleaved2of5BarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^B2", virtualPrinter) { }
+        public Interleaved2of5BarcodeZplCommandAnalyzer() : base("^B2") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
-            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
 
             int tmpint;
-            int height = this.VirtualPrinter.BarcodeInfo.Height;
+            int height = virtualPrinter.BarcodeInfo.Height;
             bool printInterpretationLine = true;
             bool printInterpretationLineAboveCode = false;
             bool calculateAndPrintMod10CheckDigit = false;
@@ -42,7 +42,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
 
             //The field data are processing in the FieldDataZplCommandAnalyzer
-            this.VirtualPrinter.SetNextElementFieldData(new Interleaved2of5BarcodeFieldData
+            virtualPrinter.SetNextElementFieldData(new Interleaved2of5BarcodeFieldData
             {
                 FieldOrientation = fieldOrientation,
                 Height = height,

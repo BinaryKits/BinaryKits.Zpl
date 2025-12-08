@@ -6,15 +6,15 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class AztecBarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public AztecBarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BO", virtualPrinter) { }
+        public AztecBarcodeZplCommandAnalyzer() : base("^BO") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
-            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
             int magnificationFactor = 2;
             bool extendedChannel = false;
             int errorControl = 0;
@@ -52,7 +52,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 idField = zplDataParts[6];
             }
 
-            this.VirtualPrinter.SetNextElementFieldData(new AztecBarcodeFieldData
+            virtualPrinter.SetNextElementFieldData(new AztecBarcodeFieldData
             {
                 FieldOrientation = fieldOrientation,
                 MagnificationFactor = magnificationFactor,

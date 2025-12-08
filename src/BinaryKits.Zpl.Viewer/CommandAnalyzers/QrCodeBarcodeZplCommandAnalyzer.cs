@@ -6,14 +6,14 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class QrCodeBarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public QrCodeBarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BQ", virtualPrinter) { }
+        public QrCodeBarcodeZplCommandAnalyzer() : base("^BQ") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
-            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
 
             int tmpint;
             int model = 2;
@@ -47,7 +47,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 maskValue = tmpint;
             }
 
-            this.VirtualPrinter.SetNextElementFieldData(new QrCodeBarcodeFieldData
+            virtualPrinter.SetNextElementFieldData(new QrCodeBarcodeFieldData
             {
                 Model = model,
                 FieldOrientation = fieldOrientation,

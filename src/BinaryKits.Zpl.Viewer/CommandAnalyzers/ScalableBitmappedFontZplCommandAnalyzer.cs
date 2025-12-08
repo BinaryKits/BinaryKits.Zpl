@@ -5,16 +5,16 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class ScalableBitmappedFontZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public ScalableBitmappedFontZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^A", virtualPrinter) { }
+        public ScalableBitmappedFontZplCommandAnalyzer() : base("^A") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string fontName = zplCommand[this.PrinterCommandPrefix.Length].ToString();
 
             string[] zplDataParts = this.SplitCommand(zplCommand, 1);
 
-            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
 
             int tmpint;
             int? parsedHeight = null;
@@ -30,10 +30,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 parsedWidth = tmpint;
             }
 
-            int fontHeight = parsedHeight ?? this.VirtualPrinter.FontHeight;
-            int fontWidth = parsedWidth ?? this.VirtualPrinter.FontWidth;
+            int fontHeight = parsedHeight ?? virtualPrinter.FontHeight;
+            int fontWidth = parsedWidth ?? virtualPrinter.FontWidth;
 
-            this.VirtualPrinter.SetNextFont(fontName, fieldOrientation, fontWidth, fontHeight);
+            virtualPrinter.SetNextFont(fontName, fieldOrientation, fontWidth, fontHeight);
 
             return null;
         }

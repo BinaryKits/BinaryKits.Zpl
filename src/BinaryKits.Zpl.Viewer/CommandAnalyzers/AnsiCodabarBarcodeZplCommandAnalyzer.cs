@@ -6,20 +6,20 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class AnsiCodabarBarcodeZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public AnsiCodabarBarcodeZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BK", virtualPrinter) { }
+        public AnsiCodabarBarcodeZplCommandAnalyzer() : base("^BK") { }
 
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
             bool checkDigit = false;
-            int height = this.VirtualPrinter.BarcodeInfo.Height;
+            int height = virtualPrinter.BarcodeInfo.Height;
             bool printInterpretationLine = true;
             bool printInterpretationLineAboveCode = false;
             char startCharacter = 'A';
             char stopCharacter = 'A';
 
-            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0]);
+            FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
 
             if (zplDataParts.Length > 1)
             {
@@ -52,7 +52,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             }
 
             //The field data are processing in the FieldDataZplCommandAnalyzer
-            this.VirtualPrinter.SetNextElementFieldData(new AnsiCodabarFieldData
+            virtualPrinter.SetNextElementFieldData(new AnsiCodabarFieldData
             {
                 FieldOrientation = fieldOrientation,
                 StartCharacter = startCharacter,

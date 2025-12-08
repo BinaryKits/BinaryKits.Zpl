@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.ElementDrawers;
 using BinaryKits.Zpl.Viewer.Helpers;
@@ -14,19 +14,10 @@ namespace BinaryKits.Zpl.Viewer
 {
     public class ZplElementDrawer
     {
-        private static readonly int pdfDpi = 72;
-        private static readonly float zplDpi = 203.2f;
-        private static readonly float pdfScaleFactor = pdfDpi / zplDpi;
-
-        private readonly DrawerOptions drawerOptions;
-        private readonly IPrinterStorage printerStorage;
-        private readonly IElementDrawer[] elementDrawers;
-
-        public ZplElementDrawer(IPrinterStorage printerStorage, DrawerOptions drawerOptions = null)
-        {
-            this.drawerOptions = drawerOptions ?? new DrawerOptions();
-            this.printerStorage = printerStorage;
-            this.elementDrawers = [
+        /// <summary>
+        /// The array of <see cref="IElementDrawer"/> to draw <see cref="ZplElementBase"/>
+        /// </summary>
+        public static IElementDrawer[] ElementDrawers { get; } = [
                 new AztecBarcodeElementDrawer(),
                 new Barcode128ElementDrawer(),
                 new Barcode39ElementDrawer(),
@@ -52,6 +43,18 @@ namespace BinaryKits.Zpl.Viewer
                 new TextFieldElementDrawer(),
                 new BarcodeAnsiCodabarElementDrawer(),
             ];
+
+        private static readonly int pdfDpi = 72;
+        private static readonly float zplDpi = 203.2f;
+        private static readonly float pdfScaleFactor = pdfDpi / zplDpi;
+
+        private readonly DrawerOptions drawerOptions;
+        private readonly IPrinterStorage printerStorage;
+
+        public ZplElementDrawer(IPrinterStorage printerStorage, DrawerOptions drawerOptions = null)
+        {
+            this.drawerOptions = drawerOptions ?? new DrawerOptions();
+            this.printerStorage = printerStorage;
         }
 
         /// <summary>
@@ -145,7 +148,7 @@ namespace BinaryKits.Zpl.Viewer
                     continue;
                 }
 
-                IElementDrawer drawer = this.elementDrawers.SingleOrDefault(o => o.CanDraw(element));
+                IElementDrawer drawer = ElementDrawers.SingleOrDefault(o => o.CanDraw(element));
                 if (drawer == null)
                 {
                     continue;
@@ -302,7 +305,7 @@ namespace BinaryKits.Zpl.Viewer
                     continue;
                 }
 
-                IElementDrawer drawer = this.elementDrawers.SingleOrDefault(o => o.CanDraw(element));
+                IElementDrawer drawer = ElementDrawers.SingleOrDefault(o => o.CanDraw(element));
                 if (drawer == null)
                 {
                     continue;

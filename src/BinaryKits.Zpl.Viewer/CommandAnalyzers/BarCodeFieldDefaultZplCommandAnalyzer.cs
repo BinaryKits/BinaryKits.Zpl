@@ -4,10 +4,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class BarCodeFieldDefaultZplCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public BarCodeFieldDefaultZplCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^BY", virtualPrinter) { }
+        public BarCodeFieldDefaultZplCommandAnalyzer() : base("^BY") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
@@ -32,9 +32,9 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 barcodeHeight = tmpint;
             }
 
-            this.VirtualPrinter.SetBarcodeModuleWidth(moduleWidth);
-            this.VirtualPrinter.SetBarcodeWideBarToNarrowBarWidthRatio(wideBarToNarrowBarWidthRatio);
-            this.VirtualPrinter.SetBarcodeHeight(barcodeHeight);
+            virtualPrinter.SetBarcodeModuleWidth(moduleWidth);
+            virtualPrinter.SetBarcodeWideBarToNarrowBarWidthRatio(wideBarToNarrowBarWidthRatio);
+            virtualPrinter.SetBarcodeHeight(barcodeHeight);
 
             return null;
         }

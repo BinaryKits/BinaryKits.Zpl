@@ -4,10 +4,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 {
     public class FieldNumberCommandAnalyzer : ZplCommandAnalyzerBase
     {
-        public FieldNumberCommandAnalyzer(VirtualPrinter virtualPrinter) : base("^FN", virtualPrinter) { }
+        public FieldNumberCommandAnalyzer() : base("^FN") { }
 
         ///<inheritdoc/>
-        public override ZplElementBase Analyze(string zplCommand)
+        public override ZplElementBase Analyze(string zplCommand, VirtualPrinter virtualPrinter, IPrinterStorage printerStorage)
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
@@ -19,7 +19,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 fieldNumber = tmpint;
             }
 
-            this.VirtualPrinter.SetNextFieldNumber(fieldNumber);
+            virtualPrinter.SetNextFieldNumber(fieldNumber);
             return null;
         }
     }
