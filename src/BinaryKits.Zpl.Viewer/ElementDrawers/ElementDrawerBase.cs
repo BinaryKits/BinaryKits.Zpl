@@ -7,6 +7,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public abstract class ElementDrawerBase : IElementDrawer
     {
+        /// <summary>
+        /// The font to use if the specified font is not found.
+        /// </summary>
+        protected const string FallbackFont = "A";
+
         internal IPrinterStorage printerStorage;
         internal SKCanvas skCanvas;
 
