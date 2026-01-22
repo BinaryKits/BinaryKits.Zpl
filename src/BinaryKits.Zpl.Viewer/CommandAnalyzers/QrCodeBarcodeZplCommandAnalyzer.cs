@@ -30,10 +30,10 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             {
                 magnificationFactor = tmpint;
 
-                if (magnificationFactor > 10)
+                if (magnificationFactor > 100)
                 {
-                    //TODO: Add validation message max value is 10
-                    magnificationFactor = 10;
+                    // TODO: Add validation message max value is 100
+                    magnificationFactor = 100;
                 }
             }
 

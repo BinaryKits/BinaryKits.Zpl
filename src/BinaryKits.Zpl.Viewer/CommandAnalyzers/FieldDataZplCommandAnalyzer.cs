@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Elements;
 using BinaryKits.Zpl.Viewer.Models;
 
 using System;
@@ -87,7 +88,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 {
                     (ErrorCorrectionLevel errorCorrection, string parsedText) = this.ParseQrCodeFieldData(qrCode, text);
                     // N.B.: always pass Field Orientation Normal to QR codes; the ZPL II standard does not allow rotation
-                    return new ZplQrCode(parsedText, x, y, qrCode.Model, qrCode.MagnificationFactor, errorCorrection, qrCode.MaskValue, FieldOrientation.Normal, hexadecimalIndicator, bottomToTop, useDefaultPosition);
+                    return new ZplQrCodeViewer(parsedText, x, y, qrCode.Model, qrCode.MagnificationFactor, errorCorrection, qrCode.MaskValue, FieldOrientation.Normal, hexadecimalIndicator, bottomToTop, useDefaultPosition, virtualPrinter.BarcodeInfo.Height);
                 }
                 else if (virtualPrinter.NextElementFieldData is UpcABarcodeFieldData upcA)
                 {

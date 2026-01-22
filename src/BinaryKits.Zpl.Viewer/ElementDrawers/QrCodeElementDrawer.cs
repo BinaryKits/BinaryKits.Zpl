@@ -1,5 +1,6 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
+using BinaryKits.Zpl.Viewer.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
@@ -55,6 +56,10 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 }
 
                 int verticalQuietZone = 10;
+                if (qrcode is ZplQrCodeViewer qrCodeDrawing)
+                {
+                    verticalQuietZone = qrCodeDrawing.VerticalQuietZone;
+                }
 
                 QRCodeWriter writer = new();
                 QrCodeEncodingOptions encodingOptions = new()
@@ -88,6 +93,5 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 _ => ZXing.QrCode.Internal.ErrorCorrectionLevel.M
             };
         }
-
     }
 }
