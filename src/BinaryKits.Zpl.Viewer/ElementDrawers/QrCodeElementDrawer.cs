@@ -1,6 +1,5 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
-using BinaryKits.Zpl.Viewer.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
 using SkiaSharp;
@@ -23,13 +22,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
-            return element is ZplQrCodeViewer;
+            return element is ZplQrCode;
         }
 
         ///<inheritdoc/>
         public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
-            if (element is ZplQrCodeViewer qrcode)
+            if (element is ZplQrCode qrcode)
             {
                 float x = qrcode.PositionX;
                 float y = qrcode.PositionY;
