@@ -23,13 +23,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         ///<inheritdoc/>
         public override bool CanDraw(ZplElementBase element)
         {
-            return element is ZplQrCode;
+            return element is ZplQrCodeViewer;
         }
 
         ///<inheritdoc/>
         public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
-            if (element is ZplQrCode qrcode)
+            if (element is ZplQrCodeViewer qrcode)
             {
                 float x = qrcode.PositionX;
                 float y = qrcode.PositionY;
@@ -55,11 +55,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     gs1Mode = true;
                 }
 
-                int verticalQuietZone = 10;
-                if (qrcode is ZplQrCodeViewer qrCodeDrawing)
-                {
-                    verticalQuietZone = qrCodeDrawing.VerticalQuietZone;
-                }
+                int verticalQuietZone = qrcode.VerticalQuietZone;
 
                 QRCodeWriter writer = new();
                 QrCodeEncodingOptions encodingOptions = new()
