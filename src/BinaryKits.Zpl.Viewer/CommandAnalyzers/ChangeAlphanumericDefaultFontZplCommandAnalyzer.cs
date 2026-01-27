@@ -11,11 +11,18 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
         {
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
-            virtualPrinter.SetFontName(zplDataParts[0]);
-
             int tmpint;
             int fontHeight = 9;
             int fontWidth = 0;
+
+            if (zplDataParts.Length > 0)
+            {
+                string newFont = zplDataParts[0];
+                if (!string.IsNullOrEmpty(newFont))
+                {
+                    virtualPrinter.SetFontName(newFont);
+                }
+            }
 
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
