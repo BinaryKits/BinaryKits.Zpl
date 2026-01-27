@@ -13,7 +13,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
             bool checkDigit = false;
-            int height = virtualPrinter.BarcodeInfo.Height;
+            int? height = null;
             bool printInterpretationLine = true;
             bool printInterpretationLineAboveCode = false;
             char startCharacter = 'A';

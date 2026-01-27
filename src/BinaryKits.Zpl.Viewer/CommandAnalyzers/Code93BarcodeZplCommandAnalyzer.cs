@@ -15,7 +15,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             int tmpint;
             bool printCheckDigit = false;
-            int height = virtualPrinter.BarcodeInfo.Height;
+            int? height = null;
             bool printInterpretationLine = true;
             bool printInterpretationLineAboveCode = false;
 
