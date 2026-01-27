@@ -50,7 +50,17 @@ namespace BinaryKits.Zpl.Viewer
 
         public void SetNextElementFieldData(FieldDataBase fieldData)
         {
+            if (this.NextElementFieldData != null)
+            {
+                fieldData.Content = this.NextElementFieldData.Content;
+            }
             this.NextElementFieldData = fieldData;
+        }
+
+        public void SetNextElementFieldDataContent(string content)
+        {
+            this.NextElementFieldData ??= new FieldDataBase();
+            this.NextElementFieldData.Content = content;
         }
 
         public void ClearNextElementFieldData()
