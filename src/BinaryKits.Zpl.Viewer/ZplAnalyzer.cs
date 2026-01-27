@@ -68,6 +68,8 @@ namespace BinaryKits.Zpl.Viewer
         private readonly IFormatMerger formatMerger;
         private const string labelStartCommand = "^XA";
         private const string labelEndCommand = "^XZ";
+        private const string fieldSeparatorCommand = "^FS";
+        private const string commentCommand = "^FX";
 
         public ZplAnalyzer(IPrinterStorage printerStorage, IFormatMerger formatMerger = null)
         {
@@ -85,6 +87,7 @@ namespace BinaryKits.Zpl.Viewer
             List<LabelInfo> labelInfos = [];
 
             List<ZplElementBase> elements = [];
+            string lastCommand = null;
             for (int i = 0; i < zplCommands.Length; i++)
             {
                 string currentCommand = zplCommands[i];
@@ -98,6 +101,12 @@ namespace BinaryKits.Zpl.Viewer
 
                 if (labelEndCommand.Equals(currentCommand.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
+                    // Last real command must be ^FS. Otherwise we evaluate the field forcibly
+                    if (!fieldSeparatorCommand.Equals(lastCommand))
+                    {
+                        this.Analyze(fieldSeparatorCommand, elements, unknownCommands, errors);
+                    }
+
                     labelInfos.Add(new LabelInfo
                     {
                         DownloadFormatName = this.virtualPrinter.NextDownloadFormatName,
@@ -106,21 +115,12 @@ namespace BinaryKits.Zpl.Viewer
                     continue;
                 }
 
-                IEnumerable<IZplCommandAnalyzer> validAnalyzers = Analyzers.Where(o => o.CanAnalyze(currentCommand));
+                this.Analyze(currentCommand, elements, unknownCommands, errors);
 
-                if (!validAnalyzers.Any())
+                // Ignore comments when checking whether the last command is ^FS
+                if (!currentCommand.Equals(commentCommand))
                 {
-                    unknownCommands.Add(currentCommand);
-                    continue;
-                }
-
-                try
-                {
-                    elements.AddRange(validAnalyzers.Select(analyzer => analyzer.Analyze(currentCommand, this.virtualPrinter, this.printerStorage)).Where(o => o != null));
-                }
-                catch (Exception exception)
-                {
-                    errors.Add($"Cannot analyze command {currentCommand} {exception}");
+                    lastCommand = currentCommand;
                 }
             }
 
@@ -134,6 +134,25 @@ namespace BinaryKits.Zpl.Viewer
             };
 
             return analyzeInfo;
+        }
+
+        private void Analyze(string command, List<ZplElementBase> elements, List<string> unknownCommands, List<string> errors)
+        {
+            IEnumerable<IZplCommandAnalyzer> validAnalyzers = Analyzers.Where(o => o.CanAnalyze(command));
+            if (!validAnalyzers.Any())
+            {
+                unknownCommands.Add(command);
+                return;
+            }
+
+            try
+            {
+                elements.AddRange(validAnalyzers.Select(a => a.Analyze(command, this.virtualPrinter, this.printerStorage)).Where(o => o != null));
+            }
+            catch (Exception exception)
+            {
+                errors.Add($"Cannot analyze command {command} {exception}");
+            }
         }
 
         // When adding new commands: 1 per line, always upper case, comment why if possible
