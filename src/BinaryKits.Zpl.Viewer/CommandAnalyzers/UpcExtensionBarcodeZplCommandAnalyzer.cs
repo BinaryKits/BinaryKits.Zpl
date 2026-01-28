@@ -14,7 +14,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
-            int height = virtualPrinter.BarcodeInfo.Height;
+            int? height = null;
             bool printInterpretationLine = true;
             bool printInterpretationLineAboveCode = true;
 

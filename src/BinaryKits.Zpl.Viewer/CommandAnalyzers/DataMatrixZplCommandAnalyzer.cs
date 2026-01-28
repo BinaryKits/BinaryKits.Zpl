@@ -16,7 +16,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
 
             int tmpint;
-            int height = virtualPrinter.BarcodeInfo.Height;
+            int? height = null;
             QualityLevel qualityLevel = QualityLevel.ECC0;
 
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))

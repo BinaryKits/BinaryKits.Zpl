@@ -9,6 +9,5 @@ namespace BinaryKits.Zpl.Viewer.Models
         public int MagnificationFactor { get; set; }
         public ErrorCorrectionLevel ErrorCorrection { get; set; }
         public int MaskValue { get; set; }
-        public int VerticalQuietZone { get; set; }
     }
 }

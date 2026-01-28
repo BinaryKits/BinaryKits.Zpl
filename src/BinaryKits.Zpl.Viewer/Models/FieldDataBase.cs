@@ -1,6 +1,7 @@
 ﻿namespace BinaryKits.Zpl.Viewer.Models
 {
-    public abstract class FieldDataBase
+    public class FieldDataBase
     {
+        public string Content { get; set; }
     }
 }

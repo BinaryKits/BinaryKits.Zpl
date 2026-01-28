@@ -16,7 +16,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             FieldOrientation fieldOrientation = this.ConvertFieldOrientation(zplDataParts[0], virtualPrinter);
 
             int tmpint;
-            int height = virtualPrinter.BarcodeInfo.Height;
+            int? height = null;
             bool printInterpretationLine = true;
             bool printInterpretationLineAboveCode = false;
             bool uccCheckDigit = false;
