@@ -12,8 +12,6 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
             string[] zplDataParts = this.SplitCommand(zplCommand);
 
             int tmpint;
-            int fontHeight = 9;
-            int fontWidth = 0;
 
             if (zplDataParts.Length > 0)
             {
@@ -26,16 +24,13 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             if (zplDataParts.Length > 1 && int.TryParse(zplDataParts[1], out tmpint))
             {
-                fontHeight = tmpint;
+                virtualPrinter.SetFontHeight(tmpint);
             }
 
             if (zplDataParts.Length > 2 && int.TryParse(zplDataParts[2], out tmpint))
             {
-                fontWidth = tmpint;
+                virtualPrinter.SetFontWidth(tmpint);
             }
-
-            virtualPrinter.SetFontHeight(fontHeight);
-            virtualPrinter.SetFontWidth(fontWidth);
 
             return null;
         }
