@@ -7,18 +7,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 {
     public abstract class ElementDrawerBase : IElementDrawer
     {
-        internal IPrinterStorage printerStorage;
-        internal SKCanvas skCanvas;
-
-        ///<inheritdoc/>
-        public void Prepare(
-            IPrinterStorage printerStorage,
-            SKCanvas skCanvas)
-        {
-            this.printerStorage = printerStorage;
-            this.skCanvas = skCanvas;
-        }
-
         ///<inheritdoc/>
         public abstract bool CanDraw(ZplElementBase element);
 
@@ -41,21 +29,21 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition)
+        public virtual SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition)
         {
             return currentPosition;
         }
 
         ///<inheritdoc/>
-        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public virtual SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
-            return this.Draw(element, options, currentPosition);
+            return this.Draw(element, canvas, printerStorage, options, currentPosition);
         }
 
         ///<inheritdoc/>
-        public virtual SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
+        public virtual SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
-            return this.Draw(element, options, currentPosition, internationalFont);
+            return this.Draw(element, canvas, printerStorage, options, currentPosition, internationalFont);
         }
 
         protected virtual SKPoint CalculateNextDefaultPosition(float x, float y, float elementWidth, float elementHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, SKPoint currentPosition)

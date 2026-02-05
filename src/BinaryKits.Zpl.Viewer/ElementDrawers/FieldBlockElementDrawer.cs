@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
@@ -35,7 +35,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
             if (element is ZplFieldBlock fieldBlock)
             {
@@ -95,7 +95,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     y -= totalHeight;
                 }
 
-                using (new SKAutoCanvasRestore(this.skCanvas))
+                using (new SKAutoCanvasRestore(canvas))
                 {
                     SKMatrix matrix = SKMatrix.Empty;
 
@@ -136,9 +136,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                     if (matrix != SKMatrix.Empty)
                     {
-                        SKMatrix currentMatrix = this.skCanvas.TotalMatrix;
+                        SKMatrix currentMatrix = canvas.TotalMatrix;
                         SKMatrix concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
-                        this.skCanvas.SetMatrix(concatMatrix);
+                        canvas.SetMatrix(concatMatrix);
                     }
 
                     foreach (string textLine in textLines)
@@ -169,7 +169,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                             skPaint.BlendMode = SKBlendMode.Xor;
                         }
 
-                        this.skCanvas.DrawShapedText(textLine, x, y, skFont, skPaint);
+                        canvas.DrawShapedText(textLine, x, y, skFont, skPaint);
                         y += lineHeight;
                     }
 

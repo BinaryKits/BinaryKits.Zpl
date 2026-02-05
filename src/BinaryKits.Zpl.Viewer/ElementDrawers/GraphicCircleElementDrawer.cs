@@ -34,7 +34,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplGraphicCircle graphicCircle)
             {
@@ -91,7 +91,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     skPaint.BlendMode = SKBlendMode.Xor;
                 }
 
-                this.skCanvas.DrawCircle(x, y, radiusMinusBorder, skPaint);
+                canvas.DrawCircle(x, y, radiusMinusBorder, skPaint);
                 return this.CalculateNextDefaultPosition(baseX, baseY, graphicCircle.Diameter, graphicCircle.Diameter, graphicCircle.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
             }
 

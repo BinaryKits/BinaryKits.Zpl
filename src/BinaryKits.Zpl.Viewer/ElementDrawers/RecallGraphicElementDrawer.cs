@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 
 using SkiaSharp;
@@ -17,11 +17,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplRecallGraphic recallGraphic)
             {
-                byte[] imageData = this.printerStorage.GetFile(recallGraphic.StorageDevice, recallGraphic.ImageName);
+                byte[] imageData = printerStorage.GetFile(recallGraphic.StorageDevice, recallGraphic.ImageName);
 
                 if (imageData.Length == 0)
                 {
@@ -47,7 +47,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
                 }
 
-                this.skCanvas.DrawBitmap(bitmap, x, y);
+                canvas.DrawBitmap(bitmap, x, y);
 
                 float width = bitmap.Width;
                 float height = bitmap.Height;

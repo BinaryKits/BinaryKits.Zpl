@@ -1,4 +1,4 @@
-using SkiaSharp;
+﻿using SkiaSharp;
 using SkiaSharp.HarfBuzz;
 
 using System;
@@ -19,9 +19,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// </summary>
         protected const float MIN_LABEL_MARGIN = 5f;
 
-        protected void DrawBarcode(byte[] barcodeImageData, float x, float y, int barcodeWidth, int barcodeHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation)
+        protected void DrawBarcode(byte[] barcodeImageData, SKCanvas canvas, float x, float y, int barcodeWidth, int barcodeHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation)
         {
-            using (new SKAutoCanvasRestore(this.skCanvas))
+            using (new SKAutoCanvasRestore(canvas))
             {
                 SKMatrix matrix = GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
                 if (!useFieldOrigin)
@@ -35,16 +35,16 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 if (matrix != SKMatrix.Empty)
                 {
-                    this.skCanvas.Concat(matrix);
+                    canvas.Concat(matrix);
                 }
 
-                this.skCanvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y);
+                canvas.DrawBitmap(SKBitmap.Decode(barcodeImageData), x, y);
             }
         }
 
-        protected void DrawInterpretationLine(string interpretation, SKFont skFont, float x, float y, int barcodeWidth, int barcodeHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, bool printInterpretationLineAboveCode, DrawerOptions options)
+        protected void DrawInterpretationLine(string interpretation, SKCanvas canvas, SKFont skFont, float x, float y, int barcodeWidth, int barcodeHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, bool printInterpretationLineAboveCode, DrawerOptions options)
         {
-            using (new SKAutoCanvasRestore(this.skCanvas))
+            using (new SKAutoCanvasRestore(canvas))
             {
                 using SKPaint skPaint = new()
                 {
@@ -54,7 +54,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 SKMatrix matrix = GetRotationMatrix(x, y, barcodeWidth, barcodeHeight, useFieldOrigin, fieldOrientation);
                 if (matrix != SKMatrix.Empty)
                 {
-                    this.skCanvas.Concat(matrix);
+                    canvas.Concat(matrix);
                 }
 
                 skFont.MeasureText(interpretation, out SKRect textBounds);
@@ -71,11 +71,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 float margin = Math.Max((skFont.Spacing - textBounds.Height) / 2, MIN_LABEL_MARGIN);
                 if (printInterpretationLineAboveCode)
                 {
-                    this.skCanvas.DrawShapedText(interpretation, x, y - margin, skFont, skPaint);
+                    canvas.DrawShapedText(interpretation, x, y - margin, skFont, skPaint);
                 }
                 else
                 {
-                    this.skCanvas
+                    canvas
                         .DrawShapedText(interpretation, x, y + barcodeHeight + textBounds.Height + margin, skFont, skPaint);
                 }
             }
