@@ -41,6 +41,31 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     content = content.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
+                if (barcode.Mod10CheckDigit)
+                {
+                    int sum = 0;
+
+                    for (int i = 0; i < content.Length; i++)
+                    {
+                        if (!char.IsDigit(content[i]))
+                        {
+                            return currentPosition;
+                        }
+
+                        int digit = content[i] - '0';
+                        int weight = ((content.Length - i) % 2 == 0) ? 3 : 1;
+                        sum += digit * weight;
+                    }
+
+                    int checkDigit = (10 - (sum % 10)) % 10;
+                    content = $"{content}{checkDigit}";
+                }
+
+                if (content.Length % 2 != 0)
+                {
+                    content = $"0{content}";
+                }
+
                 ITFWriter writer = new();
                 bool[] result = writer.encode(content);
                 int narrow = barcode.ModuleWidth;

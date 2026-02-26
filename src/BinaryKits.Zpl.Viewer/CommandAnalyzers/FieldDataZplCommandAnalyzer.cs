@@ -77,7 +77,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
                 }
                 else if (virtualPrinter.NextElementFieldData is Interleaved2of5BarcodeFieldData interleaved2of5)
                 {
-                    return new ZplBarcodeInterleaved2of5(text, x, y, interleaved2of5.Height, moduleWidth, wideBarToNarrowBarWidthRatio, interleaved2of5.FieldOrientation, hexadecimalIndicator, interleaved2of5.PrintInterpretationLine, interleaved2of5.PrintInterpretationLineAboveCode, bottomToTop: bottomToTop, useDefaultPosition: useDefaultPosition);
+                    return new ZplBarcodeInterleaved2of5(text, x, y, interleaved2of5.Height, moduleWidth, wideBarToNarrowBarWidthRatio, interleaved2of5.FieldOrientation, hexadecimalIndicator, interleaved2of5.PrintInterpretationLine, interleaved2of5.PrintInterpretationLineAboveCode, mod10CheckDigit: interleaved2of5.CalculateAndPrintMod10CheckDigit, bottomToTop: bottomToTop, useDefaultPosition: useDefaultPosition);
                 }
                 else if (virtualPrinter.NextElementFieldData is MaxiCodeBarcodeFieldData maxiCode)
                 {
