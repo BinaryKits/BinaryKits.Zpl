@@ -73,6 +73,22 @@ namespace BinaryKits.Zpl.Label.UnitTest
         }
 
         [TestMethod]
+        public void BarcodeEan8()
+        {
+            var elements = new List<ZplElementBase>
+            {
+                new ZplBarcodeEan8("1234567", 100, 300)
+            };
+
+            var renderEngine = new ZplEngine(elements);
+            var output = renderEngine.ToZplString(new ZplRenderOptions { AddEmptyLineBeforeElementStart = true });
+
+            Debug.WriteLine(output);
+            Assert.IsNotNull(output);
+            Assert.AreEqual("^XA\n^LH0,0\n\n^FO100,300\n^BY2,3\n^B8N,100,Y,N\n^FD1234567^FS\n^XZ", output);
+        }
+
+        [TestMethod]
         public void DataMatrixDefault()
         {
             var elements = new List<ZplElementBase>
