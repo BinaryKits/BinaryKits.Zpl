@@ -15,7 +15,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
         public override bool IsReverseDraw(ZplElementBase element)
         {
-            if (element is ZplGraphicCircle graphicEllipse)
+            if (element is ZplGraphicEllipse graphicEllipse)
             {
                 return graphicEllipse.ReversePrint;
             }
@@ -25,7 +25,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
         public override bool IsWhiteDraw(ZplElementBase element)
         {
-            if (element is ZplGraphicCircle graphicEllipse)
+            if (element is ZplGraphicEllipse graphicEllipse)
             {
                 return graphicEllipse.LineColor == LineColor.White;
             }
