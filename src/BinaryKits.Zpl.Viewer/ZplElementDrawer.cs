@@ -137,6 +137,17 @@ namespace BinaryKits.Zpl.Viewer
 
             //make sure to have a transparent canvas for SKBlendMode.Xor to work properly
             skCanvas.Clear(SKColors.Transparent);
+
+            //When the output is opaque we render reverse-print to the PDF as pure vector graphics
+            //(white + SKBlendMode.Difference) instead of the legacy full-label raster overlay.
+            //This requires an explicit white PDF backdrop so Difference resolves correctly
+            //(white over black = white, white over white = black).
+            bool vectorReverse = this.drawerOptions.PdfOutput && this.drawerOptions.OpaqueBackground;
+            if (vectorReverse)
+            {
+                pdfCanvas.Clear(SKColors.White);
+            }
+
             InternationalFont internationalFont = InternationalFont.ZCP850;
             SKPoint currentDefaultPosition = SKPoint.Empty;
 
@@ -156,7 +167,62 @@ namespace BinaryKits.Zpl.Viewer
 
                 try
                 {
-                    //The inverse drawing is moved to the element drawer, so only collect imageHistory for the PDF 
+                    //Vector reverse-print path (opaque PDF): draw the bitmap and PDF canvases
+                    //separately so each gets the right paint - black+Xor on the bitmap, white+
+                    //Difference (vector) on the PDF - instead of routing through the NWay canvas.
+                    if (vectorReverse && drawer.IsReverseDraw(element))
+                    {
+                        SKPoint posBefore = currentDefaultPosition;
+
+                        //Bitmap pass - identical to the legacy behavior, but onto the bitmap canvas only.
+                        bool simpleReverse =
+                            (element is ZplFieldBlock
+                             || element is ZplTextField
+                             || element is ZplGraphicCircle
+                             || element is ZplGraphicBox)
+                            && !drawer.IsWhiteDraw(element)
+                            && !drawer.ForceBitmapDraw(element);
+
+                        if (simpleReverse)
+                        {
+                            drawer.Prepare(this.printerStorage, skImageCanvas);
+                            currentDefaultPosition = drawer.Draw(element, this.drawerOptions, posBefore, internationalFont, printDensityDpmm);
+                        }
+                        else
+                        {
+                            using SKBitmap skBitmapInvert = new(labelImageWidth, labelImageHeight);
+                            using SKCanvas skCanvasInvert = new(skBitmapInvert);
+                            skCanvasInvert.Clear(SKColors.Transparent);
+
+                            drawer.Prepare(this.printerStorage, skCanvasInvert);
+                            currentDefaultPosition = drawer.Draw(element, this.drawerOptions, posBefore, internationalFont, printDensityDpmm);
+
+                            if (drawer.IsWhiteDraw(element))
+                            {
+                                InvertDrawWhite(skImageCanvas, skBitmapInvert);
+                            }
+                            else
+                            {
+                                InvertDraw(skImageCanvas, skBitmapInvert);
+                            }
+                        }
+
+                        //PDF pass - vector white+Difference onto the PDF canvas only.
+                        try
+                        {
+                            this.drawerOptions.PdfReverseDraw = true;
+                            drawer.Prepare(this.printerStorage, pdfCanvas);
+                            drawer.Draw(element, this.drawerOptions, posBefore, internationalFont, printDensityDpmm);
+                        }
+                        finally
+                        {
+                            this.drawerOptions.PdfReverseDraw = false;
+                        }
+
+                        continue;
+                    }
+
+                    //The inverse drawing is moved to the element drawer, so only collect imageHistory for the PDF
                     if ((element is ZplFieldBlock
                          || element is ZplTextField
                          || element is ZplGraphicCircle
@@ -251,8 +317,11 @@ namespace BinaryKits.Zpl.Viewer
                 return result;
             }
 
-            //Fix the PDF blend
-            FixPdfInvertDraw(info, imageHistory, surface, skCanvas);
+            //Fix the PDF blend (legacy raster path only; the vector path needs no correction)
+            if (!vectorReverse)
+            {
+                FixPdfInvertDraw(info, imageHistory, surface, skCanvas);
+            }
 
             //close the PDF document
             document.EndPage();

@@ -1,0 +1,12 @@
+^XA
+^FX --- 1. Baseline: normal black text ---
+^FO50,40^A0N,40,40^FDNormal text^FS
+
+^FX --- 2. Full reverse: white text over a solid black bar (^FR) ---
+^FO50,120^GB320,60,60^FS
+^FO60,125^A0N,40,40^FR^FDFull reverse^FS
+
+^FX --- 3. Half reverse: text crosses the edge of a black bar ---
+^FO50,220^GB110,60,60^FS
+^FO60,225^A0N,40,40^FR^FDHalf reverse^FS
+^XZ

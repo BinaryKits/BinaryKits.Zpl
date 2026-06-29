@@ -133,7 +133,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                     if (textField.ReversePrint)
                     {
-                        skPaint.BlendMode = SKBlendMode.Xor;
+                        ApplyReverseBlend(skPaint, options);
                     }
 
                     SKTextAlign textAlign = SKTextAlign.Left;

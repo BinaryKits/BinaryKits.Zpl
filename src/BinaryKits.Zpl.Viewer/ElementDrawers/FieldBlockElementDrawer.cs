@@ -166,7 +166,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                         if (fieldBlock.ReversePrint)
                         {
-                            skPaint.BlendMode = SKBlendMode.Xor;
+                            ApplyReverseBlend(skPaint, options);
                         }
 
                         this.skCanvas.DrawShapedText(textLine, x, y, skFont, skPaint);

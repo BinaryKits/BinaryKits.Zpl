@@ -88,7 +88,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 if (graphicCircle.ReversePrint)
                 {
-                    skPaint.BlendMode = SKBlendMode.Xor;
+                    ApplyReverseBlend(skPaint, options);
                 }
 
                 this.skCanvas.DrawCircle(x, y, radiusMinusBorder, skPaint);
