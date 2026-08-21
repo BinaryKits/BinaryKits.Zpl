@@ -32,7 +32,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
             if (element is ZplBarcodeEan13 barcode)
             {
@@ -66,7 +66,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 bool[] result = writer.encode(content);
                 using SKBitmap resizedImage = BoolArrayToSKBitmap(result, barcode.Height, barcode.ModuleWidth);
                 byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation);
+                this.DrawBarcode(png, canvas, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation);
 
                 if (barcode.PrintInterpretationLine)
                 {
@@ -75,11 +75,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     SKFont labelFont = new(labelTypeFace, labelFontSize);
                     if (barcode.PrintInterpretationLineAboveCode)
                     {
-                        this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, true, options);
+                        this.DrawInterpretationLine(interpretation, canvas, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, true, options);
                     }
                     else
                     {
-                        this.DrawEAN13InterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.ModuleWidth, options);
+                        this.DrawEAN13InterpretationLine(interpretation, labelFont, canvas, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.ModuleWidth, options);
                     }
                 }
 
@@ -92,6 +92,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         private void DrawEAN13InterpretationLine(
             string interpretation,
             SKFont skFont,
+            SKCanvas canvas,
             float x,
             float y,
             int barcodeWidth,
@@ -101,7 +102,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             int moduleWidth,
             DrawerOptions options)
         {
-            using (new SKAutoCanvasRestore(this.skCanvas))
+            using (new SKAutoCanvasRestore(canvas))
             {
                 using SKPaint skPaint = new()
                 {
@@ -112,9 +113,9 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 if (matrix != SKMatrix.Empty)
                 {
-                    SKMatrix currentMatrix = this.skCanvas.TotalMatrix;
+                    SKMatrix currentMatrix = canvas.TotalMatrix;
                     SKMatrix concatMatrix = SKMatrix.Concat(currentMatrix, matrix);
-                    this.skCanvas.SetMatrix(concatMatrix);
+                    canvas.SetMatrix(concatMatrix);
                 }
 
                 skFont.MeasureText(interpretation, out SKRect textBounds);
@@ -133,13 +134,13 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 using SKBitmap guardImage = BoolArrayToSKBitmap(guards, (int)(margin + textBounds.Height / 2), moduleWidth);
                 byte[] guardPng = guardImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                this.skCanvas.DrawBitmap(SKBitmap.Decode(guardPng), x, y + barcodeHeight);
+                canvas.DrawBitmap(SKBitmap.Decode(guardPng), x, y + barcodeHeight);
 
                 for (int i = 0; i < interpretation.Length; i++)
                 {
                     string digit = interpretation[i].ToString();
                     skFont.MeasureText(digit, out SKRect digitBounds);
-                    this.skCanvas.DrawText(digit, x - (spacing + digitBounds.Width) / 2 - moduleWidth, y + barcodeHeight + textBounds.Height + margin, skFont, skPaint);
+                    canvas.DrawText(digit, x - (spacing + digitBounds.Width) / 2 - moduleWidth, y + barcodeHeight + textBounds.Height + margin, skFont, skPaint);
                     x += spacing;
                     if (i == 0 || i == 6)
                     {

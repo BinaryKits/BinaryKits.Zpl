@@ -11,15 +11,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
     public interface IElementDrawer
     {
         /// <summary>
-        /// Prepare the drawer
-        /// </summary>
-        /// <param name="printerStorage"></param>
-        /// <param name="skCanvas"></param>
-        void Prepare(
-            IPrinterStorage printerStorage,
-            SKCanvas skCanvas);
-
-        /// <summary>
         /// Check if the drawer can draw this element
         /// </summary>
         /// <param name="element"></param>
@@ -51,30 +42,36 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         /// Draw the element
         /// </summary>
         /// <param name="element"></param>
+        /// <param name="canvas"></param>
+        /// <param name="printerStorage"></param>
         /// <param name="options"></param>
         /// <param name="currentPosition">The current default field position for elements using default positioning</param>
         /// <returns>The updated default field position after drawing this element</returns>
-        SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition);
+        SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition);
 
         /// <summary>
         /// Draw the element with extra context information
         /// </summary>
         /// <param name="element"></param>
+        /// <param name="canvas"></param>
+        /// <param name="printerStorage"></param>
         /// <param name="options"></param>
         /// <param name="currentPosition">The current default field position for elements using default positioning</param>
         /// <param name="internationalFont"></param>
         /// <returns>The updated default field position after drawing this element</returns>
-        SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont);
+        SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont);
 
         /// <summary>
         /// Draw the element with extra context information
         /// </summary>
         /// <param name="element"></param>
+        /// <param name="canvas"></param>
+        /// <param name="printerStorage"></param>
         /// <param name="options"></param>
         /// <param name="currentPosition">The current default field position for elements using default positioning</param>
         /// <param name="internationalFont"></param>
         /// <param name="printDensityDpmm"></param>
         /// <returns>The updated default field position after drawing this element</returns>
-        SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm);
+        SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm);
     }
 }

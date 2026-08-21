@@ -17,11 +17,11 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplImageMove imageMove)
             {
-                byte[] imageData = this.printerStorage.GetFile(imageMove.StorageDevice, imageMove.ObjectName);
+                byte[] imageData = printerStorage.GetFile(imageMove.StorageDevice, imageMove.ObjectName);
                 SKBitmap image = SKBitmap.Decode(imageData);
 
                 if (imageData.Length == 0)
@@ -48,7 +48,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     }
                 }
 
-                this.skCanvas.DrawBitmap(image, x, y);
+                canvas.DrawBitmap(image, x, y);
 
                 return this.CalculateNextDefaultPosition(x, y, image.Width, image.Height, imageMove.FieldOrigin != null, Label.FieldOrientation.Normal, currentPosition);
             }

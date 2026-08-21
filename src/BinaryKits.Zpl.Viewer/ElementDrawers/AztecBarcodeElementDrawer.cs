@@ -18,7 +18,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplAztecBarcode aztecBarcode)
             {
@@ -65,7 +65,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 using SKBitmap resizedImage = BitMatrixToSKBitmap(result, aztecBarcode.MagnificationFactor);
                 byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation);
+                this.DrawBarcode(png, canvas, x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation);
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, aztecBarcode.FieldOrigin != null, aztecBarcode.FieldOrientation, currentPosition);
             }
 

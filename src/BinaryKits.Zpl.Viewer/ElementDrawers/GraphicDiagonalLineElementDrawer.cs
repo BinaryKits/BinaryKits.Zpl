@@ -34,7 +34,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplGraphicDiagonalLine graphicLine)
             {
@@ -88,7 +88,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     path.RLineTo(width, -height);
                     path.RLineTo(-border, 0);
                     path.Close();
-                    this.skCanvas.DrawPath(path, skPaint);
+                    canvas.DrawPath(path, skPaint);
                 }
                 else
                 {
@@ -98,7 +98,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     path.RLineTo(width, height);
                     path.RLineTo(-border, 0);
                     path.Close();
-                    this.skCanvas.DrawPath(path, skPaint);
+                    canvas.DrawPath(path, skPaint);
                 }
 
                 // Calculate next position based on box dimensions

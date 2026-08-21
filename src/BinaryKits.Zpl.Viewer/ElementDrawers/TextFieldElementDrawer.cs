@@ -30,7 +30,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
             if (element is ZplTextField textField)
             {
@@ -78,7 +78,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 skFont.MeasureText("X", out SKRect textBoundBaseline);
                 float totalWidth = skFont.MeasureText(displayText, out SKRect textBounds);
 
-                using (new SKAutoCanvasRestore(this.skCanvas))
+                using (new SKAutoCanvasRestore(canvas))
                 {
                     SKMatrix matrix = SKMatrix.Empty;
 
@@ -123,7 +123,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                     if (matrix != SKMatrix.Empty)
                     {
-                        this.skCanvas.Concat(matrix);
+                        canvas.Concat(matrix);
                     }
 
                     if (textField.FieldTypeset == null)
@@ -156,7 +156,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                         }
                     }
 
-                    this.skCanvas.DrawShapedText(displayText, x, y, textAlign, skFont, skPaint);
+                    canvas.DrawShapedText(displayText, x, y, textAlign, skFont, skPaint);
 
                     // Update the next default field position after rendering
                     return this.CalculateNextDefaultPosition(x, y, totalWidth, textBounds.Height, false, textField.Font.FieldOrientation, currentPosition);

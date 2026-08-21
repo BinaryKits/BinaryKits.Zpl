@@ -46,7 +46,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplGraphicBox graphicBox)
             {
@@ -145,12 +145,12 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                             skPaint.BlendMode = SKBlendMode.Xor;
                         }
 
-                        this.skCanvas.DrawRect(x, y, width, height, skPaint);
+                        canvas.DrawRect(x, y, width, height, skPaint);
                         // Calculate next position based on box dimensions
                         return this.CalculateNextDefaultPosition(baseX, baseY, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
                     }
 
-                    this.skCanvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, skPaint);
+                    canvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, skPaint);
                 }
 
                 // Calculate next position based on box dimensions

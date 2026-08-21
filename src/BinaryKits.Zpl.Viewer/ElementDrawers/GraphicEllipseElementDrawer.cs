@@ -34,7 +34,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplGraphicEllipse graphicEllipse)
             {
@@ -89,7 +89,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     StrokeWidth = border
                 };
 
-                this.skCanvas.DrawOval(bounds, skPaint);
+                canvas.DrawOval(bounds, skPaint);
                 return this.CalculateNextDefaultPosition(x, y, width, height, graphicEllipse.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
             }
 

@@ -179,8 +179,7 @@ namespace BinaryKits.Zpl.Viewer
                         using SKCanvas skCanvasInvert = new(skBitmapInvert);
                         skCanvasInvert.Clear(SKColors.Transparent);
 
-                        drawer.Prepare(this.printerStorage, skCanvasInvert);
-                        currentDefaultPosition = drawer.Draw(element, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
+                        currentDefaultPosition = drawer.Draw(element, skCanvasInvert, this.printerStorage, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                         //save state before inverted draw
                         if (this.drawerOptions.PdfOutput == true)
@@ -201,8 +200,7 @@ namespace BinaryKits.Zpl.Viewer
                         continue;
                     }
 
-                    drawer.Prepare(this.printerStorage, skCanvas);
-                    currentDefaultPosition = drawer.Draw(element, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
+                    currentDefaultPosition = drawer.Draw(element, skCanvas, this.printerStorage, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                     continue;
                 }
@@ -320,8 +318,7 @@ namespace BinaryKits.Zpl.Viewer
                         using SKCanvas skCanvasInvert = new(skBitmapInvert);
                         skCanvasInvert.Clear(SKColors.Transparent);
 
-                        drawer.Prepare(this.printerStorage, skCanvasInvert);
-                        currentDefaultPosition = drawer.Draw(element, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
+                        currentDefaultPosition = drawer.Draw(element, skCanvasInvert, this.printerStorage, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                         //use color inversion on an reverse draw white element
                         if (drawer.IsWhiteDraw(element))
@@ -336,8 +333,7 @@ namespace BinaryKits.Zpl.Viewer
                         continue;
                     }
 
-                    drawer.Prepare(this.printerStorage, skCanvas);
-                    currentDefaultPosition = drawer.Draw(element, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
+                    currentDefaultPosition = drawer.Draw(element, skCanvas, this.printerStorage, this.drawerOptions, currentDefaultPosition, internationalFont, printDensityDpmm);
 
                     continue;
                 }

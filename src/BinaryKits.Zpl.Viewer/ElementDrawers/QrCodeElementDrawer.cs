@@ -26,7 +26,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont)
         {
             if (element is ZplQrCode qrcode)
             {
@@ -70,7 +70,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 using SKBitmap resizedImage = BitMatrixToSKBitmap(result, qrcode.MagnificationFactor);
 
                 byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                this.DrawBarcode(png, x, y + verticalQuietZone, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation);
+                this.DrawBarcode(png, canvas, x, y + verticalQuietZone, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation);
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height + 2 * verticalQuietZone, qrcode.FieldOrigin != null, qrcode.FieldOrientation, currentPosition);
             }
 

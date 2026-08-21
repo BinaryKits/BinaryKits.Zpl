@@ -21,7 +21,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
             if (element is ZplBarcode128 barcode)
             {
@@ -71,7 +71,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 (bool[] data, string interpretation) = ZplCode128Symbology.Encode(content, codeSet, gs1);
                 using SKBitmap resizedImage = BoolArrayToSKBitmap(data, barcode.Height, barcode.ModuleWidth);
                 byte[] png = resizedImage.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                this.DrawBarcode(png, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation);
+                this.DrawBarcode(png, canvas, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation);
 
                 if (barcode.PrintInterpretationLine)
                 {
@@ -79,7 +79,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     float labelFontSize = FontScale.GetBitmappedFontSize("A", Math.Min(barcode.ModuleWidth, 10), printDensityDpmm).Value;
                     SKTypeface labelTypeFace = options.FontManager.FontLoader("A");
                     SKFont labelFont = new(labelTypeFace, labelFontSize);
-                    this.DrawInterpretationLine(interpretation, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
+                    this.DrawInterpretationLine(interpretation, canvas, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
                 }
 
                 return this.CalculateNextDefaultPosition(x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, currentPosition);

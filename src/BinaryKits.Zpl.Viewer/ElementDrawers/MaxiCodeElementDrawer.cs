@@ -22,7 +22,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         }
 
         ///<inheritdoc/>
-        public override SKPoint Draw(ZplElementBase element, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
+        public override SKPoint Draw(ZplElementBase element, SKCanvas canvas, IPrinterStorage printerStorage, DrawerOptions options, SKPoint currentPosition, InternationalFont internationalFont, int printDensityDpmm)
         {
             if (element is ZplMaxiCode maxiCode)
             {
@@ -45,7 +45,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 SKBitmap image = DrawMaxiCode(data, printDensityDpmm);
                 byte[] png = image.Encode(SKEncodedImageFormat.Png, 100).ToArray();
-                this.DrawBarcode(png, x, y, image.Width, image.Height, maxiCode.FieldOrigin != null, maxiCode.FieldOrientation);
+                this.DrawBarcode(png, canvas, x, y, image.Width, image.Height, maxiCode.FieldOrigin != null, maxiCode.FieldOrientation);
                 return this.CalculateNextDefaultPosition(x, y, image.Width, image.Height, maxiCode.FieldOrigin != null, maxiCode.FieldOrientation, currentPosition);
             }
 
