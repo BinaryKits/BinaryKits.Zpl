@@ -77,7 +77,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                 if (graphicLine.ReversePrint)
                 {
-                    skPaint.BlendMode = SKBlendMode.Xor;
+                    ApplyReverseBlend(skPaint, options);
                 }
 
                 if(graphicLine.RightLeaningDiagonal)

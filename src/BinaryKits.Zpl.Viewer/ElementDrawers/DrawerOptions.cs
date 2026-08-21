@@ -20,9 +20,20 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
         public int RenderQuality { get; set; } = 80;
 
         /// <summary>
-        /// Applies label over a white background after rendering all elements
+        /// Applies the label over a white background after rendering all elements.
+        /// When <c>true</c> this also makes the <b>PDF</b> output opaque (white background) and
+        /// enables fully-vector reverse-print (^FR / ^LR) rendering in the PDF. When <c>false</c>
+        /// the PDF keeps a transparent background and uses the legacy raster compositing for
+        /// reverse-print, which embeds an image instead of vector graphics.
         /// </summary>
         public bool OpaqueBackground { get; set; } = false;
+
+        /// <summary>
+        /// Transient flag, toggled per draw call by <see cref="ZplElementDrawer"/>, that tells a
+        /// reverse-capable drawer to render for the vector PDF canvas (white + Difference) instead
+        /// of the bitmap canvas (black + Xor). Not part of the public configuration surface.
+        /// </summary>
+        internal bool PdfReverseDraw { get; set; } = false;
 
         /// <summary>
         /// Renders the label as pdf

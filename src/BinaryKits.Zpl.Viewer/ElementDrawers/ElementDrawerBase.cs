@@ -58,6 +58,26 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             return this.Draw(element, options, currentPosition, internationalFont);
         }
 
+        /// <summary>
+        /// Applies the blend mode/color used to render a reverse-print (^FR / ^LR) element.
+        /// On the bitmap (and the legacy transparent PDF path) this is <see cref="SKBlendMode.Xor"/>.
+        /// For the vector PDF path (<see cref="DrawerOptions.PdfReverseDraw"/>) it draws white with
+        /// <see cref="SKBlendMode.Difference"/>, which is XOR-equivalent for binary black/white
+        /// content but stays fully vector.
+        /// </summary>
+        protected static void ApplyReverseBlend(SKPaint paint, DrawerOptions options)
+        {
+            if (options.PdfReverseDraw)
+            {
+                paint.Color = SKColors.White;
+                paint.BlendMode = SKBlendMode.Difference;
+            }
+            else
+            {
+                paint.BlendMode = SKBlendMode.Xor;
+            }
+        }
+
         protected virtual SKPoint CalculateNextDefaultPosition(float x, float y, float elementWidth, float elementHeight, bool useFieldOrigin, Label.FieldOrientation fieldOrientation, SKPoint currentPosition)
         {
             if (useFieldOrigin)

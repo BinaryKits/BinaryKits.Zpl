@@ -142,11 +142,23 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                     {
                         if (graphicBox.ReversePrint)
                         {
-                            skPaint.BlendMode = SKBlendMode.Xor;
+                            ApplyReverseBlend(skPaint, options);
                         }
 
                         this.skCanvas.DrawRect(x, y, width, height, skPaint);
                         // Calculate next position based on box dimensions
+                        return this.CalculateNextDefaultPosition(baseX, baseY, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
+                    }
+
+                    // Vector PDF reverse path: draw the rounded border as a single stroked round-rect
+                    // (one op => Difference applied once). The multi-pass loop below is a bitmap
+                    // workaround whose overlapping strokes would double-apply Difference in the PDF.
+                    // On this first loop iteration border2 == border1, so x/y/width/cornerRadius
+                    // already describe the full border.
+                    if (graphicBox.ReversePrint && options.PdfReverseDraw)
+                    {
+                        ApplyReverseBlend(skPaint, options);
+                        this.skCanvas.DrawRoundRect(x, y, width, height, cornerRadius, cornerRadius, skPaint);
                         return this.CalculateNextDefaultPosition(baseX, baseY, width1, height1, graphicBox.FieldOrigin != null, FieldOrientation.Normal, currentPosition);
                     }
 
