@@ -22,6 +22,7 @@ namespace BinaryKits.Zpl.Viewer
                 new Barcode128ElementDrawer(),
                 new Barcode39ElementDrawer(),
                 new Barcode93ElementDrawer(),
+                new BarcodeEAN8ElementDrawer(),
                 new BarcodeEAN13ElementDrawer(),
                 new BarcodeUpcAElementDrawer(),
                 new BarcodeUpcEElementDrawer(),
