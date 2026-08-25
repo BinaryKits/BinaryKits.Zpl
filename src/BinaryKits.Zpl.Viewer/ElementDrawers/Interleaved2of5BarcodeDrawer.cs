@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
@@ -78,7 +78,7 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
                 if (barcode.PrintInterpretationLine)
                 {
                     float labelFontSize = Math.Min(barcode.ModuleWidth * 10f, 100f);
-                    SKTypeface labelTypeFace = options.FontManager.FontLoader("A");
+                    SKTypeface labelTypeFace = options.FontManager.GetFont("A");
                     SKFont labelFont = new(labelTypeFace, labelFontSize);
                     this.DrawInterpretationLine(content, labelFont, x, y, resizedImage.Width, resizedImage.Height, barcode.FieldOrigin != null, barcode.FieldOrientation, barcode.PrintInterpretationLineAboveCode, options);
                 }

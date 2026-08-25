@@ -1,4 +1,4 @@
-using BinaryKits.Zpl.Label;
+﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using BinaryKits.Zpl.Viewer.Helpers;
 
@@ -41,16 +41,18 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
             {
                 ZplFont font = fieldBlock.Font;
 
-                (float fontSize, float scaleX) = FontScale.GetFontScaling(font.FontName, font.FontHeight, font.FontWidth, printDensityDpmm);
+                SKTypeface typeface = options.FontManager.GetFont(font.FontName, FallbackFont, out bool found);
+                string fontName = found ? font.FontName : FallbackFont;
 
-                SKTypeface typeface = options.FontManager.FontLoader(font.FontName);
+                (float fontSize, float scaleX) = FontScale.GetFontScaling(fontName, font.FontHeight, font.FontWidth, printDensityDpmm);
+
                 string text = fieldBlock.Text;
                 if (fieldBlock.HexadecimalIndicator is char hexIndicator)
                 {
                     text = text.ReplaceHexEscapes(hexIndicator, internationalFont);
                 }
 
-                if (font.FontName == "0")
+                if (fontName == "0")
                 {
                     if (options.ReplaceDashWithEnDash)
                     {

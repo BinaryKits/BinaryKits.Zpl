@@ -44,12 +44,20 @@ namespace BinaryKits.Zpl.Viewer
         ];
 
         /// <summary>
-        /// Gets or sets the delegate used to load a font by name and return an SKTypeface instance.
+        /// Gets or sets the delegate used to load a font by name and return an <see cref="SKTypeface"/>.
         /// </summary>
-        /// <remarks>The delegate should accept a font name as a string and return the corresponding
-        /// SKTypeface. This property allows customization of font loading behavior, such as loading fonts from embedded
-        /// resources or external files.</remarks>
-        public Func<string, SKTypeface> FontLoader { get; set; }
+        /// <remarks>
+        /// The delegate should accept a font name as a string and return the corresponding
+        /// <see cref="SKTypeface"/>, or <see langword="null"/> if the font is not found. This property allows customization
+        /// of font loading behavior, such as loading fonts from embedded resources or external files.
+        /// </remarks>
+        public Func<string, SKTypeface> FontLoader {
+            [Obsolete("Use FontManager.GetFont instead")]
+            get => this.fontLoader; 
+            set => this.fontLoader = value ?? throw new ArgumentNullException(nameof(value)); 
+        }
+
+        private Func<string, SKTypeface> fontLoader;
 
         private static readonly SKFontStyle fontStyle0 = new(
             SKFontStyleWeight.Bold,
@@ -81,8 +89,9 @@ namespace BinaryKits.Zpl.Viewer
 
         internal SKTypeface TypefaceGS { get; } = SKTypeface.FromStream(new MemoryStream(Resources.ZplGS));
 
-        public FontManager() {
-            this.FontLoader = (fontName) => {
+        public FontManager()
+        {
+            this.fontLoader = (fontName) => {
                 if (fontName == "0")
                 {
                     return this.Typeface0;
@@ -103,7 +112,9 @@ namespace BinaryKits.Zpl.Viewer
             if (this.registeredTypefaces.TryGetValue(typeface.FamilyName, out IList<SKTypeface> typefaces))
             {
                 typefaces.Add(typeface);
-            } else {
+            }
+            else
+            {
                 this.registeredTypefaces[typeface.FamilyName] = [typeface];
             }
         }
@@ -157,5 +168,73 @@ namespace BinaryKits.Zpl.Viewer
             return null;
         }
 
+        /// <summary>
+        /// Retrieves the typeface for <paramref name="fontName"/>.
+        /// </summary>
+        /// <returns>
+        /// The requested <see cref="SKTypeface"/>.
+        /// </returns>
+        /// <exception cref="FontNotFoundException">
+        /// If <paramref name="fontName"/> is not found.
+        /// </exception>
+        /// <inheritdoc cref="GetFont(string, string, out bool)"/>
+        public SKTypeface GetFont(string fontName)
+        {
+            return this.GetFont(fontName, null, out bool _);
+        }
+
+        /// <inheritdoc cref="GetFont(string, string, out bool)"/>
+        public SKTypeface GetFont(string fontName, string fallbackFont)
+        {
+            return this.GetFont(fontName, fallbackFont, out bool _);
+        }
+
+        /// <summary>
+        /// Tries to retrieve the typeface for <paramref name="fontName"/>, falling back to <paramref name="fallbackFont"/>
+        /// if not <see langword="null"/>.
+        /// </summary>
+        /// <param name="fontName">The name of the font to find</param>
+        /// <param name="fallbackFont">The fallback font to use if <paramref name="fontName"/> is not found</param>
+        /// <param name="found">
+        /// <see langword="true"/> if <paramref name="fontName"/> is found, <see langword="false"/> otherwise.
+        /// </param>
+        /// <returns>
+        /// The requested <see cref="SKTypeface"/> or the fallback one.
+        /// </returns>
+        /// <exception cref="FontNotFoundException">
+        /// If <paramref name="fontName"/> is not found and <paramref name="fallbackFont"/> is <see langword="null"/>
+        /// or if it is not <see langword="null"/> but not found.
+        /// </exception>
+        public SKTypeface GetFont(string fontName, string fallbackFont, out bool found)
+        {
+            SKTypeface font = this.fontLoader(fontName);
+            if (font == null)
+            {
+                found = false;
+                if (fallbackFont == null)
+                {
+                    throw new FontNotFoundException(fontName);
+                }
+
+                font = this.fontLoader(fallbackFont);
+                if (font == null)
+                {
+                    throw new FontNotFoundException(fontName, fallbackFont);
+                }
+            }
+            else
+            {
+                found = true;
+            }
+
+            return font;
+        }
+    }
+
+    public class FontNotFoundException : Exception
+    {
+        internal FontNotFoundException(string fontName) : base($"Font '{fontName}' not found") { }
+
+        internal FontNotFoundException(string fontName, string fallbackFont) : base($"Font '{fontName}' and fallback font '{fallbackFont}' not found") { }
     }
 }

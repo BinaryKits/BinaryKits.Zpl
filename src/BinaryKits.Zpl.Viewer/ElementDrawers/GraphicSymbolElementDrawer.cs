@@ -34,9 +34,6 @@ namespace BinaryKits.Zpl.Viewer.ElementDrawers
 
                (float fontSize, float scaleX) = FontScale.GetFontScaling("GS", graphicSymbol.Height, graphicSymbol.Width, printDensityDpmm);
 
-                // remove incorrect scaling
-                fontSize /= 1.1f;
-
                 SKTypeface typeface = options.FontManager.TypefaceGS;
 
                 SKFont skFont = new(typeface, fontSize * 1.25f, scaleX);

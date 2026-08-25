@@ -131,7 +131,11 @@ namespace BinaryKits.Zpl.Viewer.Helpers
                 {
                     double heightRatio = (double)fontHeight / height;
                     int intHeightRatio = (int)Math.Max(1, Math.Round(heightRatio));
-                    float emSize = height * intHeightRatio * heightScale;
+                    float emSize = height * intHeightRatio;
+                    if (!fontName.Equals("GS"))
+                    {
+                        emSize *= heightScale;
+                    }
 
                     if (fontWidth == 0)
                     {
@@ -148,7 +152,9 @@ namespace BinaryKits.Zpl.Viewer.Helpers
                     double widthRatio = (double)fontWidth / width;
                     int intWidthRatio = (int)Math.Max(1, Math.Round(widthRatio));
 
-                    return (height * intWidthRatio * heightScale, 1.0f);
+                    return fontName.Equals("GS")
+                        ? (height * intWidthRatio, 1.0f)
+                        : (height * intWidthRatio * heightScale, 1.0f);
                 }
                 else
                 {
