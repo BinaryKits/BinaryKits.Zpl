@@ -74,10 +74,10 @@ namespace BinaryKits.Zpl.Label.Elements
             {
                 if (context.ScaleFactor != 1)
                 {
-                    //var scaleWidth = (int)Math.Round(image.Width * context.ScaleFactor);
-                    //var scaleHeight = (int)Math.Round(image.Height * context.ScaleFactor);
+                    var scaleWidth = (int)Math.Round(image.Width * context.ScaleFactor);
+                    var scaleHeight = (int)Math.Round(image.Height * context.ScaleFactor);
 
-                    image.Mutate(x => x.Resize(image.Width / 2, image.Height / 2));
+                    image.Mutate(x => x.Resize(scaleWidth, scaleHeight));
                 }
 
                 using (var ms = new MemoryStream())
