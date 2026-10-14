@@ -1,7 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Helpers;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Processing;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,25 +40,27 @@ namespace BinaryKits.Zpl.Label.Elements
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             byte[] objectData;
-            using (var image = Image.Load(ImageData))
+            using (var image = SKBitmap.Decode(ImageData))
             {
+                if (image == null)
+                {
+                    throw new InvalidDataException("Unable to decode image data.");
+                }
+
                 if (context.ScaleFactor != 1)
                 {
                     var scaleWidth = (int)Math.Round(image.Width * context.ScaleFactor);
                     var scaleHeight = (int)Math.Round(image.Height * context.ScaleFactor);
 
-                    image.Mutate(x => x.Resize(scaleWidth, scaleHeight, KnownResamplers.Lanczos3));
+                    using (var resizedImage = new SKBitmap(scaleWidth, scaleHeight, image.ColorType, image.AlphaType))
+                    {
+                        image.ScalePixels(resizedImage, new SKSamplingOptions(SKCubicResampler.Mitchell));
+                        objectData = EncodePng(resizedImage);
+                    }
                 }
-
-                using (var ms = new MemoryStream())
+                else
                 {
-                    //ImageSharp v3 workaround. 
-#if NET6_0_OR_GREATER
-                    PngMetadata metadata = image.Metadata.GetPngMetadata();
-                    metadata.ColorTable = null;
-#endif
-                    image.Save(ms, new PngEncoder());
-                    objectData = ms.ToArray();
+                    objectData = EncodePng(image);
                 }
             }
 
@@ -75,6 +75,15 @@ namespace BinaryKits.Zpl.Label.Elements
             };
 
             return result;
+        }
+
+        private static byte[] EncodePng(SKBitmap image)
+        {
+            using (SKImage skImage = SKImage.FromBitmap(image))
+            using (SKData data = skImage.Encode(SKEncodedImageFormat.Png, 100))
+            {
+                return data.ToArray();
+            }
         }
     }
 }

@@ -1,10 +1,8 @@
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
+using SkiaSharp;
+using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 
 namespace BinaryKits.Zpl.Label.ImageConverters
 {
@@ -19,8 +17,13 @@ namespace BinaryKits.Zpl.Label.ImageConverters
         {
             using (var ms = new MemoryStream(imageData.Length))
             {
-                using (Image<Rgba32> image = Image.Load(imageData).CloneAs<Rgba32>())
+                using (SKBitmap image = DecodeImage(imageData))
                 {
+                    if (image == null)
+                    {
+                        throw new InvalidDataException("Unable to decode image data.");
+                    }
+
                     var bytesPerRow = image.Width % 8 > 0
                         ? image.Width / 8 + 1
                         : image.Width / 8;
@@ -34,9 +37,9 @@ namespace BinaryKits.Zpl.Label.ImageConverters
                     {
                         for (var x = 0; x < image.Width; x++)
                         {
-                            var pixel = image[x, y];
+                            var pixel = image.GetPixel(x, y);
 
-                            var isBlackPixel = ((pixel.R + pixel.G + pixel.B) / 3) < 128;
+                            var isBlackPixel = ((pixel.Red + pixel.Green + pixel.Blue) / 3) < 128;
                             if (isBlackPixel)
                             {
                                 colorBits |= 1 << (7 - j);
@@ -91,8 +94,10 @@ namespace BinaryKits.Zpl.Label.ImageConverters
             var imageHeight = imageData.Length / bytesPerRow;
             var imageWidth = bytesPerRow * 8;
 
-            using (var image = new Image<Rgba32>(imageWidth, imageHeight))
+            using (var image = new SKBitmap(imageWidth, imageHeight, SKColorType.Bgra8888, SKAlphaType.Premul))
             {
+                image.Erase(SKColors.Transparent);
+
                 for (var y = 0; y < image.Height; y++)
                 {
                     var bits = new BitArray(imageData.Skip(bytesPerRow * y).Take(bytesPerRow).ToArray());
@@ -101,16 +106,32 @@ namespace BinaryKits.Zpl.Label.ImageConverters
                     {
                         if (bits[x])
                         {
-                            image[x, y] = new Rgba32(0, 0, 0, 255);
+                            image.SetPixel(x, y, SKColors.Black);
                         }
                     }
                 }
 
-                using (var memoryStream = new MemoryStream())
-                {
-                    image.SaveAsPng(memoryStream);
-                    return memoryStream.ToArray();
-                }
+                return EncodePng(image);
+            }
+        }
+
+        private static SKBitmap DecodeImage(byte[] imageData)
+        {
+            try
+            {
+                return SKBitmap.Decode(imageData);
+            }
+            catch (ArgumentException exception)
+            {
+                throw new InvalidDataException("Unable to decode image data.", exception);
+            }
+        }
+        private static byte[] EncodePng(SKBitmap image)
+        {
+            using (SKImage skImage = SKImage.FromBitmap(image))
+            using (SKData data = skImage.Encode(SKEncodedImageFormat.Png, 100))
+            {
+                return data.ToArray();
             }
         }
     }

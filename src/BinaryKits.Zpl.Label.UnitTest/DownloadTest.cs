@@ -15,6 +15,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
         [DeploymentItem(@"ZplData/DownloadGraphicsACS.txt")]
         public void DownloadGraphicsACS()
         {
+            // Arrange
             var imageData = File.ReadAllBytes("Zpl.png");
 
             var elements = new List<ZplElementBase>
@@ -25,6 +26,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
             };
 
             var renderEngine = new ZplEngine(elements);
+            // Act
             var output = renderEngine.ToZplString(new ZplRenderOptions
             {
                 AddEmptyLineBeforeElementStart = true,
@@ -33,10 +35,11 @@ namespace BinaryKits.Zpl.Label.UnitTest
             });
 
             Debug.WriteLine(output);
+            // Assert
             Assert.IsNotNull(output);
 
             var zplData = File.ReadAllText("DownloadGraphicsACS.txt");
-            Assert.AreEqual(zplData, output);
+            Assert.AreEqual(zplData.Replace("\r\n", "\n"), output);
         }
         [TestMethod]
         [DeploymentItem(@"ZplData/Zpl.png")]
@@ -44,6 +47,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
         [DeploymentItem(@"ZplData/DownloadGraphicsZ64_net472.txt")]
         public void DownloadGraphicsZ64()
         {
+            // Arrange
             var imageData = File.ReadAllBytes("Zpl.png");
 
             var elements = new List<ZplElementBase>
@@ -54,6 +58,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
             };
 
             var renderEngine = new ZplEngine(elements);
+            // Act
             var output = renderEngine.ToZplString(new ZplRenderOptions
             {
                 AddEmptyLineBeforeElementStart = true,
@@ -62,6 +67,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
             });
 
             Debug.WriteLine(output);
+            // Assert
             Assert.IsNotNull(output);
 
 #if NET5_0_OR_GREATER
@@ -69,13 +75,14 @@ namespace BinaryKits.Zpl.Label.UnitTest
 #else
             var zplData = File.ReadAllText("DownloadGraphicsZ64_net472.txt");
 #endif
-            Assert.AreEqual(zplData, output);
+            Assert.AreEqual(zplData.Replace("\r\n", "\n"), output);
         }
         [TestMethod]
         [DeploymentItem(@"ZplData/Zpl.png")]
         [DeploymentItem(@"ZplData/DownloadGraphicsB64.txt")]
         public void DownloadGraphicsB64()
         {
+            // Arrange
             var imageData = File.ReadAllBytes("Zpl.png");
 
             var elements = new List<ZplElementBase>
@@ -86,6 +93,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
             };
 
             var renderEngine = new ZplEngine(elements);
+            // Act
             var output = renderEngine.ToZplString(new ZplRenderOptions
             {
                 AddEmptyLineBeforeElementStart = true,
@@ -94,10 +102,11 @@ namespace BinaryKits.Zpl.Label.UnitTest
             });
 
             Debug.WriteLine(output);
+            // Assert
             Assert.IsNotNull(output);
 
             var zplData = File.ReadAllText("DownloadGraphicsB64.txt");
-            Assert.AreEqual(zplData, output);
+            Assert.AreEqual(zplData.Replace("\r\n", "\n"), output);
         }
 
         [TestMethod]
@@ -105,6 +114,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
         [DeploymentItem(@"ZplData/DownloadObject.txt")]
         public void DownloadObjects()
         {
+            // Arrange
             var imageData = File.ReadAllBytes("Zpl.png");
 
             var elements = new List<ZplElementBase>
@@ -115,6 +125,7 @@ namespace BinaryKits.Zpl.Label.UnitTest
             };
 
             var renderEngine = new ZplEngine(elements);
+            // Act
             var output = renderEngine.ToZplString(new ZplRenderOptions
             {
                 AddEmptyLineBeforeElementStart = true,
@@ -123,10 +134,11 @@ namespace BinaryKits.Zpl.Label.UnitTest
             });
 
             Debug.WriteLine(output);
+            // Assert
             Assert.IsNotNull(output);
 
             var zplData = File.ReadAllText("DownloadObject.txt");
-            Assert.AreEqual(zplData, output);
+            Assert.AreEqual(zplData.Replace("\r\n", "\n"), output);
         }
     }
 }
