@@ -28,7 +28,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
                 // assert grfImageData.Length == totalNumberOfBytesInGraphic
 
-                ImageSharpImageConverter converter = new();
+                SkiaSharpImageConverter converter = new();
                 byte[] imageData = converter.ConvertImage(grfImageData, numberOfBytesPerRow);
 
                 printerStorage.AddFile(storageDevice, imageName, imageData);

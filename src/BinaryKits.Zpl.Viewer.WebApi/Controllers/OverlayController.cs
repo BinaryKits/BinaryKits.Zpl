@@ -3,12 +3,8 @@ using BinaryKits.Zpl.Viewer.WebApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
+using SkiaSharp;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
@@ -46,24 +42,32 @@ namespace BinaryKits.Zpl.Viewer.WebApi.Controllers
                 new LabelSize(request.LabelWidth, request.LabelHeight, Measure.Millimeter)
             );
 
-            using var image = Image.Load(labelaryImageData).CloneAs<Rgba32>();
-            ColorMatrix colorMatrix = new ColorMatrix(
-                -0.299f, 0, 0, -0.1495f,
-                -0.587f, 0, 0, -0.2935f,
-                -0.114f, 0, 0, -0.0570f,
-                 0,      0, 0,  0,
-                 1,      0, 0,  0.5f
-            );
-            image.Mutate(ctx => ctx.Filter(colorMatrix));
+            using var image = SKBitmap.Decode(labelaryImageData)
+                ?? throw new InvalidOperationException("The Labelary image could not be decoded.");
+            using var filteredImage = new SKBitmap(image.Width, image.Height, SKColorType.Rgba8888, SKAlphaType.Unpremul);
+            using var colorFilter = SKColorFilter.CreateColorMatrix(new[]
+            {
+                -0.299f, 0, 0, -0.1495f, 1,
+                -0.587f, 0, 0, -0.2935f, 0,
+                -0.114f, 0, 0, -0.0570f, 0,
+                0, 0, 0, 0, 0.5f
+            });
+            using (var canvas = new SKCanvas(filteredImage))
+            using (var paint = new SKPaint { ColorFilter = colorFilter })
+            {
+                canvas.DrawBitmap(image, 0, 0, paint);
+                canvas.Flush();
+            }
 
-            using var stream = new MemoryStream();
-            image.Save(stream, new PngEncoder { ColorType = PngColorType.RgbWithAlpha });
+            using var snapshot = SKImage.FromBitmap(filteredImage);
+            using var encoded = snapshot.Encode(SKEncodedImageFormat.Png, 100)
+                ?? throw new InvalidOperationException("The Labelary image could not be encoded as PNG.");
 
             var response = new RenderResponseDto
             {
                 Labels = new RenderLabelDto[]
                 {
-                    new RenderLabelDto { ImageBase64 = Convert.ToBase64String(stream.ToArray()) }
+                    new RenderLabelDto { ImageBase64 = Convert.ToBase64String(encoded.ToArray()) }
                 }
             };
 

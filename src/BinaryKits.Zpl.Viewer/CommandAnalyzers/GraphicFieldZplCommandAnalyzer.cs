@@ -56,7 +56,7 @@ namespace BinaryKits.Zpl.Viewer.CommandAnalyzers
 
             byte[] grfImageData = ImageHelper.GetImageBytes(dataHex, bytesPerRow);
 
-            ImageSharpImageConverter converter = new();
+            SkiaSharpImageConverter converter = new();
             byte[] imageData = converter.ConvertImage(grfImageData, bytesPerRow);
             dataHex = ByteHelper.BytesToHex(imageData);
 
