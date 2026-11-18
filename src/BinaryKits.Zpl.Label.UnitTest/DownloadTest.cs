@@ -1,9 +1,13 @@
 ﻿using BinaryKits.Zpl.Label;
 using BinaryKits.Zpl.Label.Elements;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
+using System.Text.RegularExpressions;
 
 namespace BinaryKits.Zpl.Label.UnitTest
 {
@@ -41,7 +45,6 @@ namespace BinaryKits.Zpl.Label.UnitTest
         [TestMethod]
         [DeploymentItem(@"ZplData/Zpl.png")]
         [DeploymentItem(@"ZplData/DownloadGraphicsZ64.txt")]
-        [DeploymentItem(@"ZplData/DownloadGraphicsZ64_net472.txt")]
         public void DownloadGraphicsZ64()
         {
             var imageData = File.ReadAllBytes("Zpl.png");
@@ -64,12 +67,8 @@ namespace BinaryKits.Zpl.Label.UnitTest
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
 
-#if NET5_0_OR_GREATER
             var zplData = File.ReadAllText("DownloadGraphicsZ64.txt");
-#else
-            var zplData = File.ReadAllText("DownloadGraphicsZ64_net472.txt");
-#endif
-            Assert.AreEqual(zplData, output);
+            CollectionAssert.AreEqual(DecompressZ64(zplData), DecompressZ64(output));
         }
         [TestMethod]
         [DeploymentItem(@"ZplData/Zpl.png")]
@@ -99,13 +98,17 @@ namespace BinaryKits.Zpl.Label.UnitTest
             var zplData = File.ReadAllText("DownloadGraphicsB64.txt");
             Assert.AreEqual(zplData, output);
         }
-
         [TestMethod]
         [DeploymentItem(@"ZplData/Zpl.png")]
-        [DeploymentItem(@"ZplData/DownloadObject.txt")]
         public void DownloadObjects()
         {
             var imageData = File.ReadAllBytes("Zpl.png");
+            var options = new ZplRenderOptions
+            {
+                AddEmptyLineBeforeElementStart = true,
+                TargetPrintDpi = 300,
+                SourcePrintDpi = 200
+            };
 
             var elements = new List<ZplElementBase>
             {
@@ -115,18 +118,34 @@ namespace BinaryKits.Zpl.Label.UnitTest
             };
 
             var renderEngine = new ZplEngine(elements);
-            var output = renderEngine.ToZplString(new ZplRenderOptions
-            {
-                AddEmptyLineBeforeElementStart = true,
-                TargetPrintDpi = 300,
-                SourcePrintDpi = 200
-            });
+            var output = renderEngine.ToZplString(options);
 
             Debug.WriteLine(output);
             Assert.IsNotNull(output);
 
-            var zplData = File.ReadAllText("DownloadObject.txt");
-            Assert.AreEqual(zplData, output);
+            var match = Regex.Match(output, @"~DYR:SAMPLE\.PNG,P,P,(\d+),,([0-9A-F]+)");
+            Assert.IsTrue(match.Success);
+
+            var objectData = Convert.FromHexString(match.Groups[2].Value);
+            Assert.AreEqual(int.Parse(match.Groups[1].Value), objectData.Length);
+            using var sourceImage = SKBitmap.Decode(imageData);
+            using var downloadedImage = SKBitmap.Decode(objectData);
+            Assert.IsNotNull(sourceImage);
+            Assert.IsNotNull(downloadedImage);
+            Assert.AreEqual((int)Math.Round(sourceImage.Width * options.ScaleFactor), downloadedImage.Width);
+            Assert.AreEqual((int)Math.Round(sourceImage.Height * options.ScaleFactor), downloadedImage.Height);
+        }
+
+        private static byte[] DecompressZ64(string zplData)
+        {
+            var match = Regex.Match(zplData, @":Z64:([^:\r\n]+):[0-9A-Fa-f]+");
+            Assert.IsTrue(match.Success);
+
+            using var compressedData = new MemoryStream(Convert.FromBase64String(match.Groups[1].Value));
+            using var decompressor = new ZLibStream(compressedData, CompressionMode.Decompress);
+            using var decompressedData = new MemoryStream();
+            decompressor.CopyTo(decompressedData);
+            return decompressedData.ToArray();
         }
     }
 }

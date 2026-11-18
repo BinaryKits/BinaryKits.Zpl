@@ -1,7 +1,5 @@
 ﻿using BinaryKits.Zpl.Label.Helpers;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Processing;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,25 +40,28 @@ namespace BinaryKits.Zpl.Label.Elements
         public override IEnumerable<string> Render(ZplRenderOptions context)
         {
             byte[] objectData;
-            using (var image = Image.Load(ImageData))
+            using (var image = SKBitmap.Decode(ImageData)
+                ?? throw new InvalidDataException("The image data could not be decoded."))
             {
+                SKBitmap imageToEncode = image;
+                SKBitmap resizedImage = null;
                 if (context.ScaleFactor != 1)
                 {
                     var scaleWidth = (int)Math.Round(image.Width * context.ScaleFactor);
                     var scaleHeight = (int)Math.Round(image.Height * context.ScaleFactor);
-
-                    image.Mutate(x => x.Resize(scaleWidth, scaleHeight, KnownResamplers.Lanczos3));
+                    resizedImage = image.Resize(
+                        new SKSizeI(scaleWidth, scaleHeight),
+                        new SKSamplingOptions(SKFilterMode.Linear))
+                        ?? throw new InvalidOperationException("The image could not be resized.");
+                    imageToEncode = resizedImage;
                 }
 
-                using (var ms = new MemoryStream())
+                using (resizedImage)
+                using (var snapshot = SKImage.FromBitmap(imageToEncode))
+                using (var encoded = snapshot.Encode(SKEncodedImageFormat.Png, 100)
+                    ?? throw new InvalidOperationException("The image could not be encoded as PNG."))
                 {
-                    //ImageSharp v3 workaround. 
-#if NET6_0_OR_GREATER
-                    PngMetadata metadata = image.Metadata.GetPngMetadata();
-                    metadata.ColorTable = null;
-#endif
-                    image.Save(ms, new PngEncoder());
-                    objectData = ms.ToArray();
+                    objectData = encoded.ToArray();
                 }
             }
 

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0;net8.0</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
     <Description>This package contains the zebra protocol of the Zebra Programming Language. It also supports you with image conversion.</Description>
     <Company>Binary Kits Pte. Ltd.</Company>
     <Version>1.0.2</Version>
@@ -21,18 +21,10 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
-  <Choose>
-    <When Condition="'$(TargetFramework)' == 'net8.0'">
-      <ItemGroup>
-        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.12" />
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="4.157.0" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="4.157.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE" />
